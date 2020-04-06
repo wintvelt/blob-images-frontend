@@ -33,5 +33,9 @@ jobs:
           command: npm test --coverage
 
       - run:
+          name: Build production version
+          command: npm run build
+      
+      - run:
           name: Deploy application
           command: npx serverless

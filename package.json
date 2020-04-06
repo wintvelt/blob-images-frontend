@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "./node_modules/.bin/mocha **/*.spec.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.9.9",
@@ -13,5 +14,9 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "serverless-next.js": "^1.9.7"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.1"
   }
 }

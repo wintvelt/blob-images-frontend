@@ -1,6 +1,5 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Toolbar from '@material-ui/core/Toolbar'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
@@ -13,12 +12,6 @@ import Link from '@material-ui/core/Link'
 import Container from '@material-ui/core/Container'
 
 const useStyles = makeStyles(theme => ({
-  toolbar: {
-    borderBottom: `1px solid ${theme.palette.divider}`
-  },
-  toolbarTitle: {
-    flex: 1
-  },
   mainFeaturedPost: {
     position: 'relative',
     backgroundColor: theme.palette.grey[800],
@@ -76,19 +69,6 @@ const Blog = () => {
 
   return (
     <>
-      <Container maxWidth="lg">
-        <Toolbar className={classes.toolbar}>
-          <Typography
-            component="h2"
-            variant="h5"
-            color="inherit"
-            align="center"
-            noWrap
-            className={classes.toolbarTitle}
-          >
-            Blog
-          </Typography>
-        </Toolbar>
         <main>
           {/* Main featured post */}
           <Paper className={classes.mainFeaturedPost}>
@@ -156,7 +136,6 @@ const Blog = () => {
           </Grid>
           {/* End sub featured posts */}
         </main>
-      </Container>
     </>
   )
 }

@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.grey[800],
         color: theme.palette.common.white,
         paddingTop: theme.spacing(12),
+        paddingBottom: theme.spacing(8),
         marginBottom: theme.spacing(4),
         backgroundImage: 'url(cover.jpg)',
         backgroundSize: 'cover',
@@ -27,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     },
     mainFeaturedPostContent: {
         position: 'relative',
-        padding: theme.spacing(3),
+        padding: theme.spacing(4),
         [theme.breakpoints.up('md')]: {
             padding: theme.spacing(6),
             paddingRight: 0

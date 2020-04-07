@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         backgroundColor: theme.palette.grey[800],
         color: theme.palette.common.white,
-        paddingTop: theme.spacing(8),
+        paddingTop: theme.spacing(12),
         marginBottom: theme.spacing(4),
         backgroundImage: 'url(cover.jpg)',
         backgroundSize: 'cover',
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
         bottom: 0,
         right: 0,
         left: 0,
-        backgroundColor: 'rgba(0,0,0,.7)'
+        background: 'linear-gradient(355deg, rgba(155,120,111,.8) 10%, rgba(70,52,78,.8) 90%)'
     },
     mainFeaturedPostContent: {
         position: 'relative',
@@ -39,12 +39,12 @@ const Hero = () => {
     const classes = useStyles();
 
     return (
-        <Paper className={classes.mainFeaturedPost}>
+        <Paper className={classes.mainFeaturedPost} elevation={0}>
             {/* Increase the priority of the hero background image */}
             {
                 <img
                     style={{ display: 'none' }}
-                    src="https://source.unsplash.com/user/erondu"
+                    src="cover.jpg"
                     alt="background"
                 />
             }
@@ -60,7 +60,7 @@ const Hero = () => {
                             quickly and efficiently about what&apos;s most interesting in this
                             post&apos;s contents.
                         </Typography>
-                        <Link variant="subtitle1" href="#">
+                        <Link variant="subtitle1" href="/">
                             Continue reading…
                         </Link>
                     </div>

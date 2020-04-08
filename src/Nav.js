@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Link from './Link';
+import NavLogin from './NavLogin';
 
 const useStyles = makeStyles((theme) => ({
     nav: {
@@ -102,7 +103,7 @@ export default function HideAppBar(props) {
                         ].map((props) => <NavLink key={props.text} {...props} />)}
                     </div>
                     <Button className={classes.button} variant='outlined'>sign up</Button>
-                    <Button className={classes.button}>login</Button>
+                    <NavLogin />
                 </Toolbar>
             </AppBar>
         </HideOnScroll>

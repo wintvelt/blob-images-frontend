@@ -46,7 +46,9 @@ const featureList = [
         ]
     },
     {
-        imageUrl: 'img/album.jpg',
+        imageUrl: 'img/album 2.jpg',
+        NOphotographer: 'Roberto Nickson',
+        NOphotographerLink: 'rpnickson',
         title: 'Share memories in your group, and pick your favorite photos.',
         descriptions: [
             'Create an album for each memory. Upload your own photos to share, ' +

@@ -6,6 +6,8 @@ const Image = (props) => {
         position: 'absolute',
         bottom: '12px',
         right: '8px',
+    };
+    const linkStyle = {
         backgroundColor: 'black',
         color: 'white',
         textDecoration: 'none',
@@ -33,21 +35,26 @@ const Image = (props) => {
     const title = 'Download free do whatever you want high-resolution photos from ' + photographer;
     return <div style={{ position: 'relative' }}>
         <img alt={alt} src={encodeURI(src)} className={className} />
-        {photographerLink && <a style={creditStyle}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={title}>
-            <span style={{ display: 'inline-block', padding: '2px 3px' }}>
-                <svg xmlns="http://www.w3.org/2000/svg" style={logoStyle} viewBox="0 0 32 32">
-                    <title>unsplash-logo</title>
-                    <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path>
-                </svg>
+        {photographerLink && <div style={creditStyle}>
+            <span style={{ fontSize: '12px' }}>
+                image credit: {' '}
             </span>
-            <span style={{ display: 'inline-block', padding: '2px 3px' }}>
-                {photographer}
-            </span>
-        </a>}
+            <a style={linkStyle}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={title}>
+                <span style={{ display: 'inline-block', padding: '2px 3px' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" style={logoStyle} viewBox="0 0 32 32">
+                        <title>unsplash-logo</title>
+                        <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path>
+                    </svg>
+                </span>
+                <span style={{ display: 'inline-block', padding: '2px 3px' }}>
+                    {photographer}
+                </span>
+            </a>
+        </div>}
     </div>
     const a = decodeURL
 }

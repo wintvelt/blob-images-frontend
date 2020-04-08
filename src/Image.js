@@ -4,7 +4,7 @@ const Image = (props) => {
     const { src, alt, photographer, photographerLink, className } = props;
     const creditStyle = {
         position: 'absolute',
-        bottom: '12px',
+        bottom: '8px',
         right: '8px',
     };
     const linkStyle = {
@@ -33,7 +33,7 @@ const Image = (props) => {
         + photographerLink
         + '?utm_medium=referral&utm_campaign=photographer-credit&utm_content=creditBadge';
     const title = 'Download free do whatever you want high-resolution photos from ' + photographer;
-    return <div style={{ position: 'relative' }}>
+    return <div style={{ position: 'relative', display: 'flex' }}>
         <img alt={alt} src={encodeURI(src)} className={className} />
         {photographerLink && <div style={creditStyle}>
             <span style={{ fontSize: '12px' }}>

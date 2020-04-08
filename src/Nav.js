@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(4),
         height: theme.spacing(4),
     },
+    homeLink: {
+        display: 'flex',
+        alignItems: 'center'
+    },
     logo: {
         height: '24px',
         marginRight: theme.spacing(2),
@@ -82,8 +86,10 @@ export default function HideAppBar(props) {
         <HideOnScroll {...props}>
             <AppBar className={classes.nav} elevation={0}>
                 <Toolbar>
-                    <Avatar alt="Photo duck icon" src="/duck icon.png" className={classes.avatar} />
-                    <img src='duck logo.png' className={classes.logo} />
+                    <Link href='/' className={classes.homeLink}>
+                        <Avatar alt="Photo duck icon" src="/duck icon.png" className={classes.avatar} />
+                        <img src='duck logo.png' className={classes.logo} />
+                    </Link>
                     <Typography variant="overline" component='h1' className={classes.title}>
                         Photo sharing for teams
                     </Typography>

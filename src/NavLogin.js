@@ -24,8 +24,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
-
 export default function NavLogin(props) {
     const classes = useStyles();
     const userContext = useContext(UserContext);
@@ -61,6 +59,7 @@ export default function NavLogin(props) {
                         open={!!anchorEl}
                         onClose={handleClose}
                     >
+                        <MenuItem onClick={handleClose}>My pages</MenuItem>
                         <MenuItem onClick={handleClose}>Profile</MenuItem>
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>

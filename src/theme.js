@@ -16,6 +16,7 @@ const theme = createMuiTheme({
             default: '#46344e',
             paper: '#5a5560',
             light: '#9d8d8f',
+            white: '#fff',
         },
     },
     overrides: {
@@ -23,7 +24,7 @@ const theme = createMuiTheme({
             colorSecondary: {
                 color: '#fff',
             }
-        }
+        },
     }
 });
 

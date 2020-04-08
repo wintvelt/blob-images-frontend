@@ -13,7 +13,7 @@ import Link from './Link';
 
 const useStyles = makeStyles((theme) => ({
     nav: {
-        background: 'none',
+        backgroundColor: 'rgba(70,52,78,.9)',
         color: 'white',
     },
     title: {
@@ -89,11 +89,11 @@ export default function HideAppBar(props) {
                     </Typography>
                     <div className={classes.navMenu}>
                         {[
-                            { text: 'Features', href: '#' },
+                            { text: 'Features', href: '#features' },
                             { text: 'Pricing', href: '#' },
                             { text: 'Support', href: '#' },
                             { text: 'About', href: '#' },
-                        ].map((props) => <NavLink {...props} />)}
+                        ].map((props) => <NavLink key={props.text} {...props} />)}
                     </div>
                     <Button className={classes.button} variant='outlined'>sign up</Button>
                     <Button className={classes.button}>login</Button>

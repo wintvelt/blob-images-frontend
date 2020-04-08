@@ -9,14 +9,22 @@ const theme = createMuiTheme({
             main: '#46344e',
          },
         primary: { main: '#faed26' },
-        // error: {
-        //     main: red.A400,
-        // },
+        error: {
+            main: red.A400,
+        },
         background: {
             default: '#46344e',
-            paper: '#5a5560'
+            paper: '#5a5560',
+            light: '#9d8d8f',
         },
     },
+    overrides: {
+        MuiIcon: {
+            colorSecondary: {
+                color: '#fff',
+            }
+        }
+    }
 });
 
 export default theme;

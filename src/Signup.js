@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -39,9 +39,19 @@ const theme = createMuiTheme({
 });
 
 const SignupForm = (props) => {
-    const { url, title, subTitle, linkText, linkUrl } = props;
-    const safeUrl = encodeURI(url);
     const classes = useStyles();
+    const [fields, setFields] = useState({});
+
+    const onChange = (fieldName) => (e) => {
+        const newValue = (e.target.checked) ? e.target.checked : e.target.value;
+        const newFields = { ...fields, [fieldName]: newValue };
+        const passwordNotValidated = newFields.password2 && newFields.password2 !== newFields.password;
+        const validated = (newFields.name && newFields.email && newFields.groupName
+            && newFields.password && newFields.password2
+            && !passwordNotValidated
+            && newFields.optin)
+        setFields({ ...newFields, validated });
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -56,25 +66,32 @@ const SignupForm = (props) => {
                     and share your first photos!
                             </Typography>
                 <TextField variant='outlined' color='secondary' size='small' margin='dense'
-                    label='Your name' />
+                    label='Your name'
+                    onChange={onChange('name')} value={fields.name} />
                 <TextField variant='outlined' color='secondary' size='small' margin='dense'
-                    label='Your Email' type='email' />
+                    label='Your Email' type='email'
+                    onChange={onChange('email')} value={fields.email} />
                 <TextField variant='outlined' color='secondary' size='small' margin='dense'
-                    label='Name of your group' />
+                    label='Name of your group'
+                    onChange={onChange('groupName')} value={fields.groupName} />
                 <TextField variant='outlined' color='secondary' size='small' margin='dense'
-                    label='Password' type='password' />
+                    label='Password' type='password'
+                    onChange={onChange('password')} value={fields.password} />
                 <TextField variant='outlined' color='secondary' size='small' margin='dense'
-                    label='Repeat password' type='password' />
+                    label='Repeat password' type='password'
+                    onChange={onChange('password2')} value={fields.password2} />
                 <FormControlLabel
-                    control={<Checkbox name="checkedC" color='secondary' />}
+                    control={<Checkbox name="checkedC" color='secondary'
+                        onChange={onChange('optin')} checked={fields.optin} />}
                     label={<span>
                         I agree to the{' '}
                         <Link href='#' color='secondary' style={{ fontWeight: 'bold' }}>
                             terms and conditions
-                                    </Link>
+                        </Link>
                     </span>}
                 />
-                <Button variant='contained' color='primary' className={classes.submit}>
+                <Button variant='contained' color='primary' className={classes.submit}
+                    disabled={!fields.validated}>
                     Become a member
                 </Button>
             </Paper>

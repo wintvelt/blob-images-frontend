@@ -1,2 +1,4 @@
 blob-images:
     component: "serverless-next.js"
+    inputs:
+        bucketName: blob-images-frontend

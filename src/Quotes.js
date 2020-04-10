@@ -7,8 +7,7 @@ import { Avatar } from '@material-ui/core'
 const useStyles = makeStyles(theme => ({
     quoteList: {
         backgroundColor: theme.palette.background.light,
-        // paddingLeft: theme.spacing(4),
-        // paddingRight: theme.spacing(4),
+        padding: theme.spacing(8, 0, 6),
     },
     quote: {
         display: 'flex',
@@ -17,11 +16,13 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(4),
     },
     avatar: {
-        marginBottom: theme.spacing(2),
         filter: 'grayscale(100%)',
+        marginRight: theme.spacing(1),
+        width: theme.spacing(4),
+        height: theme.spacing(4),
     },
     text: {
-        fontStyle: 'italic',
+        // fontStyle: 'italic',
     }
 }))
 
@@ -56,27 +57,33 @@ const Features = () => {
     const classes = useStyles()
 
     return (
-        <Grid container
-            direction="row"
-            justify="center"
-            alignItems="flex-start"
-            className={classes.quoteList}
-            id='quotes'
-        >
-            {quoteList.map((quote) => {
-                return <Grid item key={quote.name}
-                    xs={6} md={3} className={classes.quote}
-                >
-                    <Avatar alt={quote.name} src={quote.avatar} className={classes.avatar}/>
-                    <Typography variant="h6" color="textSecondary" gutterBottom>
-                        {quote.name}
-                    </Typography>
-                    <Typography variant="subtitle1" paragraph align='center' className={classes.text}>
-                        "{quote.quote}"
-                    </Typography>
-                </Grid>
-            })}
-        </Grid>
+        <div className={classes.quoteList}        >
+            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+                What customers say about us
+            </Typography>
+            <Grid container
+                direction="row"
+                justify="center"
+                alignItems="flex-start"
+                id='quotes'
+            >
+                {quoteList.map((quote) => {
+                    return <Grid item key={quote.name}
+                        xs={6} md={3} className={classes.quote}
+                    >
+                        <Typography variant="subtitle1" paragraph align='center' className={classes.text}>
+                            "{quote.quote}"
+                        </Typography>
+                        <Grid container justify="center" alignItems="center">
+                            <Avatar alt={quote.name} src={quote.avatar} className={classes.avatar} />
+                            <Typography variant="h6" color="textSecondary">
+                                {quote.name}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                })}
+            </Grid>
+        </div>
     )
 }
 

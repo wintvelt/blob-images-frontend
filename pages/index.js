@@ -3,6 +3,7 @@ import Hero from '../src/Hero'
 import Benefits from '../src/Benefits'
 import Features from '../src/Features'
 import Quotes from '../src/Quotes'
+import Pricing from '../src/Pricing'
 
 
 const Home = () => {
@@ -15,6 +16,7 @@ const Home = () => {
             <Benefits />
             <Features />
             <Quotes />
+            <Pricing />
         </main>
     )
 }

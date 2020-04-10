@@ -67,19 +67,19 @@ const SignupForm = (props) => {
                             </Typography>
                 <TextField variant='outlined' color='secondary' size='small' margin='dense'
                     label='Your name'
-                    onChange={onChange('name')} value={fields.name} />
+                    onChange={onChange('name')} value={fields.name || ''} />
                 <TextField variant='outlined' color='secondary' size='small' margin='dense'
                     label='Your Email' type='email'
-                    onChange={onChange('email')} value={fields.email} />
+                    onChange={onChange('email')} value={fields.email || ''} />
                 <TextField variant='outlined' color='secondary' size='small' margin='dense'
                     label='Name of your group'
-                    onChange={onChange('groupName')} value={fields.groupName} />
+                    onChange={onChange('groupName')} value={fields.groupName || ''} />
                 <TextField variant='outlined' color='secondary' size='small' margin='dense'
                     label='Password' type='password'
-                    onChange={onChange('password')} value={fields.password} />
+                    onChange={onChange('password')} value={fields.password || ''} />
                 <TextField variant='outlined' color='secondary' size='small' margin='dense'
                     label='Repeat password' type='password'
-                    onChange={onChange('password2')} value={fields.password2} />
+                    onChange={onChange('password2')} value={fields.password2 || ''} />
                 <FormControlLabel
                     control={<Checkbox name="checkedC" color='secondary'
                         onChange={onChange('optin')} checked={fields.optin} />}

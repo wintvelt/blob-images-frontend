@@ -103,7 +103,7 @@ export default function HideAppBar(props) {
                         ].map((props) => <NavLink key={props.text} {...props} />)}
                     </div>
                     <Button className={classes.button} variant='outlined'>sign up</Button>
-                    <NavLogin />
+                    <NavLogin path='/login'/>
                 </Toolbar>
             </AppBar>
         </HideOnScroll>

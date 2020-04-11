@@ -6,8 +6,8 @@ import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import Link from './Link';
-import { Field } from './FormField';
+import Link from '../Link';
+import { Field } from '../FormField';
 
 const useStyles = makeStyles(theme => ({
     signupForm: {
@@ -16,6 +16,8 @@ const useStyles = makeStyles(theme => ({
         marginRight: theme.spacing(8),
         marginBottom: '-80px',
         padding: theme.spacing(4),
+        marginLeft: '10%',
+        marginRight: '20%',
         backgroundColor: theme.palette.background.white,
         color: theme.palette.secondary.dark,
         display: 'flex',

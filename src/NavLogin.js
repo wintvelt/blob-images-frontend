@@ -14,8 +14,12 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(1),
         textTransform: 'none'
     },
-    button: {
+    navLink: {
         marginLeft: theme.spacing(1),
+        ...theme.typography.button,
+        color: theme.palette.secondary.contrastText,
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
     },
     avatar: {
         height: theme.spacing(2),
@@ -25,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavLogin(props) {
+    const { path } = props;
     const classes = useStyles();
     const userContext = useContext(UserContext);
     const { user, setUser } = userContext;
@@ -67,9 +72,10 @@ export default function NavLogin(props) {
                 </>
             }
             {!userName &&
-                <Button className={classes.button}>
+                <Link className={classes.navLink}
+                    href={path}>
                     Login
-                </Button>
+                </Link>
             }
         </>
     );

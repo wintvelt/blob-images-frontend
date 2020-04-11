@@ -3,8 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid';
-import Link from './Link';
-import SignupForm from './Signup';
+import Link from '../Link';
 
 const useStyles = makeStyles(theme => ({
     mainFeaturedPost: {
@@ -38,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Hero = (props) => {
-    const { url, title, subTitle, linkText, linkUrl } = props;
+    const { url, title, subTitle, linkText, linkUrl, children } = props;
     const safeUrl = encodeURI(url);
     const classes = useStyles();
 
@@ -54,8 +53,8 @@ const Hero = (props) => {
                 />
             }
             <div className={classes.overlay} />
-            <Grid container alignItems='stretch'>
-                <Grid item md={6}>
+            <Grid container alignItems='stretch' justify='space-around' spacing={8}>
+                {title && <Grid item md={6}>
                     <div className={classes.mainFeaturedPostContent}>
                         <Typography component="h1" variant="h2" color="inherit" gutterBottom>
                             {title}
@@ -71,12 +70,10 @@ const Hero = (props) => {
                             </Link>
                         }
                     </div>
+                </Grid>}
+                <Grid item md={6}>
+                    {children}
                 </Grid>
-                <Grid item md={1}></Grid>
-                <Grid item md={4}>
-                    <SignupForm />
-                </Grid>
-                <Grid item md={1}></Grid>
             </Grid>
         </Paper>
     )

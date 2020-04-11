@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
         color: '#9b786f',
     },
     step: {
-        backgroundColor: theme.palette.background.light,
+        backgroundColor: theme.palette.background.default,
         borderWidth: '2px',
         borderStyle: 'solid',
         borderColor: theme.palette.primary.main,

@@ -56,7 +56,6 @@ const Image = (props) => {
             </a>
         </div>}
     </div>
-    const a = decodeURL
 }
 
 export default Image;

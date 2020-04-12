@@ -144,7 +144,7 @@ const CheckboxField = (props) => {
 }
 
 export const Field = (props) => {
-    const { fieldName, field, onChange, showValidation } = props;
+    const { field, onChange, showValidation } = props;
     const helperText = validationText(field, showValidation);
     const error = showValidation && !validateField(field);
     return (field.type === 'password') ?

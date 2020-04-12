@@ -34,9 +34,6 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
         marginBottom: '2px',
     },
-    button: {
-        marginLeft: theme.spacing(1),
-    },
     navMenu: {
         flexGrow: 1,
         display: 'flex',
@@ -48,6 +45,17 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.secondary.contrastText,
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
+    },
+    outlined: {
+        ...theme.typography.button,
+        color: theme.palette.secondary.contrastText,
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        padding: theme.spacing(0.5, 2),
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        borderColor: theme.palette.secondary.contrastText,
+        borderRadius: '4px',
     }
 }));
 
@@ -74,9 +82,9 @@ HideOnScroll.propTypes = {
 };
 
 const NavLink = (props) => {
-    const { text, href } = props;
+    const { text, href, outlined } = props;
     const classes = useStyles();
-    return <Link href={href} className={classes.navLink}>
+    return <Link href={href} className={outlined? classes.outlined : classes.navLink}>
         {text}
     </Link>
 }
@@ -102,7 +110,7 @@ export default function HideAppBar(props) {
                             { text: 'About', href: '#' },
                         ].map((props) => <NavLink key={props.text} {...props} />)}
                     </div>
-                    <Button className={classes.button} variant='outlined'>sign up</Button>
+                    <NavLink text='Sign up' href='/' outlined>sign up</NavLink>
                     <NavLogin path='/login'/>
                 </Toolbar>
             </AppBar>

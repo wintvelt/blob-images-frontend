@@ -6,36 +6,74 @@ import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { makeStyles } from '@material-ui/core/styles';
 
-const newPasswordValidationConfig = [
+const useStyles = makeStyles(theme => ({
+    helperText: {
+        margin: theme.spacing(0,0,1,2),
+        listStyle: 'none',
+        padding: 0,
+        color: theme.palette.text.secondary,
+    }
+}))
+
+export const newPasswordValidations = [
     {
         text: 'minimum of 8 characters, to be sure',
-        validate: (psw) => (psw && psw.length >= 8)
+        validate: (psw) => (psw && psw.length >= 8),
+        showAlways: true,
     },
     {
         text: 'at least 1 uppercase character',
         validate: (psw) => (psw && psw !== psw.toLowerCase()),
+        showAlways: true,
     },
 ];
+
+const validationText = (field, showValidation) => {
+    const classes = useStyles();
+    const validations = field.validations || [];
+    const validationsToShow = validations.filter(rule => (
+        rule.showAlways || showValidation
+    ));
+    if (validationsToShow.length === 0) return '';
+    return <ul className={classes.helperText}>
+        {validationsToShow.map(rule => {
+            const validated = rule.validate(field.value);
+            const color = (validated || !showValidation) ? 'inherit' : 'error';
+            const style = validated ? { color: 'green ' } : {};
+            return <li key={rule.text}>
+                <Typography variant='caption' color={color} style={style}>
+                    {rule.text}
+                    {validated && ' ✔︎'}
+                </Typography>
+            </li>
+        })}
+    </ul>;
+};
+
+const validateField = (field) => {
+    if (!field.validations || field.validations.length === 0) return true
+    return field.validations.reduce((cum, rule) => {
+        return cum && rule.validate(field.value);
+    }, true)
+};
 
 const validateAll = (fields) => (
     Object.keys(fields).reduce(
         (cum, key) => (
-            cum &&
-            !(fields[key].validation(fields[key].value)))
-            && (!fields[key].newPassword || !newPasswordValidationConfig.reduce((cum, it) => {
-                return cum && it.validate(fields[key].value)
-            })),
+            cum && fields[key].validated
+        ),
         true
     )
-)
+);
 
 export const useFields = (initialFields) => {
     const initialFieldsValidated = {};
     Object.keys(initialFields).forEach(key => (
         initialFieldsValidated[key] = {
             ...initialFields[key],
-            validated: initialFields[key].validation()
+            validated: validateField(initialFields[key])
         }
     ));
     const [fields, setFields] = useState(initialFieldsValidated);
@@ -46,7 +84,7 @@ export const useFields = (initialFields) => {
         } else {
             const field = fields[fieldName];
             const newValue = (e.target.checked) ? e.target.checked : e.target.value;
-            const newValidated = field.validation ? field.validation(newValue) : undefined;
+            const newValidated = validateField(field);
             const newField = { ...field, value: newValue, validated: newValidated };
             const newFields = { ...fields, [fieldName]: newField };
             setFields({
@@ -59,39 +97,8 @@ export const useFields = (initialFields) => {
     return [fields, onChange];
 }
 
-export const PasswordValidationHelper = (props) => {
-    const { value, showValidation } = props;
-    const password = value;
-    return <ul style={{ marginLeft: '13px' }}>
-        {newPasswordValidationConfig.map((config, i) => {
-            const validated = config.validate(password);
-            const color = (showValidation && !validated) ? 'error' : 'inherit'
-            const style = (validated) ? { color: 'green' } : {};
-            return <li key={i}>
-                <Typography variant='caption' style={style} color={color}>
-                    {config.text}
-                </Typography>
-                {' '}
-                {validated &&
-                    <Typography variant='caption' style={style}>{'✔︎'}</Typography>
-                }
-            </li>
-        })}
-    </ul>
-}
-
 const PasswordField = (props) => {
-    const { field, onChange, showValidation } = props;
-    const validationResult = showValidation ?
-        field.validation(field.value) : '';
-    const showError = showValidation && (
-        !!validationResult ||
-        (
-            field.newPassword && !newPasswordValidationConfig.reduce((cum, it) => (
-                cum && it.validate(field.value)
-            ), true)
-        )
-    );
+    const { field, onChange, helperText, error } = props;
     const [visibility, setVisibility] = useState(false);
     const handleClickShowPassword = () => {
         setVisibility(!visibility);
@@ -104,8 +111,7 @@ const PasswordField = (props) => {
             <TextField variant='outlined' color='secondary' size='small' margin='dense'
                 type={(visibility ? 'text' : 'password')}
                 label={field.label} autoComplete={field.autoComplete}
-                error={showError}
-                helperText={validationResult}
+                error={error}
                 onChange={onChange} value={field.value || ''}
                 InputProps={{
                     style: { paddingRight: 0 },
@@ -120,43 +126,37 @@ const PasswordField = (props) => {
                     </InputAdornment>
                 }}
             />
-            {field.newPassword &&
-                <PasswordValidationHelper value={field.value} showValidation={showValidation} />
-            }
+            {helperText && helperText}
         </>
     )
 }
 
 const CheckboxField = (props) => {
-    const { fieldName, field, onChange, showValidation } = props;
-    const validationResult = field.validation(field.value);
+    const { fieldName, field, onChange, helperText, error } = props;
     return <>
         <FormControlLabel
             control={<Checkbox name={fieldName} color='secondary'
                 onChange={onChange} checked={!!field.value} />}
             label={field.label}
         />
-        {
-            showValidation && validationResult &&
-            <Typography variant='caption' color='error' style={{ marginLeft: '12px' }}>
-                {validationResult}
-            </Typography>
-        }
+        {helperText && helperText}
     </>
 }
 
 export const Field = (props) => {
-    const { field, onChange, showValidation } = props;
-    const validationResult = showValidation ?
-        field.validated : '';
+    const { fieldName, field, onChange, showValidation } = props;
+    const helperText = validationText(field, showValidation);
+    const error = showValidation && !validateField(field);
     return (field.type === 'password') ?
-        <PasswordField {...props} />
+        <PasswordField {...props} helperText={helperText} error={error} />
         : (field.type === 'checkbox') ?
-            <CheckboxField {...props} />
-            : <TextField variant='outlined' color='secondary' size='small' margin='dense'
-                type={field.type}
-                label={field.label} autoComplete={field.autoComplete}
-                helperText={validationResult}
-                error={!!validationResult}
-                onChange={onChange} value={field.value || ''} />
+            <CheckboxField {...props} helperText={helperText} error={error} />
+            : <>
+                <TextField variant='outlined' color='secondary' size='small' margin='dense'
+                    type={field.type}
+                    label={field.label} autoComplete={field.autoComplete}
+                    error={error}
+                    onChange={onChange} value={field.value || ''} />
+                {helperText && helperText}
+            </>
 }

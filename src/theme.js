@@ -6,10 +6,10 @@ const theme = createMuiTheme({
     palette: {
         type: 'dark',
         secondary: {
-            main: '#46344e',
+            main: '#46344e', // dark purple
         },
         primary: { 
-            main: '#faed26',
+            main: '#faed26', // yellow
         },
         text: {
             primary: '#fff',
@@ -20,8 +20,8 @@ const theme = createMuiTheme({
         },
         background: {
             default: '#46344e',
-            paper: '#5a5560',
-            light: '#9d8d8f',
+            paper: '#5a5560', // dark grey
+            light: '#9d8d8f', // light grey
             white: '#fff',
         },
     },

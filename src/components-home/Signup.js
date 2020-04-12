@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 
 import Link from '../Link';
-import { Field, useFields } from '../FormField';
+import { Field, useFields, newPasswordValidations } from '../FormField';
 
 const useStyles = makeStyles(theme => ({
     signupForm: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     },
     submit: {
         marginTop: theme.spacing(2),
-    }
+    },
 }));
 
 const theme = createMuiTheme({
@@ -50,35 +50,31 @@ const EmailHelper = () => (
 const fieldConfig = {
     name: {
         autoComplete: 'name', type: 'text', label: 'Your name',
-        validation: (val) => {
-            if (!val) return 'please fill out your name';
-            return '';
-        }
+        validations: [{
+            text: 'fill out your name',
+            validate: (val) => (!!val),
+        }],
     },
     email: {
         autoComplete: 'email', type: 'email', label: 'Your email',
-        validation: (val) => {
-            if (!val) return 'email is needed to sign up';
-            if (!val.split('@')[1] || !val.split('@')[1].split('.')[1]) return (
-                'please enter a valid email address'
+        validations: [{
+            text: 'enter a valid email address',
+            validate: (val) => (
+                val &&
+                val.split('@')[1] && val.split('@')[1].split('.')[1]
             )
-            return '';
-        }
+        }],
     },
     groupName: {
         autoComplete: 'chrome-off', type: 'text', label: 'Name of your group',
-        validation: (val) => {
-            if (!val) return 'please name your first group, you can change this later';
-            return '';
-        }
+        validations: [{
+            text: 'name your first group, you can change this later',
+            validate: (val) => (!!val),
+        }],
     },
     password: {
         autoComplete: 'password', type: 'password', label: 'Your new password',
-        validation: (val) => {
-            if (!val) return 'please fill out a password';
-            return '';
-        },
-        newPassword: true
+        validations: newPasswordValidations,
     },
     optin: {
         type: 'checkbox',
@@ -88,10 +84,10 @@ const fieldConfig = {
                 terms and conditions
             </Link>
         </span>,
-        validation: (val) => {
-            if (!val) return 'to register, you have to agree to the terms and conditions';
-            return '';
-        }
+        validations: [{
+            text: 'to register, you have to agree',
+            validate: (val) => (!!val),
+        }]
     }
 };
 
@@ -109,7 +105,6 @@ const SignupForm = (props) => {
         if (!fields.allValidated) {
             setFields('showValidation')(true);
         }
-
     }
 
     return (
@@ -120,7 +115,7 @@ const SignupForm = (props) => {
                         align='center' gutterBottom>
                         Sign up today
                             </Typography>
-                    <Typography paragraph variant='subtitle1'>
+                    <Typography variant='subtitle1'>
                         Enter your info, then invite friends and family,
                         and share your first photos!
                     </Typography>

@@ -96,8 +96,8 @@ export default function HideAppBar(props) {
                     </Typography>
                     <div className={classes.navMenu}>
                         {[
-                            { text: 'Features', href: '#features' },
-                            { text: 'Pricing', href: '#pricing' },
+                            { text: 'Features', href: '/#features' },
+                            { text: 'Pricing', href: '/#pricing' },
                             { text: 'Support', href: '#' },
                             { text: 'About', href: '#' },
                         ].map((props) => <NavLink key={props.text} {...props} />)}

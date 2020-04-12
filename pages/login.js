@@ -1,17 +1,17 @@
 import React from 'react'
 import Hero from '../src/components-home/Hero'
-import SignupForm from '../src/components-home/Signup';
+import LoginForm from '../src/LoginForm';
 
-const Login = () => {
+const LoginPage = () => {
     return (
         <main>
             <Hero
                 url='img/cover.jpg'
             >
-                <SignupForm />
+                <LoginForm />
             </Hero>
         </main>
     )
 }
 
-export default Login
+export default LoginPage

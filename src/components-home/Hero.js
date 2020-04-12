@@ -12,7 +12,6 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.common.white,
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
-        marginBottom: theme.spacing(4),
         minHeight: '600px',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',

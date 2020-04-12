@@ -78,7 +78,7 @@ export default function Pricing() {
                     Pricing
                 </Typography>
                 <Typography variant="h5" align="center" color="textSecondary" component="p">
-                    Get started for free. Share memories and find out for yourself if you like it.
+                    Get started for free. 
                     Want more? Sign-up for our premium service.
                  </Typography>
             </Container>

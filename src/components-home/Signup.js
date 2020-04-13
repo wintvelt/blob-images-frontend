@@ -65,13 +65,13 @@ const fieldConfig = {
             )
         }],
     },
-    groupName: {
-        autoComplete: 'chrome-off', type: 'text', label: 'Name of your group',
-        validations: [{
-            text: 'name your first group, you can change this later',
-            validate: (val) => (!!val),
-        }],
-    },
+    // groupName: {
+    //     autoComplete: 'chrome-off', type: 'text', label: 'Name of your group',
+    //     validations: [{
+    //         text: 'name your first group, you can change this later',
+    //         validate: (val) => (!!val),
+    //     }],
+    // },
     password: {
         autoComplete: 'password', type: 'password', label: 'Your new password',
         validations: newPasswordValidations,

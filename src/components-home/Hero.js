@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.common.white,
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
-        minHeight: '600px',
+        minHeight: '480px',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center'

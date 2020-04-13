@@ -4,10 +4,20 @@ import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Link from './Link';
 import { UserContext } from './UserContext';
+
+const userMenu = [
+    { icon: 'move_to_inbox', text: 'Inbox' },
+    { icon: 'photo_library', text: 'Photos' },
+    { icon: 'group', text: 'Groups' },
+    { icon: 'settings', text: 'Profile' },
+    { icon: 'exit_to_app', text: 'Logout', action: 'logout' },
+];
 
 const useStyles = makeStyles((theme) => ({
     userButton: {
@@ -25,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(2),
         width: theme.spacing(2),
         marginRight: theme.spacing(1),
-    }
+    },
 }));
 
 export default function NavLogin(props) {
@@ -44,6 +54,11 @@ export default function NavLogin(props) {
     const handleLogout = () => {
         setUser({})
     }
+    const handleMenuClick = (action) => {
+        if (action === 'logout') return handleLogout;
+        return handleClose;
+    }
+
     return (
         <>
             {userName &&
@@ -60,15 +75,28 @@ export default function NavLogin(props) {
                     <Menu
                         id='user-menu'
                         anchorEl={anchorEl}
+                        getContentAnchorEl={null}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
                         keepMounted
                         open={!!anchorEl}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={handleClose}>My pages</MenuItem>
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                        {userMenu.map((menuItem, i) => (
+                            <MenuItem onClick={handleMenuClick(menuItem.action)} key={i}>
+                                <ListItemIcon>
+                                    <Icon fontSize="small">{menuItem.icon}</Icon>
+                                </ListItemIcon>
+                                <ListItemText primary={menuItem.text} style={{ paddingRight: '16px' }} />
+                            </MenuItem>
+                        ))}
                     </Menu>
-
                 </>
             }
             {!userName &&

@@ -19,13 +19,23 @@ const useStyles = makeStyles(theme => ({
 
 export const newPasswordValidations = [
     {
-        text: 'minimum of 8 characters, to be sure',
-        validate: (psw) => (psw && psw.length >= 8),
+        text: 'at least 1 capital letter',
+        validate: (psw) => (psw && psw !== psw.toLowerCase()),
         showAlways: true,
     },
     {
-        text: 'at least 1 uppercase character',
-        validate: (psw) => (psw && psw !== psw.toLowerCase()),
+        text: 'at least 1 lowercase letter',
+        validate: (psw) => (psw && psw !== psw.toUpperCase()),
+        showAlways: true,
+    },
+    {
+        text: 'at least 1 number',
+        validate: (psw) => (psw && /\d/.test(psw)),
+        showAlways: true,
+    },
+    {
+        text: 'minimum of 8 characters, to be sure',
+        validate: (psw) => (psw && psw.length >= 8),
         showAlways: true,
     },
 ];

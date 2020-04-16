@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Amplify } from 'aws-amplify';
+import config from '../src/aws-amplify/config';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,6 +9,30 @@ import theme from '../src/theme';
 import Nav from '../src/Nav';
 import Footer from '../src/Footer';
 import { initialUser, UserContext } from '../src/UserContext';
+
+Amplify.configure({
+    Auth: {
+        mandatorySignIn: true,
+        region: config.cognito.REGION,
+        userPoolId: config.cognito.USER_POOL_ID,
+        identityPoolId: config.cognito.IDENTITY_POOL_ID,
+        userPoolWebClientId: config.cognito.APP_CLIENT_ID
+    },
+    Storage: {
+        region: config.s3.REGION,
+        bucket: config.s3.BUCKET,
+        identityPoolId: config.cognito.IDENTITY_POOL_ID
+    },
+    API: {
+        endpoints: [
+            {
+                name: "notes",
+                endpoint: config.apiGateway.URL,
+                region: config.apiGateway.REGION
+            },
+        ]
+    }
+});
 
 export default function MyApp(props) {
     const { Component, pageProps } = props;
@@ -18,12 +44,13 @@ export default function MyApp(props) {
         if (jssStyles) {
             jssStyles.parentElement.removeChild(jssStyles);
         }
+
     }, []);
 
     return (
         <React.Fragment>
             <Head>
-                <title>My page</title>
+                <title>Photo Duck</title>
                 <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
             </Head>
             <UserContext.Provider value={{ user, setUser }}>

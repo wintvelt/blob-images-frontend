@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Auth } from "aws-amplify";
 
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
@@ -82,6 +82,7 @@ const LoginForm = (props) => {
     const userContext = useContext(UserContext);
     const classes = useStyles();
     const [fields, setFields] = useFields(fieldConfig);
+    const [loginFailed, setLoginFailed] = useState(false);
 
     const onChange = (fieldName) => (e) => {
         setFields(fieldName)(e);
@@ -98,7 +99,7 @@ const LoginForm = (props) => {
                 await Auth.signIn(email.value, password.value);
                 userContext.setUser({ user: true });
             } catch (e) {
-                alert(e.message);
+                setLoginFailed(true);
             }
         }
     }
@@ -121,6 +122,13 @@ const LoginForm = (props) => {
                             onChange={onChange(fieldName)}
                             showValidation={fields.showValidation} />
                     )}
+                    {loginFailed && <Typography variant='body2' color='error' >
+                        Hmm, we could not log you in. <br />Did you{' '}
+                        <Link href='#' color='textPrimary'>
+                                Forget your password
+                        </Link>
+                        ?
+                    </Typography>}
                     <Button type='submit' variant='contained' color='primary' className={classes.submit}
                         onClick={onSubmit}>
                         Login

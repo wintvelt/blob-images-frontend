@@ -54,6 +54,7 @@ export default function NavLogin(props) {
     }
     const handleLogout = async () => {
         Auth.signOut();
+        setAnchorEl(null);
         setUser({ user: false })
     }
     const handleMenuClick = (action) => {
@@ -63,10 +64,6 @@ export default function NavLogin(props) {
 
     return (
         <>
-            <pre style={{ position: 'fixed', left: 0, width: '200px', height: '64px', 
-                backgroundColor: 'white', color: 'black' }}>
-                {JSON.stringify(user, null,2)}
-            </pre>
             {user.user &&
                 <>
                     <Button className={classes.userButton}

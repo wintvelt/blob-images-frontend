@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react';
+import { Auth } from "aws-amplify";
+
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 
 import Link from './Link';
-import { Field, useFields } from './FormField';
+import { Field, useFields, validateForm } from './FormField';
+import { UserContext } from './UserContext';
 
 const useStyles = makeStyles(theme => ({
     loginForm: {
@@ -55,7 +58,7 @@ const fieldConfig = {
         label: 'email',
         validations: [{
             text: 'please enter your email address',
-            validate: (val) => (val && val.split('@')[1] && val.split('@')[1].split('.')[1]),
+            validate: (val) => (val && val.split('@')[1] && !!val.split('@')[1].split('.')[1]),
         }],
     },
     password: {
@@ -76,6 +79,7 @@ const fieldConfig = {
 
 
 const LoginForm = (props) => {
+    const userContext = useContext(UserContext);
     const classes = useStyles();
     const [fields, setFields] = useFields(fieldConfig);
 
@@ -83,10 +87,19 @@ const LoginForm = (props) => {
         setFields(fieldName)(e);
     }
 
-    const onSubmit = () => {
+    const onSubmit = async (e) => {
         // TODO: check email exists
-        if (!fields.allValidated) {
+        e.preventDefault();
+        if (!validateForm(fields)) {
             setFields('showValidation')(true);
+        } else {
+            const { email, password } = fields;
+            try {
+                await Auth.signIn(email.value, password.value);
+                userContext.setUser({ user: true });
+            } catch (e) {
+                alert(e.message);
+            }
         }
     }
 
@@ -108,7 +121,7 @@ const LoginForm = (props) => {
                             onChange={onChange(fieldName)}
                             showValidation={fields.showValidation} />
                     )}
-                    <Button variant='contained' color='primary' className={classes.submit}
+                    <Button type='submit' variant='contained' color='primary' className={classes.submit}
                         onClick={onSubmit}>
                         Login
                     </Button>

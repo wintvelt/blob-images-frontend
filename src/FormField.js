@@ -69,24 +69,17 @@ const validateField = (field) => {
     }, true)
 };
 
-const validateAll = (fields) => (
+export const validateForm = (fields) => (
     Object.keys(fields).reduce(
         (cum, key) => (
-            cum && fields[key].validated
+            cum && validateField(fields[key])
         ),
         true
     )
 );
 
 export const useFields = (initialFields) => {
-    const initialFieldsValidated = {};
-    Object.keys(initialFields).forEach(key => (
-        initialFieldsValidated[key] = {
-            ...initialFields[key],
-            validated: validateField(initialFields[key])
-        }
-    ));
-    const [fields, setFields] = useState(initialFieldsValidated);
+    const [fields, setFields] = useState(initialFields);
 
     const onChange = (fieldName) => (e) => {
         if (fieldName === 'showValidation') {
@@ -94,12 +87,10 @@ export const useFields = (initialFields) => {
         } else {
             const field = fields[fieldName];
             const newValue = (e.target.checked) ? e.target.checked : e.target.value;
-            const newValidated = validateField(field);
-            const newField = { ...field, value: newValue, validated: newValidated };
+            const newField = { ...field, value: newValue };
             const newFields = { ...fields, [fieldName]: newField };
             setFields({
-                ...newFields,
-                allValidated: validateAll(newFields),
+                ...newFields
                 // showValidation: false,
             });
         }

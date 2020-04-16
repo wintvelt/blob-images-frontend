@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 
 import Link from '../Link';
-import { Field, useFields, newPasswordValidations } from '../FormField';
+import { Field, useFields, newPasswordValidations, validateForm } from '../FormField';
 
 const useStyles = makeStyles(theme => ({
     signupForm: {
@@ -61,7 +61,7 @@ const fieldConfig = {
             text: 'enter a valid email address',
             validate: (val) => (
                 val &&
-                val.split('@')[1] && val.split('@')[1].split('.')[1]
+                val.split('@')[1] && !! val.split('@')[1].split('.')[1]
             )
         }],
     },
@@ -102,7 +102,7 @@ const SignupForm = (props) => {
 
     const onSubmit = () => {
         // TODO: check email exists
-        if (!fields.allValidated) {
+        if (!validateForm(fields)) {
             setFields('showValidation')(true);
         }
     }

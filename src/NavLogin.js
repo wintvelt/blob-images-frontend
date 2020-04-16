@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Link from './Link';
 import { UserContext } from './UserContext';
+import { Auth } from 'aws-amplify';
 
 const userMenu = [
     { icon: 'move_to_inbox', text: 'Inbox' },
@@ -51,8 +52,9 @@ export default function NavLogin(props) {
     const handleClose = () => {
         setAnchorEl(null);
     }
-    const handleLogout = () => {
-        setUser({})
+    const handleLogout = async () => {
+        Auth.signOut();
+        setUser({ user: false })
     }
     const handleMenuClick = (action) => {
         if (action === 'logout') return handleLogout;
@@ -61,7 +63,11 @@ export default function NavLogin(props) {
 
     return (
         <>
-            {userName &&
+            <pre style={{ position: 'fixed', left: 0, width: '200px', height: '64px', 
+                backgroundColor: 'white', color: 'black' }}>
+                {JSON.stringify(user, null,2)}
+            </pre>
+            {user.user &&
                 <>
                     <Button className={classes.userButton}
                         aria-controls="simple-menu" aria-haspopup="true"
@@ -70,7 +76,7 @@ export default function NavLogin(props) {
                     >
                         <Avatar className={classes.avatar}
                             alt={userName} src={avatarUrl} />
-                        {userName}
+                        Hi there {userName}
                     </Button>
                     <Menu
                         id='user-menu'
@@ -99,7 +105,7 @@ export default function NavLogin(props) {
                     </Menu>
                 </>
             }
-            {!userName &&
+            {!user.user &&
                 <Link className={classes.navLink}
                     href={path}>
                     Login

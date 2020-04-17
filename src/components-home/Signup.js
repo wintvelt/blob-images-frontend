@@ -73,7 +73,7 @@ const fieldConfig = {
     //     }],
     // },
     password: {
-        autoComplete: 'password', type: 'password', label: 'Your new password',
+        autoComplete: 'new-password', type: 'password', label: 'Your new password',
         validations: newPasswordValidations,
     },
     optin: {

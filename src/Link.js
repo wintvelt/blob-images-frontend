@@ -27,6 +27,7 @@ NextComposed.propTypes = {
 function Link(props) {
     const {
         href,
+        hash,
         activeClassName = 'active',
         className: classNameProps,
         innerRef,
@@ -35,9 +36,10 @@ function Link(props) {
     } = props;
 
     const router = useRouter();
+    const pathWithHash = router.pathname + hash;
     const pathname = typeof href === 'string' ? href : href.pathname;
     const className = clsx(classNameProps, {
-        [activeClassName]: router.pathname === pathname && activeClassName,
+        [activeClassName]: pathWithHash === pathname && activeClassName,
     });
 
     if (naked) {
@@ -54,6 +56,7 @@ Link.propTypes = {
     as: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     className: PropTypes.string,
     href: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    hash: PropTypes.string,
     innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     naked: PropTypes.bool,
     onClick: PropTypes.func,

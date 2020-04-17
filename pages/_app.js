@@ -28,7 +28,8 @@ export default function MyApp(props) {
     async function onLoad() {
         try {
             await Auth.currentSession();
-            setUser({ user: true });
+            const user = await Auth.currentUserInfo();
+            setUser({ user: user.attributes });
         }
         catch (e) {
             if (e !== 'No current user') {

@@ -5,6 +5,7 @@ import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/sty
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from './Link';
 import { Field, useFields, validateForm } from './FormField';
@@ -62,7 +63,7 @@ const fieldConfig = {
         }],
     },
     password: {
-        autoComplete: 'password',
+        autoComplete: 'current-password',
         type: 'password',
         label: 'password',
         validations: [{
@@ -70,11 +71,11 @@ const fieldConfig = {
             validate: (val) => (!!val)
         }],
     },
-    remember: {
-        autoComplete: 'remember',
-        type: 'checkbox',
-        label: 'remember me for 30 days',
-    },
+    // remember: {
+    //     autoComplete: 'remember',
+    //     type: 'checkbox',
+    //     label: 'remember me for 30 days',
+    // },
 };
 
 
@@ -83,6 +84,7 @@ const LoginForm = (props) => {
     const classes = useStyles();
     const [fields, setFields] = useFields(fieldConfig);
     const [loginFailed, setLoginFailed] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const onChange = (fieldName) => (e) => {
         setFields(fieldName)(e);
@@ -94,15 +96,20 @@ const LoginForm = (props) => {
         if (!validateForm(fields)) {
             setFields('showValidation')(true);
         } else {
-            const { email, password } = fields;
+            setIsLoading(true);
             try {
-                await Auth.signIn(email.value, password.value);
-                userContext.setUser({ user: true });
+                const { email, password } = fields;
+                const user = await Auth.signIn(email.value, password.value);
+                userContext.setUser({ user: user.attributes });
+                setIsLoading(false);
             } catch (e) {
                 setLoginFailed(true);
             }
         }
     }
+
+    const loginButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
+        : 'Login';
 
     return (
         <ThemeProvider theme={theme}>
@@ -125,13 +132,14 @@ const LoginForm = (props) => {
                     {loginFailed && <Typography variant='body2' color='error' >
                         Hmm, we could not log you in. <br />Did you{' '}
                         <Link href='#' color='textPrimary'>
-                                Forget your password
+                            Forget your password
                         </Link>
                         ?
                     </Typography>}
                     <Button type='submit' variant='contained' color='primary' className={classes.submit}
+                        disabled={isLoading}
                         onClick={onSubmit}>
-                        Login
+                        {loginButtonContent}
                     </Button>
                     <div style={{
                         display: 'flex',

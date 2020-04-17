@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useRouter } from 'next/router';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
@@ -43,8 +44,9 @@ export default function NavLogin(props) {
     const { path } = props;
     const classes = useStyles();
     const userContext = useContext(UserContext);
+    const router = useRouter();
     const { user, setUser } = userContext;
-    const { userName, avatarUrl } = user;
+    const { email, avatarUrl } = user.user;
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget)
@@ -54,8 +56,9 @@ export default function NavLogin(props) {
     }
     const handleLogout = async () => {
         Auth.signOut();
-        setAnchorEl(null);
         setUser({ user: false })
+        setAnchorEl(null);
+        router.replace('/');
     }
     const handleMenuClick = (action) => {
         if (action === 'logout') return handleLogout;
@@ -72,8 +75,8 @@ export default function NavLogin(props) {
                         endIcon={<Icon>arrow_drop_down</Icon>}
                     >
                         <Avatar className={classes.avatar}
-                            alt={userName} src={avatarUrl} />
-                        Hi there {userName}
+                            alt={email} src={avatarUrl} />
+                        Hi there {email}
                     </Button>
                     <Menu
                         id='user-menu'

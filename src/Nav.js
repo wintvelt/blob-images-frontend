@@ -6,7 +6,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Link from './Link';
@@ -82,15 +81,17 @@ HideOnScroll.propTypes = {
 };
 
 const NavLink = (props) => {
-    const { text, href, outlined } = props;
+    const { text, href, outlined, hash } = props;
     const classes = useStyles();
-    return <Link href={href} className={outlined? classes.outlined : classes.navLink}>
+    return <Link href={href} className={outlined ? classes.outlined : classes.navLink}
+        activeClassName={classes.navLinkActive} hash={props.hash}>
         {text}
     </Link>
 }
 
 export default function HideAppBar(props) {
     const classes = useStyles();
+
     return (
         <HideOnScroll {...props}>
             <AppBar className={classes.nav} elevation={0}>
@@ -111,7 +112,7 @@ export default function HideAppBar(props) {
                         ].map((props) => <NavLink key={props.text} {...props} />)}
                     </div>
                     <NavLink text='Sign up' href='/' outlined>sign up</NavLink>
-                    <NavLogin path='/login'/>
+                    <NavLogin path='/login' />
                 </Toolbar>
             </AppBar>
         </HideOnScroll>

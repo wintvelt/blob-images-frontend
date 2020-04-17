@@ -52,7 +52,7 @@ const Hero = (props) => {
                 />
             }
             <div className={classes.overlay} />
-            <Grid container alignItems='stretch' justify='space-around' spacing={8}>
+            <Grid container alignItems='stretch' justify='space-around'>
                 {title && <Grid item md={6}>
                     <div className={classes.mainFeaturedPostContent}>
                         <Typography component="h1" variant="h2" color="inherit" gutterBottom>

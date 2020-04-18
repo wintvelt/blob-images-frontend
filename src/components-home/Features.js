@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 const featureList = [
     {
-        imageUrl: 'img/get started.jpg',
+        imageUrl: '/img/get started.jpg',
         photographer: 'Connor Jalbert',
         photographerLink: 'connor_jalbert',
         title: 'Get started in less than a minute, no credit card required.',
@@ -52,7 +52,7 @@ const featureList = [
         steps: ['Sign up', 'Upload photos', 'Invite others']
     },
     {
-        imageUrl: 'img/album 2.jpg',
+        imageUrl: '/img/album 2.jpg',
         NOphotographer: 'Roberto Nickson',
         NOphotographerLink: 'rpnickson',
         title: 'Share memories in your group, and pick your favorite photos.',

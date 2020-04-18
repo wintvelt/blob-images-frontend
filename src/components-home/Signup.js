@@ -61,7 +61,7 @@ const fieldConfig = {
             text: 'enter a valid email address',
             validate: (val) => (
                 val &&
-                val.split('@')[1] && !! val.split('@')[1].split('.')[1]
+                val.split('@')[1] && !!val.split('@')[1].split('.')[1]
             )
         }],
     },
@@ -93,6 +93,7 @@ const fieldConfig = {
 
 
 const SignupForm = (props) => {
+    const { title, subtitle } = props;
     const classes = useStyles();
     const [fields, setFields] = useFields(fieldConfig);
 
@@ -113,11 +114,11 @@ const SignupForm = (props) => {
                 <Paper className={classes.signupForm}>
                     <Typography component="h1" variant="h4" color="inherit"
                         align='center' gutterBottom>
-                        Sign up today
-                            </Typography>
+                        {title || 'Sign up today'}
+                    </Typography>
                     <Typography variant='subtitle1'>
-                        Enter your info, then invite friends and family,
-                        and share your first photos!
+                        {subtitle || 'Enter your info, then invite friends and family, ' +
+                            'and share your first photos!'}
                     </Typography>
                     {Object.keys(fieldConfig).map(fieldName =>
                         <Field key={fieldName}

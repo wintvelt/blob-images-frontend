@@ -28,25 +28,25 @@ const useStyles = makeStyles(theme => ({
 
 const quoteList = [
     {
-        avatar: 'img/me.jpg',
+        avatar: '/img/me.jpg',
         name: 'Henk-Ahrend',
         quote:
             'Finally there is a simple and easy way to share those adventure photos with friends.'
     },
     {
-        avatar: 'img/holiday.jpeg',
+        avatar: '/img/holiday.jpeg',
         name: 'Valerie',
         quote:
             'What a great way to enjoy the holiday pictures of my family.'
     },
     {
-        avatar: 'img/me2.jpg',
+        avatar: '/img/me2.jpg',
         name: 'Hamilton',
         quote:
             'This is by far the simplest way to share those party pictures with my close friends.'
     },
     {
-        avatar: 'img/surf.jpeg',
+        avatar: '/img/surf.jpeg',
         name: 'Debbie',
         quote:
             'This definitely beats sending my pictures one a time on my mobile. So much easier.'

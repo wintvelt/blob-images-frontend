@@ -36,7 +36,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Hero = (props) => {
-    const { url, title, subTitle, linkText, linkUrl, children } = props;
+    const { url, title, subTitle, paragraph, linkText, linkUrl, children } = props;
+    const Paragraph = () => paragraph;
     const safeUrl = encodeURI(url);
     const classes = useStyles();
 
@@ -63,6 +64,7 @@ const Hero = (props) => {
                                 {subTitle}
                             </Typography>
                         }
+                        {paragraph && <Paragraph />}
                         {linkText &&
                             <Link variant="subtitle1" href={linkUrl}>
                                 {linkText}

@@ -91,7 +91,6 @@ const LoginForm = (props) => {
     }
 
     const onSubmit = async (e) => {
-        // TODO: check email exists
         e.preventDefault();
         if (!validateForm(fields)) {
             setFields('showValidation')(true);

@@ -1,8 +1,9 @@
-import React from 'react'
-import Hero from '../../src/components-home/Hero'
+import React from 'react';
+import Hero from '../../src/components-home/Hero';
 import LoginForm from '../../src/LoginForm';
+import PrivatePage from '../../src/components-profile/PrivatePage';
 
-const LoginPage = () => {
+const GroupsMain = () => {
     return (
         <main>
             <Hero
@@ -12,6 +13,12 @@ const LoginPage = () => {
             </Hero>
         </main>
     )
+};
+
+const GroupsPage = () => {
+    return <PrivatePage>
+        <GroupsMain />
+    </PrivatePage>
 }
 
-export default LoginPage
+export default GroupsPage

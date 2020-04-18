@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     nav: {
         backgroundColor: 'rgba(70,52,78,.9)',
         color: 'white',
+        zIndex: theme.zIndex.drawer + 1,
     },
     title: {
         fontSize: '100%',

@@ -16,7 +16,7 @@ import { Auth } from 'aws-amplify';
 const userMenu = [
     { icon: 'move_to_inbox', text: 'Inbox' },
     { icon: 'photo_library', text: 'Photos' },
-    { icon: 'group', text: 'Groups' },
+    { icon: 'group', text: 'Groups', href: '/personal/groups' },
     { icon: 'settings', text: 'Profile' },
     { icon: 'exit_to_app', text: 'Logout', action: 'logout' },
 ];
@@ -38,6 +38,24 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(2),
         marginRight: theme.spacing(1),
     },
+    menuLink: {
+        display: 'flex',
+        alignItems: 'center',
+        color: theme.palette.secondary.contrastText,
+        textDecorationColor: theme.palette.secondary.contrastText,
+        '&:hover': {
+            textDecoration: 'none'
+        }
+    },
+    menuLinkActive: {
+        display: 'flex',
+        alignItems: 'center',
+        color: theme.palette.primary.main,
+        textDecorationColor: theme.palette.primary.main,
+        '&:hover': {
+            textDecoration: 'none'
+        }
+    }
 }));
 
 export default function NavLogin(props) {
@@ -76,7 +94,7 @@ export default function NavLogin(props) {
                     >
                         <Avatar className={classes.avatar}
                             alt={email} src={avatarUrl} />
-                        Hi there {email}
+                        {email}
                     </Button>
                     <Menu
                         id='user-menu'
@@ -95,17 +113,42 @@ export default function NavLogin(props) {
                         onClose={handleClose}
                     >
                         {userMenu.map((menuItem, i) => (
-                            <MenuItem onClick={handleMenuClick(menuItem.action)} key={i}>
-                                <ListItemIcon>
-                                    <Icon fontSize="small">{menuItem.icon}</Icon>
-                                </ListItemIcon>
-                                <ListItemText primary={menuItem.text} style={{ paddingRight: '16px' }} />
+                            <MenuItem key={i}
+                                onClick={handleMenuClick(menuItem.action)} >
+                                {(menuItem.href) ?
+                                    <Link href={menuItem.href} className={
+                                        (router.pathname === menuItem.href) ?
+                                            classes.menuLinkActive
+                                            : classes.menuLink
+                                    }>
+                                        <ListItemIcon>
+                                            <Icon fontSize="small" color={
+                                                (router.pathname === menuItem.href) ?
+                                                    'primary'
+                                                    : 'inherit'
+                                            }>
+                                                {menuItem.icon}
+                                            </Icon>
+                                        </ListItemIcon>
+                                        <ListItemText primary={menuItem.text}
+                                            style={{ paddingRight: '16px' }} />
+                                    </Link>
+                                    :
+                                    <>
+                                        <ListItemIcon>
+                                            <Icon fontSize="small">{menuItem.icon}</Icon>
+                                        </ListItemIcon>
+                                        <ListItemText primary={menuItem.text}
+                                            style={{ paddingRight: '16px' }} />
+                                    </>
+                                }
                             </MenuItem>
                         ))}
                     </Menu>
                 </>
             }
-            {!user.user &&
+            {
+                !user.user &&
                 <Link className={classes.navLink}
                     href={path}>
                     Login

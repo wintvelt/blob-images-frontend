@@ -1,15 +1,14 @@
 import React from 'react';
 import Hero from '../../src/components-home/Hero';
-import LoginForm from '../../src/LoginForm';
-import PrivatePage from '../../src/components-profile/PrivatePage';
+import PrivatePage from '../../src/components-personal/PrivatePage';
 
 const GroupsMain = () => {
     return (
         <main>
             <Hero
                 url='/img/album 2.jpg'
+                title='Welcome to your groups pages'
             >
-                <LoginForm />
             </Hero>
         </main>
     )

@@ -4,7 +4,7 @@ import { red } from '@material-ui/core/colors';
 // Create a theme instance.
 const theme = createMuiTheme({
     palette: {
-        type: 'dark',
+        type: 'light',
         secondary: {
             main: '#46344e', // dark purple
         },
@@ -20,8 +20,8 @@ const theme = createMuiTheme({
         },
         background: {
             default: '#46344e',
-            paper: '#5a5560', // dark grey
-            light: '#9d8d8f', // light grey
+            light: '#5a5560', // dark grey
+            paper: '#9d8d8f', // light grey
             white: '#fff',
         },
     },

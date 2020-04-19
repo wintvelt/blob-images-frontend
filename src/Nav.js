@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from './UserContext';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -92,6 +93,8 @@ const NavLink = (props) => {
 
 export default function HideAppBar(props) {
     const classes = useStyles();
+    const userContext = useContext(UserContext);
+    const { user } = userContext;
 
     return (
         <HideOnScroll {...props}>
@@ -112,7 +115,9 @@ export default function HideAppBar(props) {
                             { text: 'About', href: '#' },
                         ].map((props) => <NavLink key={props.text} {...props} />)}
                     </div>
-                    <NavLink text='Sign up' href='/' outlined>sign up</NavLink>
+                    {!user &&
+                        <NavLink text='Sign up' href='/' outlined>sign up</NavLink>
+                    }
                     <NavLogin path='/login' />
                 </Toolbar>
             </AppBar>

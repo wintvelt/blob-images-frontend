@@ -54,7 +54,7 @@ const Hero = (props) => {
             }
             <div className={classes.overlay} />
             <Grid container alignItems='stretch' justify='space-around'>
-                {title && <Grid item md={6}>
+                {title && <Grid item md={children ? 6 : 12}>
                     <div className={classes.mainFeaturedPostContent}>
                         <Typography component="h1" variant="h2" color="inherit" gutterBottom>
                             {title}
@@ -72,9 +72,11 @@ const Hero = (props) => {
                         }
                     </div>
                 </Grid>}
-                <Grid item md={6}>
-                    {children}
-                </Grid>
+                {children &&
+                    <Grid item md={6}>
+                        {children}
+                    </Grid>
+                }
             </Grid>
         </Paper>
     )

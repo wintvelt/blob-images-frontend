@@ -34,11 +34,8 @@ const useStyles = makeStyles(theme => ({
 
 const theme = createMuiTheme({
     palette: {
-        primary: { main: '#faed26' },
-        secondary: {
-            other: '#46344e',
-            main: '#46344e',
-        },
+        primary: { main: '#46344e' },
+        secondary: { main: '#faed26' },
         text: {
             primary: '#551b8b', // lighter purple
         },
@@ -135,7 +132,7 @@ const LoginForm = (props) => {
                         </Link>
                         ?
                     </Typography>}
-                    <Button type='submit' variant='contained' color='primary' className={classes.submit}
+                    <Button type='submit' variant='contained' color='secondary' className={classes.submit}
                         disabled={isLoading}
                         onClick={onSubmit}>
                         {loginButtonContent}

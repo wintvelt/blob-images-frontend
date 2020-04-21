@@ -29,11 +29,8 @@ const useStyles = makeStyles(theme => ({
 
 const theme = createMuiTheme({
     palette: {
-        primary: { main: '#faed26' },
-        secondary: {
-            other: '#46344e',
-            main: '#46344e',
-        },
+        primary: { main: '#46344e' },
+        secondary: { main: '#faed26' },
         text: {
             primary: '#551b8b', // lighter purple
         },
@@ -128,7 +125,7 @@ const SignupForm = (props) => {
                             showValidation={fields.showValidation} />
                     )}
                     <></>
-                    <Button variant='contained' color='primary' className={classes.submit}
+                    <Button variant='contained' color='secondary' className={classes.submit}
                         onClick={onSubmit}>
                         Become a member
                     </Button>

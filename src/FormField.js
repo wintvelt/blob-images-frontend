@@ -115,7 +115,7 @@ const PasswordField = (props) => {
     };
     return (
         <>
-            <TextField variant='outlined' color='secondary' size='small' margin='dense'
+            <TextField variant='outlined' color='primary' size='small' margin='dense'
                 type={(visibility ? 'text' : 'password')}
                 label={field.label} autoComplete={field.autoComplete}
                 error={error}
@@ -142,7 +142,7 @@ const CheckboxField = (props) => {
     const { fieldName, field, onChange, helperText, error } = props;
     return <>
         <FormControlLabel
-            control={<Checkbox name={fieldName} color='secondary'
+            control={<Checkbox name={fieldName} color='primary'
                 onChange={onChange} checked={!!field.value} />}
             label={field.label}
         />
@@ -159,7 +159,8 @@ const DateField = (props) => {
     };
     return <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
-            margin="normal"
+            margin="dense"
+            inputVariant='outlined'
             id="date-picker-dialog"
             label="Date picker dialog"
             format="MM/dd/yyyy"
@@ -183,7 +184,7 @@ export const Field = (props) => {
             : (field.type === 'date') ?
                 <DateField {...props} helperText={helperText} error={error} />
                 : <>
-                    <TextField variant='outlined' color='secondary' size='small' margin='dense'
+                    <TextField variant='outlined' color='primary' size='small' margin='dense'
                         type={field.type}
                         label={field.label} autoComplete={field.autoComplete}
                         error={error}

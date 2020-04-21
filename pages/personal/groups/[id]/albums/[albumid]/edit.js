@@ -21,7 +21,7 @@ const AlbumEditMain = (props) => {
             <Container>
                 <Link style={{ display: 'flex', alignItems: 'center' }}
                     title={`Back to album page`}
-                    href={`/personal/groups/${id}`}
+                    href={`/personal/groups/${id}/album/${albumid}`}
                 >
                     <IconButton>
                         <Icon color='secondary'>arrow_back</Icon>

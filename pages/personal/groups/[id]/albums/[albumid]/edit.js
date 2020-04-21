@@ -10,8 +10,9 @@ import CardAlbum from '../../../../../../src/CardAlbum';
 import PhotoGroup from '../../../../../../src/components-personal/PhotoGroup';
 import Link from '../../../../../../src/UnstyledLink';
 import AlbumForm from '../../../../../../src/AlbumForm';
+import PrivatePage from '../../../../../../src/components-personal/PrivatePage';
 
-const AlbumEditPage = (props) => {
+const AlbumEditMain = (props) => {
     const { id, albumid } = props;
 
     return (
@@ -58,6 +59,12 @@ export async function getServerSideProps(context) {
             albumid
         }
     }
+}
+
+const AlbumEditPage = () => {
+    return <PrivatePage>
+        <AlbumEditMain />
+    </PrivatePage>
 }
 
 export default AlbumEditPage;

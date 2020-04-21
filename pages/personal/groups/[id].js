@@ -3,8 +3,9 @@ import GroupHeader from '../../../src/components-personal/GroupHeader';
 import Toolbar from '@material-ui/core/Toolbar';
 import Container from '@material-ui/core/Container';
 import AlbumGroup from '../../../src/components-personal/AlbumGroup';
+import PrivatePage from '../../../src/components-personal/PrivatePage';
 
-const GroupPage = (props) => {
+const GroupMain = (props) => {
     const { id } = props;
 
     return (
@@ -26,6 +27,12 @@ export async function getServerSideProps(context) {
             id
         }
     }
+}
+
+const GroupPage = () => {
+    return <PrivatePage>
+        <GroupMain />
+    </PrivatePage>
 }
 
 export default GroupPage

@@ -8,8 +8,9 @@ import Container from '@material-ui/core/Container';
 import CardAlbum from '../../../../../src/CardAlbum';
 import PhotoGroup from '../../../../../src/components-personal/PhotoGroup';
 import Link from '../../../../../src/UnstyledLink';
+import PrivatePage from '../../../../../src/components-personal/PrivatePage';
 
-const AlbumPage = (props) => {
+const AlbumMain = (props) => {
     const { id, albumid } = props;
 
     return (
@@ -50,6 +51,12 @@ export async function getServerSideProps(context) {
             albumid
         }
     }
+}
+
+const AlbumPage = () => {
+    return <PrivatePage>
+        <AlbumMain />
+    </PrivatePage>
 }
 
 export default AlbumPage;

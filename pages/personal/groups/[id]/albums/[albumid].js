@@ -9,7 +9,7 @@ import CardAlbum from '../../../../../src/CardAlbum';
 import PhotoGroup from '../../../../../src/components-personal/PhotoGroup';
 import Link from '../../../../../src/UnstyledLink';
 
-const GroupPage = (props) => {
+const AlbumPage = (props) => {
     const { id, albumid } = props;
 
     return (
@@ -52,4 +52,4 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default GroupPage
+export default AlbumPage;

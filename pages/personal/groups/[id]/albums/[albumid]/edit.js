@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container';
 import CardAlbum from '../../../../../../src/CardAlbum';
 import PhotoGroup from '../../../../../../src/components-personal/PhotoGroup';
 import Link from '../../../../../../src/UnstyledLink';
+import AlbumForm from '../../../../../../src/AlbumForm';
 
 const AlbumEditPage = (props) => {
     const { id, albumid } = props;
@@ -27,7 +28,7 @@ const AlbumEditPage = (props) => {
                     <Typography>{'Foto\'s van Blob - Blob in ..ergens..'}</Typography>
                 </Link>
                 <Grid container spacing={4}>
-                    <Grid item md={4}>
+                    <Grid item md={4} xs={12}>
                         <CardAlbum
                             title='Blob in Afrika'
                             description='Met ome Ari op safari'
@@ -37,6 +38,7 @@ const AlbumEditPage = (props) => {
                         />
                     </Grid>
                     <Grid item md={8}>
+                        <AlbumForm />
                         <p>Group ID: {id}</p>
                         <p>Album ID: {albumid}</p>
                         <PhotoGroup />

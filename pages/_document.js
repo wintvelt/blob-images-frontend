@@ -21,7 +21,9 @@ export default class MyDocument extends Document {
               }`
           }} />
         </Head>
-        <body>
+        <body style={{
+          background: 'linear-gradient(355deg, rgba(90,85,96,1) 10%, rgba(70,52,78,1) 90%)'
+        }}>
           <Main />
           <NextScript />
         </body>

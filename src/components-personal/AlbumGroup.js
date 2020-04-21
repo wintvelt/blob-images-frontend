@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: theme.spacing(4),
     },
     item: {
-        padding: theme.spacing(2),
+        // padding: theme.spacing(2),
     }
 }));
 
@@ -53,10 +53,10 @@ const albums = [
 const AlbumGroup = () => {
     const classes = useStyles();
     return <div className={classes.container}>
-        <Grid container>
+        <Grid container spacing={4}>
             {albums.map(album => (
                 <Grid item xs={12} md={3} key={album.id} className={classes.item}>
-                    <CardAlbum {...album} userIsAdmin={true} />
+                    <CardAlbum {...album} userIsAdmin={true} groupId={1}/>
                 </Grid>
             ))}
             <Grid item xs={12} md={3} className={classes.item}>

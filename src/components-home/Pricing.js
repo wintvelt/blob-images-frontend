@@ -29,7 +29,9 @@ const useStyles = makeStyles((theme) => ({
     },
     cardHeader: {
         backgroundColor:
-            theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
+            theme.palette.secondary.main,
+        // theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
+        // color: theme.palette.secondary.main
     },
     cardPricing: {
         display: 'flex',
@@ -43,7 +45,7 @@ const tiers = [
     {
         title: 'Free forever',
         price: '0',
-        description: 
+        description:
             ['unlimited group invites', 'unlimited albums', '2 groups', '10 GB of storage', 'Email support'],
         buttonText: 'Sign up for free',
         buttonVariant: 'outlined',
@@ -52,7 +54,7 @@ const tiers = [
         title: 'Premium',
         subheader: 'Most popular',
         price: '5',
-        description: 
+        description:
             ['unlimited group invites', 'unlimited albums', '10 groups', '20 GB of storage', 'Priority support'],
         buttonText: 'Get Premium',
         buttonVariant: 'contained',
@@ -60,7 +62,7 @@ const tiers = [
     {
         title: 'Pro',
         price: '25',
-        description: 
+        description:
             ['unlimited group invites', 'unlimited albums', 'unlimited groups', '50 GB of storage', 'Priority support'],
         buttonText: 'Contact us',
         buttonVariant: 'outlined',
@@ -78,7 +80,7 @@ export default function Pricing() {
                     Pricing
                 </Typography>
                 <Typography variant="h5" align="center" color="textSecondary" component="p">
-                    Get started for free. 
+                    Get started for free.
                     Want more? Sign-up for our premium service.
                  </Typography>
             </Container>

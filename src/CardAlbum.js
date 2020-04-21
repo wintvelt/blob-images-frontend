@@ -8,6 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import { CardActionArea } from '@material-ui/core';
 
+import Link from './UnstyledLink';
+
 const useStyles = makeStyles(theme => ({
     card: {
         position: 'relative',
@@ -49,37 +51,51 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const CardAlbum = (props) => {
-    const { title, description, stats, image,
-        userIsAdmin, isNew } = props;
+const AlbumCardContent = (props) => {
+    const { title, description, stats, image, isNew } = props;
     const classes = useStyles();
-    return <Card className={isNew ? classes.cardNew : classes.card}>
-        <CardActionArea className={classes.actionArea}>
-            {image && <CardMedia className={classes.media}
-                image={image.src}
-                title={image.title}
-            />}
-            <CardContent className={(isNew) ? classes.newContent : classes.content}>
-                {title && <Typography gutterBottom variant='h6' component='h5'>
-                    <span className={classes.text}>{title}</span>
+
+    return <>
+        {image && <CardMedia className={classes.media}
+            image={image.src}
+            title={image.title}
+        />}    
+        <CardContent className={(isNew) ? classes.newContent : classes.content}>
+            {title && <Typography gutterBottom variant='h6' component='h5'>
+                <span className={classes.text}>{title}</span>
+            </Typography>}
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                {description && <Typography variant="subtitle1" color="textSecondary" component="p">
+                    <span className={classes.text}>{description}</span>
                 </Typography>}
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    {description && <Typography variant="subtitle1" color="textSecondary" component="p">
-                        <span className={classes.text}>{description}</span>
-                    </Typography>}
-                    {stats && <Typography variant="caption" color="textSecondary" component="p"
-                        className={classes.text}>
-                        {stats.map((stat) => (
-                            <React.Fragment key={stat}>{stat}<br /></React.Fragment>
-                        ))}
-                    </Typography>}
-                </div>
-                {isNew && <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Icon fontSize='large' color='secondary'>add</Icon>
-                    <Typography>New Album</Typography>
-                </div>}
-            </CardContent>
-        </CardActionArea>
+                {stats && <Typography variant="caption" color="textSecondary" component="p"
+                    className={classes.text}>
+                    {stats.map((stat) => (
+                        <React.Fragment key={stat}>{stat}<br /></React.Fragment>
+                    ))}
+                </Typography>}
+            </div>
+            {isNew && <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Icon fontSize='large' color='secondary'>add</Icon>
+                <Typography>New Album</Typography>
+            </div>}
+        </CardContent>
+    </>
+}
+
+const CardAlbum = (props) => {
+    const { groupId, id, isHeader, userIsAdmin, isNew } = props;
+    const classes = useStyles();
+    const href = `/personal/groups/${groupId}/albums/${id}`;
+    return <Card className={isNew ? classes.cardNew : classes.card}>
+        {(isHeader) ?
+            <AlbumCardContent {...props} />
+            : <CardActionArea className={classes.actionArea}>
+                <Link href={href}>
+                    <AlbumCardContent {...props} />
+                </Link>
+            </CardActionArea>
+        }
         {userIsAdmin && <IconButton size='small' color='inherit' className={classes.imageEdit}
             onClick={() => alert('clicked')}>
             <Icon fontSize='small'>more_vert</Icon>

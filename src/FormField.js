@@ -1,4 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
 import TextField from '@material-ui/core/TextField'
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
@@ -146,7 +152,24 @@ const CheckboxField = (props) => {
 
 const DateField = (props) => {
     const { fieldName, field, onChange, helperText, error } = props;
-    return <p>TODO</p>
+    const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
+    return <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <KeyboardDatePicker
+            margin="normal"
+            id="date-picker-dialog"
+            label="Date picker dialog"
+            format="MM/dd/yyyy"
+            value={selectedDate}
+            onChange={handleDateChange}
+            KeyboardButtonProps={{
+                'aria-label': 'change date',
+            }}
+        />
+    </MuiPickersUtilsProvider>
 }
 
 export const Field = (props) => {

@@ -53,9 +53,9 @@ export async function getServerSideProps(context) {
     }
 }
 
-const AlbumPage = () => {
+const AlbumPage = (props) => {
     return <PrivatePage>
-        <AlbumMain />
+        <AlbumMain {...props} />
     </PrivatePage>
 }
 

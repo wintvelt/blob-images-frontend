@@ -23,6 +23,11 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'flex-start'
     },
     submit: {
+        marginTop: theme.spacing(4)
+    },
+    deleteButton: {
+        color: theme.palette.error.main,
+        borderColor: theme.palette.error.main,
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(2)
     }
@@ -89,19 +94,21 @@ const LoginForm = (props) => {
         }
     }
 
-    const loginButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
-        : 'Login';
+    const saveButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
+        : 'Save changes';
+    const deleteButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
+        : 'Delete this album';
 
     return (
         <ThemeProvider theme={theme}>
             <form name='login-form' noValidate>
                 <Paper className={classes.loginForm}>
                     <Typography component="h1" variant="h4" color="inherit"
-                        align='center' gutterBottom>
-                        Welcome back!
+                        align='left' gutterBottom>
+                        Edit album details
                     </Typography>
                     <Typography paragraph variant='subtitle1'>
-                        Please log in with your email and password
+                        Save your changes after you have made your edits
                     </Typography>
                     {Object.keys(fieldConfig).map(fieldName =>
                         <Field key={fieldName}
@@ -120,21 +127,13 @@ const LoginForm = (props) => {
                     <Button type='submit' variant='contained' color='secondary' className={classes.submit}
                         disabled={isLoading}
                         onClick={onSubmit}>
-                        {loginButtonContent}
+                        {saveButtonContent}
                     </Button>
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                    }}>
-                        <Typography variant='caption' gutterBottom>
-                            <Link href='#' color='textPrimary'>
-                                Forgot password
-                            </Link>
-                        </Typography>
-                        <Typography variant='caption' gutterBottom>
-                            <Link href='#' color='textPrimary'>Sign up</Link>
-                        </Typography>
-                    </div>
+                    <Button variant='outlined' className={classes.deleteButton}
+                        disabled={isLoading}
+                        onClick={onSubmit}>
+                        {deleteButtonContent}
+                    </Button>
                 </Paper>
             </form>
         </ThemeProvider>

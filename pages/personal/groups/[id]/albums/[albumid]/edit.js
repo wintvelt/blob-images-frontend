@@ -28,8 +28,8 @@ const AlbumEditMain = (props) => {
                     </IconButton>
                     <Typography>{'Foto\'s van Blob - Blob in ..ergens..'}</Typography>
                 </Link>
-                <Grid container spacing={4}>
-                    <Grid item md={4} xs={12}>
+                <Grid container spacing={8}>
+                    <Grid item md={5} xs={12}>
                         <CardAlbum
                             title='Blob in Afrika'
                             description='Met ome Ari op safari'
@@ -38,7 +38,7 @@ const AlbumEditMain = (props) => {
                             isHeader
                         />
                     </Grid>
-                    <Grid item md={8}>
+                    <Grid item md={7}>
                         <AlbumForm />
                         <p>Group ID: {id}</p>
                         <p>Album ID: {albumid}</p>
@@ -61,9 +61,9 @@ export async function getServerSideProps(context) {
     }
 }
 
-const AlbumEditPage = () => {
+const AlbumEditPage = (props) => {
     return <PrivatePage>
-        <AlbumEditMain />
+        <AlbumEditMain {...props} />
     </PrivatePage>
 }
 

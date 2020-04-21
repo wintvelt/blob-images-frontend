@@ -163,7 +163,7 @@ const DateField = (props) => {
             inputVariant='outlined'
             id="date-picker-dialog"
             label="Date picker dialog"
-            format="MM/dd/yyyy"
+            format="dd/MM/yyyy"
             value={selectedDate}
             onChange={handleDateChange}
             KeyboardButtonProps={{

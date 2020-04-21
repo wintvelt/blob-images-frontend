@@ -29,9 +29,9 @@ export async function getServerSideProps(context) {
     }
 }
 
-const GroupPage = () => {
+const GroupPage = (props) => {
     return <PrivatePage>
-        <GroupMain />
+        <GroupMain {...props} />
     </PrivatePage>
 }
 

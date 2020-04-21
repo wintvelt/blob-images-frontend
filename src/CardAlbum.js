@@ -98,7 +98,7 @@ const CardAlbum = (props) => {
         }
         {userIsAdmin && <IconButton size='small' color='inherit' className={classes.imageEdit}
             onClick={() => alert('clicked')}>
-            <Icon fontSize='small'>more_vert</Icon>
+            <Icon fontSize='small'>{(isHeader)? 'edit' : 'more_vert'}</Icon>
         </IconButton>}
     </Card>
 }

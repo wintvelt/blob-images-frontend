@@ -31,9 +31,9 @@ const AlbumEditMain = (props) => {
                 <Grid container spacing={8}>
                     <Grid item md={5} xs={12}>
                         <CardAlbum
-                            title='Blob in Afrika'
-                            description='Met ome Ari op safari'
-                            stats={['432 photos', 'since 1 Jan 1985']}
+                            title=''
+                            description=''
+                            // stats={['432 photos', 'since 1 Jan 1985']}
                             image={{ name: 'Blob in Afrika', src: '/img/cover.jpg' }}
                             isHeader
                         />

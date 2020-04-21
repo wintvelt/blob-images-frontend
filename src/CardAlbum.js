@@ -36,7 +36,8 @@ const useStyles = makeStyles(theme => ({
         border: '2px dashed rgba(255,255,255,.8)',
     },
     media: {
-        height: theme.spacing(12)
+        height: theme.spacing(12),
+        backgroundColor: 'rgba(157,141,143,.5)',
     },
     imageEdit: {
         position: 'absolute',
@@ -56,18 +57,18 @@ const AlbumCardContent = (props) => {
     const classes = useStyles();
 
     return <>
-        {image && <CardMedia className={classes.media}
-            image={image.src}
-            title={image.title}
-        />}
+        <CardMedia className={classes.media}
+            image={image && image.src}
+            title={image && image.title}
+        />
         <CardContent className={(isNew) ? classes.newContent : classes.content}>
-            {title && <Typography gutterBottom variant='h6' component='h5'>
+            <Typography gutterBottom variant='h6' component='h5'>
                 <span className={classes.text}>{title}</span>
-            </Typography>}
+            </Typography>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                {description && <Typography variant="subtitle1" color="textSecondary" component="p">
+                <Typography variant="subtitle1" color="textSecondary" component="p">
                     <span className={classes.text}>{description}</span>
-                </Typography>}
+                </Typography>
                 {stats && <Typography variant="caption" color="textSecondary" component="p"
                     className={classes.text}>
                     {stats.map((stat) => (

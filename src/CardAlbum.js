@@ -59,7 +59,7 @@ const AlbumCardContent = (props) => {
         {image && <CardMedia className={classes.media}
             image={image.src}
             title={image.title}
-        />}    
+        />}
         <CardContent className={(isNew) ? classes.newContent : classes.content}>
             {title && <Typography gutterBottom variant='h6' component='h5'>
                 <span className={classes.text}>{title}</span>
@@ -86,20 +86,21 @@ const AlbumCardContent = (props) => {
 const CardAlbum = (props) => {
     const { groupId, id, isHeader, userIsAdmin, isNew } = props;
     const classes = useStyles();
-    const href = `/personal/groups/${groupId}/albums/${id}`;
+    const href = `/personal/groups/${groupId}/albums/${id || 'new'}`;
     return <Card className={isNew ? classes.cardNew : classes.card}>
         {(isHeader) ?
             <AlbumCardContent {...props} />
             : <CardActionArea className={classes.actionArea}>
-                <Link href={href}>
+                <Link href={(isNew) ? href + '/edit' : href}>
                     <AlbumCardContent {...props} />
                 </Link>
             </CardActionArea>
         }
-        {userIsAdmin && <IconButton size='small' color='inherit' className={classes.imageEdit}
-            onClick={() => alert('clicked')}>
-            <Icon fontSize='small'>{(isHeader)? 'edit' : 'more_vert'}</Icon>
-        </IconButton>}
+        {userIsAdmin && <Link href={href + '/edit'}>
+            <IconButton size='small' color='inherit' className={classes.imageEdit}>
+                <Icon fontSize='small'>{(isHeader) ? 'edit' : 'more_vert'}</Icon>
+            </IconButton>
+        </Link>}
     </Card>
 }
 

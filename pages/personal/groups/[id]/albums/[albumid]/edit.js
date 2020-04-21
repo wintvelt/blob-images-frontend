@@ -39,7 +39,7 @@ const AlbumEditMain = (props) => {
                         />
                     </Grid>
                     <Grid item md={7}>
-                        <AlbumForm />
+                        <AlbumForm {...props} />
                         <p>Group ID: {id}</p>
                         <p>Album ID: {albumid}</p>
                         <PhotoGroup />

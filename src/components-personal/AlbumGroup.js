@@ -56,11 +56,11 @@ const AlbumGroup = () => {
         <Grid container spacing={4}>
             {albums.map(album => (
                 <Grid item xs={12} md={3} key={album.id} className={classes.item}>
-                    <CardAlbum {...album} userIsAdmin={true} groupId={1}/>
+                    <CardAlbum {...album} userIsAdmin={true} groupId={1} />
                 </Grid>
             ))}
             <Grid item xs={12} md={3} className={classes.item}>
-                <CardAlbum isNew />
+                <CardAlbum isNew groupId={1} />
             </Grid>
         </Grid>
     </div>

@@ -67,10 +67,12 @@ const fieldConfig = {
 
 
 const LoginForm = (props) => {
+    const { id, albumid } = props;
+    const isNew = albumid && (albumid === 'new');
     const userContext = useContext(UserContext);
     const classes = useStyles();
     const [fields, setFields] = useFields(fieldConfig);
-    const [loginFailed, setLoginFailed] = useState(false);
+    const [saveFailed, setSaveFailed] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const onChange = (fieldName) => (e) => {
@@ -95,9 +97,13 @@ const LoginForm = (props) => {
     }
 
     const saveButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
-        : 'Save changes';
+        : (isNew) ? 'Create album'
+            : 'Save changes';
     const deleteButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
         : 'Delete this album';
+    const title = (isNew) ? 'Add a new album' : 'Edit album details';
+    const subtitle = (isNew) ? 'Hit save to create the album'
+        : 'Save your changes after you have made your edits';
 
     return (
         <ThemeProvider theme={theme}>
@@ -105,10 +111,10 @@ const LoginForm = (props) => {
                 <Paper className={classes.loginForm}>
                     <Typography component="h1" variant="h4" color="inherit"
                         align='left' gutterBottom>
-                        Edit album details
+                        {title}
                     </Typography>
                     <Typography paragraph variant='subtitle1'>
-                        Save your changes after you have made your edits
+                        {subtitle}
                     </Typography>
                     {Object.keys(fieldConfig).map(fieldName =>
                         <Field key={fieldName}
@@ -117,7 +123,7 @@ const LoginForm = (props) => {
                             onChange={onChange(fieldName)}
                             showValidation={fields.showValidation} />
                     )}
-                    {loginFailed && <Typography variant='body2' color='error' >
+                    {saveFailed && <Typography variant='body2' color='error' >
                         Hmm, we could not log you in. <br />Did you{' '}
                         <Link href='#' color='textPrimary'>
                             Forget your password
@@ -129,11 +135,11 @@ const LoginForm = (props) => {
                         onClick={onSubmit}>
                         {saveButtonContent}
                     </Button>
-                    <Button variant='outlined' className={classes.deleteButton}
+                    {!isNew && <Button variant='outlined' className={classes.deleteButton}
                         disabled={isLoading}
                         onClick={onSubmit}>
                         {deleteButtonContent}
-                    </Button>
+                    </Button>}
                 </Paper>
             </form>
         </ThemeProvider>

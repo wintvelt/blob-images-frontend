@@ -27,6 +27,8 @@ const AlbumMain = (props) => {
                     <Typography>{'Foto\'s van Blob'}</Typography>
                 </Link>
                 <CardAlbum
+                    groupId={id}
+                    id={albumid}
                     title='Blob in Afrika'
                     description='Met ome Ari op safari'
                     stats={['432 photos', 'since 1 Jan 1985']}

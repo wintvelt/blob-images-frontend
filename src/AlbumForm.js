@@ -58,7 +58,7 @@ const fieldConfig = {
     },
     albumDate: {
         autoComplete: 'album-date',
-        type: 'text',
+        type: 'date',
         label: 'album date',
     }
 };

@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     helperText: {
-        margin: theme.spacing(0,0,1,2),
+        margin: theme.spacing(0, 0, 1, 2),
         listStyle: 'none',
         padding: 0,
         color: theme.palette.text.secondary,
@@ -130,7 +130,7 @@ const PasswordField = (props) => {
             {helperText && helperText}
         </>
     )
-}
+};
 
 const CheckboxField = (props) => {
     const { fieldName, field, onChange, helperText, error } = props;
@@ -142,6 +142,11 @@ const CheckboxField = (props) => {
         />
         {helperText && helperText}
     </>
+};
+
+const DateField = (props) => {
+    const { fieldName, field, onChange, helperText, error } = props;
+    return <p>TODO</p>
 }
 
 export const Field = (props) => {
@@ -152,12 +157,14 @@ export const Field = (props) => {
         <PasswordField {...props} helperText={helperText} error={error} />
         : (field.type === 'checkbox') ?
             <CheckboxField {...props} helperText={helperText} error={error} />
-            : <>
-                <TextField variant='outlined' color='secondary' size='small' margin='dense'
-                    type={field.type}
-                    label={field.label} autoComplete={field.autoComplete}
-                    error={error}
-                    onChange={onChange} value={field.value || ''} />
-                {helperText && helperText}
-            </>
+            : (field.type === 'date') ?
+                <DateField {...props} helperText={helperText} error={error} />
+                : <>
+                    <TextField variant='outlined' color='secondary' size='small' margin='dense'
+                        type={field.type}
+                        label={field.label} autoComplete={field.autoComplete}
+                        error={error}
+                        onChange={onChange} value={field.value || ''} />
+                    {helperText && helperText}
+                </>
 }

@@ -68,7 +68,7 @@ const validationText = (field, showValidation) => {
     </ul>;
 };
 
-const validateField = (field) => {
+export const validateField = (field) => {
     if (!field.validations || field.validations.length === 0) return true
     return field.validations.reduce((cum, rule) => {
         return cum && rule.validate(field.value);

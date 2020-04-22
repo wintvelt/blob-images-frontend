@@ -42,13 +42,6 @@ const theme = createMuiTheme({
     },
 });
 
-const EmailHelper = () => (
-    <span>
-        This email address already has an account. Did you
-        {' '}<Link href='#' color='textPrimary'>forget your password?</Link>
-    </span>
-);
-
 const fieldConfig = {
     email: {
         autoComplete: 'email',
@@ -68,11 +61,6 @@ const fieldConfig = {
             validate: (val) => (!!val)
         }],
     },
-    // remember: {
-    //     autoComplete: 'remember',
-    //     type: 'checkbox',
-    //     label: 'remember me for 30 days',
-    // },
 };
 
 
@@ -80,8 +68,7 @@ const LoginForm = (props) => {
     const userContext = useContext(UserContext);
     const classes = useStyles();
     const [fields, setFields] = useFields(fieldConfig);
-    const [loginFailed, setLoginFailed] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const onChange = (fieldName) => (e) => {
         setFields(fieldName)(e);
@@ -92,19 +79,36 @@ const LoginForm = (props) => {
         if (!validateForm(fields)) {
             setFields('showValidation')(true);
         } else {
-            setIsLoading(true);
+            setLoading({ state: true });
             try {
                 const { email, password } = fields;
                 const user = await Auth.signIn(email.value, password.value);
-                userContext.setUser({ user: user.attributes });
-                setIsLoading(false);
+                userContext.setUser({ profile: user.attributes });
+                setLoading({ state: false });
             } catch (e) {
-                setLoginFailed(true);
+                setLoading({
+                    state: false,
+                    message: e.message
+                })
             }
         }
     }
 
-    const loginButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
+    const onForgotPsw = async (e) => {
+        e.preventDefault();
+        setLoading({ state: true });
+        try {
+            await Auth.forgotPassword(fields.email.value);
+            setLoading({ state: false });
+        } catch (e) {
+            setLoading({
+                state: false,
+                message: e.message
+            });
+        }
+    }
+
+    const loginButtonContent = loading.state ? <CircularProgress size='1.5rem' color='secondary' />
         : 'Login';
 
     return (
@@ -125,15 +129,12 @@ const LoginForm = (props) => {
                             onChange={onChange(fieldName)}
                             showValidation={fields.showValidation} />
                     )}
-                    {loginFailed && <Typography variant='body2' color='error' >
-                        Hmm, we could not log you in. <br />Did you{' '}
-                        <Link href='#' color='textPrimary'>
-                            Forget your password
-                        </Link>
-                        ?
+                    {loading.message && <Typography variant='body2' color='error' >
+                        Hmm, we could not log you in. <br />
+                        {loading.message}
                     </Typography>}
                     <Button type='submit' variant='contained' color='secondary' className={classes.submit}
-                        disabled={isLoading}
+                        disabled={loading.state}
                         onClick={onSubmit}>
                         {loginButtonContent}
                     </Button>
@@ -142,9 +143,9 @@ const LoginForm = (props) => {
                         justifyContent: 'space-between'
                     }}>
                         <Typography variant='caption' gutterBottom>
-                            <Link href='#' color='textPrimary'>
+                            <Button onClick={onForgotPsw} color='textPrimary'>
                                 Forgot password
-                            </Link>
+                            </Button>
                         </Typography>
                         <Typography variant='caption' gutterBottom>
                             <Link href='#' color='textPrimary'>Sign up</Link>

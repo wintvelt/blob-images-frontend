@@ -1,8 +1,11 @@
-import React, { useContext } from 'react'
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import React, { useState } from 'react';
+import { Auth } from "aws-amplify";
+import { useRouter } from 'next/router';
+import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from '../Link';
 import { Field, useFields, newPasswordValidations, validateForm } from '../FormField';
@@ -25,6 +28,10 @@ const useStyles = makeStyles(theme => ({
     submit: {
         marginTop: theme.spacing(2),
     },
+    info: {
+        padding: theme.spacing(.5, 1),
+        margin: theme.spacing(1, 0),
+    }
 }));
 
 const theme = createMuiTheme({
@@ -37,10 +44,13 @@ const theme = createMuiTheme({
     },
 });
 
-const EmailHelper = () => (
+const EmailHelper = (props) => (
     <span>
-        This email address already has an account. Did you
-        {' '}<Link href='#' color='textPrimary'>forget your password?</Link>
+        {props.message}<br />
+        Did you{' '}<Link href='#' color='textPrimary'>forget your password?</Link><br />
+        Or would you like to{' '}
+        <Link href={'/verifysignup?email=' + encodeURIComponent(props.email)}
+            color='textPrimary'>verify your account?</Link>
     </span>
 );
 
@@ -62,13 +72,6 @@ const fieldConfig = {
             )
         }],
     },
-    // groupName: {
-    //     autoComplete: 'chrome-off', type: 'text', label: 'Name of your group',
-    //     validations: [{
-    //         text: 'name your first group, you can change this later',
-    //         validate: (val) => (!!val),
-    //     }],
-    // },
     password: {
         autoComplete: 'new-password', type: 'password', label: 'Your new password',
         validations: newPasswordValidations,
@@ -88,22 +91,48 @@ const fieldConfig = {
     }
 };
 
-
 const SignupForm = (props) => {
-    const { title, subtitle } = props;
     const classes = useStyles();
+    const router = useRouter();
+    const { title, subtitle } = props;
     const [fields, setFields] = useFields(fieldConfig);
+    const [loading, setLoading] = useState({ state: false });
 
     const onChange = (fieldName) => (e) => {
         setFields(fieldName)(e);
     }
 
-    const onSubmit = () => {
-        // TODO: check email exists
+    const onSubmit = async (e) => {
+        e.preventDefault();
         if (!validateForm(fields)) {
             setFields('showValidation')(true);
+        } else {
+            setLoading({ state: true });
+            try {
+                await Auth.signUp({
+                    username: fields.email.value,
+                    password: fields.password.value,
+                    attributes: {
+                        name: fields.name.value,
+                    },
+                });
+                router.push('/verifysignup?email=' + encodeURIComponent(fields.email.value));
+            } catch (e) {
+                setLoading({
+                    state: false,
+                    message: e.message
+                });
+            }
         }
     }
+
+    const formTitle = title || 'Sign up today';
+    const formSubtitle = subtitle || 'Enter your info, then invite friends and family, ' +
+        'and share your first photos!';
+
+    const buttonContent = (loading.state) ?
+        <CircularProgress size='1.5rem' color='inherit' />
+        : 'Become a member';
 
     return (
         <ThemeProvider theme={theme}>
@@ -111,11 +140,10 @@ const SignupForm = (props) => {
                 <Paper className={classes.signupForm}>
                     <Typography component="h1" variant="h4" color="inherit"
                         align='center' gutterBottom>
-                        {title || 'Sign up today'}
+                        {formTitle}
                     </Typography>
                     <Typography variant='subtitle1'>
-                        {subtitle || 'Enter your info, then invite friends and family, ' +
-                            'and share your first photos!'}
+                        {formSubtitle}
                     </Typography>
                     {Object.keys(fieldConfig).map(fieldName =>
                         <Field key={fieldName}
@@ -124,10 +152,15 @@ const SignupForm = (props) => {
                             onChange={onChange(fieldName)}
                             showValidation={fields.showValidation} />
                     )}
-                    <></>
+                    {loading.message &&
+                        <Typography variant='body2' className={classes.info} color='error'>
+                            <EmailHelper message={loading.message} email={fields.email.value} />
+                        </Typography>
+                    }
                     <Button variant='contained' color='secondary' className={classes.submit}
+                        disabled={loading.state}
                         onClick={onSubmit}>
-                        Become a member
+                        {buttonContent}
                     </Button>
                 </Paper>
             </form>

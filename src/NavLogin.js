@@ -64,7 +64,7 @@ export default function NavLogin(props) {
     const userContext = useContext(UserContext);
     const router = useRouter();
     const { user, setUser } = userContext;
-    const { email, avatarUrl } = user.user;
+    const { name, avatarUrl } = user.profile;
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget)
@@ -74,7 +74,7 @@ export default function NavLogin(props) {
     }
     const handleLogout = async () => {
         Auth.signOut();
-        setUser({ user: false })
+        setUser({ profile: false })
         setAnchorEl(null);
         router.replace('/');
     }
@@ -85,7 +85,7 @@ export default function NavLogin(props) {
 
     return (
         <>
-            {user.user &&
+            {user.profile &&
                 <>
                     <Button className={classes.userButton}
                         aria-controls="simple-menu" aria-haspopup="true"
@@ -93,8 +93,8 @@ export default function NavLogin(props) {
                         endIcon={<Icon>arrow_drop_down</Icon>}
                     >
                         <Avatar className={classes.avatar}
-                            alt={email} src={avatarUrl} />
-                        {email}
+                            alt={'user name'} src={avatarUrl} />
+                        {name}
                     </Button>
                     <Menu
                         id='user-menu'
@@ -147,8 +147,7 @@ export default function NavLogin(props) {
                     </Menu>
                 </>
             }
-            {
-                !user.user &&
+            {!user.profile &&
                 <Link className={classes.navLink}
                     href={path}>
                     Login

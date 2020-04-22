@@ -29,7 +29,7 @@ export default function MyApp(props) {
         try {
             await Auth.currentSession();
             const user = await Auth.currentUserInfo();
-            setUser({ user: user.attributes });
+            setUser({ profile: user.attributes });
         }
         catch (e) {
             if (e !== 'No current user') {

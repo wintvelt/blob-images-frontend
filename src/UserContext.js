@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 
 export const initialUser = {
-    user: false,
+    profile: false,
     isAuthenticating: true,
 };
 

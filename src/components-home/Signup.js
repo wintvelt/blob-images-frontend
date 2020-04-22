@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Auth } from "aws-amplify";
 import { useRouter } from 'next/router';
+import { UserContext } from '../UserContext';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -94,6 +95,7 @@ const fieldConfig = {
 const SignupForm = (props) => {
     const classes = useStyles();
     const router = useRouter();
+    const userContext = useContext(UserContext);
     const { title, subtitle } = props;
     const [fields, setFields] = useFields(fieldConfig);
     const [loading, setLoading] = useState({ state: false });
@@ -115,6 +117,11 @@ const SignupForm = (props) => {
                     attributes: {
                         name: fields.name.value,
                     },
+                });
+                userContext.setUser({
+                    profile: { email: fields.email.value, password: fields.password.value },
+                    isAuthenticated: false,
+                    isAuthenticating: false,
                 });
                 router.push('/verifysignup?email=' + encodeURIComponent(fields.email.value));
             } catch (e) {

@@ -107,6 +107,7 @@ const LoginForm = (props) => {
                 });
                 setLoading({ state: false });
             } catch (e) {
+                console.log(e);
                 setLoading({
                     state: false,
                     message: e.message,

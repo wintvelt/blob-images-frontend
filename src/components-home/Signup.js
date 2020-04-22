@@ -118,6 +118,7 @@ const SignupForm = (props) => {
                 });
                 router.push('/verifysignup?email=' + encodeURIComponent(fields.email.value));
             } catch (e) {
+                console.log(e);
                 setLoading({
                     state: false,
                     message: e.message

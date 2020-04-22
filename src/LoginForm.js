@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Auth } from "aws-amplify";
+import { useRouter } from 'next/router';
 
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -18,7 +19,7 @@ const useStyles = makeStyles(theme => ({
         marginRight: theme.spacing(8),
         padding: theme.spacing(4),
         marginLeft: '20%',
-        marginRight: '30%',
+        marginRight: '20%',
         backgroundColor: theme.palette.background.white,
         color: theme.palette.secondary.dark,
         display: 'flex',
@@ -29,6 +30,21 @@ const useStyles = makeStyles(theme => ({
     submit: {
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(2)
+    },
+    smallButton: {
+        fontSize: '12px',
+        padding: theme.spacing(0),
+        fontWeight: 400,
+        textTransform: 'none'
+    },
+    verifyButton: {
+        padding: theme.spacing(0),
+        margin: theme.spacing(0, 1),
+        fontWeight: 400,
+        textTransform: 'none'
+    },
+    linkText: {
+        color: '#551b8b',
     }
 }));
 
@@ -66,6 +82,7 @@ const fieldConfig = {
 
 const LoginForm = (props) => {
     const userContext = useContext(UserContext);
+    const router = useRouter();
     const classes = useStyles();
     const [fields, setFields] = useFields(fieldConfig);
     const [loading, setLoading] = useState(false);
@@ -83,12 +100,17 @@ const LoginForm = (props) => {
             try {
                 const { email, password } = fields;
                 const user = await Auth.signIn(email.value, password.value);
-                userContext.setUser({ profile: user.attributes });
+                userContext.setUser({
+                    profile: user.attributes,
+                    isAuthenticated: true,
+                    isAuthenticating: false,
+                });
                 setLoading({ state: false });
             } catch (e) {
                 setLoading({
                     state: false,
-                    message: e.message
+                    message: e.message,
+                    unconfirmedUser: (e.code === 'UserNotConfirmedException')
                 })
             }
         }
@@ -99,7 +121,21 @@ const LoginForm = (props) => {
         setLoading({ state: true });
         try {
             await Auth.forgotPassword(fields.email.value);
-            setLoading({ state: false });
+            router.push(`/resetpassword?email=${encodeURIComponent(fields.email.value)}`);
+        } catch (e) {
+            setLoading({
+                state: false,
+                message: e.message
+            });
+        }
+    }
+
+    const onVerify = async (e) => {
+        e.preventDefault();
+        setLoading({ state: true });
+        try {
+            await Auth.resendSignUp(fields.email.value);
+            router.push('/verifysignup?email=' + encodeURIComponent(fields.email.value));
         } catch (e) {
             setLoading({
                 state: false,
@@ -131,7 +167,13 @@ const LoginForm = (props) => {
                     )}
                     {loading.message && <Typography variant='body2' color='error' >
                         Hmm, we could not log you in. <br />
-                        {loading.message}
+                        {loading.message}<br />
+                        {loading.unconfirmedUser && <span>
+                            Maybe you need to
+                            <Button onClick={onVerify} className={classes.verifyButton}>
+                                Confirm your email
+                            </Button>?
+                        </span>}
                     </Typography>}
                     <Button type='submit' variant='contained' color='secondary' className={classes.submit}
                         disabled={loading.state}
@@ -143,7 +185,7 @@ const LoginForm = (props) => {
                         justifyContent: 'space-between'
                     }}>
                         <Typography variant='caption' gutterBottom>
-                            <Button onClick={onForgotPsw} color='textPrimary'>
+                            <Button onClick={onForgotPsw} className={classes.smallButton}>
                                 Forgot password
                             </Button>
                         </Typography>

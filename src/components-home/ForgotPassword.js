@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../UserContext';
 import { useRouter } from 'next/router';
 import { Auth } from "aws-amplify";
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -7,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { Field, useFields, validateForm, validateField } from '../FormField';
+import { Field, useFields, validateForm, validateField, newPasswordValidations } from '../FormField';
 
 const useStyles = makeStyles(theme => ({
     signupForm: {
@@ -58,8 +59,12 @@ const formFields = {
             )
         }],
     },
+    password: {
+        autoComplete: 'new-password', type: 'password', label: 'Your new password',
+        validations: newPasswordValidations,
+    },
     confirmation: {
-        autoComplete: 'none', type: 'tel', label: 'confirmation code',
+        autoComplete: 'none', type: 'tel', label: 'verification code',
         validations: [{
             text: 'check your email for verification code',
             validate: (val) => (!!val),
@@ -67,11 +72,13 @@ const formFields = {
     },
 };
 
-const VerifySignupForm = (props) => {
+const ForgotPasswordForm = (props) => {
     const { code, email } = props;
     const router = useRouter();
     const classes = useStyles();
+    const userContext = useContext(UserContext);
     const [fields, setFields] = useFields({
+        ...formFields,
         email: { ...formFields.email, value: email },
         confirmation: { ...formFields.confirmation, value: code }
     });
@@ -90,11 +97,21 @@ const VerifySignupForm = (props) => {
             setLoading({ state: true });
 
             try {
-                const { email, confirmation } = fields;
-                await Auth.confirmSignUp(email.value, confirmation.value);
-                router.push('/');
+                const { email, password, confirmation } = fields;
+                await Auth.forgotPasswordSubmit(
+                    email.value,
+                    confirmation.value,
+                    password.value
+                );
+                const user = await Auth.signIn(email.value, password.value);
+                userContext.setUser({
+                    profile: user.attributes,
+                    isAuthenticated: true,
+                    isAuthenticating: false,
+                });
+                router.push("/");
             } catch (e) {
-                console.log(e);
+                console.log(e)
                 const message = (e.code) ?
                     'Something went wrong'
                     : 'Something went wrong'
@@ -106,41 +123,14 @@ const VerifySignupForm = (props) => {
         }
     }
 
-    const onResend = async (e) => {
-        e.preventDefault();
-        if (!validateField(fields.email)) {
-            setFields('showValidation')('email');
-        } else {
-            e.preventDefault();
-            setLoading({ state: true });
-
-            try {
-                await Auth.resendSignUp(fields.email.value);
-                setLoading({
-                    state: false,
-                    message: 'Please check your email. If you signed up with this address, ' +
-                        'you\'ll receive a new verification code.',
-                })
-            } catch (e) {
-                const message = (e.code) ?
-                    'Something went wrong'
-                    : 'Something went wrong'
-                setLoading({
-                    state: false,
-                    message,
-                });
-            }
-        }
-    }
-
-    const formTitle = 'Validate your account';
-    const formSubtitle = 'Just one more step. ' +
-        'Complete your email address and the verification code you received by mail. ' +
-        'Then you\'re good to go!';
+    const formTitle = 'Reset your password';
+    const formSubtitle = 'Check the verification code you received by mail, ' +
+        'choose a new password, ' +
+        'and you\'re good to go!';
 
     const submitText = (loading.state) ?
         <CircularProgress size='1.5rem' color='inherit' />
-        : 'Confirm membership';
+        : 'Set new password';
 
     const resendText = (loading.state) ?
         <CircularProgress size='1.5rem' color='inherit' />
@@ -176,15 +166,10 @@ const VerifySignupForm = (props) => {
                         onClick={onSubmit}>
                         {submitText}
                     </Button>
-                    <Button color='primary' className={classes.submit}
-                        disabled={loading.state}
-                        onClick={onResend}>
-                        {resendText}
-                    </Button>
                 </Paper>
             </form>
         </ThemeProvider>
     )
 };
 
-export default VerifySignupForm;
+export default ForgotPasswordForm;

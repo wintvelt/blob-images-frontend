@@ -8,7 +8,7 @@ const PrivatePage = (props) => {
     const userContext = useContext(UserContext);
     const { user } = userContext;
     const router = useRouter();
-    if (!user.user) {
+    if (!user.isAuthenticated) {
         if (user.isAuthenticating) {
             console.log('no user, authenticating');
         } else {
@@ -22,7 +22,7 @@ const PrivatePage = (props) => {
             console.log('user, NOT authenticating');
         }
     }
-    return (!user.user || user.isAuthenticating) ?
+    return (!user.isAuthenticated || user.isAuthenticating) ?
         <Hero url='/img/delay.jpg'>
             <div style={{
                 height: '300px',

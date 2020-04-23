@@ -8,12 +8,13 @@ const PrivatePage = (props) => {
     const userContext = useContext(UserContext);
     const { user } = userContext;
     const router = useRouter();
+    const { asPath } = router;
     if (!user.isAuthenticated) {
         if (user.isAuthenticating) {
             console.log('no user, authenticating');
         } else {
             console.log('no user, NOT authenticating');
-            router.push('/');
+            router.push('/login?redirect='+asPath);
         }
     } else {
         if (user.isAuthenticating) {

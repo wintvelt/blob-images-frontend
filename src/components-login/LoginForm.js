@@ -105,7 +105,7 @@ const LoginForm = (props) => {
                     isAuthenticated: true,
                     isAuthenticating: false,
                 });
-                setLoading({ state: false });
+                router.push(props.redirect || '/');
             } catch (e) {
                 console.log(e);
                 setLoading({

@@ -22,7 +22,8 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
     footer: {
-        padding: theme.spacing(6),
+        marginTop: '144px',
+        padding: theme.spacing(6, 6, 6, 6),
         // backgroundColor: theme.palette.background.light,
         // background: 'linear-gradient(0deg, rgba(70,52,78,1) 00%, rgba(155,120,111,1) 90%)'
     },

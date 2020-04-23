@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react';
+import { UserContext } from '../src/UserContext';
 import Hero from '../src/components-home/Hero'
 import Benefits from '../src/components-home/Benefits'
 import Features from '../src/components-home/Features'
@@ -7,6 +8,8 @@ import Pricing from '../src/components-home/Pricing'
 import SignupForm from '../src/components-login/Signup';
 
 const Home = () => {
+    const userContext = useContext(UserContext);
+    const user = userContext.user;
     return (
         <main>
             <Hero
@@ -14,7 +17,7 @@ const Home = () => {
                 title='Share memories between friends'
                 subTitle='the simple way'
             >
-                <SignupForm />
+                {!(user && user.isAuthenticated) && <SignupForm />}
             </Hero>
             <Benefits />
             <Features />

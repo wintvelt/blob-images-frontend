@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     signupForm: {
         position: 'relative',
         marginTop: theme.spacing(12),
-        marginBottom: '-120px',
+        marginBottom: '-80px',
         padding: theme.spacing(4),
         marginLeft: '10%',
         marginRight: '30%',
@@ -187,7 +187,7 @@ const SignupForm = (props) => {
                     {loading.message &&
                         <Typography variant='body2' className={classes.info} color='error'>
                             <EmailHelper message={loading.message}
-                                onClick={onForgotPsw}
+                                onForgotPsw={onForgotPsw}
                                 email={fields.email.value} 
                                 className={classes.smallButton}/>
                         </Typography>

@@ -41,7 +41,7 @@ const Home = (props) => {
     return (
         <main>
             <Hero
-                url='/cover 2.jpg'
+                url='/cover_2.jpg'
                 title={title}
                 subTitle={subTitle}
                 paragraph={paragraph}

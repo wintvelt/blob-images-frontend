@@ -6,7 +6,7 @@ const GroupsMain = () => {
     return (
         <main>
             <Hero
-                url='/img/album 2.jpg'
+                url='/img/album_2.jpg'
                 title='Welcome to your groups pages'
             >
             </Hero>

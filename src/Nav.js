@@ -101,8 +101,8 @@ export default function HideAppBar(props) {
             <AppBar className={classes.nav} elevation={0}>
                 <Toolbar>
                     <Link href='/' className={classes.homeLink}>
-                        <Avatar alt="Photo duck icon" src="/duck icon.png" className={classes.avatar} />
-                        <img src='/duck logo.png' className={classes.logo} />
+                        <Avatar alt="Photo duck_icon" src="/duck_icon.png" className={classes.avatar} />
+                        <img src='/duck_logo.png' className={classes.logo} />
                     </Link>
                     <Typography variant="overline" component='h1' className={classes.title}>
                         Photo sharing for teams

@@ -32,7 +32,7 @@ const GroupHeader = () => {
                 '492 photos',
                 '19 members'
             ]}
-            image={{ title: 'Tanzania', src: '/cover 2.jpg' }}
+            image={{ title: 'Tanzania', src: '/cover_2.jpg' }}
             members={[
                 { name: 'Ebeling' },
                 { name: 'Daat' },

@@ -17,35 +17,35 @@ const albums = [
         id: 1, title: 'Blob in Tanzania', stats: ['since 1 Jan 1992', '34 photos'],
         image: {
             title: 'cover image',
-            src: '/cover 2.jpg'
+            src: '/cover_2.jpg'
         }
     },
     {
         id: 2, title: 'Blob in Marokko', stats: ['since 1 Jan 1992', '34 photos'],
         image: {
             title: 'cover image',
-            src: '/cover 2.jpg'
+            src: '/cover_2.jpg'
         }
     },
     {
         id: 3, title: 'Blob in Sulawesi', stats: ['since 1 Jan 1992', '34 photos'],
         image: {
             title: 'cover image',
-            src: '/cover 2.jpg'
+            src: '/cover_2.jpg'
         }
     },
     {
         id: 4, title: 'Blob in Zuid-Afrika', stats: ['since 1 Jan 1992', '34 photos'],
         image: {
             title: 'cover image',
-            src: '/cover 2.jpg'
+            src: '/cover_2.jpg'
         }
     },
     {
         id: 5, title: 'Blob in Lapland', stats: ['since 1 Jan 1992', '34 photos'],
         image: {
             title: 'cover image',
-            src: '/cover 2.jpg'
+            src: '/cover_2.jpg'
         }
     },
 ];

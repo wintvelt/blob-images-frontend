@@ -39,32 +39,32 @@ const photos = [
     {
         id: 1, author: 'Eeb',
         title: 'cover image met een iets langere titel',
-        src: '/cover 2.jpg'
+        src: '/cover_2.jpg'
     },
     {
         id: 2, author: 'Eeb',
         title: 'cover image',
-        src: '/cover 2.jpg'
+        src: '/cover_2.jpg'
     },
     {
         id: 3, author: 'Eeb',
         title: '',
-        src: '/cover 2.jpg'
+        src: '/cover_2.jpg'
     },
     {
         id: 4, author: 'Eeb',
         title: 'cover image',
-        src: '/cover 2.jpg'
+        src: '/cover_2.jpg'
     },
     {
         id: 5, author: 'Eeb',
         title: 'cover image',
-        src: '/cover 2.jpg'
+        src: '/cover_2.jpg'
     },
     {
         id: 6, author: 'Eeb',
         title: 'cover image',
-        src: '/cover 2.jpg'
+        src: '/cover_2.jpg'
     },
 
 ];

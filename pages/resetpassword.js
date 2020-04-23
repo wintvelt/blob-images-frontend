@@ -1,6 +1,6 @@
 import React from 'react'
 import Hero from '../src/components-home/Hero'
-import ForgotPasswordForm from '../src/components-home/ForgotPassword';
+import ForgotPasswordForm from '../src/components-login/ForgotPassword';
 
 const ForgotPassword = (props) => {
     return (

@@ -1,6 +1,6 @@
 import React from 'react'
 import Hero from '../src/components-home/Hero'
-import SignupVerify from '../src/components-home/SignupVerify';
+import SignupVerify from '../src/components-login/SignupVerify';
 
 const VerifySignup = (props) => {
     return (

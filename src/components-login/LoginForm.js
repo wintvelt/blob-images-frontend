@@ -8,9 +8,9 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Link from './Link';
-import { Field, useFields, validateForm } from './FormField';
-import { UserContext } from './UserContext';
+import Link from '../Link';
+import { Field, useFields, validateForm } from '../FormField';
+import { UserContext } from '../UserContext';
 
 const useStyles = makeStyles(theme => ({
     loginForm: {

@@ -10,7 +10,7 @@ import Slide from '@material-ui/core/Slide';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Link from './Link';
-import NavLogin from './NavLogin';
+import NavLogin from './components-login/NavLogin';
 
 const useStyles = makeStyles((theme) => ({
     nav: {

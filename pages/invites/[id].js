@@ -1,7 +1,7 @@
 import React from 'react';
 import Hero from '../../src/components-home/Hero';
-import SignupForm from '../../src/components-home/Signup';
-import LoginForm from '../../src/LoginForm';
+import SignupForm from '../../src/components-login/Signup';
+import LoginForm from '../../src/components-login/LoginForm';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 

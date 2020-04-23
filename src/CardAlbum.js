@@ -57,10 +57,10 @@ const AlbumCardContent = (props) => {
     const classes = useStyles();
 
     return <>
-        <CardMedia className={classes.media}
+        {!isNew && <CardMedia className={classes.media}
             image={image && image.src}
             title={image && image.title}
-        />
+        />}
         <CardContent className={(isNew) ? classes.newContent : classes.content}>
             <Typography gutterBottom variant='h6' component='h5'>
                 <span className={classes.text}>{title}</span>

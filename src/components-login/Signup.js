@@ -32,7 +32,13 @@ const useStyles = makeStyles(theme => ({
     info: {
         padding: theme.spacing(.5, 1),
         margin: theme.spacing(1, 0),
-    }
+    },
+    smallButton: {
+        padding: theme.spacing(0),
+        margin: '0 3px 2px 0',
+        fontWeight: 400,
+        textTransform: 'none'
+    },
 }));
 
 const theme = createMuiTheme({
@@ -48,7 +54,11 @@ const theme = createMuiTheme({
 const EmailHelper = (props) => (
     <span>
         {props.message}<br />
-        Did you{' '}<Link href='#' color='textPrimary'>forget your password?</Link><br />
+        Did you{' '}
+        <Button onClick={props.onForgotPsw} className={props.className}>
+            Forget your password
+        </Button>?
+        <br />
         Or would you like to{' '}
         <Link href={'/verifysignup?email=' + encodeURIComponent(props.email)}
             color='textPrimary'>verify your account?</Link>
@@ -134,6 +144,20 @@ const SignupForm = (props) => {
         }
     }
 
+    const onForgotPsw = async (e) => {
+        e.preventDefault();
+        setLoading({ state: true });
+        try {
+            await Auth.forgotPassword(fields.email.value);
+            router.push(`/resetpassword?email=${encodeURIComponent(fields.email.value)}`);
+        } catch (e) {
+            setLoading({
+                state: false,
+                message: e.message
+            });
+        }
+    }
+
     const formTitle = title || 'Sign up today';
     const formSubtitle = subtitle || 'Enter your info, then invite friends and family, ' +
         'and share your first photos!';
@@ -162,7 +186,10 @@ const SignupForm = (props) => {
                     )}
                     {loading.message &&
                         <Typography variant='body2' className={classes.info} color='error'>
-                            <EmailHelper message={loading.message} email={fields.email.value} />
+                            <EmailHelper message={loading.message}
+                                onClick={onForgotPsw}
+                                email={fields.email.value} 
+                                className={classes.smallButton}/>
                         </Typography>
                     }
                     <Button variant='contained' color='secondary' className={classes.submit}

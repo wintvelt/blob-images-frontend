@@ -36,7 +36,7 @@ export default function MyApp(props) {
         }
         catch (e) {
             if (e !== 'No current user') {
-                alert(e);
+                alert(JSON.stringify(e));
             }
         }
 
@@ -51,7 +51,6 @@ export default function MyApp(props) {
             </Head>
             <UserContext.Provider value={{ user, setUser }}>
                 <ThemeProvider theme={theme}>
-                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                     <CssBaseline />
                     <Nav />
                     <Component {...pageProps} />

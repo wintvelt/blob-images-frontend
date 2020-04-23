@@ -95,6 +95,7 @@ const VerifySignupForm = (props) => {
                 const { email, confirmation } = fields;
                 await Auth.confirmSignUp(email.value, confirmation.value);
                 if (userContext.user.profile && userContext.user.profile.email === email.value) {
+                    console.log('auto logging in');
                     const user = await Auth.signIn(email.value, userContext.user.profile.password);
                     userContext.setUser({
                         profile: user.attributes,
@@ -143,7 +144,9 @@ const VerifySignupForm = (props) => {
         }
     }
 
-    const formTitle = 'Validate your account';
+    const formTitle = (email && email === userContent.user.profile.email)? 
+        'Check your inbox'
+        :'Validate your account';
     const formSubtitle = 'Just one more step. ' +
         'Complete your email address and the verification code you received by mail. ' +
         'Then you\'re good to go!';

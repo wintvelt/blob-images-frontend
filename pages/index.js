@@ -13,7 +13,7 @@ const Home = () => {
     return (
         <main>
             <Hero
-                url='cover_2.jpg'
+                url='/cover_2.jpg'
                 title='Share memories between friends'
                 subTitle='the simple way'
             >

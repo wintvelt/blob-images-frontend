@@ -1,11 +1,11 @@
 import React from 'react';
-import Hero from '../../src/components-home/Hero';
-import SignupForm from '../../src/components-login/Signup';
-import LoginForm from '../../src/components-login/LoginForm';
+import Hero from '../../../src/components-home/Hero';
+import SignupForm from '../../../src/components-login/Signup';
+import LoginForm from '../../../src/components-login/LoginForm';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 
-const Home = (props) => {
+const ReceivedInvite = (props) => {
     const { isValid, isOpen, isExpired, invitorName, invitorEmail, group } = props;
     const title = (!isValid) ? 'Oops'
         : (isOpen) ?
@@ -61,13 +61,20 @@ const Home = (props) => {
 }
 
 export async function getServerSideProps(context) {
-    const { params } = context;
+    const { params, res } = context;
     const { id } = params;
     const [isValid, isOpen, isExpired] = (id === '1') ?
         [true, true, false]
         : (id === '2') ? [true, false, false]
             : (id === '3') ? [true, true, true]
                 : [false, false, false];
+    console.log({ id, isValid });
+    if (!isValid) {
+        res.writeHead(302, {
+            Location: '/invites/invalid'
+        });
+        res.end();
+    }
     return {
         props: {
             isValid, isOpen, isExpired,
@@ -78,4 +85,4 @@ export async function getServerSideProps(context) {
     }
 }
 
-export default Home
+export default ReceivedInvite

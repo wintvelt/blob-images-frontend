@@ -1,61 +1,70 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../../../src/UserContext';
+import { useRouter } from 'next/router';
 import Hero from '../../../src/components-home/Hero';
 import SignupForm from '../../../src/components-login/Signup';
 import LoginForm from '../../../src/components-login/LoginForm';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
+import Toolbar from '@material-ui/core/Toolbar';
+import Container from '@material-ui/core/Container';
+import IconButton from '@material-ui/core/IconButton';
+import Icon from '@material-ui/core/Icon';
+import Grid from '@material-ui/core/Grid';
+
+import Link from '../../../src/UnstyledLink';
+import CardAlbum from '../../../src/CardAlbum';
+import PhotoGroup from '../../../src/components-personal/PhotoGroup';
+import AlbumForm from '../../../src/AlbumForm';
 
 const ReceivedInvite = (props) => {
-    const { isValid, isOpen, isExpired, invitorName, invitorEmail, group } = props;
-    const title = (!isValid) ? 'Oops'
-        : (isOpen) ?
-            (isExpired) ? 'Welcome' :
-                'You are invited!'
-            : 'Already accepted';
-    const subTitle = (!isValid) ? 'This invite is not valid'
-        : (isOpen) ?
-            (isExpired) ? 'Alas, the invite from ' + invitorName + ' has expired' :
-                invitorName + ' invites you to join ' + group
-            : 'Looks like you already accepted your invitation from ' + invitorName
-            + ' to join ' + group;
-    const paragraph = (!isValid) ? <Typography variant="h5" color="inherit" paragraph>
-        If you received an email invite, maybe check the link again?
-        </Typography>
-        : (isOpen) ?
-            (isExpired) ? <Typography variant="h5" color="inherit" paragraph>
-                You could {' '}
-                <MuiLink href={'mailto:' + invitorEmail}>
-                    send{' '}{invitorName}{' '}an email
-                    </MuiLink>
-                {' '} and ask them to invite you again
-            </Typography>
-                : <Typography variant="h5" color="inherit" paragraph>
-                    Sign up and enjoy shared photos
-            </Typography>
-            : <Typography variant="h5" color="inherit" paragraph>
-                Login to check out {' '}
-                <MuiLink href={'#' + group}>{group}'s page</MuiLink>
-                {' '}
+    const router = useRouter();
+    const userContext = useContext(UserContext);
+    const { user } = userContext;
+    const isLoggedIn = user.isAuthenticated;
+    const { isNewInvite, invitorName, invitorEmail, group } = props;
+    const title = (isNewInvite) ?
+        'You are invited'
+        : 'Already accepted';
+    const subTitle = 'Looks like you already accepted your invitation from ' + invitorName
+        + ' to join ' + group;
+    const paragraph = <Typography variant="h5" color="inherit" paragraph>
+        Login to check out {' '}
+        <MuiLink href={'#' + group}>{group}'s page</MuiLink>
+        {' '}
                 directly
             </Typography>;
     return (
         <main>
-            <Hero
-                url='/cover_2.jpg'
-                title={title}
-                subTitle={subTitle}
-                paragraph={paragraph}
-            >
-                {(!isValid) ?
-                    <p>Request access to our beta</p>
-                    : (isOpen) ?
-                        (isExpired) ?
-                            <p>expired invitation</p>
-                            : <SignupForm subtitle={'Enter your info to create an account and join ' +
-                                group + ' on Photo Duck'} />
-                        : <LoginForm />
-                }
-            </Hero>
+            <Toolbar />
+            <Container>
+                <div style={{ height: '32px', zIndex: '99' }}>
+                    <Link style={{ display: 'flex', alignItems: 'center' }}
+                        title={`Back to album page`}
+                        href={`/personal/groups/${1}/albums/${2}`}
+                    >
+                        <Icon color='secondary' style={{ margin: '0 8px' }}>arrow_back</Icon>
+                        <Typography>{'Foto\'s van Blob - Blob in ..ergens..'}</Typography>
+                    </Link>
+                </div>
+                <Grid container spacing={8} style={{ marginTop: 0, paddingTop: 0 }}>
+                    <Grid item md={5} xs={12}>
+                        <CardAlbum
+                            title='Some title'
+                            description='some description'
+                            // stats={['432 photos', 'since 1 Jan 1985']}
+                            image={{ name: 'Blob in Afrika', src: '/img/cover.jpg' }}
+                            isHeader
+                        />
+                    </Grid>
+                    <Grid item md={7}>
+                        <AlbumForm {...props} />
+                        <p>Group ID: {1}</p>
+                        <p>Album ID: {2}</p>
+                        <PhotoGroup />
+                    </Grid>
+                </Grid>
+            </Container>
         </main>
     )
 }

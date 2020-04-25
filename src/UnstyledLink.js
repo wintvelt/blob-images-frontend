@@ -3,6 +3,9 @@ import React from 'react';
 const baseStyle = {
     textDecoration: 'none',
     color: 'inherit',
+    '&:hover': {
+        cursor: 'pointer'
+    }
 }
 
 const UnstyledLink = (props) => {

@@ -21,7 +21,6 @@ const useStyles = makeStyles(theme => ({
         marginLeft: '20%',
         marginRight: '20%',
         backgroundColor: theme.palette.background.white,
-        color: theme.palette.secondary.dark,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
@@ -47,16 +46,6 @@ const useStyles = makeStyles(theme => ({
         color: '#551b8b',
     }
 }));
-
-const theme = createMuiTheme({
-    palette: {
-        primary: { main: '#46344e' },
-        secondary: { main: '#faed26' },
-        text: {
-            primary: '#551b8b', // lighter purple
-        },
-    },
-});
 
 const fieldConfig = {
     email: {
@@ -149,54 +138,52 @@ const LoginForm = (props) => {
         : 'Login';
 
     return (
-        <ThemeProvider theme={theme}>
-            <form name='login-form' noValidate>
-                <Paper className={classes.loginForm}>
-                    <Typography component="h1" variant="h4" color="inherit"
-                        align='center' gutterBottom>
-                        Welcome back!
+        <form name='login-form' noValidate>
+            <Paper className={classes.loginForm}>
+                <Typography component="h1" variant="h4" color="primary"
+                    align='center' gutterBottom>
+                    Welcome back!
+                </Typography>
+                <Typography paragraph variant='subtitle1'>
+                    Please log in with your email and password
                     </Typography>
-                    <Typography paragraph variant='subtitle1'>
-                        Please log in with your email and password
-                    </Typography>
-                    {Object.keys(fieldConfig).map(fieldName =>
-                        <Field key={fieldName}
-                            fieldName={fieldName}
-                            field={fields[fieldName]}
-                            onChange={onChange(fieldName)}
-                            showValidation={fields.showValidation} />
-                    )}
-                    {loading.message && <Typography variant='body2' color='error' >
-                        Hmm, we could not log you in. <br />
-                        {loading.message}<br />
-                        {loading.unconfirmedUser && <span>
-                            Maybe you need to
+                {Object.keys(fieldConfig).map(fieldName =>
+                    <Field key={fieldName}
+                        fieldName={fieldName}
+                        field={fields[fieldName]}
+                        onChange={onChange(fieldName)}
+                        showValidation={fields.showValidation} />
+                )}
+                {loading.message && <Typography variant='body2' color='error' >
+                    Hmm, we could not log you in. <br />
+                    {loading.message}<br />
+                    {loading.unconfirmedUser && <span>
+                        Maybe you need to
                             <Button onClick={onVerify} className={classes.verifyButton}>
-                                Confirm your email
+                            Confirm your email
                             </Button>?
                         </span>}
-                    </Typography>}
-                    <Button type='submit' variant='contained' color='secondary' className={classes.submit}
-                        disabled={loading.state}
-                        onClick={onSubmit}>
-                        {loginButtonContent}
-                    </Button>
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                    }}>
-                        <Typography variant='caption' gutterBottom>
-                            <Button onClick={onForgotPsw} className={classes.smallButton}>
-                                Forgot password
+                </Typography>}
+                <Button type='submit' variant='contained' color='secondary' className={classes.submit}
+                    disabled={loading.state}
+                    onClick={onSubmit}>
+                    {loginButtonContent}
+                </Button>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between'
+                }}>
+                    <Typography variant='caption' gutterBottom>
+                        <Button onClick={onForgotPsw} className={classes.smallButton}>
+                            Forgot password
                             </Button>
-                        </Typography>
-                        <Typography variant='caption' gutterBottom>
-                            <Link href='#' color='textPrimary'>Sign up</Link>
-                        </Typography>
-                    </div>
-                </Paper>
-            </form>
-        </ThemeProvider>
+                    </Typography>
+                    <Typography variant='caption' gutterBottom>
+                        <Link href='#' color='textPrimary'>Sign up</Link>
+                    </Typography>
+                </div>
+            </Paper>
+        </form>
     )
 };
 

@@ -43,19 +43,19 @@ const useStyles = makeStyles((theme) => ({
     },
     navLink: {
         ...theme.typography.overline,
-        color: theme.palette.secondary.contrastText,
+        color: theme.palette.primary.contrastText,
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
     },
     outlined: {
         ...theme.typography.button,
-        color: theme.palette.secondary.contrastText,
+        color: theme.palette.primary.contrastText,
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
         padding: theme.spacing(0.5, 2),
         borderWidth: '1px',
         borderStyle: 'solid',
-        borderColor: theme.palette.secondary.contrastText,
+        borderColor: theme.palette.primary.contrastText,
         borderRadius: '4px',
     }
 }));

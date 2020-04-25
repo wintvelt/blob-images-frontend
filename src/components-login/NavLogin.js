@@ -24,12 +24,13 @@ const userMenu = [
 const useStyles = makeStyles((theme) => ({
     userButton: {
         marginLeft: theme.spacing(1),
-        textTransform: 'none'
+        textTransform: 'none',
+        color: theme.palette.primary.contrastText,
     },
     navLink: {
         marginLeft: theme.spacing(1),
         ...theme.typography.button,
-        color: theme.palette.secondary.contrastText,
+        color: theme.palette.primary.contrastText,
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
     },
@@ -41,8 +42,8 @@ const useStyles = makeStyles((theme) => ({
     menuLink: {
         display: 'flex',
         alignItems: 'center',
-        color: theme.palette.secondary.contrastText,
-        textDecorationColor: theme.palette.secondary.contrastText,
+        color: theme.palette.primary.main,
+        textDecorationColor: theme.palette.primary.main,
         '&:hover': {
             textDecoration: 'none'
         }
@@ -50,12 +51,14 @@ const useStyles = makeStyles((theme) => ({
     menuLinkActive: {
         display: 'flex',
         alignItems: 'center',
-        color: theme.palette.primary.main,
-        textDecorationColor: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
+        textDecorationColor: theme.palette.secondary.main,
         '&:hover': {
             textDecoration: 'none'
         }
-    }
+    },
+    active: { color: theme.palette.secondary.main },
+    inActive: { color: theme.palette.primary.light },
 }));
 
 export default function NavLogin(props) {
@@ -122,10 +125,10 @@ export default function NavLogin(props) {
                                             : classes.menuLink
                                     }>
                                         <ListItemIcon>
-                                            <Icon fontSize="small" color={
+                                            <Icon fontSize="small" className={
                                                 (router.pathname === menuItem.href) ?
-                                                    'primary'
-                                                    : 'inherit'
+                                                    classes.active
+                                                    : classes.inActive
                                             }>
                                                 {menuItem.icon}
                                             </Icon>
@@ -134,20 +137,28 @@ export default function NavLogin(props) {
                                             style={{ paddingRight: '16px' }} />
                                     </Link>
                                     :
-                                    <>
+                                    <div className={
+                                        (router.pathname === menuItem.href) ?
+                                            classes.menuLinkActive
+                                            : classes.menuLink}>
                                         <ListItemIcon>
-                                            <Icon fontSize="small">{menuItem.icon}</Icon>
+                                            <Icon fontSize="small" className={
+                                                (router.pathname === menuItem.href) ?
+                                                    classes.active
+                                                    : classes.inActive
+                                            }>{menuItem.icon}</Icon>
                                         </ListItemIcon>
                                         <ListItemText primary={menuItem.text}
                                             style={{ paddingRight: '16px' }} />
-                                    </>
+                                    </div>
                                 }
                             </MenuItem>
                         ))}
                     </Menu>
                 </>
             }
-            {!user.isAuthenticated &&
+            {
+                !user.isAuthenticated &&
                 <Link className={classes.navLink}
                     href={path}>
                     Login

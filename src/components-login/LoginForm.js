@@ -16,10 +16,7 @@ const useStyles = makeStyles(theme => ({
     loginForm: {
         position: 'relative',
         marginTop: theme.spacing(10),
-        marginRight: theme.spacing(8),
         padding: theme.spacing(4),
-        marginLeft: '20%',
-        marginRight: '20%',
         backgroundColor: theme.palette.background.white,
         display: 'flex',
         flexDirection: 'column',
@@ -70,6 +67,7 @@ const fieldConfig = {
 
 
 const LoginForm = (props) => {
+    const { title } = props;
     const userContext = useContext(UserContext);
     const router = useRouter();
     const classes = useStyles();
@@ -94,7 +92,7 @@ const LoginForm = (props) => {
                     isAuthenticated: true,
                     isAuthenticating: false,
                 });
-                router.push(props.redirect || '/');
+                if (props.redirect) router.push(props.redirect);
             } catch (e) {
                 console.log(e);
                 setLoading({
@@ -138,13 +136,13 @@ const LoginForm = (props) => {
         : 'Login';
 
     return (
-        <form name='login-form' noValidate>
-            <Paper className={classes.loginForm}>
+            <form name='login-form' noValidate>
+        <Paper className={classes.loginForm}>
                 <Typography component="h1" variant="h4" color="primary"
                     align='center' gutterBottom>
-                    Welcome back!
+                    {title || 'Welcome back!'}
                 </Typography>
-                <Typography paragraph variant='subtitle1'>
+                <Typography paragraph variant='subtitle1' color='primary'>
                     Please log in with your email and password
                     </Typography>
                 {Object.keys(fieldConfig).map(fieldName =>
@@ -182,8 +180,8 @@ const LoginForm = (props) => {
                         <Link href='#' color='textPrimary'>Sign up</Link>
                     </Typography>
                 </div>
-            </Paper>
-        </form>
+        </Paper>
+            </form>
     )
 };
 

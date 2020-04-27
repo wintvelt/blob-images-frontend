@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
         padding: theme.spacing(12,8,8,8),
+        color: 'white',
     },
     icon: {
         marginBottom: theme.spacing(1),
@@ -61,7 +62,7 @@ const Benefits = () => {
                         <Icon color='secondary' className={classes.icon}>
                             {feature.icon}
                         </Icon>
-                        <Typography variant="h5" color="textSecondary" gutterBottom>
+                        <Typography variant="h5" gutterBottom>
                             {feature.title}
                         </Typography>
                         <Typography variant="body1" paragraph align='center'>

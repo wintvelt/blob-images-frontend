@@ -7,7 +7,7 @@ import Image from '../Image';
 
 const useStyles = makeStyles(theme => ({
     featureList: {
-        backgroundColor: theme.palette.background.paper,
+        background: theme.palette.background.light,
     },
     feature: {
         display: 'flex',
@@ -99,7 +99,8 @@ const Features = () => {
                                 {title}
                             </Typography>
                             {!steps && descriptions.map((text, i) => (
-                                <Typography key={i} variant="body1" paragraph align={alignment}>
+                                <Typography key={i} variant="body1"
+                                    paragraph align={alignment} color='textSecondary'>
                                     {text}
                                 </Typography>
 
@@ -112,7 +113,7 @@ const Features = () => {
                                     </Grid>
                                     <Grid item style={{ flex: 1 }}>
                                         <Typography variant='h5'>{step}</Typography>
-                                        <Typography variant='body1'>
+                                        <Typography variant='body1' color='textSecondary'>
                                             {descriptions[i]}
                                         </Typography>
                                     </Grid>

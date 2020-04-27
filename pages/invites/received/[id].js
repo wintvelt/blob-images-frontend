@@ -13,7 +13,7 @@ import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
 
 import Link from '../../../src/UnstyledLink';
-import CardAlbum from '../../../src/CardAlbum';
+import CardInvite from '../../../src/components-invite/CardInvite';
 import PhotoGroup from '../../../src/components-personal/PhotoGroup';
 import AlbumForm from '../../../src/AlbumForm';
 
@@ -28,7 +28,7 @@ const ReceivedInvite = (props) => {
         : 'Already accepted';
     const subTitle = 'Looks like you already accepted your invitation from ' + invitorName
         + ' to join ' + group;
-    const paragraph = <Typography variant="h5" color="inherit" paragraph>
+    const paragraph = <Typography variant="h5" color="textPrimary" paragraph>
         Login to check out {' '}
         <MuiLink href={'#' + group}>{group}'s page</MuiLink>
         {' '}
@@ -39,7 +39,7 @@ const ReceivedInvite = (props) => {
             <Toolbar />
             <Container>
                 <div style={{ height: '32px', zIndex: '99' }}>
-                    <Link style={{ display: 'flex', alignItems: 'center' }}
+                    <Link style={{ display: 'flex', alignItems: 'center', color: 'white' }}
                         title={`Back to album page`}
                         href={`/personal/groups/${1}/albums/${2}`}
                     >
@@ -49,7 +49,7 @@ const ReceivedInvite = (props) => {
                 </div>
                 <Grid container spacing={8} style={{ marginTop: 0, paddingTop: 0 }}>
                     <Grid item md={5} xs={12}>
-                        <CardAlbum
+                        <CardInvite
                             title='Some title'
                             description='some description'
                             // stats={['432 photos', 'since 1 Jan 1985']}

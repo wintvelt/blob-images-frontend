@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Auth } from "aws-amplify";
 import { useRouter } from 'next/router';
 import { UserContext } from '../UserContext';
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
         marginLeft: '10%',
         marginRight: '30%',
         backgroundColor: theme.palette.background.white,
-        color: theme.palette.secondary.dark,
+        color: theme.palette.primary.dark,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
@@ -40,16 +40,6 @@ const useStyles = makeStyles(theme => ({
         textTransform: 'none'
     },
 }));
-
-const theme = createMuiTheme({
-    palette: {
-        primary: { main: '#46344e' },
-        secondary: { main: '#faed26' },
-        text: {
-            primary: '#551b8b', // lighter purple
-        },
-    },
-});
 
 const EmailHelper = (props) => (
     <span>
@@ -167,14 +157,13 @@ const SignupForm = (props) => {
         : 'Become a member';
 
     return (
-        <ThemeProvider theme={theme}>
             <form name='signup-form' noValidate>
                 <Paper className={classes.signupForm}>
-                    <Typography component="h1" variant="h4" color="inherit"
+                    <Typography component="h1" variant="h4" color="primary"
                         align='center' gutterBottom>
                         {formTitle}
                     </Typography>
-                    <Typography variant='subtitle1'>
+                    <Typography variant='subtitle1' color='primary'>
                         {formSubtitle}
                     </Typography>
                     {Object.keys(fieldConfig).map(fieldName =>
@@ -199,7 +188,6 @@ const SignupForm = (props) => {
                     </Button>
                 </Paper>
             </form>
-        </ThemeProvider>
     )
 };
 

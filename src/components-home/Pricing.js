@@ -18,21 +18,27 @@ const useStyles = makeStyles((theme) => ({
             listStyle: 'none',
         },
     },
+    root: {
+        backgroundColor: theme.palette.background.grey,
+    },
     link: {
         margin: theme.spacing(1, 1.5),
     },
     heroContent: {
         padding: theme.spacing(8, 0, 6),
+        color: theme.palette.background.white,
     },
     mainContent: {
         paddingBottom: theme.spacing(12),
     },
     cardHeader: {
+        color: theme.palette.background.white,
         backgroundColor:
-            theme.palette.secondary.main,
+            theme.palette.background.default,
         // theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[700],
         // color: theme.palette.secondary.main
     },
+    star: { color: theme.palette.secondary.main },
     cardPricing: {
         display: 'flex',
         justifyContent: 'center',
@@ -49,6 +55,7 @@ const tiers = [
             ['unlimited group invites', 'unlimited albums', '2 groups', '10 GB of storage', 'Email support'],
         buttonText: 'Sign up for free',
         buttonVariant: 'outlined',
+        buttonColor: 'primary'
     },
     {
         title: 'Premium',
@@ -58,6 +65,7 @@ const tiers = [
             ['unlimited group invites', 'unlimited albums', '10 groups', '20 GB of storage', 'Priority support'],
         buttonText: 'Get Premium',
         buttonVariant: 'contained',
+        buttonColor: 'secondary'
     },
     {
         title: 'Pro',
@@ -66,20 +74,21 @@ const tiers = [
             ['unlimited group invites', 'unlimited albums', 'unlimited groups', '50 GB of storage', 'Priority support'],
         buttonText: 'Contact us',
         buttonVariant: 'outlined',
+        buttonColor: 'primary'
     },
 ];
 export default function Pricing() {
     const classes = useStyles();
 
     return (
-        <React.Fragment>
+        <div className={classes.root}>
             {/* Hero unit */}
             <Container maxWidth="sm" className={classes.heroContent}
                 id='pricing'>
-                <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+                <Typography component="h1" variant="h2" align="center" gutterBottom>
                     Pricing
                 </Typography>
-                <Typography variant="h5" align="center" color="textSecondary" component="p">
+                <Typography variant="h5" align="center" component="p">
                     Get started for free.
                     Want more? Sign-up for our premium service.
                  </Typography>
@@ -95,8 +104,10 @@ export default function Pricing() {
                                     title={tier.title}
                                     subheader={tier.subheader}
                                     titleTypographyProps={{ align: 'center' }}
-                                    subheaderTypographyProps={{ align: 'center' }}
-                                    action={tier.title === 'Premium' ? <Icon>star</Icon> : null}
+                                    subheaderTypographyProps={{ align: 'center', color: 'secondary' }}
+                                    action={tier.title === 'Premium' ?
+                                        <Icon className={classes.star}>star</Icon> : null
+                                    }
                                     className={classes.cardHeader}
                                 />
                                 <CardContent>
@@ -110,14 +121,15 @@ export default function Pricing() {
                                     </div>
                                     <ul>
                                         {tier.description.map((line) => (
-                                            <Typography component="li" variant="subtitle1" align="center" key={line}>
+                                            <Typography component="li" variant="subtitle1" align="center" key={line}
+                                            color='primary'>
                                                 {line}
                                             </Typography>
                                         ))}
                                     </ul>
                                 </CardContent>
                                 <CardActions>
-                                    <Button fullWidth variant={tier.buttonVariant} color="primary">
+                                    <Button fullWidth variant={tier.buttonVariant} color={tier.buttonColor}>
                                         {tier.buttonText}
                                     </Button>
                                 </CardActions>
@@ -126,6 +138,6 @@ export default function Pricing() {
                     ))}
                 </Grid>
             </Container>
-        </React.Fragment>
+        </div>
     );
 }

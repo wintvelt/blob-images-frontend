@@ -6,7 +6,8 @@ import { Avatar } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
     quoteList: {
-        backgroundColor: theme.palette.background.light,
+        backgroundColor: theme.palette.background.dark,
+        color: 'white',
         padding: theme.spacing(8, 0, 6),
     },
     quote: {
@@ -58,7 +59,7 @@ const Features = () => {
 
     return (
         <div className={classes.quoteList}        >
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+            <Typography component="h1" variant="h2" align="center" gutterBottom>
                 What customers say about us
             </Typography>
             <Grid container
@@ -76,7 +77,7 @@ const Features = () => {
                         </Typography>
                         <Grid container justify="center" alignItems="center">
                             <Avatar alt={quote.name} src={quote.avatar} className={classes.avatar} />
-                            <Typography variant="h6" color="textSecondary">
+                            <Typography variant="h6">
                                 {quote.name}
                             </Typography>
                         </Grid>

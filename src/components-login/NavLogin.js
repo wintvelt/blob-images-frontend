@@ -14,10 +14,10 @@ import { UserContext } from '../UserContext';
 import { Auth } from 'aws-amplify';
 
 const userMenu = [
-    { icon: 'move_to_inbox', text: 'Inbox' },
-    { icon: 'photo_library', text: 'Photos' },
     { icon: 'group', text: 'Groups', href: '/personal/groups' },
-    { icon: 'settings', text: 'Profile' },
+    { icon: 'mail_outline', text: 'Invitations' },
+    { icon: 'photo_library', text: 'My photos' },
+    { icon: 'settings', text: 'My account' },
     { icon: 'exit_to_app', text: 'Logout', action: 'logout' },
 ];
 

@@ -8,18 +8,23 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import { CardActionArea } from '@material-ui/core';
 
-import Link from './UnstyledLink';
+import Link from '../UnstyledLink';
 
 const useStyles = makeStyles(theme => ({
     card: {
         position: 'relative',
         backgroundColor: 'white',
-        height: '200px',
+        height: '288px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        fontFamily: 'cursive'
     },
     cardNew: {
         position: 'relative',
         background: 'none',
-        height: '200px',
+        height: '288px',
     },
     actionArea: {
         height: 'inherit'
@@ -36,8 +41,11 @@ const useStyles = makeStyles(theme => ({
         border: '2px dashed rgba(255,255,255,.8)',
     },
     media: {
-        height: theme.spacing(12),
-        backgroundColor: 'rgba(157,141,143,.5)',
+        width: '100%',
+        height: '288px',
+        position: 'absolute',
+        top: 0,
+        opacity: .2,
     },
     imageEdit: {
         position: 'absolute',
@@ -48,52 +56,49 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(1),
     },
     text: {
-        color: 'rgba(0,0,0,.8)',
+        color: theme.palette.text.secondary,
+        position: 'relative',
+        backgroundColor: 'rgba(255,255,255,.2)'
     },
 }));
 
-const AlbumCardContent = (props) => {
-    const { title, description, stats, image, isNew } = props;
+const InviteCardContent = (props) => {
+    const { invitorName, invitedGroup, imageSrc, isNew } = props;
     const classes = useStyles();
 
     return <>
-        {!isNew && <CardMedia className={classes.media}
-            image={image && image.src}
-            title={image && image.title}
+        {!isNew && <CardMedia image={imageSrc} alt='invitation' className={classes.media} />}
+        {!isNew && <img src='/img/invite.png'
+            alt='You are invited!'
+            style={{ width: '264px', position: 'relative' }}
         />}
-        <CardContent className={(isNew) ? classes.newContent : classes.content}>
-            <Typography gutterBottom variant='h6' component='h5'>
-                <span className={classes.text}>{title}</span>
-            </Typography>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Typography variant="subtitle1" color="textSecondary" component="p">
-                    <span className={classes.text}>{description}</span>
-                </Typography>
-                {stats && <Typography variant="caption" color="textSecondary" component="p"
-                    className={classes.text}>
-                    {stats.map((stat) => (
-                        <React.Fragment key={stat}>{stat}<br /></React.Fragment>
-                    ))}
-                </Typography>}
-            </div>
-            {isNew && <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Icon fontSize='large' color='secondary'>add</Icon>
-                <Typography>New Album</Typography>
-            </div>}
-        </CardContent>
+        <Typography variant="subtitle1" component="p">
+            <span className={classes.text}>to join</span>
+        </Typography>
+        <Typography variant='h3' style={{fontFamily: "'Pinyon Script', cursive"}}>
+            <span className={classes.text}>{invitedGroup}</span>
+        </Typography>
+        <Typography variant="subtitle1" component="p">
+            <span className={classes.text}>{`${invitorName} cordially invites you`}</span>
+        </Typography>
+        <img src='/img/invite_divider.png' alt='divider' style={{ width: '64px', position: 'relative' }} />
+        <Typography variant="subtitle1" color="primary">
+            <span className={classes.text}>R.S.V.P.</span>
+        </Typography>
+
     </>
 }
 
-const CardAlbum = (props) => {
-    const { groupId, id, isHeader, userIsAdmin, isNew } = props;
+const CardInvite = (props) => {
+    const { id, isHeader, userIsAdmin, isNew } = props;
     const classes = useStyles();
-    const href = `/personal/groups/${groupId}/albums/${id || 'new'}`;
+    const href = `/invites/received/${id || 'new'}`;
     return <Card className={isNew ? classes.cardNew : classes.card}>
         {(isHeader) ?
-            <AlbumCardContent {...props} />
+            <InviteCardContent {...props} />
             : <CardActionArea className={classes.actionArea}>
                 <Link href={(isNew) ? href + '/edit' : href}>
-                    <AlbumCardContent {...props} />
+                    <InviteCardContent {...props} />
                 </Link>
             </CardActionArea>
         }
@@ -105,4 +110,4 @@ const CardAlbum = (props) => {
     </Card>
 }
 
-export default CardAlbum;
+export default CardInvite;

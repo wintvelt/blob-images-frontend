@@ -187,6 +187,9 @@ export const Field = (props) => {
                     <TextField variant='outlined' color='primary' size='small' margin='dense'
                         type={field.type}
                         label={field.label} autoComplete={field.autoComplete}
+                        multiline={field.multiline || undefined}
+                        rows={field.rows || undefined}
+                        rowsMax={field.rowsMax || undefined}
                         error={error}
                         onChange={onChange} value={field.value || ''} />
                     {helperText && helperText}

@@ -1,27 +1,16 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../../../src/UserContext';
-import { useRouter } from 'next/router';
-import Hero from '../../../src/components-home/Hero';
-import SignupForm from '../../../src/components-login/Signup';
-import LoginForm from '../../../src/components-login/LoginForm';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
 import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
 
 import Link from '../../../src/UnstyledLink';
+import InviteForm from '../../../src/InviteForm';
 import CardInvite from '../../../src/components-invite/CardInvite';
-import PhotoGroup from '../../../src/components-personal/PhotoGroup';
-import AlbumForm from '../../../src/AlbumForm';
 
 const ReceivedInvite = (props) => {
-    const router = useRouter();
-    const userContext = useContext(UserContext);
-    const { user } = userContext;
-    const isLoggedIn = user.isAuthenticated;
     const { isNewInvite, invitorName, invitorEmail, group } = props;
     const title = (isNewInvite) ?
         'You are invited'
@@ -50,18 +39,15 @@ const ReceivedInvite = (props) => {
                 <Grid container spacing={8} style={{ marginTop: 0, paddingTop: 0 }}>
                     <Grid item md={5} xs={12}>
                         <CardInvite
-                            title='Some title'
-                            description='some description'
+                            invitorName={invitorName}
+                            invitedGroup={group}
                             // stats={['432 photos', 'since 1 Jan 1985']}
-                            image={{ name: 'Blob in Afrika', src: '/img/cover.jpg' }}
+                            imageSrc='/img/cover.jpg'
                             isHeader
                         />
                     </Grid>
-                    <Grid item md={7}>
-                        <AlbumForm {...props} />
-                        <p>Group ID: {1}</p>
-                        <p>Album ID: {2}</p>
-                        <PhotoGroup />
+                    <Grid item md={7} xs={12}>
+                        <InviteForm {...props} />
                     </Grid>
                 </Grid>
             </Container>

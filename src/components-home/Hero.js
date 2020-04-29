@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
         bottom: 0,
         right: 0,
         left: 0,
-        background: 'linear-gradient(355deg, rgba(155,120,111,.8) 10%, rgba(70,52,78,1) 90%)'
+        background: 'linear-gradient(355deg, rgba(155,120,111,.8) 10%, rgba(90,85,96,1) 90%)'
     },
     mainFeaturedPostContent: {
         position: 'relative',

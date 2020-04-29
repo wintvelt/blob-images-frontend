@@ -3,10 +3,9 @@ import { UserContext } from './UserContext';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
+import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Link from './Link';
@@ -14,45 +13,20 @@ import NavLogin from './components-login/NavLogin';
 
 const useStyles = makeStyles((theme) => ({
     nav: {
-        backgroundColor: 'rgba(70,52,78,.9)',
+        backgroundColor: 'rgba(90,85,96,.9)',
         color: 'white',
         zIndex: theme.zIndex.drawer + 1,
-    },
-    title: {
-        fontSize: '100%',
-        fontWeight: 'light',
-    },
-    avatar: {
-        width: theme.spacing(4),
-        height: theme.spacing(4),
-    },
-    homeLink: {
-        display: 'flex',
-        alignItems: 'center'
-    },
-    logo: {
-        height: '24px',
-        marginRight: theme.spacing(2),
-        marginBottom: '2px',
-    },
-    navMenu: {
-        flexGrow: 1,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        paddingRight: theme.spacing(2),
     },
     navLink: {
         ...theme.typography.overline,
         color: theme.palette.primary.contrastText,
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
     },
     outlined: {
         ...theme.typography.button,
         color: theme.palette.primary.contrastText,
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
         padding: theme.spacing(0.5, 2),
+        width: '100%',
+        textAlign: 'center',
         borderWidth: '1px',
         borderStyle: 'solid',
         borderColor: theme.palette.primary.contrastText,
@@ -86,7 +60,7 @@ const NavLink = (props) => {
     const { text, href, outlined, hash } = props;
     const classes = useStyles();
     return <Link href={href} className={outlined ? classes.outlined : classes.navLink}
-        activeClassName={classes.navLinkActive} hash={props.hash}>
+        activeClassName={classes.navLinkActive} hash={hash}>
         {text}
     </Link>
 }
@@ -100,25 +74,36 @@ export default function HideAppBar(props) {
         <HideOnScroll {...props}>
             <AppBar className={classes.nav} elevation={0}>
                 <Toolbar>
-                    <Link href='/' className={classes.homeLink}>
-                        <Avatar alt="Photo duck_icon" src="/duck_icon.png" className={classes.avatar} />
-                        <img src='/duck_logo.png' className={classes.logo} />
-                    </Link>
-                    <Typography variant="overline" component='h1' className={classes.title}>
-                        Photo sharing for teams
-                    </Typography>
-                    <div className={classes.navMenu}>
+                    <Grid container spacing={1} alignItems='center' justify='center'>
+                        <Grid item xs={2}>
+                            <Link href='/' className={classes.homeLink}>
+                                <img src='/img/logo_new3.png' width='60%'/>
+                            </Link>
+                            <img src='/img/payoff.png' width='40%'/>
+                        </Grid>
+                        <Grid item xs />
                         {[
                             { text: 'Features', href: '/#features' },
                             { text: 'Pricing', href: '/#pricing' },
                             { text: 'Support', href: '#' },
                             { text: 'About', href: '#' },
-                        ].map((props) => <NavLink key={props.text} {...props} />)}
-                    </div>
-                    {!user &&
-                        <NavLink text='Sign up' href='/' outlined>sign up</NavLink>
-                    }
-                    <NavLogin path='/login' />
+                        ].map((props) => (
+                            <Grid key={props.text} item xs={1}
+                                style={{ display: 'flex', justifyContent: 'center' }}>
+                                <NavLink {...props} />
+                            </Grid>
+                        ))}
+                        {!user.isAuthenticated &&
+                            <Grid item xs={1}
+                                style={{ display: 'flex', justifyContent: 'center' }}>
+                                <NavLink text='Sign up' href='/' outlined>sign up</NavLink>
+                            </Grid>
+                        }
+                        <Grid item xs={1}
+                            style={{ display: 'flex', justifyContent: 'center' }}>
+                            <NavLogin path='/login' />
+                        </Grid>
+                    </Grid>
                 </Toolbar>
             </AppBar>
         </HideOnScroll>

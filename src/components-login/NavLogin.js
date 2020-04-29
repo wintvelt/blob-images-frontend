@@ -23,7 +23,8 @@ const userMenu = [
 
 const useStyles = makeStyles((theme) => ({
     userButton: {
-        marginLeft: theme.spacing(1),
+        marginBottom: '3px',
+        padding: '2px',
         textTransform: 'none',
         color: theme.palette.primary.contrastText,
     },

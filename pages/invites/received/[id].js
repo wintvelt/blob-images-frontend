@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../../../src/UserContext';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
 import Container from '@material-ui/core/Container';
 import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from '../../../src/UnstyledLink';
 import InviteForm from '../../../src/InviteForm';
 import CardInvite from '../../../src/components-invite/CardInvite';
+import SignupForm from '../../../src/components-login/Signup';
 
 const ReceivedInvite = (props) => {
+    const userContext = useContext(UserContext);
+    const { user } = userContext;
     const { isNewInvite, invitorName, invitorEmail, group } = props;
     const title = (isNewInvite) ?
         'You are invited'
@@ -47,7 +52,17 @@ const ReceivedInvite = (props) => {
                         />
                     </Grid>
                     <Grid item md={7} xs={12}>
-                        <InviteForm {...props} />
+                        {(user.isAuthenticated) ?
+                            <InviteForm {...props} />
+                            : (user.isAuthenticating) ?
+                                <div style={{
+                                    display: 'flex', height: '100%', color: 'grey',
+                                    alignItems: 'center', justifyContent: 'center'
+                                }}>
+                                    <CircularProgress color='inherit' />
+                                </div>
+                                : <SignupForm />
+                        }
                     </Grid>
                 </Grid>
             </Container>

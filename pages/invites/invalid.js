@@ -2,7 +2,10 @@ import React from 'react';
 import Hero from '../../src/components-home/Hero';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+
+import HeroTitle from '../../src/components-home/Hero-Title';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -10,8 +13,6 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: '#fff',
         color: theme.palette.secondary.main,
         padding: theme.spacing(4),
-        marginTop: theme.spacing(12),
-        marginRight: '20%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
@@ -36,13 +37,22 @@ const InvalidInvite = () => {
         <main>
             <Hero
                 url='/img/envelope.jpg'
-                title={title}
-                subTitle={subTitle}
-                paragraph={paragraph}
             >
-                <Paper className={classes.paper}>
-                    <img src='/img/closed2.jpg' style={{ position: 'relative', width: '100%' }} />
-                </Paper>
+                <Grid item md={1} />
+                <Grid item md={4}>
+                    <HeroTitle
+                        title={title}
+                        subTitle={subTitle}
+                        paragraph={paragraph}
+                    />
+                </Grid>
+                <Grid item md={2} />
+                <Grid item md={4}>
+                    <Paper className={classes.paper}>
+                        <img src='/img/closed2.jpg' style={{ position: 'relative', width: '100%' }} />
+                    </Paper>
+                </Grid>
+                <Grid item md={1} />
             </Hero>
         </main>
     )

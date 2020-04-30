@@ -15,10 +15,6 @@ const useStyles = makeStyles(theme => ({
     inviteForm: {
         position: 'relative',
         padding: theme.spacing(4),
-        margin: theme.spacing(0, 12),
-        [theme.breakpoints.down('sm')]: {
-            margin: 0,
-        },
         backgroundColor: theme.palette.background.white,
         color: theme.palette.text.secondary,
         display: 'flex',

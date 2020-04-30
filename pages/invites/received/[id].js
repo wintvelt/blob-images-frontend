@@ -3,7 +3,6 @@ import { UserContext } from '../../../src/UserContext';
 import Typography from '@material-ui/core/Typography';
 import MuiLink from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
-import Container from '@material-ui/core/Container';
 import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -31,8 +30,9 @@ const ReceivedInvite = (props) => {
     return (
         <main>
             <Toolbar />
-            <Container>
-                <div style={{ height: '32px', zIndex: '99' }}>
+            <Grid container>
+                <Grid item md={1} />
+                <Grid item md={11}>
                     <Link style={{ display: 'flex', alignItems: 'center', color: 'white' }}
                         title={`Back to album page`}
                         href={`/personal/groups/${1}/albums/${2}`}
@@ -40,32 +40,32 @@ const ReceivedInvite = (props) => {
                         <Icon color='secondary' style={{ margin: '0 8px' }}>arrow_back</Icon>
                         <Typography>{'Foto\'s van Blob - Blob in ..ergens..'}</Typography>
                     </Link>
-                </div>
-                <Grid container spacing={8} style={{ marginTop: 0, paddingTop: 0 }}>
-                    <Grid item md={5} xs={12}>
-                        <CardInvite
-                            invitorName={invitorName}
-                            invitedGroup={group}
-                            // stats={['432 photos', 'since 1 Jan 1985']}
-                            imageSrc='/img/cover.jpg'
-                            isHeader
-                        />
-                    </Grid>
-                    <Grid item md={7} xs={12}>
-                        {(user.isAuthenticated) ?
-                            <InviteForm {...props} />
-                            : (user.isAuthenticating) ?
-                                <div style={{
-                                    display: 'flex', height: '100%', color: 'grey',
-                                    alignItems: 'center', justifyContent: 'center'
-                                }}>
-                                    <CircularProgress color='inherit' />
-                                </div>
-                                : <SignupForm />
-                        }
-                    </Grid>
                 </Grid>
-            </Container>
+                <Grid item md={1} />
+                <Grid item md={4} xs={12} style={{ marginTop: '16px' }}>
+                    <CardInvite
+                        invitorName={invitorName}
+                        invitedGroup={group}
+                        imageSrc='/img/cover.jpg'
+                        isHeader
+                    />
+                </Grid>
+                <Grid item md={1} />
+                <Grid item md={5} xs={12} style={{ marginTop: '16px' }}>
+                    {(user.isAuthenticated) ?
+                        <InviteForm {...props} />
+                        : (user.isAuthenticating) ?
+                            <div style={{
+                                display: 'flex', height: '100%', color: 'grey',
+                                alignItems: 'center', justifyContent: 'center'
+                            }}>
+                                <CircularProgress color='inherit' />
+                            </div>
+                            : <SignupForm />
+                    }
+                </Grid>
+                <Grid item md={1} />
+            </Grid>
         </main>
     )
 }

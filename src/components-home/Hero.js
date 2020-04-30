@@ -43,7 +43,7 @@ const Hero = (props) => {
                 />
             }
             <div className={classes.overlay} />
-            <Toolbar />
+            <Toolbar style={{ marginBottom: '32px' }} />
             <Grid container alignItems='center' justify='center' spacing={1}
                 style={{ position: 'relative' }}>
                 {children}

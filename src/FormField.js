@@ -115,7 +115,7 @@ const PasswordField = (props) => {
     };
     return (
         <>
-            <TextField variant='outlined' color='primary' size='small' margin='dense'
+            <TextField variant='outlined' color='primary' size='small' margin='normal'
                 type={(visibility ? 'text' : 'password')}
                 label={field.label} autoComplete={field.autoComplete}
                 error={error}
@@ -184,7 +184,7 @@ export const Field = (props) => {
             : (field.type === 'date') ?
                 <DateField {...props} helperText={helperText} error={error} />
                 : <>
-                    <TextField variant='outlined' color='primary' size='small' margin='dense'
+                    <TextField variant='outlined' color='primary' size='small' margin='normal'
                         type={field.type}
                         label={field.label} autoComplete={field.autoComplete}
                         multiline={field.multiline || undefined}

@@ -14,11 +14,8 @@ import { Field, useFields, newPasswordValidations, validateForm } from '../FormF
 const useStyles = makeStyles(theme => ({
     signupForm: {
         position: 'relative',
-        marginTop: theme.spacing(12),
         marginBottom: '-80px',
         padding: theme.spacing(4),
-        marginLeft: '10%',
-        marginRight: '30%',
         backgroundColor: theme.palette.background.white,
         color: theme.palette.primary.dark,
         display: 'flex',

@@ -15,7 +15,6 @@ import { UserContext } from '../UserContext';
 const useStyles = makeStyles(theme => ({
     loginForm: {
         position: 'relative',
-        marginTop: theme.spacing(10),
         padding: theme.spacing(4),
         backgroundColor: theme.palette.background.white,
         display: 'flex',

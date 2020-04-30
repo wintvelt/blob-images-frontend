@@ -1,6 +1,6 @@
 import React from 'react';
 import Hero from '../src/components-home/Hero';
-import Toolbar from '@material-ui/core/Toolbar';
+import Grid from '@material-ui/core/Grid';
 import LoginForm from '../src/components-login/LoginForm';
 
 const LoginPage = (props) => {
@@ -10,17 +10,11 @@ const LoginPage = (props) => {
             <Hero
                 url='/img/cover.jpg'
             >
-                <Toolbar />
-                <div style={{
-                    height: '300px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
+                <Grid item md={4}>
                     <LoginForm redirect={redirect} />
-                </div>
+                </Grid>                
             </Hero>
-        </main>
+        </main >
     )
 }
 

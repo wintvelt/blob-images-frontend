@@ -36,7 +36,7 @@ const Image = (props) => {
     return <div style={{ position: 'relative', display: 'flex' }}>
         <img alt={alt} src={encodeURI(src)} className={className} />
         {photographerLink && <div style={creditStyle}>
-            <span style={{ fontSize: '12px' }}>
+            <span style={{ fontSize: '12px', color:'rgba(255,255,255,1)' }}>
                 image credit: {' '}
             </span>
             <a style={linkStyle}

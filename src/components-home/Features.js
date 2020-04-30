@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Avatar from '@material-ui/core/Avatar'
+import Hidden from '@material-ui/core/Hidden'
 import Image from '../Image';
 
 const useStyles = makeStyles(theme => ({
@@ -88,7 +89,7 @@ const Features = () => {
                         justify="center"
                         alignItems="center"
                     >
-                        <Grid item xs={4}>
+                        <Grid item md={4}>
                             <Image src={(feature.imageUrl)}
                                 photographer={photographer}
                                 photographerLink={photographerLink}
@@ -99,11 +100,12 @@ const Features = () => {
                                 {title}
                             </Typography>
                             {!steps && descriptions.map((text, i) => (
-                                <Typography key={i} variant="body1"
-                                    paragraph align={alignment} color='textSecondary'>
-                                    {text}
-                                </Typography>
-
+                                <Hidden smDown>
+                                    <Typography key={i} variant="body1"
+                                        paragraph align={alignment} color='textSecondary'>
+                                        {text}
+                                    </Typography>
+                                </Hidden>
                             ))}
                             {steps && steps.map((step, i) => (
                                 <Grid container key={step} alignItems='baseline' spacing={3}
@@ -113,10 +115,11 @@ const Features = () => {
                                     </Grid>
                                     <Grid item style={{ flex: 1 }}>
                                         <Typography variant='h5'>{step}</Typography>
-                                        <Typography variant='body1' color='textSecondary'>
-                                            {descriptions[i]}
-                                        </Typography>
-                                    </Grid>
+                                        <Hidden smDown>
+                                            <Typography variant='body1' color='textSecondary'>
+                                                {descriptions[i]}
+                                            </Typography>
+                                        </Hidden>                                    </Grid>
                                 </Grid>
                             ))}
                         </Grid>

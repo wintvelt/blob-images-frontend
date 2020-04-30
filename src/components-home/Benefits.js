@@ -2,7 +2,6 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-import Container from '@material-ui/core/Container'
 import Icon from '@material-ui/core/Icon';
 
 const useStyles = makeStyles(theme => ({
@@ -10,7 +9,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: theme.spacing(12,8,8,8),
+        padding: theme.spacing(4,8),
         color: 'white',
     },
     icon: {
@@ -50,29 +49,26 @@ const Benefits = () => {
     const classes = useStyles()
 
     return (
-        <Container>
-            {/* Sub featured posts */}
-            <Grid container
-                direction="row"
-                justify="center"
-                alignItems="stretch"
-            >
-                {featureList.map(feature => (
-                    <Grid item key={feature.title} xs={12} md={4} className={classes.feature}>
-                        <Icon color='secondary' className={classes.icon}>
-                            {feature.icon}
-                        </Icon>
-                        <Typography variant="h5" gutterBottom>
-                            {feature.title}
-                        </Typography>
-                        <Typography variant="body1" paragraph align='center'>
-                            {feature.description}
-                        </Typography>
-                    </Grid>
-                ))}
-            </Grid>
-            {/* End sub featured posts */}
-        </Container>
+        <Grid container
+            direction="row"
+            justify="center"
+            alignItems="stretch"
+            style={{ paddingTop: '64px' }}
+        >
+            {featureList.map(feature => (
+                <Grid item key={feature.title} xs={12} md={4} className={classes.feature}>
+                    <Icon color='secondary' className={classes.icon}>
+                        {feature.icon}
+                    </Icon>
+                    <Typography variant="h5" gutterBottom>
+                        {feature.title}
+                    </Typography>
+                    <Typography variant="body1" paragraph align='center'>
+                        {feature.description}
+                    </Typography>
+                </Grid>
+            ))}
+        </Grid>
     )
 }
 

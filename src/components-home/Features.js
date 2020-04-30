@@ -94,7 +94,7 @@ const Features = () => {
                                 photographerLink={photographerLink}
                                 className={classes.image} />
                         </Grid>
-                        <Grid item xs={5} className={classes.textBlock}>
+                        <Grid item md={5} className={classes.textBlock}>
                             <Typography variant="h4" color="textSecondary" gutterBottom align={alignment}>
                                 {title}
                             </Typography>

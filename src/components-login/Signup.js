@@ -145,7 +145,12 @@ const SignupForm = (props) => {
         }
     }
 
-    const formTitle = title || 'Sign up today';
+    const FormTitle = title || (() => (
+        <Typography component="h1" variant="h4" color="primary"
+            align='center' gutterBottom>
+            Sign up today!
+        </Typography>));
+
     const formSubtitle = subtitle || 'Enter your info, then invite friends and family, ' +
         'and share your first photos!';
 
@@ -154,37 +159,34 @@ const SignupForm = (props) => {
         : 'Become a member';
 
     return (
-            <form name='signup-form' noValidate>
-                <Paper className={classes.signupForm}>
-                    <Typography component="h1" variant="h4" color="primary"
-                        align='center' gutterBottom>
-                        {formTitle}
+        <form name='signup-form' noValidate>
+            <Paper className={classes.signupForm}>
+                <FormTitle />
+                <Typography variant='subtitle1' color='primary'>
+                    {formSubtitle}
+                </Typography>
+                {Object.keys(fieldConfig).map(fieldName =>
+                    <Field key={fieldName}
+                        fieldName={fieldName}
+                        field={fields[fieldName]}
+                        onChange={onChange(fieldName)}
+                        showValidation={fields.showValidation} />
+                )}
+                {loading.message &&
+                    <Typography variant='body2' className={classes.info} color='error'>
+                        <EmailHelper message={loading.message}
+                            onForgotPsw={onForgotPsw}
+                            email={fields.email.value}
+                            className={classes.smallButton} />
                     </Typography>
-                    <Typography variant='subtitle1' color='primary'>
-                        {formSubtitle}
-                    </Typography>
-                    {Object.keys(fieldConfig).map(fieldName =>
-                        <Field key={fieldName}
-                            fieldName={fieldName}
-                            field={fields[fieldName]}
-                            onChange={onChange(fieldName)}
-                            showValidation={fields.showValidation} />
-                    )}
-                    {loading.message &&
-                        <Typography variant='body2' className={classes.info} color='error'>
-                            <EmailHelper message={loading.message}
-                                onForgotPsw={onForgotPsw}
-                                email={fields.email.value} 
-                                className={classes.smallButton}/>
-                        </Typography>
-                    }
-                    <Button variant='contained' color='secondary' className={classes.submit}
-                        disabled={loading.state}
-                        onClick={onSubmit}>
-                        {buttonContent}
-                    </Button>
-                </Paper>
-            </form>
+                }
+                <Button variant='contained' color='secondary' className={classes.submit}
+                    disabled={loading.state}
+                    onClick={onSubmit}>
+                    {buttonContent}
+                </Button>
+            </Paper>
+        </form>
     )
 };
 

@@ -1,32 +1,41 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { UserContext } from '../../../src/UserContext';
 import Typography from '@material-ui/core/Typography';
-import MuiLink from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
 import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from '../../../src/UnstyledLink';
 import InviteForm from '../../../src/InviteForm';
 import CardInvite from '../../../src/components-invite/CardInvite';
 import SignupForm from '../../../src/components-login/Signup';
+import LoginForm from '../../../src/components-login/LoginForm';
 
 const ReceivedInvite = (props) => {
     const userContext = useContext(UserContext);
     const { user } = userContext;
-    const { isNewInvite, invitorName, invitorEmail, group } = props;
-    const title = (isNewInvite) ?
-        'You are invited'
-        : 'Already accepted';
-    const subTitle = 'Looks like you already accepted your invitation from ' + invitorName
-        + ' to join ' + group;
-    const paragraph = <Typography variant="h5" color="textPrimary" paragraph>
-        Login to check out {' '}
-        <MuiLink href={'#' + group}>{group}'s page</MuiLink>
-        {' '}
-                directly
-            </Typography>;
+    const { profile } = user;
+    const { isNewInvite, invitorName, group, expirationDate, isToEmail } = props;
+    const [showLogin, setShowLogin] = useState(false);
+
+    const onClickShow = (e) => {
+        e.preventDefault();
+        setShowLogin(!showLogin);
+    };
+    const formTitle = () => {
+        return <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Typography component="h1" variant="h4" color="primary">
+                Sign up to join
+            </Typography>
+            <Typography variant="body2" align='right' style={{ flexGrow: 1 }}>
+                Already have an account?
+            </Typography>
+            <Button onClick={onClickShow}>Login</Button>
+        </div>
+    }
+
     return (
         <main>
             <Toolbar />
@@ -47,6 +56,7 @@ const ReceivedInvite = (props) => {
                         invitorName={invitorName}
                         invitedGroup={group}
                         imageSrc='/img/cover.jpg'
+                        expirationDate={expirationDate}
                         isHeader
                     />
                 </Grid>
@@ -61,7 +71,15 @@ const ReceivedInvite = (props) => {
                             }}>
                                 <CircularProgress color='inherit' />
                             </div>
-                            : <SignupForm />
+                            : (showLogin) ?
+                                <LoginForm 
+                                    title={`Log in to join ${group}`}
+                                    onSignup={onClickShow}
+                                />
+                                : <SignupForm
+                                    title={formTitle}
+                                    subtitle={`To join ${group} and start your own groups`}
+                                />
                     }
                 </Grid>
                 <Grid item md={1} />
@@ -73,24 +91,22 @@ const ReceivedInvite = (props) => {
 export async function getServerSideProps(context) {
     const { params, res } = context;
     const { id } = params;
-    const [isValid, isOpen, isExpired] = (id === '1') ?
-        [true, true, false]
-        : (id === '2') ? [true, false, false]
-            : (id === '3') ? [true, true, true]
-                : [false, false, false];
-    console.log({ id, isValid });
+    const isValid = !(id === '1');
     if (!isValid) {
         res.writeHead(302, {
             Location: '/invites/invalid'
         });
         res.end();
     }
+    const isToEmail = (id === '2');
     return {
         props: {
-            isValid, isOpen, isExpired,
+            isValid,
             invitorEmail: 'wintvelt@me.com',
             invitorName: 'Wouter',
-            group: 'Blob'
+            expirationDate: '2020-05-30',
+            group: 'Blob',
+            isToEmail
         }
     }
 }

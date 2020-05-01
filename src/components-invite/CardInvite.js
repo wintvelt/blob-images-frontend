@@ -1,7 +1,7 @@
 import React from 'react';
+import moment from 'moment';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const InviteCardContent = (props) => {
-    const { invitorName, invitedGroup, imageSrc, isNew } = props;
+    const { invitorName, invitedGroup, expirationDate, imageSrc, isNew } = props;
     const classes = useStyles();
 
     return <>
@@ -75,7 +75,7 @@ const InviteCardContent = (props) => {
         <Typography variant="subtitle1" component="p">
             <span className={classes.text}>to join</span>
         </Typography>
-        <Typography variant='h3' style={{fontFamily: "'Pinyon Script', cursive"}}>
+        <Typography variant='h3' style={{ fontFamily: "'Pinyon Script', cursive" }}>
             <span className={classes.text}>{invitedGroup}</span>
         </Typography>
         <Typography variant="subtitle1" component="p">
@@ -83,7 +83,10 @@ const InviteCardContent = (props) => {
         </Typography>
         <img src='/img/invite_divider.png' alt='divider' style={{ width: '64px', position: 'relative' }} />
         <Typography variant="subtitle1" color="primary">
-            <span className={classes.text}>R.S.V.P.</span>
+            <span className={classes.text}>
+                R.S.V.P. before
+                {' '}{moment(expirationDate, 'YYYY-MM-DD').format('DD MMM YYYY')}
+            </span>
         </Typography>
 
     </>

@@ -66,7 +66,7 @@ const fieldConfig = {
 
 
 const LoginForm = (props) => {
-    const { title } = props;
+    const { title, onSignup } = props;
     const userContext = useContext(UserContext);
     const router = useRouter();
     const classes = useStyles();
@@ -135,8 +135,8 @@ const LoginForm = (props) => {
         : 'Login';
 
     return (
-            <form name='login-form' noValidate>
-        <Paper className={classes.loginForm}>
+        <form name='login-form' noValidate>
+            <Paper className={classes.loginForm}>
                 <Typography component="h1" variant="h4" color="primary"
                     align='center' gutterBottom>
                     {title || 'Welcome back!'}
@@ -173,14 +173,19 @@ const LoginForm = (props) => {
                     <Typography variant='caption' gutterBottom>
                         <Button onClick={onForgotPsw} className={classes.smallButton}>
                             Forgot password
-                            </Button>
+                        </Button>
                     </Typography>
                     <Typography variant='caption' gutterBottom>
-                        <Link href='#' color='textPrimary'>Sign up</Link>
+                        {(onSignup) ?
+                            <Button onClick={onSignup} className={classes.smallButton}>
+                                Sign ON!
+                            </Button>
+                            : <Link href='/' color='textPrimary'>Sign up</Link>
+                        }
                     </Typography>
                 </div>
-        </Paper>
-            </form>
+            </Paper>
+        </form>
     )
 };
 

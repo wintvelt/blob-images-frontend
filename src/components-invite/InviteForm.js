@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { UserContext } from './UserContext';
+import { UserContext } from '../UserContext';
 import { Auth } from "aws-amplify";
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Link from './Link';
-import { Field, useFields, validateForm } from './FormField';
+import Link from '../Link';
+import { Field, useFields, validateForm } from '../FormField';
 
 const useStyles = makeStyles(theme => ({
     inviteForm: {
@@ -44,10 +44,9 @@ const fieldConfig = {
 
 
 const InviteForm = (props) => {
-    const { id, invitorName, albumid } = props;
-    const isNew = albumid && (albumid === 'new');
+    const { id, invitorName, inviteeId, isToEmail, isNew } = props;
     const userContext = useContext(UserContext);
-    const isLoggedIn = userContext.user && userContext.user.isAuthenticated;
+    const { user } = userContext;
     const classes = useStyles();
     const [fields, setFields] = useFields(fieldConfig);
     const [saveFailed, setSaveFailed] = useState(false);
@@ -80,7 +79,9 @@ const InviteForm = (props) => {
         : 'Respectfully decline';
     const title = (isNew) ? 'Invite a friend' : 'Will you join?';
     const subtitle = (isNew) ? 'Best to personalize your invite'
-        : `Send a response to ${invitorName}`;
+        : `Send a response to ${invitorName}` + ((isToEmail && user && user.email !== inviteeId)?
+            `. NB: this invite was sent to ${inviteeId}. It would be decent only to accept if this is you`
+            : '');
 
     return (
         <form name='login-form' noValidate>

@@ -27,6 +27,7 @@ const InvalidInvite = () => {
         {[
             'Maybe the invite has expired (invites are valid for 30 days)',
             'Or, the invite was already accepted',
+            'Or, the invite was addressed to someone else',
             'Or, an invite with this id simply does not exist'
         ].map((line, i) => (
             <Typography key={i} variant='body1' gutterBottom>{line}</Typography>))

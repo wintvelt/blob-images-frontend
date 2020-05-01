@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../../src/UserContext';
+import { useRouter } from 'next/router';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import Icon from '@material-ui/core/Icon';
@@ -9,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from '../../../src/UnstyledLink';
-import InviteForm from '../../../src/InviteForm';
+import InviteForm from '../../../src/components-invite/InviteForm';
 import CardInvite from '../../../src/components-invite/CardInvite';
 import SignupForm from '../../../src/components-login/Signup';
 import LoginForm from '../../../src/components-login/LoginForm';
@@ -18,8 +19,18 @@ const ReceivedInvite = (props) => {
     const userContext = useContext(UserContext);
     const { user } = userContext;
     const { profile } = user;
-    const { invitorName, group, expirationDate, isToEmail } = props;
+    const router = useRouter();
+    const { invitorName, group, expirationDate, isToEmail, inviteeId } = props;
     const [showLogin, setShowLogin] = useState(false);
+
+    const isAuthenticated = user.isAuthenticated && (isToEmail || profile.sub === inviteeId);
+    const isAuthenticating = user.isAuthenticating || (!isToEmail && profile && profile.sub !== inviteeId);
+
+    useEffect(() => {
+        if (!isToEmail && profile && profile.sub !== inviteeId) {
+            router.push('/invites/invalid');
+        }
+    }, [profile, isToEmail]);
 
     const onClickShow = (e) => {
         e.preventDefault();
@@ -44,14 +55,14 @@ const ReceivedInvite = (props) => {
                 <Hidden mdDown>
                     <Grid item md={1} />
                     <Grid item md={11}>
-                        {user.isAuthenticated && <Link style={{ display: 'flex', alignItems: 'center', color: 'white' }}
+                        {isAuthenticated && <Link style={{ display: 'flex', alignItems: 'center', color: 'white' }}
                             title={`Back to album page`}
                             href={`/personal/groups/${1}/albums/${2}`}
                         >
                             <Icon color='secondary' style={{ margin: '0 8px' }}>arrow_back</Icon>
                             <Typography>{'Foto\'s van Blob - Blob in ..ergens..'}</Typography>
                         </Link>}
-                        {!user.isAuthenticated && <div style={{ height: '24px' }} />}
+                        {!isAuthenticated && <div style={{ height: '24px' }} />}
                     </Grid>
                 </Hidden>
                 <Grid item md={1} />
@@ -66,9 +77,9 @@ const ReceivedInvite = (props) => {
                 </Grid>
                 <Grid item md={1} />
                 <Grid item md={5} xs={12} style={{ marginTop: '16px' }}>
-                    {(user.isAuthenticated) ?
+                    {(isAuthenticated) ?
                         <InviteForm {...props} />
-                        : (user.isAuthenticating) ?
+                        : (isAuthenticating) ?
                             <div style={{
                                 display: 'flex', height: '100%', color: 'grey',
                                 alignItems: 'center', justifyContent: 'center'
@@ -103,6 +114,10 @@ export async function getServerSideProps(context) {
         res.end();
     }
     const isToEmail = (id === '2');
+    const inviteeId = (id === '2') ? 'claire@intvelt.com' :
+        (id === '3') ?
+            '5c7585d1-5c62-4b12-8f06-1a2c77a54972' : 'someone else';
+
     return {
         props: {
             isValid,
@@ -110,7 +125,8 @@ export async function getServerSideProps(context) {
             invitorName: 'Wouter',
             expirationDate: '2020-05-30',
             group: 'Blob',
-            isToEmail
+            isToEmail,
+            inviteeId,
         }
     }
 }

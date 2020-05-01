@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -17,7 +18,7 @@ const ReceivedInvite = (props) => {
     const userContext = useContext(UserContext);
     const { user } = userContext;
     const { profile } = user;
-    const { isNewInvite, invitorName, group, expirationDate, isToEmail } = props;
+    const { invitorName, group, expirationDate, isToEmail } = props;
     const [showLogin, setShowLogin] = useState(false);
 
     const onClickShow = (e) => {
@@ -27,7 +28,7 @@ const ReceivedInvite = (props) => {
     const formTitle = () => {
         return <div style={{ display: 'flex', alignItems: 'center' }}>
             <Typography component="h1" variant="h4" color="primary">
-                Sign up to join
+                Sign up
             </Typography>
             <Typography variant="body2" align='right' style={{ flexGrow: 1 }}>
                 Already have an account?
@@ -40,16 +41,19 @@ const ReceivedInvite = (props) => {
         <main>
             <Toolbar />
             <Grid container>
-                <Grid item md={1} />
-                <Grid item md={11}>
-                    <Link style={{ display: 'flex', alignItems: 'center', color: 'white' }}
-                        title={`Back to album page`}
-                        href={`/personal/groups/${1}/albums/${2}`}
-                    >
-                        <Icon color='secondary' style={{ margin: '0 8px' }}>arrow_back</Icon>
-                        <Typography>{'Foto\'s van Blob - Blob in ..ergens..'}</Typography>
-                    </Link>
-                </Grid>
+                <Hidden mdDown>
+                    <Grid item md={1} />
+                    <Grid item md={11}>
+                        {user.isAuthenticated && <Link style={{ display: 'flex', alignItems: 'center', color: 'white' }}
+                            title={`Back to album page`}
+                            href={`/personal/groups/${1}/albums/${2}`}
+                        >
+                            <Icon color='secondary' style={{ margin: '0 8px' }}>arrow_back</Icon>
+                            <Typography>{'Foto\'s van Blob - Blob in ..ergens..'}</Typography>
+                        </Link>}
+                        {!user.isAuthenticated && <div style={{ height: '24px' }} />}
+                    </Grid>
+                </Hidden>
                 <Grid item md={1} />
                 <Grid item md={4} xs={12} style={{ marginTop: '16px' }}>
                     <CardInvite
@@ -72,7 +76,7 @@ const ReceivedInvite = (props) => {
                                 <CircularProgress color='inherit' />
                             </div>
                             : (showLogin) ?
-                                <LoginForm 
+                                <LoginForm
                                     title={`Log in to join ${group}`}
                                     onSignup={onClickShow}
                                 />

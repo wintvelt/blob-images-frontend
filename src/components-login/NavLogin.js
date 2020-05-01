@@ -80,7 +80,7 @@ export default function NavLogin(props) {
         Auth.signOut();
         setUser({ profile: false, isAuthenticated: false })
         setAnchorEl(null);
-        router.replace('/');
+        router.push('/');
     }
     const handleMenuClick = (action) => {
         if (action === 'logout') return handleLogout;

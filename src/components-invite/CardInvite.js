@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const InviteCardContent = (props) => {
-    const { invitorName, invitedGroup, expirationDate, imageSrc, isNew } = props;
+    const { invitorName, invitedGroup, expirationDate, imageSrc, isNew, isAccepted } = props;
     const classes = useStyles();
 
     return <>
@@ -88,7 +88,8 @@ const InviteCardContent = (props) => {
                 {' '}{moment(expirationDate, 'YYYY-MM-DD').format('DD MMM YYYY')}
             </span>
         </Typography>
-
+        {(isAccepted) && <img src='/img/accepted.png' alt='accepted'
+            style={{ position: 'absolute', top: 0, right: 0 }} />}
     </>
 }
 

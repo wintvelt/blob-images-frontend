@@ -15,13 +15,33 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-          <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap" 
+          <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap"
             rel="stylesheet"></link>
           <style dangerouslySetInnerHTML={{
             __html: `html {
                 scroll-behavior: smooth;
               }`
           }} />
+          <style>
+            {`
+            .pulse {
+              width: 100%;
+              height: 100%;
+              animation: pulse 1s alternate infinite;
+              background-color: #bdbdbd;
+              margin: 20px;
+            }
+
+            @keyframes pulse {
+              0% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 0;
+              }
+            }
+            `}
+          </style>
         </Head>
         <body style={{
           background: 'linear-gradient(355deg, rgba(70,52,78,1) 10%, rgba(90,85,96,1) 90%)'

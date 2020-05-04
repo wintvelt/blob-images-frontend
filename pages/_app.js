@@ -29,10 +29,10 @@ export default function MyApp(props) {
         try {
             await Auth.currentSession();
             const user = await Auth.currentUserInfo();
-            setUser({ 
+            setUser({
                 profile: user.attributes,
                 isAuthenticated: true
-             });
+            });
         }
         catch (e) {
             if (e !== 'No current user') {
@@ -40,7 +40,7 @@ export default function MyApp(props) {
             }
         }
 
-        setUser({isAuthenticating: false});
+        setUser({ isAuthenticating: false });
     }
 
     return (
@@ -49,15 +49,15 @@ export default function MyApp(props) {
                 <title>Photo Duck</title>
                 <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
             </Head>
-            <UserContext.Provider value={{ user, setUser }}>
-                <ThemeProvider theme={theme}>
+            <ThemeProvider theme={theme}>
+                <UserContext.Provider value={{ user, setUser }}>
                     <CssBaseline />
                     <Nav />
                     <Component {...pageProps} />
                     <Footer />
-                </ThemeProvider>
-            </UserContext.Provider>
-        </React.Fragment>
+                </UserContext.Provider>
+            </ThemeProvider>
+        </React.Fragment >
     );
 }
 

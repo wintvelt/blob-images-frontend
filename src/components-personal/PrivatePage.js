@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../components-generic/UserContext';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hero from '../components-home/Hero';

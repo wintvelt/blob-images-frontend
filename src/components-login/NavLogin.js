@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Link from '../Link';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../components-generic/UserContext';
 import { Auth } from 'aws-amplify';
 
 const userMenu = [

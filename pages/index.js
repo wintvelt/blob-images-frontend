@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { UserContext } from '../src/UserContext';
+import { UserContext } from '../src/components-generic/UserContext';
 import Grid from '@material-ui/core/Grid';
 
 import Hero from '../src/components-home/Hero';

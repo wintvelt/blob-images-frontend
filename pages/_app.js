@@ -9,7 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
 import Nav from '../src/Nav';
 import Footer from '../src/Footer';
-import { initialUser, userReducer, UserContext } from '../src/UserContext';
+import { initialUser, userReducer, UserContext } from '../src/components-generic/UserContext';
 
 Amplify.configure(amplifyConfig);
 

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Auth } from "aws-amplify";
 import { useRouter } from 'next/router';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../components-generic/UserContext';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'

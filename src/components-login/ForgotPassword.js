@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../components-generic/UserContext';
 import { useRouter } from 'next/router';
 import { Auth } from "aws-amplify";
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';

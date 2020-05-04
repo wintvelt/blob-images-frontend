@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { UserContext } from '../UserContext';
+import { UserContext } from '../components-generic/UserContext';
 import { Auth } from "aws-amplify";
 
 import { makeStyles } from '@material-ui/core/styles'

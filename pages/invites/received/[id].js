@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { UserContext } from '../../../src/UserContext';
+import { UserContext } from '../../../src/components-generic/UserContext';
 import { useRouter } from 'next/router';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';

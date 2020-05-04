@@ -28,16 +28,14 @@ export default class MyDocument extends Document {
               width: 100%;
               height: 100%;
               animation: pulse 1s alternate infinite;
-              background-color: #bdbdbd;
-              margin: 20px;
             }
 
             @keyframes pulse {
               0% {
-                opacity: 1;
+                background-color: #ccc9cf;
               }
               100% {
-                opacity: 0;
+                background-color: #ffffff;
               }
             }
             `}

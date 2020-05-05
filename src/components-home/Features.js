@@ -100,8 +100,8 @@ const Features = () => {
                                 {title}
                             </Typography>
                             {!steps && descriptions.map((text, i) => (
-                                <Hidden smDown>
-                                    <Typography key={i} variant="body1"
+                                <Hidden smDown key={i}>
+                                    <Typography variant="body1"
                                         paragraph align={alignment} color='textSecondary'>
                                         {text}
                                     </Typography>

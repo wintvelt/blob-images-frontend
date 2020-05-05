@@ -82,7 +82,7 @@ const GroupContent = (props) => {
     const { title, subtitle, stats } = data;
     return <CardContent className={contentClass}>
         <Grid container>
-            <Grid item md={10} xs={12}>
+            <Grid item md={11} xs={12}>
                 <Typography gutterBottom variant='h2' color='inherit'>
                     <span className={textClass}>{title}</span>
                 </Typography>
@@ -90,7 +90,7 @@ const GroupContent = (props) => {
                     <span className={textClass}>{subtitle}</span>
                 </Typography>}
             </Grid>
-            <Grid item md={2} xs={12}>
+            <Grid item md={1} xs={12}>
                 {stats && <Typography variant="caption" color="inherit" component="p"
                     className={textClass}>
                     {stats.map((stat) => (

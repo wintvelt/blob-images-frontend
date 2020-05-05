@@ -3,7 +3,6 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Toolbar from '@material-ui/core/Toolbar';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
@@ -17,12 +16,15 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         backgroundColor: theme.palette.background.paper,
         width: '100%',
-        height: '288px'
+        height: '384px',
     },
     content: {
         position: 'relative',
         color: 'white',
-        padding: theme.spacing(3),
+        padding: theme.spacing(8,3,3,3),
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center'
     },
     groupMedia: {
         position: 'absolute',
@@ -107,7 +109,6 @@ const GroupHeaderLayout = ({ source }) => {
     return <Card className={classes.card}>
         <DataProvider source={source}>
             <GroupImage imageClass={classes.groupMedia} buttonClass={classes.imageEdit} />
-            <Toolbar />
             <GroupContent contentClass={classes.content} textClass={classes.groupText} />
         </DataProvider>
     </Card>

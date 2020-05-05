@@ -1,15 +1,13 @@
 import React from 'react';
-import Hero from '../../src/components-home/Hero';
 import PrivatePage from '../../src/components-personal/PrivatePage';
+import GroupsHeader from '../../src/components-personal/GroupsHeader';
+import { Toolbar } from '@material-ui/core';
 
 const GroupsMain = () => {
     return (
         <main>
-            <Hero
-                url='/img/album_2.jpg'
-                title='Welcome to your groups pages'
-            >
-            </Hero>
+            <Toolbar />
+            <GroupsHeader />
         </main>
     )
 };

@@ -32,11 +32,12 @@ export const useApiData = () => {
     return data;
 }
 
-const DataProvider = ({ source, children }) => {
+const DataProvider = ({ source, className, children }) => {
     const { isLoading, isError, data } = useData(source);
+    const skeletonClass = 'pulse ' + (className || '');
     return <DataContext.Provider value={{ data }}>
         {(isLoading || isError) ?
-            <div className='pulse' />
+            <div className={skeletonClass} />
             : children
         }
     </DataContext.Provider>

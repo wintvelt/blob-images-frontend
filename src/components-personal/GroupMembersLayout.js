@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(2, 0),
     },
     skeleton: {
-        height: '48px',
+        height: '64px',
         width: '100%',
     },
     panel: {
@@ -29,8 +29,8 @@ const useStyles = makeStyles(theme => ({
         marginRight: theme.spacing(2),
     },
     avatar: {
-        width: theme.spacing(4),
-        height: theme.spacing(4),
+        width: theme.spacing(5),
+        height: theme.spacing(5),
         border: '1px solid white',
         fontSize: '12px',
     }

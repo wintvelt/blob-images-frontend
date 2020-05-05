@@ -7,7 +7,7 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 const getDataFrom = async (source) => {
-    await timeout(10000);
+    await timeout(3000);
     return source;
 }
 

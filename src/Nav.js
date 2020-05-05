@@ -13,7 +13,7 @@ import NavLogin from './components-login/NavLogin';
 
 const useStyles = makeStyles((theme) => ({
     nav: {
-        backgroundColor: 'rgba(90,85,96,.9)',
+        backgroundColor: 'rgba(90,85,96,.5)',
         color: 'white',
         zIndex: theme.zIndex.drawer + 1,
     },

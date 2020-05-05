@@ -15,5 +15,5 @@ export const userReducer = (state, newState) => {
 
 export const UserContext = createContext({
     user: initialUser,
-    setUser: () => {}
+    setUser: () => { }
 });

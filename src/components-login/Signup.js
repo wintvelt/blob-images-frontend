@@ -112,7 +112,8 @@ const SignupForm = (props) => {
                     username: fields.email.value,
                     password: fields.password.value,
                     attributes: {
-                        name: fields.name.value,
+                        'custom:name': fields.name.value,
+                        'custom:avatarUrl': '/img/me.jpg'
                     },
                 });
                 userContext.setUser({

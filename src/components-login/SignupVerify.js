@@ -144,7 +144,7 @@ const VerifySignupForm = (props) => {
         }
     }
 
-    const formTitle = (email && email === userContent.user.profile.email)? 
+    const formTitle = (email && email === userContext.user.profile.email)? 
         'Check your inbox'
         :'Validate your account';
     const formSubtitle = 'Just one more step. ' +

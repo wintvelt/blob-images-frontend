@@ -68,7 +68,8 @@ export default function NavLogin(props) {
     const userContext = useContext(UserContext);
     const router = useRouter();
     const { user, setUser } = userContext;
-    const { name, avatarUrl } = user.profile || {};
+    const name = user.profile['custom:name'];
+    const avatarUrl = user.profile['custom:avatarUrl'];
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget)

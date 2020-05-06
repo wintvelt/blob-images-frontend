@@ -8,8 +8,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
-import DataProvider, { useApiData } from '../../src/components-generic/DataProvider';
-
+import { useApiData } from '../../src/components-generic/DataProvider';
+import { TextSkeleton } from '../../src/components-generic/Skeleton';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     content: {
         position: 'relative',
         color: 'white',
-        padding: theme.spacing(8,3,3,3),
+        padding: theme.spacing(8, 3, 3, 3),
         height: '100%',
         display: 'flex',
         alignItems: 'center'
@@ -80,17 +80,17 @@ const GroupImage = (props) => {
 
 const GroupContent = (props) => {
     const { contentClass, textClass } = props;
-    const data = useApiData();
-    const { title, subtitle, stats } = data;
+    const { data, isLoading, isError } = useApiData();
+    const { title, subtitle, stats } = data || {};
     return <CardContent className={contentClass}>
         <Grid container>
             <Grid item md={11} xs={12}>
                 <Typography gutterBottom variant='h2' color='inherit'>
-                    <span className={textClass}>{title}</span>
+                    <TextSkeleton className={textClass}>{title}</TextSkeleton>
                 </Typography>
-                {subtitle && <Typography variant="subtitle1" color="inherit" component="p">
-                    <span className={textClass}>{subtitle}</span>
-                </Typography>}
+                <Typography variant="subtitle1" color="inherit" component="p">
+                    <TextSkeleton className={textClass}>{subtitle}</TextSkeleton>
+                </Typography>
             </Grid>
             <Grid item md={1} xs={12}>
                 {stats && <Typography variant="caption" color="inherit" component="p"
@@ -104,13 +104,11 @@ const GroupContent = (props) => {
     </CardContent>
 }
 
-const GroupHeaderLayout = ({ source }) => {
+const GroupHeaderLayout = () => {
     const classes = useStyles();
     return <Card className={classes.card}>
-        <DataProvider source={source}>
-            <GroupImage imageClass={classes.groupMedia} buttonClass={classes.imageEdit} />
-            <GroupContent contentClass={classes.content} textClass={classes.groupText} />
-        </DataProvider>
+        <GroupImage imageClass={classes.groupMedia} buttonClass={classes.imageEdit} />
+        <GroupContent contentClass={classes.content} textClass={classes.groupText} />
     </Card>
 }
 

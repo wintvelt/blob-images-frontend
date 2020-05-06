@@ -24,6 +24,9 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: theme.spacing(1),
         paddingRight: theme.spacing(1),
     },
+    summary: {
+        height: '64px',
+    },
     panelTitle: {
         alignSelf: 'center',
         marginRight: theme.spacing(2),
@@ -45,9 +48,11 @@ const initials = (name) => {
 }
 
 const MemberSummary = (props) => {
-    const { avatarClass, panelTitleClass } = props;
-    const members = useApiData();
+    const { avatarClass, panelTitleClass, summaryClass } = props;
+    const { data } = useApiData();
+    const members = data || [];
     return <ExpansionPanelSummary
+        className={summaryClass}
         expandIcon={<Icon>expand_more</Icon>}
         aria-controls="panel1a-content"
         id="panel1a-header"
@@ -84,7 +89,8 @@ const GroupMembersLayout = ({ source }) => {
     return <div className={classes.container}>
         <DataProvider source={source} className={classes.skeleton}>
             <ExpansionPanel className={classes.panel}>
-                <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle} />
+                <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle}
+                    summaryClass={classes.summary} />
                 <MemberDetails contentClass={classes.content} textClass={classes.groupText} />
             </ExpansionPanel>
         </DataProvider>

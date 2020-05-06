@@ -7,7 +7,7 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 const getDataFrom = async (source) => {
-    await timeout(3000);
+    await timeout(10000);
     return source;
 }
 
@@ -27,19 +27,18 @@ const useData = (source) => {
     return data;
 }
 
-export const useApiData = () => {
-    const { data } = useContext(DataContext);
-    return data;
+export const useApiData = (key) => {
+    const context = useContext(DataContext);
+    return {
+        ...context,
+        data: (key && context.data)? context.data[key] : context.data
+    };
 }
 
-const DataProvider = ({ source, className, children }) => {
+const DataProvider = ({ source, children }) => {
     const { isLoading, isError, data } = useData(source);
-    const skeletonClass = 'pulse ' + (className || '');
     return <DataContext.Provider value={{ data }}>
-        {(isLoading || isError) ?
-            <div className={skeletonClass} />
-            : children
-        }
+        {children}
     </DataContext.Provider>
 }
 

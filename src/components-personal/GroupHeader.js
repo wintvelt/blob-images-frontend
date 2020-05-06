@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
+import DataProvider from '../../src/components-generic/DataProvider';
 import GroupHeaderLayout from './GroupHeaderLayout';
 
 const GroupHeader = () => {
@@ -18,7 +19,9 @@ const GroupHeader = () => {
         image: '/cover_2.jpg',
         userIsAdmin: true,
     }
-    return <GroupHeaderLayout source={source} />
+    return <DataProvider source={source}>
+        <GroupHeaderLayout />
+    </DataProvider>
 }
 
 export default GroupHeader;

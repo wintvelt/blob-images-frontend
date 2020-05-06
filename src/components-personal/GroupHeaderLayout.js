@@ -80,8 +80,8 @@ const GroupImage = (props) => {
 
 const GroupContent = (props) => {
     const { contentClass, textClass } = props;
-    const { data, isLoading, isError } = useApiData();
-    const { title, subtitle, stats } = data || {};
+    const data = useApiData();
+    const { title, subtitle, stats } = data;
     return <CardContent className={contentClass}>
         <Grid container>
             <Grid item md={11} xs={12}>

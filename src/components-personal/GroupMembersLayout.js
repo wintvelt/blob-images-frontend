@@ -4,12 +4,11 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { makeStyles } from '@material-ui/core/styles';
 
 import DataProvider, { useApiData } from '../../src/components-generic/DataProvider';
-
+import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -40,6 +39,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const initials = (name) => {
+    if (!name) return '';
     return name.split(' ').map(word => {
         return word[0]
     }).filter(letter => {
@@ -49,8 +49,8 @@ const initials = (name) => {
 
 const MemberSummary = (props) => {
     const { avatarClass, panelTitleClass, summaryClass } = props;
-    const { data } = useApiData();
-    const members = data || [];
+    const data = useApiData();
+    const members = data.members || [ {}, {}, {} ];
     return <ExpansionPanelSummary
         className={summaryClass}
         expandIcon={<Icon>expand_more</Icon>}
@@ -61,11 +61,11 @@ const MemberSummary = (props) => {
             Members:
         </Typography>
         <AvatarGroup max={10}>
-            {members.map((member) => (
-                <Avatar key={member.name} alt={member.name} src={member.avatar}
+            {members.map((member, i) => (
+                <AvatarSkeleton key={member.name || i} alt={member.name} src={member.avatar}
                     className={avatarClass}>
                     {(!member.image && initials(member.name))}
-                </Avatar>
+                </AvatarSkeleton>
             ))}
         </AvatarGroup>
     </ExpansionPanelSummary>

@@ -7,7 +7,7 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 const getDataFrom = async (source) => {
-    await timeout(10000);
+    await timeout(3000);
     return source;
 }
 
@@ -28,11 +28,10 @@ const useData = (source) => {
 }
 
 export const useApiData = (key) => {
-    const context = useContext(DataContext);
-    return {
-        ...context,
-        data: (key && context.data)? context.data[key] : context.data
-    };
+    const { data } = useContext(DataContext);
+    return (key && data) ?
+        data[key]
+        : data || {};
 }
 
 const DataProvider = ({ source, children }) => {

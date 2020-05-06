@@ -32,8 +32,8 @@ export default class MyDocument extends Document {
 
             @keyframes pulse {
               0% {
-                background-color: lightgrey;
-                color: lightgrey;
+                background-color: #E2DFE6;
+                color: #E2DFE6;
               }
               100% {
                 background-color: #ccc9cf;

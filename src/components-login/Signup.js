@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Link from '../Link';
+import Link from '../components-generic/Link';
 import { Field, useFields, newPasswordValidations, validateForm } from '../FormField';
 
 const useStyles = makeStyles(theme => ({

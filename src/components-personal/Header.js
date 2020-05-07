@@ -9,11 +9,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const GroupsHeader = () => {
+const Header = ({children}) => {
     const classes = useStyles();
     return <Typography variant='h5' component='h2' className={classes.header}>
-        Your Groups
+        {children}
     </Typography>
 }
 
-export default GroupsHeader;
+export default Header;

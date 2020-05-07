@@ -1,13 +1,18 @@
 import React from 'react';
 import PrivatePage from '../../src/components-personal/PrivatePage';
-import GroupsHeader from '../../src/components-personal/GroupsHeader';
+import Header from '../../src/components-personal/Header';
 import { Toolbar } from '@material-ui/core';
+
+import GroupList from '../../src/components-personal/GroupList';
 
 const GroupsMain = () => {
     return (
         <main>
             <Toolbar />
-            <GroupsHeader />
+            <Header>
+                Your Groups
+            </Header>
+            <GroupList />
         </main>
     )
 };

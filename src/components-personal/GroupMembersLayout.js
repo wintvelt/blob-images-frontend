@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { makeStyles } from '@material-ui/core/styles';
 
-import DataProvider, { useApiData } from '../../src/components-generic/DataProvider';
+import { useApiData } from '../../src/components-generic/DataProvider';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 
 const useStyles = makeStyles(theme => ({
@@ -45,9 +45,10 @@ const initials = (name) => {
 }
 
 const MemberSummary = (props) => {
-    const { avatarClass, panelTitleClass, summaryClass, members } = props;
-    const membersList = members.data || [{}, {}, {}];
-    const isLoading = members.isLoading;
+    const { avatarClass, panelTitleClass, summaryClass, members, isLoading } = props;
+    const membersList = (isLoading) ?
+        [{}, {}, {}]
+        : members;
     return <ExpansionPanelSummary
         className={summaryClass}
         expandIcon={<Icon>expand_more</Icon>}
@@ -81,11 +82,11 @@ const MemberDetails = (props) => {
     </ExpansionPanelDetails>
 }
 
-const GroupMembersLayout = ({ members }) => {
+const GroupMembersLayout = ({ members, isLoading }) => {
     const classes = useStyles();
     return <ExpansionPanel className={classes.panel}>
         <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle}
-            summaryClass={classes.summary} members={members} />
+            summaryClass={classes.summary} members={members} isLoading={isLoading} />
         <MemberDetails contentClass={classes.content} textClass={classes.groupText} members={members} />
     </ExpansionPanel>
 }

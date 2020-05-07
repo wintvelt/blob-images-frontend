@@ -7,9 +7,10 @@ import GroupCardLayout from './GroupCardLayout';
 const GroupCard = () => {
     const router = useRouter();
     const groupId = router.query && router.query.id;
-    const source = `myUrl/getGroup/${groupId}`;
+    const source = `myUrl/groups/${groupId}`;
     const groupData = useApiData('group', source);
-    return <GroupCardLayout group={groupData} />
+    const group = groupData.data || {};
+    return <GroupCardLayout {...group} isLoading={groupData.isLoading} />
 }
 
 export default GroupCard;

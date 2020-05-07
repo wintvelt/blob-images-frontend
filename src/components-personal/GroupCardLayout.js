@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
@@ -53,9 +54,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const GroupCardContent = (props) => {
-    const { group, withEdit } = props;
-    const { isLoading } = group;
-    const { title, subtitle, image, userIsAdmin } = group.data || {};
+    const { title, subtitle, image, isLoading } = props;
     const classes = useStyles();
     return <>
         {image && <CardMedia className={classes.media}
@@ -76,20 +75,22 @@ const GroupCardContent = (props) => {
 }
 
 const GroupCardLayout = (props) => {
-    const { group, withEdit } = props;
-    const { userIsAdmin, image } = group.data || {};
+    const { id, userIsAdmin, image, withEdit } = props;
     const mayEdit = (userIsAdmin && withEdit);
     const classes = useStyles();
+    const router = useRouter();
+
+    const detailUrl = `/personal/groups/[id]`;
 
     const onClick = (e) => {
         e.preventDefault();
-        alert('clicked');
+        router.push(detailUrl, detailUrl.replace('[id]', id));
     }
 
     return <Card className={classes.card}>
         {(withEdit) ?
-            <CardActionArea style={{ height: '100%' }} href='/'>
-                <GroupCardContent {...props} onClick={onClick} />
+            <CardActionArea style={{ height: '100%' }} onClick={onClick}>
+                <GroupCardContent {...props} />
             </CardActionArea>
             : <GroupCardContent {...props} onClick={onClick} />
         }

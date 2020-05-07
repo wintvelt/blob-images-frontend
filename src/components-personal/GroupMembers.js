@@ -7,9 +7,9 @@ import GroupMembersLayout from './GroupMembersLayout';
 const GroupMembers = () => {
     const router = useRouter();
     const groupId = router.query && router.query.id;
-    const source = `myUrl/getMembers/${groupId}`;
+    const source = `myUrl/groups/${groupId}/members`;
     const members = useApiData('members', source);
-    return <GroupMembersLayout members={members} />
+    return <GroupMembersLayout members={members.data} isLoading={members.isLoading} />
 }
 
 export default GroupMembers;

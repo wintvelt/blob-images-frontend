@@ -11,10 +11,6 @@ import DataProvider, { useApiData } from '../../src/components-generic/DataProvi
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 
 const useStyles = makeStyles(theme => ({
-    container: {
-        position: 'relative',
-        margin: theme.spacing(2, 0),
-    },
     skeleton: {
         height: '64px',
         width: '100%',
@@ -22,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     panel: {
         paddingLeft: theme.spacing(1),
         paddingRight: theme.spacing(1),
+        margin: theme.spacing(2, 0),
     },
     summary: {
         height: '64px',
@@ -48,9 +45,9 @@ const initials = (name) => {
 }
 
 const MemberSummary = (props) => {
-    const { avatarClass, panelTitleClass, summaryClass } = props;
-    const data = useApiData();
-    const members = data.members || [ {}, {}, {} ];
+    const { avatarClass, panelTitleClass, summaryClass, members } = props;
+    const membersList = members.data || [{}, {}, {}];
+    const isLoading = members.isLoading;
     return <ExpansionPanelSummary
         className={summaryClass}
         expandIcon={<Icon>expand_more</Icon>}
@@ -61,9 +58,9 @@ const MemberSummary = (props) => {
             Members:
         </Typography>
         <AvatarGroup max={10}>
-            {members.map((member, i) => (
+            {membersList.map((member, i) => (
                 <AvatarSkeleton key={member.name || i} alt={member.name} src={member.avatar}
-                    className={avatarClass}>
+                    className={avatarClass} isLoading={isLoading}>
                     {(!member.image && initials(member.name))}
                 </AvatarSkeleton>
             ))}
@@ -84,17 +81,13 @@ const MemberDetails = (props) => {
     </ExpansionPanelDetails>
 }
 
-const GroupMembersLayout = ({ source }) => {
+const GroupMembersLayout = ({ members }) => {
     const classes = useStyles();
-    return <div className={classes.container}>
-        <DataProvider source={source} className={classes.skeleton}>
-            <ExpansionPanel className={classes.panel}>
-                <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle}
-                    summaryClass={classes.summary} />
-                <MemberDetails contentClass={classes.content} textClass={classes.groupText} />
-            </ExpansionPanel>
-        </DataProvider>
-    </div>
+    return <ExpansionPanel className={classes.panel}>
+        <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle}
+            summaryClass={classes.summary} members={members} />
+        <MemberDetails contentClass={classes.content} textClass={classes.groupText} members={members} />
+    </ExpansionPanel>
 }
 
 export default GroupMembersLayout;

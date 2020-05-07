@@ -1,7 +1,10 @@
 // HOC which fetches data and renders loading state
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export const DataContext = createContext({ data: {} });
+export const DataContext = createContext({
+    data: {},
+    setDataByKey: () => { }
+});
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -11,32 +14,46 @@ const getDataFrom = async (source) => {
     return source;
 }
 
-const useData = (source) => {
-    const [data, setData] = useState({ isLoading: true });
+export const sampleData = (data, sample) => ({
+    ...data,
+    data: (data.data) ? sample : undefined
+});
+
+export const useApiData = (key, source) => {
+    const { data, setDataByKey } = useContext(DataContext);
+    const alreadyHasData = data[key] && data[key].source === source;
+    const keyedData = (alreadyHasData) ? data[key] : { isLoading: true };
+
+    const setKeyedData = (newValue) => setDataByKey(key, {
+        ...newValue,
+        source,
+    });
+
     useEffect(() => {
         async function getData() {
             try {
                 const result = await getDataFrom(source);
-                setData({ data: result })
+                setKeyedData({ data: result })
             } catch (_) {
-                setData({ isError: true });
+                setKeyedData({ isError: true });
             }
         }
         getData();
-    }, [])
-    return data;
+    }, []);
+
+    // return [keyedData, setKeyedData];
+    return keyedData;
 }
 
-export const useApiData = (key) => {
-    const { data } = useContext(DataContext);
-    return (key && data) ?
-        data[key]
-        : data || {};
-}
-
-const DataProvider = ({ source, children }) => {
-    const { isLoading, isError, data } = useData(source);
-    return <DataContext.Provider value={{ data }}>
+const DataProvider = ({ children }) => {
+    const [dataStore, setDataStore] = useState({});
+    const setDataByKey = (key, newValue) => {
+        setDataStore(oldDataStore => ({
+            ...oldDataStore,
+            [key]: newValue
+        }));
+    };
+    return <DataContext.Provider value={{ data: dataStore, setDataByKey }}>
         {children}
     </DataContext.Provider>
 }

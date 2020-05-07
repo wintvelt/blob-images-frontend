@@ -10,6 +10,7 @@ import theme from '../src/theme';
 import Nav from '../src/Nav';
 import Footer from '../src/Footer';
 import { initialUser, userReducer, UserContext } from '../src/components-generic/UserContext';
+import DataProvider from '../src/components-generic/DataProvider';
 
 Amplify.configure(amplifyConfig);
 
@@ -51,10 +52,12 @@ export default function MyApp(props) {
             </Head>
             <ThemeProvider theme={theme}>
                 <UserContext.Provider value={{ user, setUser }}>
-                    <CssBaseline />
-                    <Nav />
-                    <Component {...pageProps} />
-                    <Footer />
+                    <DataProvider>
+                        <CssBaseline />
+                        <Nav />
+                        <Component {...pageProps} />
+                        <Footer />
+                    </DataProvider>
                 </UserContext.Provider>
             </ThemeProvider>
         </React.Fragment >

@@ -8,7 +8,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { useApiData } from '../../src/components-generic/DataProvider';
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
 
 const useStyles = makeStyles(theme => ({
@@ -63,9 +62,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const GroupImage = (props) => {
-    const { imageClass, buttonClass } = props;
-    const data = useApiData();
-    const { image, userIsAdmin } = data;
+    const { imageClass, buttonClass, group } = props;
+    const { data } = group;
+    const { image, userIsAdmin } = data || {};
     return <>
         {image && <CardMedia className={imageClass}
             image={image}
@@ -79,17 +78,21 @@ const GroupImage = (props) => {
 }
 
 const GroupContent = (props) => {
-    const { contentClass, textClass } = props;
-    const data = useApiData();
-    const { title, subtitle, stats } = data;
+    const { contentClass, textClass, group } = props;
+    const { data, isLoading } = group;
+    const { title, subtitle, stats } = data || {};
     return <CardContent className={contentClass}>
         <Grid container>
             <Grid item md={11} xs={12}>
                 <Typography gutterBottom variant='h2' color='inherit'>
-                    <TextSkeleton className={textClass}>{title}</TextSkeleton>
+                    <TextSkeleton className={textClass} isLoading={isLoading}>
+                        {title}
+                    </TextSkeleton>
                 </Typography>
                 <Typography variant="subtitle1" color="inherit" component="p">
-                    <TextSkeleton className={textClass}>{subtitle}</TextSkeleton>
+                    <TextSkeleton className={textClass} isLoading={isLoading}>
+                        {subtitle}
+                    </TextSkeleton>
                 </Typography>
             </Grid>
             <Grid item md={1} xs={12}>
@@ -104,11 +107,11 @@ const GroupContent = (props) => {
     </CardContent>
 }
 
-const GroupHeaderLayout = () => {
+const GroupHeaderLayout = ({ group }) => {
     const classes = useStyles();
     return <Card className={classes.card}>
-        <GroupImage imageClass={classes.groupMedia} buttonClass={classes.imageEdit} />
-        <GroupContent contentClass={classes.content} textClass={classes.groupText} />
+        <GroupImage imageClass={classes.groupMedia} buttonClass={classes.imageEdit} group={group} />
+        <GroupContent contentClass={classes.content} textClass={classes.groupText} group={group} />
     </Card>
 }
 

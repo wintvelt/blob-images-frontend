@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import CardAlbum from '../../../../../../src/CardAlbum';
 import PhotoGroup from '../../../../../../src/components-personal/PhotoGroup';
-import Link from '../../../../../../src/UnstyledLink';
+import Link from '../../../../../../src/components-generic/UnstyledLink';
 import AlbumForm from '../../../../../../src/AlbumForm';
 import PrivatePage from '../../../../../../src/components-personal/PrivatePage';
 

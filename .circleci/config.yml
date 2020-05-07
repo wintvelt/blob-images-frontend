@@ -23,9 +23,10 @@ jobs:
             npm install
 
       - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
-            - node_modules
-          key: v1-dependencies-
+            - ./node_modules
+            - ./.next/cache
         
       # run tests!
       - run: 

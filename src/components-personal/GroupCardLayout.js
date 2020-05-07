@@ -53,7 +53,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const GroupCardContent = (props) => {
-    const { title, subtitle, image, userIsAdmin, withEdit } = props;
+    const { group, withEdit } = props;
+    const { isLoading } = group;
+    const { title, subtitle, image, userIsAdmin } = group.data || {};
     const classes = useStyles();
     return <>
         {image && <CardMedia className={classes.media}
@@ -62,11 +64,11 @@ const GroupCardContent = (props) => {
         />}
         <CardContent className={classes.content}>
             <Typography gutterBottom variant='h4' component='h5' align='center'>
-                <TextSkeleton className={classes.text}>{title}</TextSkeleton>
+                <TextSkeleton className={classes.text} isLoading={isLoading}>{title}</TextSkeleton>
             </Typography>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography variant="body1" component="p" align='center'>
-                    <TextSkeleton className={classes.text}>{subtitle}</TextSkeleton>
+                    <TextSkeleton className={classes.text} isLoading={isLoading}>{subtitle}</TextSkeleton>
                 </Typography>
             </div>
         </CardContent>
@@ -74,7 +76,8 @@ const GroupCardContent = (props) => {
 }
 
 const GroupCardLayout = (props) => {
-    const { withEdit, userIsAdmin, image } = props;
+    const { group, withEdit } = props;
+    const { userIsAdmin, image } = group.data || {};
     const mayEdit = (userIsAdmin && withEdit);
     const classes = useStyles();
 

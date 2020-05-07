@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
@@ -9,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
+import Link from '../components-generic/Link';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -62,6 +64,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const GroupImage = (props) => {
+    const router = useRouter();
+    const href = router.pathname + '/edit';
+    const asPath = href.replace('[id]', router.query.id);
     const { imageClass, buttonClass, group } = props;
     const { data } = group;
     const { image, userIsAdmin } = data || {};
@@ -70,10 +75,11 @@ const GroupImage = (props) => {
             image={image}
             title='Group cover image'
         />}
-        {image && userIsAdmin && <IconButton size='small' className={buttonClass}
-            onClick={() => alert('clicked')}>
-            <Icon fontSize='small' color='secondary'>edit</Icon>
-        </IconButton>}
+        {image && userIsAdmin && <Link href={href} as={asPath}>
+            <IconButton size='small' className={buttonClass} >
+                <Icon fontSize='small' color='secondary'>edit</Icon>
+            </IconButton>
+        </Link>}
     </>
 }
 

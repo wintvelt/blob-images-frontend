@@ -6,18 +6,36 @@ export const DataContext = createContext({
     setDataByKey: () => { }
 });
 
+const sampleData = {
+    'myUrl/getGroup/4': {
+        title: 'Foto\'s van Blob',
+        subtitle: 'Laag naar de top sinds 1985',
+        stats: [
+            'since 8 Jan 2019',
+            '6 albums',
+            '492 photos',
+            '19 members'
+        ],
+        image: '/cover_2.jpg',
+        userIsAdmin: true,
+    },
+    'myUrl/getMembers/4': [
+        { name: 'LJ van Berkestijn', avatar: '' },
+        { name: 'Paul Botje', avatar: '' },
+        { name: 'Dave del Canho', avatar: '' },
+        { name: 'Wouter In \'t Velt', avatar: '/img/me.jpg' },
+        { name: 'Fred Kleiterp', avatar: '' },
+        { name: 'Michiel Ebeling', avatar: '' },
+    ]
+}
+
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 const getDataFrom = async (source) => {
     await timeout(3000);
-    return source;
+    return sampleData[source] || source;
 }
-
-export const sampleData = (data, sample) => ({
-    ...data,
-    data: (data.data) ? sample : undefined
-});
 
 export const useApiData = (key, source) => {
     const { data, setDataByKey } = useContext(DataContext);

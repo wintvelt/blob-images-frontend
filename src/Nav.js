@@ -8,7 +8,7 @@ import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Link from './Link';
+import Link from './components-generic/Link';
 import NavLogin from './components-login/NavLogin';
 
 const useStyles = makeStyles((theme) => ({

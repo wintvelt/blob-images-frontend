@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Link from './Link';
+import Link from './components-generic/Link';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 

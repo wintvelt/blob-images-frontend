@@ -9,7 +9,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Link from '../../../src/UnstyledLink';
+import Link from '../../../src/components-generic/UnstyledLink';
 import InviteForm from '../../../src/components-invite/InviteForm';
 import CardInvite from '../../../src/components-invite/CardInvite';
 import SignupForm from '../../../src/components-login/Signup';

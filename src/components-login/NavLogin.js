@@ -9,7 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Link from '../Link';
+import Link from '../components-generic/Link';
 import { UserContext } from '../components-generic/UserContext';
 import { Auth } from 'aws-amplify';
 

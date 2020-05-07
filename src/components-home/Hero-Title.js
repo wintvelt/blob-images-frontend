@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import Link from '../Link';
+import Link from '../components-generic/Link';
 
 const HeroTitle = (props) => {
     const { title, subTitle, paragraph, linkText, linkUrl } = props;

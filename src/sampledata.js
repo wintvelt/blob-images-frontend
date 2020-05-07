@@ -51,3 +51,8 @@ export const getDataFrom = async (source) => {
     await timeout(3000);
     return sampleData[source] || source;
 }
+
+export const postDataTo = async (source, body) => {
+    await timeout(3000);
+    return 'ok';
+}

@@ -87,6 +87,12 @@ const GroupCardLayout = (props) => {
         router.push(detailUrl, detailUrl.replace('[id]', id));
     }
 
+    const onClickEdit = (e) => {
+        e.preventDefault();
+        const editUrl = detailUrl + '/edit';
+        router.push(editUrl, editUrl.replace('[id]', id));
+    }
+
     return <Card className={classes.card}>
         {(withEdit) ?
             <CardActionArea style={{ height: '100%' }} onClick={onClick}>
@@ -95,7 +101,7 @@ const GroupCardLayout = (props) => {
             : <GroupCardContent {...props} onClick={onClick} />
         }
         {image && mayEdit && <IconButton size='small' className={classes.imageEdit}
-            onClick={onClick}>
+            onClick={onClickEdit}>
             <Icon fontSize='small'>edit</Icon>
         </IconButton>}
 

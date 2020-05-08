@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import { Auth } from "aws-amplify";
+import React, { useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -11,11 +10,11 @@ import Link from '../components-generic/Link';
 import { Field, useFields, validateForm } from '../FormField';
 
 const useStyles = makeStyles(theme => ({
-    loginForm: {
+    form: {
         position: 'relative',
         padding: theme.spacing(4),
         backgroundColor: theme.palette.background.white,
-        color: theme.palette.secondary.dark,
+        color: theme.palette.text.secondary,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
@@ -33,24 +32,24 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const fieldConfig = {
-    albumName: {
-        autoComplete: 'album-name',
+    groupName: {
+        autoComplete: 'group-name',
         type: 'text',
-        label: 'album name',
+        label: 'group name',
         validations: [{
-            text: 'please enter a name for this album',
+            text: 'please enter a name for this group',
             validate: (val) => (!!val),
         }],
     },
-    albumDescription: {
-        autoComplete: 'album-description',
+    groupDescription: {
+        autoComplete: 'group-description',
         type: 'text',
-        label: 'album description',
+        label: 'group description',
     },
-    albumDate: {
-        autoComplete: 'album-date',
+    groupDate: {
+        autoComplete: 'group-date',
         type: 'date',
-        label: 'album date',
+        label: 'group date',
     }
 };
 
@@ -86,48 +85,47 @@ const GroupForm = (props) => {
             : 'Save changes';
     const deleteButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
         : 'Delete this album';
-    const title = (isNew) ? 'Add a new album' : 'Edit album details';
-    const subtitle = (isNew) ? 'Hit save to create the album'
-        : 'Save your changes after you have made your edits';
+    const title = (isNew) ? 'Create a new group' : `${groupName} `;
+    const subtitle = '';
+    // const subtitle = (isNew) ? 'Hit save to create the group'
+    //     : 'Save your changes after you have made your edits';
 
     return (
-        <ThemeProvider theme={theme}>
-            <form name='login-form' noValidate>
-                <Paper className={classes.loginForm}>
-                    <Typography component="h1" variant="h4" color="inherit"
-                        align='left' gutterBottom>
-                        {title}
-                    </Typography>
-                    <Typography paragraph variant='subtitle1'>
-                        {subtitle}
-                    </Typography>
-                    {Object.keys(fieldConfig).map(fieldName =>
-                        <Field key={fieldName}
-                            fieldName={fieldName}
-                            field={fields[fieldName]}
-                            onChange={onChange(fieldName)}
-                            showValidation={fields.showValidation} />
-                    )}
-                    {saveFailed && <Typography variant='body2' color='error' >
-                        Hmm, we could not log you in. <br />Did you{' '}
-                        <Link href='#' color='textPrimary'>
-                            Forget your password
+        <form name='login-form' noValidate>
+            <Paper className={classes.form}>
+                <Typography component="h1" variant="h4"
+                    align='left' gutterBottom color='inherit'>
+                    {title}
+                </Typography>
+                <Typography paragraph variant='subtitle1' color='inherit'>
+                    {subtitle}
+                </Typography>
+                {Object.keys(fieldConfig).map(fieldName =>
+                    <Field key={fieldName}
+                        fieldName={fieldName}
+                        field={fields[fieldName]}
+                        onChange={onChange(fieldName)}
+                        showValidation={fields.showValidation} />
+                )}
+                {saveFailed && <Typography variant='body2' color='error' >
+                    Hmm, we could not log you in. <br />Did you{' '}
+                    <Link href='#' color='textPrimary'>
+                        Forget your password
                         </Link>
                         ?
                     </Typography>}
-                    <Button type='submit' variant='contained' color='secondary' className={classes.submit}
-                        disabled={isLoading}
-                        onClick={onSubmit}>
-                        {saveButtonContent}
-                    </Button>
-                    {!isNew && <Button variant='outlined' className={classes.deleteButton}
-                        disabled={isLoading}
-                        onClick={onSubmit}>
-                        {deleteButtonContent}
-                    </Button>}
-                </Paper>
-            </form>
-        </ThemeProvider>
+                <Button type='submit' variant='contained' color='secondary' className={classes.submit}
+                    disabled={isLoading}
+                    onClick={onSubmit}>
+                    {saveButtonContent}
+                </Button>
+                {!isNew && <Button variant='outlined' className={classes.deleteButton}
+                    disabled={isLoading}
+                    onClick={onSubmit}>
+                    {deleteButtonContent}
+                </Button>}
+            </Paper>
+        </form>
     )
 };
 

@@ -26,7 +26,7 @@ const GroupEditMain = () => {
                 </Grid>
                 <Grid item md={1} />
                 <Grid item md={8} xs={12}>
-                    <GroupForm />
+                    <GroupForm {...group}/>
                 </Grid>
             </Grid>
         </main>

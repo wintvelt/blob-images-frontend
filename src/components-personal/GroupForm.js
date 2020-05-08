@@ -32,8 +32,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const fieldConfig = {
-    groupName: {
-        autoComplete: 'group-name',
+    title: {
+        autoComplete: 'group-title',
         type: 'text',
         label: 'group name',
         validations: [{
@@ -41,24 +41,27 @@ const fieldConfig = {
             validate: (val) => (!!val),
         }],
     },
-    groupDescription: {
-        autoComplete: 'group-description',
+    subtitle: {
+        autoComplete: 'group-subtitle',
         type: 'text',
         label: 'group description',
     },
-    groupDate: {
-        autoComplete: 'group-date',
-        type: 'date',
-        label: 'group date',
-    }
 };
+
+const initialFieldConfig = (group) => {
+    let outConfig = { ...fieldConfig };
+    Object.keys(group).forEach(key => {
+        if (outConfig[key]) {
+            outConfig[key].value = group[key];
+        }
+    });
+    return outConfig;
+}
 
 
 const GroupForm = (props) => {
-    const { id, albumid } = props;
-    const isNew = albumid && (albumid === 'new');
     const classes = useStyles();
-    const [fields, setFields] = useFields(fieldConfig);
+    const [fields, setFields] = useFields(initialFieldConfig(props));
     const [saveFailed, setSaveFailed] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -81,17 +84,16 @@ const GroupForm = (props) => {
     }
 
     const saveButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
-        : (isNew) ? 'Create album'
-            : 'Save changes';
+        : 'Save changes';
     const deleteButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
-        : 'Delete this album';
-    const title = (isNew) ? 'Create a new group' : `${groupName} `;
+        : 'Delete this group';
+    const title = `Edit group details ${props.title ? 'of ' + props.title : ''}`;
     const subtitle = '';
     // const subtitle = (isNew) ? 'Hit save to create the group'
     //     : 'Save your changes after you have made your edits';
 
     return (
-        <form name='login-form' noValidate>
+        <form name='group-edit-form' noValidate>
             <Paper className={classes.form}>
                 <Typography component="h1" variant="h4"
                     align='left' gutterBottom color='inherit'>
@@ -119,11 +121,11 @@ const GroupForm = (props) => {
                     onClick={onSubmit}>
                     {saveButtonContent}
                 </Button>
-                {!isNew && <Button variant='outlined' className={classes.deleteButton}
+                <Button variant='outlined' className={classes.deleteButton}
                     disabled={isLoading}
                     onClick={onSubmit}>
                     {deleteButtonContent}
-                </Button>}
+                </Button>
             </Paper>
         </form>
     )

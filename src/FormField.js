@@ -169,6 +169,7 @@ const DateField = (props) => {
             KeyboardButtonProps={{
                 'aria-label': 'change date',
             }}
+            style={{ marginTop: '16px' }}
         />
     </MuiPickersUtilsProvider>
 }

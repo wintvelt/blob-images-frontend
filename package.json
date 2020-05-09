@@ -17,10 +17,12 @@
     "@material-ui/pickers": "^3.2.10",
     "aws-amplify": "^3.0.10",
     "date-fns": "^2.13.0",
+    "filepond": "^4.13.5",
     "moment": "^2.25.3",
     "next": "9.3.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-filepond": "^7.0.1",
     "serverless-next.js": "^1.11.3"
   },
   "devDependencies": {

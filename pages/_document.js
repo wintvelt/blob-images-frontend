@@ -15,6 +15,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
           <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+          {/* <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" /> */}
           <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap"
             rel="stylesheet"></link>
           <style dangerouslySetInnerHTML={{

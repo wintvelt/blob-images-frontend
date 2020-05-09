@@ -12,6 +12,8 @@ import Footer from '../src/Footer';
 import { initialUser, userReducer, UserContext } from '../src/components-generic/UserContext';
 import DataProvider from '../src/components-generic/DataProvider';
 
+import 'filepond/dist/filepond.min.css';
+
 Amplify.configure(amplifyConfig);
 
 export default function MyApp(props) {

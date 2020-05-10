@@ -13,6 +13,7 @@ import { initialUser, userReducer, UserContext } from '../src/components-generic
 import DataProvider from '../src/components-generic/DataProvider';
 
 import 'filepond/dist/filepond.min.css';
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
 Amplify.configure(amplifyConfig);
 

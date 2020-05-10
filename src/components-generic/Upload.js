@@ -1,7 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import { Storage } from "aws-amplify";
 import { Button } from '@material-ui/core';
+
+registerPlugin(FilePondPluginImagePreview);
 
 const server = {
     url: 'https://blob-images.s3.eu-central-1.amazonaws.com',

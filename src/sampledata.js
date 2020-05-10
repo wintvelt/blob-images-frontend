@@ -2,16 +2,16 @@ const sampleData = {
     'myUrl/groups': [
         {
             id: 'group1',
-            title: 'Foto\'s van Blob',
-            subtitle: 'Laag naar de top sinds 1985',
+            title: 'In \'t Velt familiealbums',
+            subtitle: 'Door de jaren heen in Soest en daarbuiten',
             image: '/cover_2.jpg',
             userIsAdmin: true,
         },
         {
             id: 'group2',
-            title: 'In \'t Velt familiealbums',
-            subtitle: 'Door de jaren heen in Soest en daarbuiten',
-            image: '/cover_2.jpg',
+            title: 'Foto\'s van Blob',
+            subtitle: 'Laag naar de top sinds 1985',
+            image: 'eu-central-1:13691c14-c389-4974-b5ab-f401c71bde0a/cover.jpg',
             userIsAdmin: true,
         },
         {
@@ -31,7 +31,7 @@ const sampleData = {
             '492 photos',
             '19 members'
         ],
-        image: '/cover_2.jpg',
+        image: 'eu-central-1:13691c14-c389-4974-b5ab-f401c71bde0a/cover.jpg',
         userIsAdmin: true,
     },
     'myUrl/groups/group2/members': [

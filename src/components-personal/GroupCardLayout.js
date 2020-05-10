@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
+import { useImage } from '../components-generic/imageProvider';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -55,10 +56,11 @@ const useStyles = makeStyles(theme => ({
 
 const GroupCardContent = (props) => {
     const { title, subtitle, image, isLoading } = props;
+    const imageUrl = useImage(image);
     const classes = useStyles();
     return <>
-        {image && <CardMedia className={classes.media}
-            image={image}
+        {imageUrl && <CardMedia className={classes.media}
+            image={imageUrl}
             title={`${title} group`}
         />}
         <CardContent className={classes.content}>

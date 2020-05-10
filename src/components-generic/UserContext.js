@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 export const initialUser = {
     profile: false,
@@ -17,3 +17,8 @@ export const UserContext = createContext({
     user: initialUser,
     setUser: () => { }
 });
+
+export const useUser = () => {
+    const user = useContext(UserContext);
+    return user.user;
+}

@@ -95,7 +95,7 @@ export default function NavLogin(props) {
                     <Button className={classes.userButton}
                         aria-controls="simple-menu" aria-haspopup="true"
                         onClick={handleClick}
-                        endIcon={<Icon>arrow_drop_down</Icon>}
+                        endIcon={<Icon>expand_more</Icon>}
                     >
                         <Avatar className={classes.avatar}
                             alt={'user name'} src={avatarUrl} />

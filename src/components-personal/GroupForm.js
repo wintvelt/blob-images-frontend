@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from '../components-generic/Link';
-import { Field, useFields, validateForm } from '../FormField';
+import { Field, useFields, validateForm } from '../components-generic/FormField';
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -45,6 +45,11 @@ const fieldConfig = {
         autoComplete: 'group-subtitle',
         type: 'text',
         label: 'group description',
+    },
+    image: {
+        autoComplete: 'group-image',
+        type: 'image',
+        label: 'group image',
     },
 };
 

@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from '../components-generic/Link';
-import { Field, useFields, validateForm } from '../FormField';
+import { Field, useFields, validateForm } from '../components-generic/FormField';
 import { UserContext } from '../components-generic/UserContext';
 
 const useStyles = makeStyles(theme => ({

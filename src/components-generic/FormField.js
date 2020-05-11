@@ -14,6 +14,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/core/styles';
 
+import ImageField from './FormField-Image';
+
 const useStyles = makeStyles(theme => ({
     helperText: {
         margin: theme.spacing(0, 0, 1, 2),
@@ -184,15 +186,19 @@ export const Field = (props) => {
             <CheckboxField {...props} helperText={helperText} error={error} />
             : (field.type === 'date') ?
                 <DateField {...props} helperText={helperText} error={error} />
-                : <>
-                    <TextField variant='outlined' color='primary' size='small' margin='normal'
-                        type={field.type}
-                        label={field.label} autoComplete={field.autoComplete}
-                        multiline={field.multiline || undefined}
-                        rows={field.rows || undefined}
-                        rowsMax={field.rowsMax || undefined}
-                        error={error}
-                        onChange={onChange} value={field.value || ''} />
-                    {helperText && helperText}
-                </>
+                : (field.type === 'image') ?
+                    <>
+                        <ImageField {...props} />
+                    </>
+                    : <>
+                        <TextField variant='outlined' color='primary' size='small' margin='normal'
+                            type={field.type}
+                            label={field.label} autoComplete={field.autoComplete}
+                            multiline={field.multiline || undefined}
+                            rows={field.rows || undefined}
+                            rowsMax={field.rowsMax || undefined}
+                            error={error}
+                            onChange={onChange} value={field.value || ''} />
+                        {helperText && helperText}
+                    </>
 }

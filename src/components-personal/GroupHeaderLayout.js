@@ -10,6 +10,8 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
+import { makeImageUrl } from '../../src/components-generic/imageProvider';
+
 import Link from '../components-generic/Link';
 
 const useStyles = makeStyles(theme => ({
@@ -70,12 +72,14 @@ const GroupImage = (props) => {
     const { imageClass, buttonClass, group } = props;
     const { data } = group;
     const { image, userIsAdmin } = data || {};
+    const imageUrl = makeImageUrl(image, 1440, 384);
+
     return <>
-        {image && <CardMedia className={imageClass}
-            image={image}
+        {imageUrl && <CardMedia className={imageClass}
+            image={imageUrl}
             title='Group cover image'
         />}
-        {image && userIsAdmin && <Link href={href} as={asPath}>
+        {imageUrl && userIsAdmin && <Link href={href} as={asPath}>
             <IconButton size='small' className={buttonClass} >
                 <Icon fontSize='small' color='secondary'>edit</Icon>
             </IconButton>

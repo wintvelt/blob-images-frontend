@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Storage } from 'aws-amplify';
 
+const imageBaseUrl = 'https://d2y9pdc5bc1adh.cloudfront.net/';
+const otoa = (object) => Buffer.from(JSON.stringify(object)).toString('base64');
+
 export const useImage = (url) => {
     const [safeUrl, setSafeUrl] = useState(null);
 
@@ -21,4 +24,21 @@ export const useImage = (url) => {
     }, [url]);
 
     return safeUrl;
+}
+
+export const makeImageUrl = (key, width = 200, height = 200) => {
+    const body = {
+        "bucket": "blob-images",
+        "key": 'protected/'+ key,
+        "edits": {
+            "resize": {
+                "width": width,
+                "height": height,
+                "fit": "cover"
+            }
+        }
+    }
+    return (key) ?
+        imageBaseUrl + otoa(body)
+        : ''
 }

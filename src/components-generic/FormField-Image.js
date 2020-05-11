@@ -6,7 +6,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
-import { useImage } from './imageProvider';
+import { makeImageUrl } from './imageProvider';
 
 
 const useStyles = makeStyles(theme => ({
@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'stretch',
     },
     itemImage: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(1),
         border: '1px solid rgba(0,0,0,.23)',
         borderRadius: '4px',
         height: theme.spacing(20),
@@ -41,7 +41,7 @@ const ImageField = (props) => {
     const { field } = props;
     const { value } = field;
     const classes = useStyles();
-    const imageUrl = useImage(value);
+    const imageUrl = makeImageUrl(value, 540, 144);
     const [menuAnchor, setMenuAnchor] = useState(null);
 
     const handleMenuClick = (e) => {

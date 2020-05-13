@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
@@ -45,22 +45,26 @@ const ImageField = (props) => {
     const classes = useStyles();
     const imageUrl = makeImageUrl(value, 540, 144);
     const [imageMenu, setImageMenu] = useState({});
+    const menuAnchor = useRef();
 
     const onClear = () => onChange({ target: { value: '' } });
 
     const handleClickMenu = (action) => (e) => {
         switch (action) {
             case 'open':
-                setImageMenu({ anchor: e.currentTarget })
+                setImageMenu({ isOpen: true, anchor: e.target })
                 break;
 
             case 'upload':
-                setImageMenu({ upLoadOpen: true })
+                setImageMenu({ anchor: imageMenu.anchor, upLoadOpen: true })
                 break;
 
-            case 'close':
+            case 'clear':
                 onClear();
-                setImageMenu({});
+                setImageMenu({ anchor: imageMenu.anchor });
+            
+            case 'close':
+                setImageMenu({ anchor: imageMenu.anchor });
                 break;
 
             default:
@@ -84,7 +88,7 @@ const ImageField = (props) => {
                 <Typography variant='caption'>From album:</Typography>
                 <Typography variant='body1'>Blob in Afrika</Typography>
             </div>
-            <Button size='small' variant='contained' color='primary'
+            <Button size='small' variant='contained' color='primary' ref={menuAnchor}
                 aria-controls="image-pick-menu" aria-haspopup="true" onClick={handleClickMenu('open')}
                 endIcon={<Icon>expand_more</Icon>}>
                 Change photo
@@ -93,13 +97,13 @@ const ImageField = (props) => {
                 id="image-pick-menu"
                 anchorEl={imageMenu.anchor}
                 keepMounted
-                open={Boolean(imageMenu.anchor)}
+                open={(imageMenu.isOpen)}
                 onClose={handleClickMenu('close')}
             >
                 <MenuItem onClick={handleClickMenu('close')}>Pick from group photos</MenuItem>
                 <MenuItem onClick={handleClickMenu('close')}>Pick from my photos</MenuItem>
                 <MenuItem onClick={handleClickMenu('upload')}>Upload new photo</MenuItem>
-                <MenuItem onClick={handleClickMenu('close')}>Remove photo</MenuItem>
+                <MenuItem onClick={handleClickMenu('clear')}>Remove photo</MenuItem>
             </Menu>
         </Grid>
         <ImageUpload open={imageMenu.upLoadOpen || false} handleClose={handleClickMenu('close')} />

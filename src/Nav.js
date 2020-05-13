@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Link from './components-generic/Link';
@@ -75,14 +76,14 @@ export default function HideAppBar(props) {
             <AppBar className={classes.nav} elevation={0}>
                 <Toolbar>
                     <Grid container spacing={1} alignItems='center' justify='center'>
-                        <Grid item xs={2}>
+                        <Grid item md={2} xs={6}>
                             <Link href='/' className={classes.homeLink}>
-                                <img src='/img/logo_new3.png' width='60%'/>
+                                <img src='/img/logo_new3.png' width='60%' />
                             </Link>
-                            <img src='/img/payoff.png' width='40%'/>
+                            <Hidden smDown><img src='/img/payoff.png' width='40%' /></Hidden>
                         </Grid>
                         <Grid item xs />
-                        {[
+                        {/* {[
                             { text: 'Features', href: '/#features' },
                             { text: 'Pricing', href: '/#pricing' },
                             { text: 'Support', href: '#' },
@@ -92,17 +93,17 @@ export default function HideAppBar(props) {
                                 style={{ display: 'flex', justifyContent: 'center' }}>
                                 <NavLink {...props} />
                             </Grid>
-                        ))}
+                        ))} */}
                         {!user.isAuthenticated &&
-                            <Grid item xs={1}
+                            <Grid item md={1} xs={4}
                                 style={{ display: 'flex', justifyContent: 'center' }}>
                                 <NavLink text='Sign up' href='/' outlined>sign up</NavLink>
                             </Grid>
                         }
-                        <Grid item xs={1}
+                        {(user.isAuthenticated) && <Grid item md={1} xs={1}
                             style={{ display: 'flex', justifyContent: 'center' }}>
                             <NavLogin path='/login' />
-                        </Grid>
+                        </Grid>}
                     </Grid>
                 </Toolbar>
             </AppBar>

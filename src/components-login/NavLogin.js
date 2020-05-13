@@ -1,17 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
+import { UserContext } from '../components-generic/UserContext';
+import { Auth } from 'aws-amplify';
+
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
+import Hidden from '@material-ui/core/Hidden';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Link from '../components-generic/Link';
-import { UserContext } from '../components-generic/UserContext';
-import { Auth } from 'aws-amplify';
+import NavMenu from './NavLogin-Menu';
+import NavDrawer from './NavLogin-Drawer';
 
 const userMenu = [
     { icon: 'group', text: 'Groups', href: '/personal/groups' },
@@ -70,17 +71,17 @@ export default function NavLogin(props) {
     const { user, setUser } = userContext;
     const name = user.profile['custom:name'];
     const avatarUrl = user.profile['custom:avatarUrl'];
-    const [anchorEl, setAnchorEl] = useState(null);
-    const handleClick = (e) => {
-        setAnchorEl(e.currentTarget)
+    const [menuOpen, setMenuOpen] = useState(false);
+    const handleClick = () => {
+        setMenuOpen(true)
     };
     const handleClose = () => {
-        setAnchorEl(null);
+        setMenuOpen(false);
     }
     const handleLogout = async () => {
         Auth.signOut();
         setUser({ profile: false, isAuthenticated: false })
-        setAnchorEl(null);
+        setMenuOpen(false);
         router.push('/');
     }
     const handleMenuClick = (action) => {
@@ -92,71 +93,37 @@ export default function NavLogin(props) {
         <>
             {user.isAuthenticated &&
                 <>
-                    <Button className={classes.userButton}
-                        aria-controls="simple-menu" aria-haspopup="true"
-                        onClick={handleClick}
-                        endIcon={<Icon>expand_more</Icon>}
-                    >
-                        <Avatar className={classes.avatar}
-                            alt={'user name'} src={avatarUrl} />
-                        {name}
-                    </Button>
-                    <Menu
-                        id='user-menu'
-                        anchorEl={anchorEl}
-                        getContentAnchorEl={null}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        keepMounted
-                        open={!!anchorEl}
-                        onClose={handleClose}
-                    >
-                        {userMenu.map((menuItem, i) => (
-                            <MenuItem key={i}
-                                onClick={handleMenuClick(menuItem.action)} >
-                                {(menuItem.href) ?
-                                    <Link href={menuItem.href} className={
-                                        (router.pathname === menuItem.href) ?
-                                            classes.menuLinkActive
-                                            : classes.menuLink
-                                    }>
-                                        <ListItemIcon>
-                                            <Icon fontSize="small" className={
-                                                (router.pathname === menuItem.href) ?
-                                                    classes.active
-                                                    : classes.inActive
-                                            }>
-                                                {menuItem.icon}
-                                            </Icon>
-                                        </ListItemIcon>
-                                        <ListItemText primary={menuItem.text}
-                                            style={{ paddingRight: '16px' }} />
-                                    </Link>
-                                    :
-                                    <div className={
-                                        (router.pathname === menuItem.href) ?
-                                            classes.menuLinkActive
-                                            : classes.menuLink}>
-                                        <ListItemIcon>
-                                            <Icon fontSize="small" className={
-                                                (router.pathname === menuItem.href) ?
-                                                    classes.active
-                                                    : classes.inActive
-                                            }>{menuItem.icon}</Icon>
-                                        </ListItemIcon>
-                                        <ListItemText primary={menuItem.text}
-                                            style={{ paddingRight: '16px' }} />
-                                    </div>
-                                }
-                            </MenuItem>
-                        ))}
-                    </Menu>
+                    <Hidden smDown>
+                        <Button className={classes.userButton}
+                            aria-controls="simple-menu" aria-haspopup="true"
+                            onClick={handleClick}
+                            endIcon={<Icon>expand_more</Icon>}
+                        >
+                            <Avatar className={classes.avatar}
+                                alt={'user name'} src={avatarUrl} />
+                            {name}
+                        </Button>
+                    </Hidden>
+                    <Hidden smDown>
+                        <NavMenu menu={userMenu}
+                            onClick={handleMenuClick} onClose={handleClose} isOpen={menuOpen}
+                            menuLinkActiveClass={classes.menuLinkActive} menuLinkClass={classes.menuLink}
+                            iconActiveClass={classes.active} iconInactiveClass={classes.inActive}
+                            pathname={router.pathname} />
+                    </Hidden>
+                    <Hidden mdUp>
+                        <IconButton
+                            aria-controls="simple-menu" aria-haspopup="true"
+                            onClick={handleClick}
+                        >
+                            <Icon>menu</Icon>
+                        </IconButton>
+                    </Hidden>
+                    <Hidden mdUp>
+                        <NavDrawer menu={userMenu}
+                            avatarUrl={avatarUrl} name={name}
+                            isOpen={menuOpen} onClose={handleClose} />
+                    </Hidden>
                 </>
             }
             {

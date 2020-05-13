@@ -120,9 +120,11 @@ export default function NavLogin(props) {
                         </IconButton>
                     </Hidden>
                     <Hidden mdUp>
-                        <NavDrawer menu={userMenu}
+                        <NavDrawer menu={userMenu} pathname={router.pathname}
                             avatarUrl={avatarUrl} name={name}
-                            isOpen={menuOpen} onClose={handleClose} />
+                            isOpen={menuOpen} onClose={handleClose} onClick={handleMenuClick}
+                            menuLinkActiveClass={classes.menuLinkActive} menuLinkClass={classes.menuLink}
+                            iconActiveClass={classes.active} iconInactiveClass={classes.inActive} />
                     </Hidden>
                 </>
             }

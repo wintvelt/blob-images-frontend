@@ -1,7 +1,5 @@
 import React from 'react';
 import Icon from '@material-ui/core/Icon';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
@@ -9,9 +7,9 @@ import Link from '../components-generic/Link';
 
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles({
     list: {
@@ -22,7 +20,9 @@ const useStyles = makeStyles({
     },
 });
 
-export default function SwipeableTemporaryDrawer({ isOpen, onClose }) {
+export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClick, pathname,
+    menuLinkClass, menuLinkActiveClass, name,
+    iconActiveClass, iconInactiveClass }) {
     const classes = useStyles();
 
     const handleKey = (event) => {
@@ -32,24 +32,35 @@ export default function SwipeableTemporaryDrawer({ isOpen, onClose }) {
         onClose()
     };
 
-    const list = (anchor) => (
-        <div
-            className={classes.list}
-            role="presentation"
-            onClick={onClose}
-            onKeyDown={handleKey}
-        >
-            <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text) => (
-                    <ListItem button key={text}>
+    const list = (menu) => (
+        menu.map((menuItem, i) => (
+            <ListItem button key={i} onClick={onClick(menuItem.action)}
+                selected={(pathname === menuItem.href)}>
+                {(menuItem.href) ?
+                    <Link href={menuItem.href} className={menuLinkClass}>
                         <ListItemIcon>
-                            <Icon>inbox</Icon>
+                            <Icon fontSize="small" className={iconInactiveClass}>
+                                {menuItem.icon}
+                            </Icon>
                         </ListItemIcon>
-                        <ListItemText primary={text} />
-                    </ListItem>
-                ))}
-            </List>
-        </div>
+                        <ListItemText primary={menuItem.text}
+                            style={{ paddingRight: '16px' }} />
+                    </Link>
+                    :
+                    <>
+                        <ListItemIcon>
+                            <Icon fontSize="small" className={
+                                (pathname === menuItem.href) ?
+                                    iconActiveClass
+                                    : iconInactiveClass
+                            }>{menuItem.icon}</Icon>
+                        </ListItemIcon>
+                        <ListItemText primary={menuItem.text}
+                            style={{ paddingRight: '16px' }} />
+                    </>
+                }
+            </ListItem>
+        ))
     );
 
     return (
@@ -59,7 +70,22 @@ export default function SwipeableTemporaryDrawer({ isOpen, onClose }) {
             onClose={onClose}
             onOpen={onClose}
         >
-            {list('left')}
+            <div
+                className={classes.list}
+                role="presentation"
+                onClick={onClose}
+                onKeyDown={handleKey}
+            >
+                <ListItem style={{ backgroundColor: 'black', color: 'white' }} divider>
+                    <ListItemIcon>
+                        <Avatar />
+                    </ListItemIcon>
+                    <ListItemText primary={name} />
+                </ListItem>
+                <List>
+                    {list(menu)}
+                </List>
+            </div>
         </SwipeableDrawer>
     );
 }

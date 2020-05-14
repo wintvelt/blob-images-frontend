@@ -28,6 +28,11 @@ const theme = createMuiTheme({
         // },
     },
     overrides: {
+        MuiDialog: {
+            paper: {
+                // minWidth: '50%',
+            }
+        }
     }
 });
 

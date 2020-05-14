@@ -9,7 +9,6 @@ import { useApiData } from '../../../../src/components-generic/DataProvider';
 import PrivatePage from '../../../../src/components-personal/PrivatePage';
 import GroupCardLayout from '../../../../src/components-personal/GroupCardLayout';
 import GroupForm from '../../../../src/components-personal/GroupForm';
-import Upload from '../../../../src/components-generic/Upload';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -38,7 +37,6 @@ const GroupEditMain = () => {
                 <Grid item md={1} />
                 <Grid item md={8} xs={12}>
                     <GroupForm {...group}/>
-                    <Upload />
                 </Grid>
             </Grid>
         </main>

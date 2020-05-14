@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import { Storage } from "aws-amplify";
-import { Button } from '@material-ui/core';
 
 registerPlugin(FilePondPluginImagePreview);
 
@@ -41,43 +40,10 @@ const server = {
     },
 }
 
-const Upload = (props) => {
-    const [file, setFile] = useState('');
-    const pond = useRef(null);
-    const onClick = async (e) => {
-        const myFile = await Storage.put('text.txt', 'Hello protected', {
-            level: 'protected',
-            contentType: 'text/plain'
-        });
-        // const myFile = await Storage.get('mobly team.jpeg', { 
-        //     level: 'protected'
-        // });
-        console.log(myFile);
-        // setFile(myFile);
-    }
-    const onChange = (e) => {
-        const file = e.target.files[0];
-        var reader = new FileReader();
-
-        // Closure to capture the file information.
-        reader.onload = (function (e) {
-            setFile(e.target.result)
-        })
-
-        // Read in the image file as a data URL.
-        reader.readAsDataURL(file);
-    }
-
+const Upload = ({ pond, onAddFile }) => {
     return <>
-        <FilePond allowMultiple={false} server={server} instantUpload={false} ref={pond} />
-        <Button variant='contained' color='secondary'
-            onClick={() => pond.current.processFiles().then(files => console.log('hoera'))}>
-            GO!
-        </Button>
-        <img src={file} width='100%' />
-        <input type='file' onChange={onChange} />
-        <pre style={{ color: 'white' }}>{file}</pre>
-        <Button variant='contained' color='secondary' onClick={onClick}>Load a file from S3</Button>
+        <FilePond allowMultiple={false} server={server} instantUpload={false}
+            ref={pond} onaddfile={onAddFile} />
     </>
 }
 

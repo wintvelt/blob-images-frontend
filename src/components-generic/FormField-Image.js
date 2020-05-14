@@ -39,6 +39,8 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
+const setValue = (value) => ({ target: { value } });
+
 const ImageField = (props) => {
     const { field, onChange } = props;
     const { value } = field;
@@ -47,7 +49,10 @@ const ImageField = (props) => {
     const [imageMenu, setImageMenu] = useState({});
     const menuAnchor = useRef();
 
-    const onClear = () => onChange({ target: { value: '' } });
+    const handleChange = (newValue) => {
+        onChange(setValue(newValue));
+        setImageMenu({ anchor: imageMenu.anchor });
+    };
 
     const handleClickMenu = (action) => (e) => {
         switch (action) {
@@ -60,9 +65,8 @@ const ImageField = (props) => {
                 break;
 
             case 'clear':
-                onClear();
-                setImageMenu({ anchor: imageMenu.anchor });
-            
+                handleChange('');
+
             case 'close':
                 setImageMenu({ anchor: imageMenu.anchor });
                 break;
@@ -106,7 +110,8 @@ const ImageField = (props) => {
                 <MenuItem onClick={handleClickMenu('clear')}>Remove photo</MenuItem>
             </Menu>
         </Grid>
-        <ImageUpload open={imageMenu.upLoadOpen || false} handleClose={handleClickMenu('close')} />
+        <ImageUpload open={!!imageMenu.upLoadOpen} handleClose={handleClickMenu('close')}
+            onChange={handleChange} />
     </Grid>
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import { Storage } from "aws-amplify";
@@ -43,7 +43,7 @@ const server = {
 const Upload = ({ pond, onAddFile }) => {
     return <>
         <FilePond allowMultiple={false} server={server} instantUpload={false}
-            ref={pond} onaddfile={onAddFile} />
+            ref={pond} onaddfile={onAddFile} onremovefile={onAddFile} />
     </>
 }
 

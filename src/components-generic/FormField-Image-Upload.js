@@ -14,12 +14,21 @@ export default function UploadDialog({ open, handleClose, onChange }) {
     const onSave = async () => {
         await pond.current.processFiles();
         const user = await Auth.currentUserInfo();
-        onChange(user.id + '/' + file);
+        if (file) {
+            const newImage = {
+                image: user.id + '/' + file,
+                owner: user.attributes['custom:name']
+            }
+            onChange(newImage)
+        } else {
+            handleClose();
+        };
     }
     const onAddFile = () => {
-        const newFile = pond.current && pond.current.getFile().filename;
-        setFile(newFile);
+        const newFile = pond.current && pond.current.getFile();
+        setFile(newFile? newFile.filename : '');
     }
+
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="image-upload-dialog"
             fullWidth maxWidth='md'>
@@ -31,7 +40,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
                 <Button onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button onClick={onSave} variant='contained' color='primary'>
+                <Button onClick={onSave} variant='contained' color='primary' disabled={!file}>
                     Save
                 </Button>
             </DialogActions>

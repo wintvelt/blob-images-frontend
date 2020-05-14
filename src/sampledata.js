@@ -31,7 +31,11 @@ const sampleData = {
             '492 photos',
             '19 members'
         ],
-        image: 'eu-central-1:13691c14-c389-4974-b5ab-f401c71bde0a/cover.jpg',
+        image: {
+            image: 'eu-central-1:13691c14-c389-4974-b5ab-f401c71bde0a/cover.jpg',
+            owner: 'Michiel',
+            album: 'Blob in Afrika'
+        },
         userIsAdmin: true,
     },
     'myUrl/groups/group2/members': [

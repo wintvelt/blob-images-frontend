@@ -30,7 +30,7 @@ const GroupEditMain = () => {
         <main>
             <Toolbar />
             {/* < Back to Your Groups */}
-            <Grid container spacing={1} className={classes.container}>
+            <Grid container className={classes.container}>
                 <Grid item md={3} xs={12}>
                     <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading}/>
                 </Grid>

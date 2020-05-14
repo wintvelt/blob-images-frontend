@@ -43,9 +43,10 @@ const setValue = (value) => ({ target: { value } });
 
 const ImageField = (props) => {
     const { field, onChange } = props;
-    const { value } = field;
+    const { value, isGroup, isAlbum } = field;
+    const { image, owner, album } = value;
     const classes = useStyles();
-    const imageUrl = makeImageUrl(value, 540, 144);
+    const imageUrl = makeImageUrl(image, 540, 144);
     const [imageMenu, setImageMenu] = useState({});
     const menuAnchor = useRef();
 
@@ -87,10 +88,14 @@ const ImageField = (props) => {
         </Grid>
         <Grid item xs={6} className={classes.item}>
             <div>
-                <Typography variant='caption'>Photo by:</Typography>
-                <Typography variant='body1' gutterBottom>Michiel</Typography>
-                <Typography variant='caption'>From album:</Typography>
-                <Typography variant='body1'>Blob in Afrika</Typography>
+                {(owner) && <>
+                    <Typography variant='caption'>Photo by:</Typography>
+                    <Typography variant='body1' gutterBottom>{owner}</Typography>
+                </>}
+                {(isGroup || isAlbum) && album && <>
+                    <Typography variant='caption'>From album:</Typography>
+                    <Typography variant='body1'>{album}</Typography>
+                </>}
             </div>
             <Button size='small' variant='contained' color='primary' ref={menuAnchor}
                 aria-controls="image-pick-menu" aria-haspopup="true" onClick={handleClickMenu('open')}
@@ -104,7 +109,12 @@ const ImageField = (props) => {
                 open={!!(imageMenu.isOpen)}
                 onClose={handleClickMenu('close')}
             >
-                <MenuItem onClick={handleClickMenu('close')}>Pick from group photos</MenuItem>
+                {isGroup &&
+                    <MenuItem onClick={handleClickMenu('close')}>Pick from group photos</MenuItem>
+                }
+                {isAlbum &&
+                    <MenuItem onClick={handleClickMenu('close')}>Pick from album photos</MenuItem>
+                }
                 <MenuItem onClick={handleClickMenu('close')}>Pick from my photos</MenuItem>
                 <MenuItem onClick={handleClickMenu('upload')}>Upload new photo</MenuItem>
                 <MenuItem onClick={handleClickMenu('clear')}>Remove photo</MenuItem>

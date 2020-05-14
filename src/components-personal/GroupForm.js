@@ -49,6 +49,7 @@ const fieldConfig = {
     image: {
         autoComplete: 'group-image',
         type: 'image',
+        isGroup: true,
         label: 'group image',
     },
 };

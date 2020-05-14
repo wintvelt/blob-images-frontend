@@ -17,11 +17,12 @@ export default class MyDocument extends Document {
                 <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap"
                     rel="stylesheet" />
             </Head>
-            <body style={
-                {
-                    background: 'linear-gradient(355deg, rgba(70,52,78,1) 10%, rgba(90,85,96,1) 90%)'
-                }
-            } >
+            <body
+                style={{
+                    backgroundImage: 'url(/img/farmer.png)'
+                    //     background: 'linear-gradient(355deg, rgba(70,52,78,1) 10%, rgba(90,85,96,1) 90%)'
+                }}
+            >
                 <Main />
                 <NextScript />
             </body>

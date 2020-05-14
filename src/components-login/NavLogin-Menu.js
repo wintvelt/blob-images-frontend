@@ -7,11 +7,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import Link from '../components-generic/Link';
 
-const NavMenu = ({ menu, onClick, onClose, isOpen, menuLinkClass, menuLinkActiveClass, pathname,
+const NavMenu = ({ menu, onClick, onClose, isOpen, anchor, menuLinkClass, menuLinkActiveClass, pathname,
     iconActiveClass, iconInactiveClass }) => (
         <Menu
             id='user-menu'
-            anchorEl={isOpen}
+            anchorEl={anchor}
             getContentAnchorEl={null}
             anchorOrigin={{
                 vertical: 'top',

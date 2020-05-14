@@ -100,8 +100,8 @@ export default function HideAppBar(props) {
                                 <NavLink text='Sign up' href='/' outlined>sign up</NavLink>
                             </Grid>
                         }
-                        {(user.isAuthenticated) && <Grid item md={1} xs={1}
-                            style={{ display: 'flex', justifyContent: 'center' }}>
+                        {(user.isAuthenticated) && <Grid item md={2} xs={1}
+                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <NavLogin path='/login' />
                         </Grid>}
                     </Grid>

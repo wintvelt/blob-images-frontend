@@ -15,7 +15,7 @@ import { makeImageUrl } from '../components-generic/imageProvider';
 const useStyles = makeStyles(theme => ({
     card: {
         position: 'relative',
-        backgroundColor: theme.palette.background.paper,
+        // backgroundColor: theme.palette.background.paper,
         color: 'white',
         height: '200px',
     },
@@ -34,24 +34,24 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         zIndex: 0,
     },
-    edit: {
-        backgroundColor: 'rgba(0,0,0,.2)',
-        marginLeft: theme.spacing(1),
-        position: 'relative',
-    },
-    imageEdit: {
-        position: 'absolute',
-        top: theme.spacing(1),
-        right: theme.spacing(1),
-        zIndex: 99,
-        backgroundColor: 'rgba(0,0,0,.2)',
-        marginLeft: theme.spacing(1),
-    },
-    text: {
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        padding: theme.spacing(0, .4),
-        borderRadius: theme.spacing(.5),
-    },
+    // edit: {
+    //     backgroundColor: 'rgba(0,0,0,.2)',
+    //     marginLeft: theme.spacing(1),
+    //     position: 'relative',
+    // },
+    // imageEdit: {
+    //     position: 'absolute',
+    //     top: theme.spacing(1),
+    //     right: theme.spacing(1),
+    //     zIndex: 99,
+    //     backgroundColor: 'rgba(0,0,0,.2)',
+    //     marginLeft: theme.spacing(1),
+    // },
+    // text: {
+    //     backgroundColor: 'rgba(0,0,0,0.2)',
+    //     padding: theme.spacing(0, .4),
+    //     borderRadius: theme.spacing(.5),
+    // },
 }));
 
 const GroupCardContent = (props) => {
@@ -67,11 +67,11 @@ const GroupCardContent = (props) => {
             <Typography gutterBottom variant='h4' component='h5' align='center'>
                 <TextSkeleton className={classes.text} isLoading={isLoading}>{title}</TextSkeleton>
             </Typography>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            {/* <div style={{ display: 'flex', justifyContent: 'center' }}> */}
                 <Typography variant="body1" component="p" align='center'>
                     <TextSkeleton className={classes.text} isLoading={isLoading}>{subtitle}</TextSkeleton>
                 </Typography>
-            </div>
+            {/* </div> */}
         </CardContent>
     </>
 }

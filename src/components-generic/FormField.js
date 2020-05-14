@@ -117,7 +117,7 @@ const PasswordField = (props) => {
     };
     return (
         <>
-            <TextField variant='outlined' color='primary' size='small' margin='normal'
+            <TextField variant='outlined' size='small' margin='normal'
                 type={(visibility ? 'text' : 'password')}
                 label={field.label} autoComplete={field.autoComplete}
                 error={error}
@@ -144,7 +144,7 @@ const CheckboxField = (props) => {
     const { fieldName, field, onChange, helperText, error } = props;
     return <>
         <FormControlLabel
-            control={<Checkbox name={fieldName} color='primary'
+            control={<Checkbox name={fieldName}
                 onChange={onChange} checked={!!field.value} />}
             label={field.label}
         />
@@ -191,7 +191,7 @@ export const Field = (props) => {
                         <ImageField {...props} />
                     </>
                     : <>
-                        <TextField variant='outlined' color='primary' size='small' margin='normal'
+                        <TextField variant='outlined' size='small' margin='normal'
                             type={field.type}
                             label={field.label} autoComplete={field.autoComplete}
                             multiline={field.multiline || undefined}

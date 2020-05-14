@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core';
 
 import { useApiData } from '../../../../src/components-generic/DataProvider';
 import PrivatePage from '../../../../src/components-personal/PrivatePage';
@@ -10,8 +11,17 @@ import GroupCardLayout from '../../../../src/components-personal/GroupCardLayout
 import GroupForm from '../../../../src/components-personal/GroupForm';
 import Upload from '../../../../src/components-generic/Upload';
 
+const useStyles = makeStyles(theme => ({
+    container: {
+        [theme.breakpoints.up('sm')]: {
+            padding: theme.spacing(3),
+        },
+    }
+}))
+
 const GroupEditMain = () => {
     const router = useRouter();
+    const classes = useStyles();
     const groupId = router.query && router.query.id;
     const source = `myUrl/groups/${groupId}`;
     const groupData = useApiData('group', source);
@@ -21,7 +31,7 @@ const GroupEditMain = () => {
         <main>
             <Toolbar />
             {/* < Back to Your Groups */}
-            <Grid container spacing={1} style={{ padding: '24px' }}>
+            <Grid container spacing={1} className={classes.container}>
                 <Grid item md={3} xs={12}>
                     <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading}/>
                 </Grid>

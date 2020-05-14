@@ -97,7 +97,7 @@ const ImageField = (props) => {
                 id="image-pick-menu"
                 anchorEl={imageMenu.anchor}
                 keepMounted
-                open={(imageMenu.isOpen)}
+                open={!!(imageMenu.isOpen)}
                 onClose={handleClickMenu('close')}
             >
                 <MenuItem onClick={handleClickMenu('close')}>Pick from group photos</MenuItem>

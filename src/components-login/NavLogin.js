@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     navLink: {
         marginLeft: theme.spacing(1),
         ...theme.typography.button,
-        color: theme.palette.primary.contrastText,
+        // color: theme.palette.primary.contrastText,
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
     },
@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     menuLink: {
         display: 'flex',
         alignItems: 'center',
-        color: theme.palette.primary.main,
-        textDecorationColor: theme.palette.primary.main,
+        // color: theme.palette.primary.main,
+        // textDecorationColor: theme.palette.primary.main,
         '&:hover': {
             textDecoration: 'none'
         }
@@ -53,14 +53,14 @@ const useStyles = makeStyles((theme) => ({
     menuLinkActive: {
         display: 'flex',
         alignItems: 'center',
-        color: theme.palette.secondary.main,
-        textDecorationColor: theme.palette.secondary.main,
+        // color: theme.palette.secondary.main,
+        // textDecorationColor: theme.palette.secondary.main,
         '&:hover': {
             textDecoration: 'none'
         }
     },
-    active: { color: theme.palette.secondary.main },
-    inActive: { color: theme.palette.primary.light },
+    active: { color: theme.palette.primary.main },
+    // inActive: { color: theme.palette.primary.light },
 }));
 
 export default function NavLogin(props) {
@@ -71,17 +71,17 @@ export default function NavLogin(props) {
     const { user, setUser } = userContext;
     const name = user.profile['custom:name'];
     const avatarUrl = user.profile['custom:avatarUrl'];
-    const [menuOpen, setMenuOpen] = useState(false);
-    const handleClick = () => {
-        setMenuOpen(true)
+    const [menuAnchor, setMenuAnchor] = useState(null);
+    const handleClick = (e) => {
+        setMenuAnchor(e.target)
     };
     const handleClose = () => {
-        setMenuOpen(false);
+        setMenuAnchor(null);
     }
     const handleLogout = async () => {
         Auth.signOut();
         setUser({ profile: false, isAuthenticated: false })
-        setMenuOpen(false);
+        setMenuOpen(null);
         router.push('/');
     }
     const handleMenuClick = (action) => {
@@ -106,7 +106,8 @@ export default function NavLogin(props) {
                     </Hidden>
                     <Hidden smDown>
                         <NavMenu menu={userMenu}
-                            onClick={handleMenuClick} onClose={handleClose} isOpen={menuOpen}
+                            onClick={handleMenuClick} onClose={handleClose} isOpen={!!menuAnchor}
+                            anchor={menuAnchor}
                             menuLinkActiveClass={classes.menuLinkActive} menuLinkClass={classes.menuLink}
                             iconActiveClass={classes.active} iconInactiveClass={classes.inActive}
                             pathname={router.pathname} />
@@ -122,7 +123,7 @@ export default function NavLogin(props) {
                     <Hidden mdUp>
                         <NavDrawer menu={userMenu} pathname={router.pathname}
                             avatarUrl={avatarUrl} name={name}
-                            isOpen={menuOpen} onClose={handleClose} onClick={handleMenuClick}
+                            isOpen={!!menuAnchor} onClose={handleClose} onClick={handleMenuClick}
                             menuLinkActiveClass={classes.menuLinkActive} menuLinkClass={classes.menuLink}
                             iconActiveClass={classes.active} iconInactiveClass={classes.inActive} />
                     </Hidden>

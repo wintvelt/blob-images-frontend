@@ -13,8 +13,8 @@ const useStyles = makeStyles(theme => ({
     form: {
         position: 'relative',
         padding: theme.spacing(4),
-        backgroundColor: theme.palette.background.white,
-        color: theme.palette.text.secondary,
+        // backgroundColor: theme.palette.background.white,
+        // color: theme.palette.text.secondary,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
@@ -92,7 +92,7 @@ const GroupForm = (props) => {
         : 'Save changes';
     const deleteButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
         : 'Delete this group';
-    const title = `Edit group details ${props.title ? 'of ' + props.title : ''}`;
+    const title = `Edit group details`;
     const subtitle = '';
     // const subtitle = (isNew) ? 'Hit save to create the group'
     //     : 'Save your changes after you have made your edits';
@@ -101,12 +101,12 @@ const GroupForm = (props) => {
         <form name='group-edit-form' noValidate>
             <Paper className={classes.form}>
                 <Typography component="h1" variant="h4"
-                    align='left' gutterBottom color='inherit'>
+                    align='left' gutterBottom>
                     {title}
                 </Typography>
-                <Typography paragraph variant='subtitle1' color='inherit'>
+                {subtitle && <Typography paragraph variant='subtitle1'>
                     {subtitle}
-                </Typography>
+                </Typography>}
                 {Object.keys(fieldConfig).map(fieldName =>
                     <Field key={fieldName}
                         fieldName={fieldName}

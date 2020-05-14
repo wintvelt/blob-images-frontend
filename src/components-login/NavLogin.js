@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     menuLink: {
         display: 'flex',
         alignItems: 'center',
-        // color: theme.palette.primary.main,
+        color: 'inherit',
         // textDecorationColor: theme.palette.primary.main,
         '&:hover': {
             textDecoration: 'none'

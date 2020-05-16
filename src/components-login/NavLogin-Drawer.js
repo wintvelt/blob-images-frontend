@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 });
 
 export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClick, pathname,
-    menuLinkClass, menuLinkActiveClass, name,
+    menuLinkClass, menuLinkActiveClass, name, avatar,
     iconActiveClass, iconInactiveClass }) {
     const classes = useStyles();
 
@@ -78,7 +78,7 @@ export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClic
             >
                 <ListItem style={{ backgroundColor: 'black', color: 'white' }} divider>
                     <ListItemIcon>
-                        <Avatar />
+                        <Avatar src={avatar} />
                     </ListItemIcon>
                     <ListItemText primary={name} />
                 </ListItem>

@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
-import { Auth } from "aws-amplify";
+import { Auth, API } from "aws-amplify";
+import { makeImageUrl } from './imageProvider';
 
 export const initialUser = {
     profile: false,
@@ -26,9 +27,12 @@ export const useUser = (withSet) => {
 }
 
 export const getUserInfo = async () => {
-    const user = await Auth.currentUserInfo();
+    const authUser = await Auth.currentUserInfo();
+    const userId = authUser.id;
+    const user = await API.get('blob-images', `/users/U${userId}`);
     return {
-        id: user.id,
-        ...user.attributes
+        id: userId,
+        name: user.name,
+        avatar: makeImageUrl(user.avatar, 40, 40)
     };
 }

@@ -68,8 +68,8 @@ export default function NavLogin(props) {
     const classes = useStyles();
     const [ user, setUser ] = useUser(true);
     const router = useRouter();
-    const name = user.profile['custom:name'];
-    const avatarUrl = user.profile['custom:avatarUrl'];
+    const name = user.profile.name;
+    const avatar = user.profile.avatar;
     const [menuAnchor, setMenuAnchor] = useState(null);
     const handleClick = (e) => {
         setMenuAnchor(e.target)
@@ -99,7 +99,7 @@ export default function NavLogin(props) {
                             endIcon={<Icon>expand_more</Icon>}
                         >
                             <Avatar className={classes.avatar}
-                                alt={'user name'} src={avatarUrl} />
+                                alt={'user name'} src={avatar} />
                             {name}
                         </Button>
                     </Hidden>
@@ -121,7 +121,7 @@ export default function NavLogin(props) {
                     </Hidden>
                     <Hidden mdUp>
                         <NavDrawer menu={userMenu} pathname={router.pathname}
-                            avatarUrl={avatarUrl} name={name}
+                            avatar={avatar} name={name}
                             isOpen={!!menuAnchor} onClose={handleClose} onClick={handleMenuClick}
                             menuLinkActiveClass={classes.menuLinkActive} menuLinkClass={classes.menuLink}
                             iconActiveClass={classes.active} iconInactiveClass={classes.inActive} />

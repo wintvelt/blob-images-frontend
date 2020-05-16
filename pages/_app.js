@@ -34,7 +34,6 @@ export default function MyApp(props) {
         try {
             await Auth.currentSession();
             const user = await getUserInfo();
-            console.log(user);
             setUser((oldUser) => ({
                 ...oldUser,
                 profile: user,

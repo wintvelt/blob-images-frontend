@@ -10,13 +10,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from '../components-generic/Link';
 import { Field, useFields, validateForm } from '../components-generic/FormField';
-import { useUser } from '../components-generic/UserContext';
+import { useUser, getUserInfo } from '../components-generic/UserContext';
 
 const useStyles = makeStyles(theme => ({
     loginForm: {
         position: 'relative',
         padding: theme.spacing(4),
-        backgroundColor: theme.palette.background.white,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
@@ -85,8 +84,9 @@ const LoginForm = (props) => {
             setLoading({ state: true });
             try {
                 const { email, password } = fields;
-                const user = await Auth.signIn(email.value, password.value);
-                setUser({ profile: user.attributes, isAuthenticated: true, isAuthenticating: false });
+                await Auth.signIn(email.value, password.value);
+                const user = await getUserInfo();
+                setUser({ profile: user, isAuthenticated: true, isAuthenticating: false });
                 if (props.redirect) router.push(props.redirect);
             } catch (e) {
                 console.log(e);
@@ -133,13 +133,13 @@ const LoginForm = (props) => {
     return (
         <form name='login-form' noValidate>
             <Paper className={classes.loginForm}>
-                <Typography component="h1" variant="h4" color="primary"
+                <Typography component="h1" variant="h4"
                     align='center' gutterBottom>
                     {title || 'Welcome back!'}
                 </Typography>
-                <Typography paragraph variant='subtitle1' color='primary'>
+                <Typography paragraph variant='subtitle1'>
                     Please log in with your email and password
-                    </Typography>
+                </Typography>
                 {Object.keys(fieldConfig).map(fieldName =>
                     <Field key={fieldName}
                         fieldName={fieldName}

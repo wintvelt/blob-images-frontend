@@ -6,19 +6,20 @@ export const initialUser = {
     isAuthenticated: false,
 };
 
-export const userReducer = (state, newState) => {
-    return {
-        ...state,
-        ...newState
-    }
-}
-
 export const UserContext = createContext({
     user: initialUser,
     setUser: () => { }
 });
 
-export const useUser = () => {
-    const user = useContext(UserContext);
-    return user.user;
+export const useUser = (withSet) => {
+    const { user, setUser } = useContext(UserContext);
+    const updateUser = (newItem) => {
+        setUser((oldUser) => ({
+            ...oldUser,
+            ...newItem,
+        }));
+    }
+    return (withSet) ?
+        [user, updateUser]
+        : user;
 }

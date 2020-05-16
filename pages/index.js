@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { UserContext } from '../src/components-generic/UserContext';
+import { useUser } from '../src/components-generic/UserContext';
 import Grid from '@material-ui/core/Grid';
 
 import Hero from '../src/components-home/Hero';
@@ -11,8 +11,7 @@ import Pricing from '../src/components-home/Pricing'
 import SignupForm from '../src/components-login/Signup';
 
 const Home = () => {
-    const userContext = useContext(UserContext);
-    const user = userContext.user;
+    const user = useUser();
     return (
         <main>
             <Hero

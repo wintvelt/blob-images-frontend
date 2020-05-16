@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { UserContext } from '../../../src/components-generic/UserContext';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,10 +13,10 @@ import InviteForm from '../../../src/components-invite/InviteForm';
 import CardInvite from '../../../src/components-invite/CardInvite';
 import SignupForm from '../../../src/components-login/Signup';
 import LoginForm from '../../../src/components-login/LoginForm';
+import { useUser } from '../../../src/components-generic/UserContext';
 
 const ReceivedInvite = (props) => {
-    const userContext = useContext(UserContext);
-    const { user } = userContext;
+    const user = useUser();
     const { profile } = user;
     const router = useRouter();
     const { invitorName, group, expirationDate, isToEmail, inviteeId } = props;

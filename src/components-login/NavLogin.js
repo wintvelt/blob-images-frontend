@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
-import { UserContext } from '../components-generic/UserContext';
+import { useUser } from '../components-generic/UserContext';
 import { Auth } from 'aws-amplify';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -66,9 +66,9 @@ const useStyles = makeStyles((theme) => ({
 export default function NavLogin(props) {
     const { path } = props;
     const classes = useStyles();
-    const userContext = useContext(UserContext);
+    const [ user, setUser ] = useUser(true);
+    console.log({user});
     const router = useRouter();
-    const { user, setUser } = userContext;
     const name = user.profile['custom:name'];
     const avatarUrl = user.profile['custom:avatarUrl'];
     const [menuAnchor, setMenuAnchor] = useState(null);
@@ -80,7 +80,7 @@ export default function NavLogin(props) {
     }
     const handleLogout = async () => {
         Auth.signOut();
-        setUser({ profile: false, isAuthenticated: false })
+        setUser({ profile: false, isAuthenticated: false, isAuthenticating: false })
         setMenuOpen(null);
         router.push('/');
     }

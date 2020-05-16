@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
 import PropTypes from 'prop-types';
 import { Amplify } from 'aws-amplify';
@@ -9,7 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
 import Nav from '../src/Nav';
 import Footer from '../src/Footer';
-import { initialUser, userReducer, UserContext } from '../src/components-generic/UserContext';
+import { UserContext, initialUser } from '../src/components-generic/UserContext';
 import DataProvider from '../src/components-generic/DataProvider';
 
 import 'filepond/dist/filepond.min.css';
@@ -20,7 +20,7 @@ Amplify.configure(amplifyConfig);
 
 export default function MyApp(props) {
     const { Component, pageProps } = props;
-    const [user, setUser] = useReducer(userReducer, initialUser);
+    const [user, setUser] = useState(initialUser);
     React.useEffect(() => {
         // Remove the server-side injected CSS.
         const jssStyles = document.querySelector('#jss-server-side');
@@ -34,10 +34,11 @@ export default function MyApp(props) {
         try {
             await Auth.currentSession();
             const user = await Auth.currentUserInfo();
-            setUser({
+            setUser((oldUser) => ({
+                ...oldUser,
                 profile: user.attributes,
                 isAuthenticated: true
-            });
+            }));
         }
         catch (e) {
             if (e !== 'No current user') {
@@ -45,7 +46,7 @@ export default function MyApp(props) {
             }
         }
 
-        setUser({ isAuthenticating: false });
+        setUser((oldUser)=>({ ...oldUser, isAuthenticating: false }));
     }
 
     return (

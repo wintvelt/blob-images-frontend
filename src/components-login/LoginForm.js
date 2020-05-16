@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Auth } from "aws-amplify";
 import { useRouter } from 'next/router';
 
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from '../components-generic/Link';
 import { Field, useFields, validateForm } from '../components-generic/FormField';
-import { UserContext } from '../components-generic/UserContext';
+import { useUser } from '../components-generic/UserContext';
 
 const useStyles = makeStyles(theme => ({
     loginForm: {
@@ -67,7 +67,7 @@ const fieldConfig = {
 
 const LoginForm = (props) => {
     const { title, onSignup } = props;
-    const userContext = useContext(UserContext);
+    const [_, setUser] = useUser(true);
     const router = useRouter();
     const classes = useStyles();
     const [fields, setFields] = useFields(fieldConfig);
@@ -86,11 +86,7 @@ const LoginForm = (props) => {
             try {
                 const { email, password } = fields;
                 const user = await Auth.signIn(email.value, password.value);
-                userContext.setUser({
-                    profile: user.attributes,
-                    isAuthenticated: true,
-                    isAuthenticating: false,
-                });
+                setUser({ profile: user.attributes, isAuthenticated: true, isAuthenticating: false });
                 if (props.redirect) router.push(props.redirect);
             } catch (e) {
                 console.log(e);

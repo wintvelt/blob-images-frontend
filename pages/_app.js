@@ -9,7 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
 import Nav from '../src/Nav';
 import Footer from '../src/Footer';
-import { UserContext, initialUser } from '../src/components-generic/UserContext';
+import { UserContext, initialUser, getUserInfo } from '../src/components-generic/UserContext';
 import DataProvider from '../src/components-generic/DataProvider';
 
 import 'filepond/dist/filepond.min.css';
@@ -33,20 +33,21 @@ export default function MyApp(props) {
     async function onLoad() {
         try {
             await Auth.currentSession();
-            const user = await Auth.currentUserInfo();
+            const user = await getUserInfo();
+            console.log(user);
             setUser((oldUser) => ({
                 ...oldUser,
-                profile: user.attributes,
-                isAuthenticated: true
+                profile: user,
+                isAuthenticated: true,
+                isAuthenticating: false
             }));
         }
         catch (e) {
             if (e !== 'No current user') {
                 alert(JSON.stringify(e));
+                setUser((oldUser) => ({ ...oldUser, isAuthenticating: false }));
             }
         }
-
-        setUser((oldUser)=>({ ...oldUser, isAuthenticating: false }));
     }
 
     return (

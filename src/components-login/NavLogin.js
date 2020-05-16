@@ -67,7 +67,6 @@ export default function NavLogin(props) {
     const { path } = props;
     const classes = useStyles();
     const [ user, setUser ] = useUser(true);
-    console.log({user});
     const router = useRouter();
     const name = user.profile['custom:name'];
     const avatarUrl = user.profile['custom:avatarUrl'];
@@ -78,10 +77,10 @@ export default function NavLogin(props) {
     const handleClose = () => {
         setMenuAnchor(null);
     }
-    const handleLogout = async () => {
+    const handleLogout = () => {
         Auth.signOut();
         setUser({ profile: false, isAuthenticated: false, isAuthenticating: false })
-        setMenuOpen(null);
+        setMenuAnchor(null);
         router.push('/');
     }
     const handleMenuClick = (action) => {

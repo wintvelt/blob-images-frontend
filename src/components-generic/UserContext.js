@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { Auth } from "aws-amplify";
 
 export const initialUser = {
     profile: false,
@@ -22,4 +23,12 @@ export const useUser = (withSet) => {
     return (withSet) ?
         [user, updateUser]
         : user;
+}
+
+export const getUserInfo = async () => {
+    const user = await Auth.currentUserInfo();
+    return {
+        id: user.id,
+        ...user.attributes
+    };
 }

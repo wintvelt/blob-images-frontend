@@ -12,7 +12,7 @@ import { Field, useFields, validateForm } from '../components-generic/FormField'
 const useStyles = makeStyles(theme => ({
     form: {
         position: 'relative',
-        padding: theme.spacing(4),
+        padding: theme.spacing(3, 4, 4, 4),
         // backgroundColor: theme.palette.background.white,
         // color: theme.palette.text.secondary,
         display: 'flex',

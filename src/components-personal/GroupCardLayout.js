@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 
 const GroupCardContent = (props) => {
     const { title, subtitle, image, isLoading } = props;
-    const imageUrl = makeImageUrl(image.image, 340, 200);
+    const imageUrl = makeImageUrl(image && image.image, 340, 200);
     const classes = useStyles();
     return <>
         {image && <CardMedia className={classes.media}

@@ -44,7 +44,7 @@ const setValue = (value) => ({ target: { value } });
 const ImageField = (props) => {
     const { field, onChange } = props;
     const { value, isGroup, isAlbum } = field;
-    const { image, owner, album } = value;
+    const { image, owner, album } = value || {};
     const classes = useStyles();
     const imageUrl = makeImageUrl(image, 540, 144);
     const [imageMenu, setImageMenu] = useState({});

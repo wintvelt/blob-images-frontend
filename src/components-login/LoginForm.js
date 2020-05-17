@@ -84,7 +84,7 @@ const LoginForm = (props) => {
             setLoading({ state: true });
             try {
                 const { email, password } = fields;
-                user.login(email.value, password.value);
+                await user.login(email.value, password.value);
                 if (props.redirect) router.push(props.redirect);
             } catch (e) {
                 console.log(e);

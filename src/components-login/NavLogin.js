@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '../components-generic/UserContext';
-import { Auth } from 'aws-amplify';
 
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
@@ -13,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Link from '../components-generic/Link';
 import NavMenu from './NavLogin-Menu';
 import NavDrawer from './NavLogin-Drawer';
+import { makeImageUrl } from '../components-generic/imageProvider';
+import { Typography } from '@material-ui/core';
 
 const userMenu = [
     { icon: 'group', text: 'Groups', href: '/personal/groups' },
@@ -70,6 +71,7 @@ export default function NavLogin(props) {
     const router = useRouter();
     const name = user.profile.name;
     const avatar = user.profile.avatar;
+    const avatarSrc = makeImageUrl(avatar, 40, 40);
     const [menuAnchor, setMenuAnchor] = useState(null);
     const handleClick = (e) => {
         setMenuAnchor(e.target)
@@ -98,8 +100,8 @@ export default function NavLogin(props) {
                             endIcon={<Icon>expand_more</Icon>}
                         >
                             <Avatar className={classes.avatar}
-                                alt={'user name'} src={avatar} />
-                            {name}
+                                alt={'user name'} src={avatarSrc} />
+                            <Typography noWrap>{name}</Typography>
                         </Button>
                     </Hidden>
                     <Hidden smDown>

@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        position: 'relative',
     },
     item: {
         padding: theme.spacing(0, 1),
@@ -37,16 +38,34 @@ const useStyles = makeStyles(theme => ({
         maxHeight: '100%',
         maxWidth: '100%',
     },
-}))
+    avatar: {
+        width: '100px',
+        height: '100px',
+        objectFit: 'cover',
+        borderRadius: '50px',
+    },
+    imageLabel: {
+        fontSize: '12px',
+        color: 'rgba(0,0,0,.5)',
+        position: 'absolute',
+        top: '-9px',
+        left: '8px',
+        backgroundColor: 'white',
+        padding: '0 4px',
+    }
+}));
 
 const setValue = (value) => ({ target: { value } });
 
 const ImageField = (props) => {
     const { field, onChange } = props;
-    const { value, isGroup, isAlbum } = field;
+    const { value, isGroup, isAlbum, isAvatar, label } = field;
     const { image, owner, album } = value || {};
     const classes = useStyles();
-    const imageUrl = makeImageUrl(image, 540, 144);
+    const width = isAvatar? 100 : 540;
+    const height = isAvatar? 100 : 144;
+    const imgClass = isAvatar? classes.avatar : classes.image;
+    const imageUrl = makeImageUrl(image, width, height);
     const [imageMenu, setImageMenu] = useState({});
     const menuAnchor = useRef();
 
@@ -79,8 +98,9 @@ const ImageField = (props) => {
 
     return <Grid container className={classes.container}>
         <Grid item xs={6} className={classes.itemImage}>
+            <legend className={classes.imageLabel}>{label}</legend>
             {imageUrl &&
-                <img src={imageUrl} alt='group image thumbnail' className={classes.image} />
+                <img src={imageUrl} alt='group image thumbnail' className={imgClass} />
             }
             {!imageUrl &&
                 <Icon color='disabled' style={{ fontSize: '40px' }}>image</Icon>
@@ -100,7 +120,7 @@ const ImageField = (props) => {
             <Button size='small' variant='contained' color='primary' ref={menuAnchor}
                 aria-controls="image-pick-menu" aria-haspopup="true" onClick={handleClickMenu('open')}
                 endIcon={<Icon>expand_more</Icon>}>
-                Change photo
+                {(image) ? 'Change photo' : 'add photo'}
             </Button>
             <Menu
                 id="image-pick-menu"
@@ -117,7 +137,7 @@ const ImageField = (props) => {
                 }
                 <MenuItem onClick={handleClickMenu('close')}>Pick from my photos</MenuItem>
                 <MenuItem onClick={handleClickMenu('upload')}>Upload new photo</MenuItem>
-                <MenuItem onClick={handleClickMenu('clear')}>Remove photo</MenuItem>
+                {imageUrl && <MenuItem onClick={handleClickMenu('clear')}>Remove photo</MenuItem>}
             </Menu>
         </Grid>
         <ImageUpload open={!!imageMenu.upLoadOpen} handleClose={handleClickMenu('close')}

@@ -22,7 +22,7 @@ export const getUserInfo = async () => {
         return {
             id: userId,
             name: user.name,
-            avatar: makeImageUrl(user.avatar, 40, 40)
+            avatar: user.avatar
         };
     } catch (error) {
         const name = authUser.attributes['custom:name'];
@@ -82,6 +82,11 @@ export const useUser = (withSetters) => {
             await login(email, profile.password);
         }
     }
+    const saveProfile = async (name, avatar) => {
+        const profile = { name, avatar };
+        await API.put('blob-images', '/users', { body: profile });
+        updateUser({ profile });
+    }
 
     return (withSetters) ?
         {
@@ -90,7 +95,8 @@ export const useUser = (withSetters) => {
             login,
             logout,
             signup,
-            confirmSignup
+            confirmSignup,
+            saveProfile
         }
         : user;
 }

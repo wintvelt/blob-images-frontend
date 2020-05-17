@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Field, useFields, validateForm } from '../components-generic/FormField';
@@ -22,6 +23,14 @@ const useStyles = makeStyles(theme => ({
     submit: {
         marginTop: theme.spacing(4)
     },
+    info: {
+        textAlign: 'center',
+        color: 'white',
+        padding: theme.spacing(1, 2),
+        margin: theme.spacing(2, 0),
+        backgroundColor: 'cornflowerblue',
+        borderRadius: theme.spacing(1)
+    }
 }));
 
 const fieldConfig = {
@@ -58,7 +67,7 @@ const ProfileForm = (props) => {
     const { saveProfile } = useUser(true);
     const initialValues = { ...props, avatar: { image: props.avatar } }
     const [fields, setFields] = useFields(initialFieldConfig(initialValues));
-    const [isLoading, setIsLoading] = useState(false);
+    const [loading, setLoading] = useState({ isLoading: false });
 
     const onChange = (fieldName) => (e) => {
         setFields(fieldName)(e);
@@ -69,19 +78,19 @@ const ProfileForm = (props) => {
         if (!validateForm(fields)) {
             setFields('showValidation')(true);
         } else {
-            setIsLoading(true);
+            setLoading({ isLoading: true });
             try {
                 const { name, avatar } = fields;
                 const imageUrl = avatar.value.image;
                 await saveProfile(name.value, imageUrl);
-                setIsLoading(false);
+                setLoading({ success: 'profile update saved', isLoading: false });
             } catch (e) {
-                setLoginFailed(true);
+                setLoading({ error: e.message, isLoading: false });
             }
         }
     }
 
-    const saveButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
+    const saveButtonContent = loading.isLoading ? <CircularProgress size='1.5rem' color='secondary' />
         : 'Save changes';
     return (
         <form name='profile-edit-form' noValidate>
@@ -93,8 +102,13 @@ const ProfileForm = (props) => {
                         onChange={onChange(fieldName)}
                         showValidation={fields.showValidation} />
                 )}
+                {(loading.error || loading.success) &&
+                    <Typography variant='body2' className={classes.info} color={(loading.error) ? 'error' : 'inherit'}>
+                        {loading.error || loading.success}
+                    </Typography>
+                }
                 <Button type='submit' variant='contained' color='secondary' className={classes.submit}
-                    disabled={isLoading}
+                    disabled={loading.isLoading}
                     onClick={onSubmit}>
                     {saveButtonContent}
                 </Button>

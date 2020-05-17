@@ -10,7 +10,8 @@ import { useUser } from './UserContext';
 
 export default function UploadDialog({ open, handleClose, onChange }) {
     const pond = useRef(null);
-    const { profile } = useUser();
+    const user = useUser();
+    const { profile } = user;
     const [file, setFile] = useState('');
     const onSave = async () => {
         await pond.current.processFiles();

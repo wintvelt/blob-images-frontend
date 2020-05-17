@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     sectionTitle: {
-        paddingTop: theme.spacing(3),
+        paddingTop: theme.spacing(4.5),
     }
 }))
 

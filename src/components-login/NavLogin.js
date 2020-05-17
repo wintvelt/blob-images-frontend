@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NavLogin(props) {
     const { path } = props;
     const classes = useStyles();
-    const [ user, setUser ] = useUser(true);
+    const { user, logout } = useUser(true);
     const router = useRouter();
     const name = user.profile.name;
     const avatar = user.profile.avatar;
@@ -78,8 +78,7 @@ export default function NavLogin(props) {
         setMenuAnchor(null);
     }
     const handleLogout = () => {
-        Auth.signOut();
-        setUser({ profile: false, isAuthenticated: false, isAuthenticating: false })
+        logout();
         setMenuAnchor(null);
         router.push('/');
     }

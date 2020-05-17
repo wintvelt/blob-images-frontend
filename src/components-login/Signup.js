@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Auth } from "aws-amplify";
 import { useRouter } from 'next/router';
-import { UserContext } from '../components-generic/UserContext';
+import { useUser } from '../components-generic/UserContext';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -16,8 +16,6 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         marginBottom: '-80px',
         padding: theme.spacing(4),
-        backgroundColor: theme.palette.background.white,
-        color: theme.palette.primary.dark,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
@@ -78,7 +76,7 @@ const fieldConfig = {
         type: 'checkbox',
         label: <span>
             I agree to the{' '}
-            <Link href='#' color='textPrimary'>
+            <Link href='#' color='primary'>
                 terms and conditions
             </Link>
         </span>,
@@ -92,7 +90,7 @@ const fieldConfig = {
 const SignupForm = (props) => {
     const classes = useStyles();
     const router = useRouter();
-    const userContext = useContext(UserContext);
+    const { signup } = useUser(true);
     const { title, subtitle } = props;
     const [fields, setFields] = useFields(fieldConfig);
     const [loading, setLoading] = useState({ state: false });
@@ -108,19 +106,7 @@ const SignupForm = (props) => {
         } else {
             setLoading({ state: true });
             try {
-                await Auth.signUp({
-                    username: fields.email.value,
-                    password: fields.password.value,
-                    attributes: {
-                        'custom:name': fields.name.value,
-                        'custom:avatarUrl': '/img/me.jpg'
-                    },
-                });
-                userContext.setUser({
-                    profile: { email: fields.email.value, password: fields.password.value },
-                    isAuthenticated: false,
-                    isAuthenticating: false,
-                });
+                await signup(fields.email.value, fields.password.value, fields.name.value);
                 router.push('/verifysignup?email=' + encodeURIComponent(fields.email.value));
             } catch (e) {
                 console.log(e);
@@ -147,7 +133,7 @@ const SignupForm = (props) => {
     }
 
     const FormTitle = title || (() => (
-        <Typography component="h1" variant="h4" color="primary"
+        <Typography component="h1" variant="h4"
             align='center' gutterBottom>
             Sign up today!
         </Typography>));
@@ -163,7 +149,7 @@ const SignupForm = (props) => {
         <form name='signup-form' noValidate>
             <Paper className={classes.signupForm}>
                 <FormTitle />
-                <Typography variant='subtitle1' color='primary'>
+                <Typography variant='subtitle1'>
                     {formSubtitle}
                 </Typography>
                 {Object.keys(fieldConfig).map(fieldName =>

@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
-import { UserContext } from '../components-generic/UserContext';
+import React, { useState } from 'react';
+import { useUser } from '../components-generic/UserContext';
 import { useRouter } from 'next/router';
 import { Auth } from "aws-amplify";
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
@@ -18,8 +18,6 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(4),
         marginLeft: '20%',
         marginRight: '20%',
-        backgroundColor: theme.palette.background.white,
-        color: theme.palette.secondary.dark,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
@@ -37,16 +35,6 @@ const useStyles = makeStyles(theme => ({
         borderRadius: theme.spacing(1)
     }
 }));
-
-const theme = createMuiTheme({
-    palette: {
-        primary: { main: '#46344e' },
-        secondary: { main: '#faed26' },
-        text: {
-            primary: '#551b8b', // lighter purple
-        },
-    },
-});
 
 const formFields = {
     email: {
@@ -70,7 +58,7 @@ const formFields = {
 
 const VerifySignupForm = (props) => {
     const { code, email } = props;
-    const userContext = useContext(UserContext);
+    const { user, confirmSignup } = useUser(true);
     const router = useRouter();
     const classes = useStyles();
     const [fields, setFields] = useFields({
@@ -93,16 +81,7 @@ const VerifySignupForm = (props) => {
 
             try {
                 const { email, confirmation } = fields;
-                await Auth.confirmSignUp(email.value, confirmation.value);
-                if (userContext.user.profile && userContext.user.profile.email === email.value) {
-                    console.log('auto logging in');
-                    const user = await Auth.signIn(email.value, userContext.user.profile.password);
-                    userContext.setUser({
-                        profile: user.attributes,
-                        isAuthenticated: true,
-                        isAuthenticating: false,
-                    });
-                }
+                await confirmSignup(email.value, confirmation.value);
                 router.push('/');
             } catch (e) {
                 console.log(e);
@@ -144,7 +123,7 @@ const VerifySignupForm = (props) => {
         }
     }
 
-    const formTitle = (email && email === userContext.user.profile.email)? 
+    const formTitle = (email && email === user.profile.email)? 
         'Check your inbox'
         :'Validate your account';
     const formSubtitle = 'Just one more step. ' +
@@ -160,7 +139,6 @@ const VerifySignupForm = (props) => {
         : 'Request new code';
 
     return (
-        <ThemeProvider theme={theme}>
             <form name='signup-form' noValidate>
                 <Paper className={classes.signupForm}>
                     <Typography component="h1" variant="h4" color="inherit"
@@ -196,7 +174,6 @@ const VerifySignupForm = (props) => {
                     </Button>
                 </Paper>
             </form>
-        </ThemeProvider>
     )
 };
 

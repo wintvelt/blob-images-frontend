@@ -66,7 +66,7 @@ const fieldConfig = {
 
 const LoginForm = (props) => {
     const { title, onSignup } = props;
-    const [_, setUser] = useUser(true);
+    const user = useUser(true);
     const router = useRouter();
     const classes = useStyles();
     const [fields, setFields] = useFields(fieldConfig);
@@ -84,9 +84,7 @@ const LoginForm = (props) => {
             setLoading({ state: true });
             try {
                 const { email, password } = fields;
-                await Auth.signIn(email.value, password.value);
-                const user = await getUserInfo();
-                setUser({ profile: user, isAuthenticated: true, isAuthenticating: false });
+                user.login(email.value, password.value);
                 if (props.redirect) router.push(props.redirect);
             } catch (e) {
                 console.log(e);

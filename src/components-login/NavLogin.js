@@ -19,7 +19,7 @@ const userMenu = [
     { icon: 'group', text: 'Groups', href: '/personal/groups' },
     { icon: 'mail_outline', text: 'Invitations' },
     { icon: 'photo_library', text: 'My photos' },
-    { icon: 'settings', text: 'My account' },
+    { icon: 'settings', text: 'My account', href: '/personal/profile' },
     { icon: 'exit_to_app', text: 'Logout', action: 'logout' },
 ];
 
@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
     navLink: {
         marginLeft: theme.spacing(1),
         ...theme.typography.button,
-        // color: theme.palette.primary.contrastText,
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
     },
@@ -46,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         color: 'inherit',
-        // textDecorationColor: theme.palette.primary.main,
         '&:hover': {
             textDecoration: 'none'
         }
@@ -54,14 +52,11 @@ const useStyles = makeStyles((theme) => ({
     menuLinkActive: {
         display: 'flex',
         alignItems: 'center',
-        // color: theme.palette.secondary.main,
-        // textDecorationColor: theme.palette.secondary.main,
         '&:hover': {
             textDecoration: 'none'
         }
     },
     active: { color: theme.palette.primary.main },
-    // inActive: { color: theme.palette.primary.light },
 }));
 
 export default function NavLogin(props) {

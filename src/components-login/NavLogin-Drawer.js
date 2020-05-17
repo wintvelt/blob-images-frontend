@@ -4,12 +4,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import Link from '../components-generic/Link';
+import { useUser } from '../components-generic/UserContext';
 
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Avatar from '@material-ui/core/Avatar';
+import { makeImageUrl } from '../components-generic/imageProvider';
 
 const useStyles = makeStyles({
     list: {
@@ -24,6 +26,7 @@ export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClic
     menuLinkClass, menuLinkActiveClass, name, avatar,
     iconActiveClass, iconInactiveClass }) {
     const classes = useStyles();
+    const avatarUrl = makeImageUrl(avatar, 40, 40);
 
     const handleKey = (event) => {
         if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -78,7 +81,7 @@ export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClic
             >
                 <ListItem style={{ backgroundColor: 'black', color: 'white' }} divider>
                     <ListItemIcon>
-                        <Avatar src={avatar} />
+                        <Avatar src={avatarUrl} />
                     </ListItemIcon>
                     <ListItemText primary={name} />
                 </ListItem>

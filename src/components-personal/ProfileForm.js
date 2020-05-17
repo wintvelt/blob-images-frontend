@@ -73,7 +73,7 @@ const ProfileForm = (props) => {
             try {
                 const { name, avatar } = fields;
                 const imageUrl = avatar.value.image;
-                saveProfile(name.value, imageUrl);
+                await saveProfile(name.value, imageUrl);
                 setIsLoading(false);
             } catch (e) {
                 setLoginFailed(true);

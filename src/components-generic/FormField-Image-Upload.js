@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import { Auth } from 'aws-amplify';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,17 +6,18 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Upload from './Upload';
+import { useUser } from './UserContext';
 
 export default function UploadDialog({ open, handleClose, onChange }) {
     const pond = useRef(null);
+    const { profile } = useUser();
     const [file, setFile] = useState('');
     const onSave = async () => {
         await pond.current.processFiles();
-        const user = await Auth.currentUserInfo();
         if (file) {
             const newImage = {
-                image: user.id + '/' + file,
-                owner: user.attributes['custom:name']
+                image: profile.id + '/' + file,
+                owner: profile.name
             }
             onChange(newImage)
         } else {
@@ -26,7 +26,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
     }
     const onAddFile = () => {
         const newFile = pond.current && pond.current.getFile();
-        setFile(newFile? newFile.filename : '');
+        setFile(newFile ? newFile.filename : '');
     }
 
     return (

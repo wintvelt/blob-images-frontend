@@ -83,11 +83,10 @@ export const useUser = (withSetters) => {
         }
     }
     const saveProfile = async (name, avatar) => {
-        const profile = { name, avatar };
-        await API.put('blob-images', '/users', { body: profile });
-        updateUser({ profile });
+        const newProfile = { name, avatar };
+        await API.put('blob-images', '/users', { body: newProfile });
+        updateUser({ profile: { ...user.profile, ...newProfile } });
     }
-
     return (withSetters) ?
         {
             user,

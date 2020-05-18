@@ -3,6 +3,7 @@ import { Storage } from 'aws-amplify';
 
 const imageBaseUrl = 'https://d2y9pdc5bc1adh.cloudfront.net/';
 const otoa = (object) => Buffer.from(JSON.stringify(object)).toString('base64');
+export const btoa = (b) => Buffer.from(b, 'base64').toString()
 
 export const useImage = (url) => {
     const [safeUrl, setSafeUrl] = useState(null);
@@ -29,7 +30,7 @@ export const useImage = (url) => {
 export const makeImageUrl = (key, width = 200, height = 200) => {
     const body = {
         "bucket": "blob-images",
-        "key": 'protected/'+ key,
+        "key": 'protected/' + key,
         "edits": {
             "resize": {
                 "width": width,
@@ -38,6 +39,7 @@ export const makeImageUrl = (key, width = 200, height = 200) => {
             }
         }
     }
+    console.log({ imageFrom: body })
     return (key) ?
         imageBaseUrl + otoa(body)
         : ''

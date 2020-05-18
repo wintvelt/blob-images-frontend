@@ -90,7 +90,22 @@ export const useFields = (initialFields) => {
     const [fields, setFields] = useState(initialFields);
 
     const onChange = (fieldName) => (e) => {
-        if (fieldName === 'showValidation') {
+        if (fieldName === 'MULTI') {
+            const newValues = e;
+            let fieldUpdates = {};
+            Object.keys(newValues).forEach(key => {
+                if (fields[key]) {
+                    fieldUpdates[key] = {
+                        ...fields[key],
+                        value: newValues[key]
+                    }
+                }
+            });
+            setFields({
+                ...fields,
+                ...fieldUpdates,
+            });
+        } else if (fieldName === 'showValidation') {
             setFields({ ...fields, showValidation: e })
         } else {
             const field = fields[fieldName];

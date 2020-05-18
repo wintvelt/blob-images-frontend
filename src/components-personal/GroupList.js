@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useApiData } from '../../src/components-generic/DataProvider';
 import GroupCardLayout from './GroupCardLayout';
+import GroupCardAdd from './GroupCardAdd';
 import CardList from '../components-generic/CardList';
 
 const GroupList = () => {
@@ -12,7 +13,7 @@ const GroupList = () => {
         groupsList
         : groupsList.map(item => ({ ...item, withEdit: true }));
     return <div style={{ padding: '24px' }}>
-        <CardList list={groupsWithEdit} component={GroupCardLayout}
+        <CardList list={groupsWithEdit} component={GroupCardLayout} addComponent={GroupCardAdd}
             width={3} spacing={2} />
     </div>
 }

@@ -29,14 +29,13 @@ const GroupEditMain = () => {
     return (
         <main>
             <Toolbar />
-            {/* < Back to Your Groups */}
             <Grid container className={classes.container}>
                 <Grid item md={3} xs={12}>
                     <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading}/>
                 </Grid>
                 <Grid item md={1} />
                 <Grid item md={8} xs={12}>
-                    <GroupForm {...group}/>
+                    <GroupForm group={group}/>
                 </Grid>
             </Grid>
         </main>

@@ -1,4 +1,7 @@
 const sampleData = {
+    'myUrl/photos': [
+
+    ],
     'myUrl/groups': [
         {
             id: 'group1',

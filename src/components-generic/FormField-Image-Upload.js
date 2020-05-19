@@ -42,7 +42,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
                     Cancel
                 </Button>
                 <Button onClick={onSave} variant='contained' color='primary' disabled={!file}>
-                    Save
+                    Upload
                 </Button>
             </DialogActions>
         </Dialog>

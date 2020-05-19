@@ -25,20 +25,30 @@ const fieldConfig = {
     },
 };
 
-const GroupForm = ({group}) => {
+const GroupForm = ({ group, isNew }) => {
     const onSubmit = async (e) => {
-        alert('submitted');
+        if (isNew) {
+            alert('create new');
+        } else {
+            alert('save update')
+        }
     }
+    const handleDelete = (e) => {
+        alert('deleted');
+    }
+    const title = (isNew)? 'Add details for your new group' : 'Edit group details';
+    const submitText = (isNew)? 'Save new group' : 'Save changes';
+    const onDelete = (isNew)? undefined : handleDelete;
 
     return (
         <Form
-            title='Edit group details'
+            title={title}
             formFields={fieldConfig}
             initialValues={group}
             isLoading={false}
-            submitText='Save changes'
+            submitText={submitText}
             onSubmit={onSubmit}
-            onDelete={() => { }}
+            onDelete={onDelete}
             deleteText='delete this group'
         />
     )

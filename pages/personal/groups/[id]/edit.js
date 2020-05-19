@@ -22,6 +22,7 @@ const GroupEditMain = () => {
     const router = useRouter();
     const classes = useStyles();
     const groupId = router.query && router.query.id;
+    const isNew = (groupId === 'new');
     const source = `myUrl/groups/${groupId}`;
     const groupData = useApiData('group', source);
     const group = groupData.data || {};
@@ -30,13 +31,14 @@ const GroupEditMain = () => {
         <main>
             <Toolbar />
             <Grid container className={classes.container}>
-                <Grid item md={3} xs={12}>
-                    <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading}/>
+                {(!isNew) && <Grid item md={3} xs={12}>
+                    <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading} />
+                </Grid>}
+                <Grid item md={(isNew) ? 3 : 1} />
+                <Grid item md={(isNew) ? 6 : 8} xs={12}>
+                    <GroupForm group={group} isNew={isNew} />
                 </Grid>
-                <Grid item md={1} />
-                <Grid item md={8} xs={12}>
-                    <GroupForm group={group}/>
-                </Grid>
+                {(isNew) && <Grid item md={3} />}
             </Grid>
         </main>
     )

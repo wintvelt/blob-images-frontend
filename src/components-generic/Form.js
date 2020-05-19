@@ -24,7 +24,9 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
     const [fields, setFields] = useFields(formFields);
 
     useEffect(() => {
-        setFields('MULTI')(initialValues);
+        if (initialValues) {
+            setFields('MULTI')(initialValues);
+        }
     }, [initialValues])
 
     const onChange = (fieldName) => (e) => {

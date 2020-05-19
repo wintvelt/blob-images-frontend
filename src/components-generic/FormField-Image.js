@@ -62,9 +62,9 @@ const ImageField = (props) => {
     const { value, isGroup, isAlbum, isAvatar, label } = field;
     const { image, owner, album } = value || {};
     const classes = useStyles();
-    const width = isAvatar? 100 : 540;
-    const height = isAvatar? 100 : 144;
-    const imgClass = isAvatar? classes.avatar : classes.image;
+    const width = isAvatar ? 100 : 540;
+    const height = isAvatar ? 100 : 144;
+    const imgClass = isAvatar ? classes.avatar : classes.image;
     const imageUrl = makeImageUrl(image, width, height);
     const [imageMenu, setImageMenu] = useState({});
     const menuAnchor = useRef();
@@ -124,7 +124,16 @@ const ImageField = (props) => {
             </Button>
             <Menu
                 id="image-pick-menu"
-                anchorEl={imageMenu.anchor}
+                anchorEl={menuAnchor.current}
+                getContentAnchorEl={null}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
                 keepMounted
                 open={!!(imageMenu.isOpen)}
                 onClose={handleClickMenu('close')}

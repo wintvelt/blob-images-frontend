@@ -28,6 +28,7 @@ export const useImage = (url) => {
 }
 
 export const makeImageUrl = (key, width = 200, height = 200) => {
+    if (!key) return '';
     const body = {
         "bucket": "blob-images",
         "key": 'protected/' + key,
@@ -39,8 +40,6 @@ export const makeImageUrl = (key, width = 200, height = 200) => {
             }
         }
     }
-    console.log({ imageFrom: body })
-    return (key) ?
-        imageBaseUrl + otoa(body)
-        : ''
+    if (key.slice(0,10) !== 'eu-central') console.log({ imageFrom: body })
+    return imageBaseUrl + otoa(body);
 }

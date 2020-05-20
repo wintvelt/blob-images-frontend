@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core';
 import { makeImageUrl } from './imageProvider';
 import ImageUpload from './FormField-Image-Upload';
 import MyPhotoPicker from './FormField-Image-MyPhotos';
+import { useApiData } from './DataProvider';
 
 
 const useStyles = makeStyles(theme => ({
@@ -63,6 +64,8 @@ const ImageField = (props) => {
     const { value, isGroup, isAlbum, isAvatar, label } = field;
     const { image, owner, album } = value || {};
     const classes = useStyles();
+    const myPhotos = useApiData('myPhotos', '/photos');
+    const hasMyPhotos = (myPhotos.data && myPhotos.data.length > 0);
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;
     const imgClass = isAvatar ? classes.avatar : classes.image;
@@ -149,9 +152,13 @@ const ImageField = (props) => {
                 {isAlbum &&
                     <MenuItem onClick={handleClickMenu('close')}>Pick from album photos</MenuItem>
                 }
-                <MenuItem onClick={handleClickMenu('myPhotos')}>Pick from my photos</MenuItem>
+                <MenuItem onClick={handleClickMenu('myPhotos')} disabled={!hasMyPhotos}>
+                    Pick from my photos
+                </MenuItem>
                 <MenuItem onClick={handleClickMenu('upload')}>Upload new photo</MenuItem>
-                {imageUrl && <MenuItem onClick={handleClickMenu('clear')}>Remove photo</MenuItem>}
+                <MenuItem onClick={handleClickMenu('clear')} disabled={!imageUrl}>
+                    Remove photo
+                </MenuItem>
             </Menu>
         </Grid>
         <ImageUpload open={!!imageMenu.upLoadOpen} handleClose={handleClickMenu('close')}

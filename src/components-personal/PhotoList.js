@@ -4,6 +4,7 @@ import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
@@ -59,10 +60,10 @@ const Photo = ({ photo, isSmall, onClick, noOwner }) => {
     return <div onClick={handleClick} style={{ width: '100%', height: '100%' }}>
         <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
         <GridListTileBar
-            style={(isSmall) ? { height: '32px' } : {}}
-            title={((owner && !noOwner) || isLoading) && 
+            style={{ height: 'fit-content' }}
+            title={((owner && !noOwner) || isLoading) &&
                 <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by: '}{owner}</TextSkeleton>}
-            subtitle={(!isSmall || noOwner) && (date || isLoading) && 
+            subtitle={(!isSmall || noOwner) && (date || isLoading) &&
                 <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added: '}{date}</TextSkeleton>}
             actionIcon={
                 <div style={{ display: 'flex' }}>
@@ -76,9 +77,14 @@ const Photo = ({ photo, isSmall, onClick, noOwner }) => {
     </div>
 }
 
-const PhotoList = ({ onClick, noOwner }) => {
-    const source = '/photos';
-    const data = useApiData('photos', source);
+const Empty = ({ message }) => {
+    return <div style={{ height: '100%' }}>
+        <Typography color='textSecondary'>{message}</Typography>
+    </div>
+}
+
+const PhotoList = ({ apiKey, source, onClick, noOwner, empty }) => {
+    const data = useApiData(apiKey, source);
     const photos = data.data || [1, 2, 3].map(id => ({ id, isLoading: true }));
 
     const classes = useStyles();
@@ -94,6 +100,7 @@ const PhotoList = ({ onClick, noOwner }) => {
                 </GridListTile>
             })}
         </GridList>
+        {empty && (photos.length === 0) && <Empty message={empty} />}
     </div>
 }
 

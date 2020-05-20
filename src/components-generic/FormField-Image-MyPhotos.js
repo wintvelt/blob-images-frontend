@@ -14,10 +14,11 @@ export default function MyPhotoDialog({ open, handleClose, onChange }) {
             fullWidth maxWidth='md'>
             <DialogTitle disableTypography id="image-upload-dialog" style={{ display: 'flex', alignItems: 'center' }}>
                 <Typography variant='h6' style={{ flexGrow: 1 }}>Select a photo</Typography>
-                <IconButton><Icon>close</Icon></IconButton>
+                <IconButton onClick={handleClose}><Icon>close</Icon></IconButton>
             </DialogTitle>
             <DialogContent>
-                <PhotoList onClick={onChange} noOwner/>
+                <PhotoList apiKey='myPhotos' source='/photos'
+                    onClick={onChange} noOwner empty='Oh, it seems you do not have any photos yet..'/>
             </DialogContent>
         </Dialog>
     );

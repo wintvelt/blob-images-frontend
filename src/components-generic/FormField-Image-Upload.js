@@ -17,7 +17,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
         await pond.current.processFiles();
         if (file) {
             const newImage = {
-                image: profile.id + '/' + file,
+                image: 'protected/'+ profile.id + '/' + file,
                 owner: profile.name
             }
             onChange(newImage)

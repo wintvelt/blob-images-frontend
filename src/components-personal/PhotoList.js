@@ -77,7 +77,7 @@ const Photo = ({ photo, isSmall, onClick, noOwner }) => {
 }
 
 const PhotoList = ({ onClick, noOwner }) => {
-    const source = 'myUrl/photos';
+    const source = '/photos';
     const data = useApiData('photos', source);
     const photos = data.data || [1, 2, 3].map(id => ({ id, isLoading: true }));
 

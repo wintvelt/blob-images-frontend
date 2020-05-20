@@ -31,7 +31,7 @@ export const makeImageUrl = (key, width = 200, height = 200) => {
     if (!key) return '';
     const body = {
         "bucket": "blob-images",
-        "key": 'protected/' + key,
+        "key": key,
         "edits": {
             "resize": {
                 "width": width,
@@ -40,7 +40,7 @@ export const makeImageUrl = (key, width = 200, height = 200) => {
             }
         }
     }
-    const isRemote = (key.slice(0,10) === 'eu-central');
+    const isRemote = (key.slice(0,10) === 'protected/');
     if (isRemote) {
         return imageBaseUrl + otoa(body);
     } else {

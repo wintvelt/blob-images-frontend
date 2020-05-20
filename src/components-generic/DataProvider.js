@@ -1,5 +1,7 @@
 // HOC which fetches data and renders loading state
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { API } from 'aws-amplify';
+
 import { getSampleDataFrom, postDataTo } from '../sampledata';
 
 export const DataContext = createContext({
@@ -29,7 +31,10 @@ export const useApiData = (key, source, withPost) => {
     useEffect(() => {
         async function getData() {
             try {
-                const result = await getSampleDataFrom(source);
+                const isRemote = (source.slice(0, 1) === '/');
+                const result = (isRemote) ?
+                    await API.get('blob-images', source)
+                    : await getSampleDataFrom(source);
                 setKeyedData({ data: result })
             } catch (_) {
                 setKeyedData({ isError: true });

@@ -77,7 +77,7 @@ const sampleData = {
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
-export const getDataFrom = async (source) => {
+export const getSampleDataFrom = async (source) => {
     await timeout(3000);
     return sampleData[source] || source;
 }

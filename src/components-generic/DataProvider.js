@@ -1,6 +1,6 @@
 // HOC which fetches data and renders loading state
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getDataFrom, postDataTo } from '../sampledata';
+import { getSampleDataFrom, postDataTo } from '../sampledata';
 
 export const DataContext = createContext({
     data: {},
@@ -29,7 +29,7 @@ export const useApiData = (key, source, withPost) => {
     useEffect(() => {
         async function getData() {
             try {
-                const result = await getDataFrom(source);
+                const result = await getSampleDataFrom(source);
                 setKeyedData({ data: result })
             } catch (_) {
                 setKeyedData({ isError: true });

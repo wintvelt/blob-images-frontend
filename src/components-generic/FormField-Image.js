@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core';
 
 import { makeImageUrl } from './imageProvider';
 import ImageUpload from './FormField-Image-Upload';
+import MyPhotoPicker from './FormField-Image-MyPhotos';
 
 
 const useStyles = makeStyles(theme => ({
@@ -84,6 +85,10 @@ const ImageField = (props) => {
                 setImageMenu({ anchor: imageMenu.anchor, upLoadOpen: true })
                 break;
 
+            case 'myPhotos':
+                setImageMenu({ anchor: imageMenu.anchor, myPhotoOpen: true })
+                break;
+
             case 'clear':
                 handleChange('');
 
@@ -144,12 +149,14 @@ const ImageField = (props) => {
                 {isAlbum &&
                     <MenuItem onClick={handleClickMenu('close')}>Pick from album photos</MenuItem>
                 }
-                <MenuItem onClick={handleClickMenu('close')}>Pick from my photos</MenuItem>
+                <MenuItem onClick={handleClickMenu('myPhotos')}>Pick from my photos</MenuItem>
                 <MenuItem onClick={handleClickMenu('upload')}>Upload new photo</MenuItem>
                 {imageUrl && <MenuItem onClick={handleClickMenu('clear')}>Remove photo</MenuItem>}
             </Menu>
         </Grid>
         <ImageUpload open={!!imageMenu.upLoadOpen} handleClose={handleClickMenu('close')}
+            onChange={handleChange} />
+        <MyPhotoPicker open={!!imageMenu.myPhotoOpen} handleClose={handleClickMenu('close')}
             onChange={handleChange} />
     </Grid>
 }

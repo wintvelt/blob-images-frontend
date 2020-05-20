@@ -1,7 +1,16 @@
 const sampleData = {
-    'myUrl/photos': [
-
-    ],
+    'myUrl/photos': [{
+        id: 'P6dea4cc0-9a0f-11ea-b6aa-a5ab39ed4825',
+        owner: 'me',
+        image: 'eu-central-1:0f262fe9-430e-4504-bad4-95306c57120f/me2.jpg',
+        date: '2020-05-01'
+    },
+    {
+        id: 'Pbb3996a0-9a0c-11ea-8744-393569611d44',
+        owner: 'me',
+        image: 'eu-central-1:0f262fe9-430e-4504-bad4-95306c57120f/me.jpg',
+        date: '2020-05-01'
+    }],
     'myUrl/groups': [
         {
             id: 'group1',

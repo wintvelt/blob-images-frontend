@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 
 import Container from '@material-ui/core/Container';
 import CardAlbum from '../../../../../src/CardAlbum';
-import PhotoGroup from '../../../../../src/components-personal/PhotoGroup';
+import PhotoList from '../../../../../src/components-personal/PhotoList';
 import Link from '../../../../../src/components-generic/UnstyledLink';
 import PrivatePage from '../../../../../src/components-personal/PrivatePage';
 
@@ -38,7 +38,7 @@ const AlbumMain = (props) => {
                 />
                 <p>Group ID: {id}</p>
                 <p>Album ID: {albumid}</p>
-                <PhotoGroup />
+                <PhotoList />
             </Container>
         </main>
     )

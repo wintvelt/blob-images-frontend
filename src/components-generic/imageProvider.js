@@ -40,6 +40,11 @@ export const makeImageUrl = (key, width = 200, height = 200) => {
             }
         }
     }
-    if (key.slice(0,10) !== 'eu-central') console.log({ imageFrom: body })
-    return imageBaseUrl + otoa(body);
+    const isRemote = (key.slice(0,10) === 'eu-central');
+    if (isRemote) {
+        return imageBaseUrl + otoa(body);
+    } else {
+        console.log({ imageFrom: body })
+        return key;
+    }
 }

@@ -62,7 +62,7 @@ const Photo = ({ photo, isSmall, onClick, noOwner }) => {
             style={(isSmall) ? { height: '32px' } : {}}
             title={((owner && !noOwner) || isLoading) && 
                 <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by: '}{owner}</TextSkeleton>}
-            subtitle={(date || isLoading) && 
+            subtitle={(!isSmall || noOwner) && (date || isLoading) && 
                 <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added: '}{date}</TextSkeleton>}
             actionIcon={
                 <div style={{ display: 'flex' }}>

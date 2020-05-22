@@ -18,7 +18,7 @@ export default function MyPhotoDialog({ open, handleClose, onChange }) {
             </DialogTitle>
             <DialogContent>
                 <PhotoList apiKey='myPhotos' source='/photos'
-                    onClick={onChange} noOwner empty='Oh, it seems you do not have any photos yet..'/>
+                    onClick={onChange} noOwner empty='Oh, it seems there are no photos yet..'/>
             </DialogContent>
         </Dialog>
     );

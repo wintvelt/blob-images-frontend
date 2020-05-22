@@ -2,7 +2,7 @@ import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
 
-const CardList = ({ list, component, addComponent, width, spacing }) => {
+const CardList = ({ list, component, addComponent, isLoading, width, spacing }) => {
     const Component = component;
     const AddComponent = addComponent;
     return <Grid container spacing={spacing || 0}>
@@ -11,10 +11,10 @@ const CardList = ({ list, component, addComponent, width, spacing }) => {
                 <Component {...item} />
             </Grid>
         })}
-        {addComponent && <Grid item md={width || 3} xs={12}>
+        {!isLoading && addComponent && <Grid item md={width || 3} xs={12}>
             <AddComponent />
         </Grid>}
-    </Grid>
+    </Grid> 
 }
 
 export default CardList;

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
@@ -66,6 +67,9 @@ const ImageField = (props) => {
     const classes = useStyles();
     const myPhotos = useApiData('myPhotos', '/photos');
     const hasMyPhotos = (myPhotos.data && myPhotos.data.length > 0);
+    const router = useRouter();
+    const groupId = router.query.id;
+    console.log(groupId);
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;
     const imgClass = isAvatar ? classes.avatar : classes.image;

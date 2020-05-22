@@ -14,7 +14,7 @@ const GroupList = () => {
         : groupsList.map(item => ({ ...item, withEdit: true }));
     return <div style={{ padding: '24px' }}>
         <CardList list={groupsWithEdit} component={GroupCardLayout} addComponent={GroupCardAdd}
-            width={3} spacing={2} />
+            width={3} spacing={2} isLoading={groups.isLoading}/>
     </div>
 }
 

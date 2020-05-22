@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const GroupCardAdd = (props) => {
+const GroupCardAdd = () => {
     const classes = useStyles();
     const router = useRouter();
     const onClick = () => {

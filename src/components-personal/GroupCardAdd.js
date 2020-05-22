@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
@@ -30,9 +31,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const GroupCardAdd = (props) => {
-    const classes = useStyles()
+    const classes = useStyles();
+    const router = useRouter();
+    const onClick = () => {
+        router.push('/personal/groups/[id]/edit','/personal/groups/new/edit');
+    }
     return <Card className={classes.newCard}>
-        <CardActionArea className={classes.link} href='/'>
+        <CardActionArea className={classes.link} onClick={onClick}>
             <Icon fontSize='large'>add</Icon>
             <Typography variant='h5'>new group</Typography>
         </CardActionArea>

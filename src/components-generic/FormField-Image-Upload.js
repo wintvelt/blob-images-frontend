@@ -7,11 +7,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Upload from './Upload';
 import { useUser } from './UserContext';
+import { useApiData } from './DataProvider';
 
 export default function UploadDialog({ open, handleClose, onChange }) {
     const pond = useRef(null);
     const user = useUser();
     const { profile } = user;
+    const [ myPhotos, reloadMyPhotos ] = useApiData('myPhotos', '/photos', true);
     const [file, setFile] = useState('');
     const onSave = async () => {
         await pond.current.processFiles();
@@ -20,7 +22,8 @@ export default function UploadDialog({ open, handleClose, onChange }) {
                 image: 'protected/'+ profile.id + '/' + file,
                 owner: profile.name
             }
-            onChange(newImage)
+            reloadMyPhotos();
+            onChange(newImage);
         } else {
             handleClose();
         };

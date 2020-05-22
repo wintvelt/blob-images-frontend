@@ -69,7 +69,8 @@ const ImageField = (props) => {
     const hasMyPhotos = (myPhotos.data && myPhotos.data.length > 0);
     const router = useRouter();
     const groupId = router.query.id;
-    console.log(groupId);
+    const groupPhotos = useApiData(`groupPhotos-${groupId}`, `myUrl/groups/${groupId}/photos`);
+    const hasGroupPhotos = (groupPhotos.data && groupPhotos.data.length > 0);
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;
     const imgClass = isAvatar ? classes.avatar : classes.image;
@@ -151,7 +152,9 @@ const ImageField = (props) => {
                 onClose={handleClickMenu('close')}
             >
                 {isGroup &&
-                    <MenuItem onClick={handleClickMenu('close')}>Pick from group photos</MenuItem>
+                    <MenuItem onClick={handleClickMenu('close')} disabled={!hasGroupPhotos}>
+                        Pick from group photos
+                    </MenuItem>
                 }
                 {isAlbum &&
                     <MenuItem onClick={handleClickMenu('close')}>Pick from album photos</MenuItem>

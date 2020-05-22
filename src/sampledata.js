@@ -11,6 +11,7 @@ const sampleData = {
         image: 'eu-central-1:0f262fe9-430e-4504-bad4-95306c57120f/me.jpg',
         date: '2020-05-01'
     }],
+    'myUrl/groups/new/photos': [],
     'myUrl/groups': [
         {
             id: 'group1',

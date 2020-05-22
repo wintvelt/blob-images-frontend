@@ -32,7 +32,9 @@ export const useApiData = (key, source, withReload) => {
     }
 
     useEffect(() => {
-        getData();
+        if (!alreadyHasData) {
+            getData();
+        }
     }, []);
 
     const reload = () => {

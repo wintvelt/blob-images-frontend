@@ -7,7 +7,7 @@ import GroupCardLayout from './GroupCardLayout';
 const GroupCard = () => {
     const router = useRouter();
     const groupId = router.query && router.query.id;
-    const source = `myUrl/groups/${groupId}`;
+    const source = `/groups/${groupId}`;
     const groupData = useApiData('group', source);
     const group = groupData.data || {};
     return <GroupCardLayout {...group} isLoading={groupData.isLoading} />

@@ -55,21 +55,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const GroupCardContent = (props) => {
-    const { title, subtitle, image, isLoading } = props;
+    const { name, description, image, isLoading } = props;
     const imageUrl = makeImageUrl(image && image.image, 340, 200);
     const classes = useStyles();
     return <>
         {image && <CardMedia className={classes.media}
             image={imageUrl}
-            title={`${title} group`}
+            title={`${name} group`}
         />}
         <CardContent className={classes.content}>
             <Typography gutterBottom variant='h4' component='h5' align='center'>
-                <TextSkeleton className={classes.text} isLoading={isLoading}>{title}</TextSkeleton>
+                <TextSkeleton className={classes.text} isLoading={isLoading}>{name}</TextSkeleton>
             </Typography>
             {/* <div style={{ display: 'flex', justifyContent: 'center' }}> */}
                 <Typography variant="body1" component="p" align='center'>
-                    <TextSkeleton className={classes.text} isLoading={isLoading}>{subtitle}</TextSkeleton>
+                    <TextSkeleton className={classes.text} isLoading={isLoading}>{description}</TextSkeleton>
                 </Typography>
             {/* </div> */}
         </CardContent>

@@ -23,7 +23,7 @@ const GroupEditMain = () => {
     const classes = useStyles();
     const groupId = router.query && router.query.id;
     const isNew = (groupId === 'new');
-    const source = `myUrl/groups/${groupId}`;
+    const source = `/groups/${groupId}`;
     const groupData = useApiData('group', source);
     const group = groupData.data || {};
 

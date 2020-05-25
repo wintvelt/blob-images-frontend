@@ -1,17 +1,24 @@
 import React from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginFileRename from 'filepond-plugin-file-rename';
+
 import { Storage } from "aws-amplify";
 import { now } from './helpers';
 
-registerPlugin(FilePondPluginImagePreview);
+registerPlugin(FilePondPluginImagePreview, FilePondPluginFileRename);
+
+const options = {
+    fileRenameFunction: (file) => {
+        return `${now()}-${file.extension}`;
+    }
+};
 
 const server = {
     url: 'https://blob-images.s3.eu-central-1.amazonaws.com',
     process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
         try {
-            const stampedFilename = now() + '-' + file.name;
-            const result = await Storage.put(stampedFilename, file, {
+            const result = await Storage.put(file.name, file, {
                 level: 'protected',
                 contentType: file.type,
                 progressCallback(info) {
@@ -45,7 +52,8 @@ const server = {
 const Upload = ({ pond, onAddFile }) => {
     return <>
         <FilePond allowMultiple={false} server={server} instantUpload={false}
-            ref={pond} onaddfile={onAddFile} onremovefile={onAddFile} />
+            ref={pond} onaddfile={onAddFile} onremovefile={onAddFile} 
+            options={options}/>
     </>
 }
 

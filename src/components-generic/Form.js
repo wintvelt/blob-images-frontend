@@ -16,10 +16,27 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'stretch',
         justifyContent: 'flex-start'
     },
+    info: {
+        textAlign: 'center',
+        color: 'white',
+        padding: theme.spacing(1, 2),
+        margin: theme.spacing(2, 0),
+        backgroundColor: 'cornflowerblue',
+        borderRadius: theme.spacing(1)
+    }
 }));
 
-const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit, onDelete,
+const getValues = (fields) => {
+    let result = {}
+    Object.keys(fields).forEach(fieldName => {
+        result[fieldName] = fields[fieldName].value;
+    });
+    return result;
+}
+
+const Form = ({ title, subtitle, formFields, initialValues, loading, onSubmit, onDelete,
     submitText, deleteText }) => {
+    const { isLoading, success, error } = loading || {};
     const classes = useStyles();
     const [fields, setFields] = useFields(formFields);
 
@@ -38,7 +55,7 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
         if (!validateForm(fields)) {
             setFields('showValidation')(true);
         } else {
-            onSubmit();
+            onSubmit(getValues(fields));
         }
     }
 
@@ -59,6 +76,11 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
                         onChange={onChange(fieldName)}
                         showValidation={fields.showValidation} />
                 )}
+                {(error || success) &&
+                    <Typography variant='body2' className={classes.info} color={(error) ? 'error' : 'inherit'}>
+                        {error || success}
+                    </Typography>
+                }
                 <FormButton type='submit' isLoading={isLoading} onClick={handleSubmit}>
                     {submitText}
                 </FormButton>

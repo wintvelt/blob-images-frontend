@@ -48,7 +48,7 @@ const Photo = ({ photo, isSmall, onClick, noOwner }) => {
     const classes = useStyles();
     const [isSelected, setIsSelected] = useState(false);
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
-    const { image, owner, date, id } = photo;
+    const { image, owner, album, date, id } = photo;
     const isLoading = (!image);
     const imageUrl = makeImageUrl(image);
     const handleClick = () => {
@@ -63,8 +63,12 @@ const Photo = ({ photo, isSmall, onClick, noOwner }) => {
             style={{ height: 'fit-content' }}
             title={((owner && !noOwner) || isLoading) &&
                 <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by: '}{owner}</TextSkeleton>}
-            subtitle={(!isSmall || noOwner) && (date || isLoading) &&
-                <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added: '}{date}</TextSkeleton>}
+            subtitle={(!isSmall || noOwner) && <>
+                {(album || isLoading) &&
+                    <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'album: '}{album}</TextSkeleton>}
+                {(date || isLoading) &&
+                    <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added: '}{date}</TextSkeleton>}
+            </>}
             actionIcon={
                 <div style={{ display: 'flex' }}>
                     <IconButton aria-label={`select photo`}

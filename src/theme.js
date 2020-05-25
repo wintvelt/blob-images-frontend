@@ -28,6 +28,11 @@ const theme = createMuiTheme({
         // },
     },
     overrides: {
+        MuiGridListTileBar: {
+            subtitle: {
+                lineHeight: '1.2rem'
+            }
+        },
         MuiDialog: {
             paper: {
                 // minWidth: '50%',

@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core';
 
 import { makeImageUrl } from './imageProvider';
 import ImageUpload from './FormField-Image-Upload';
-import MyPhotoPicker from './FormField-Image-MyPhotos';
+import PhotoPicker from './FormField-Image-Photos';
 import { useApiData } from './DataProvider';
 
 
@@ -94,7 +94,11 @@ const ImageField = (props) => {
                 break;
 
             case 'myPhotos':
-                setImageMenu({ anchor: imageMenu.anchor, myPhotoOpen: true })
+                setImageMenu({ anchor: imageMenu.anchor, pickType: 'myPhotos' })
+                break;
+
+            case 'group':
+                setImageMenu({ anchor: imageMenu.anchor, pickType: 'group' })
                 break;
 
             case 'clear':
@@ -152,7 +156,7 @@ const ImageField = (props) => {
                 onClose={handleClickMenu('close')}
             >
                 {isGroup &&
-                    <MenuItem onClick={handleClickMenu('close')} disabled={!hasGroupPhotos}>
+                    <MenuItem onClick={handleClickMenu('group')} disabled={!hasGroupPhotos}>
                         Pick from group photos
                     </MenuItem>
                 }
@@ -170,7 +174,7 @@ const ImageField = (props) => {
         </Grid>
         <ImageUpload open={!!imageMenu.upLoadOpen} handleClose={handleClickMenu('close')}
             onChange={handleChange} />
-        <MyPhotoPicker open={!!imageMenu.myPhotoOpen} handleClose={handleClickMenu('close')}
+        <PhotoPicker type={imageMenu.pickType} open={!!imageMenu.pickType} handleClose={handleClickMenu('close')}
             onChange={handleChange} />
     </Grid>
 }

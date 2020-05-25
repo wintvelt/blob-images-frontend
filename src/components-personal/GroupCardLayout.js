@@ -68,9 +68,9 @@ const GroupCardContent = (props) => {
                 <TextSkeleton className={classes.text} isLoading={isLoading}>{name}</TextSkeleton>
             </Typography>
             {/* <div style={{ display: 'flex', justifyContent: 'center' }}> */}
-                <Typography variant="body1" component="p" align='center'>
-                    <TextSkeleton className={classes.text} isLoading={isLoading}>{description}</TextSkeleton>
-                </Typography>
+            <Typography variant="body1" component="p" align='center'>
+                <TextSkeleton className={classes.text} isLoading={isLoading}>{description}</TextSkeleton>
+            </Typography>
             {/* </div> */}
         </CardContent>
     </>

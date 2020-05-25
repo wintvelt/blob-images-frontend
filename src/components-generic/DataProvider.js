@@ -38,7 +38,8 @@ export const useApiData = (key, source, withReload) => {
     }, []);
 
     const reload = () => {
-        getData();
+        // allow some time for Lambda trigger to work
+        setTimeout(getData, 2000);
     }
 
     return (withReload) ?

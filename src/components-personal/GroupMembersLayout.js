@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 const initials = (name) => {
     if (!name) return '';
     return name.split(' ').map(word => {
-        return word[0]
+        return word[0];
     }).filter(letter => {
         return letter && letter.match(/[A-zÀ-ú]/);
     }).join('')
@@ -46,6 +46,7 @@ const initials = (name) => {
 
 const MemberSummary = (props) => {
     const { avatarClass, panelTitleClass, summaryClass, members, isLoading } = props;
+    console.log({members});
     const membersList = (isLoading) ?
         [{}, {}, {}]
         : members;

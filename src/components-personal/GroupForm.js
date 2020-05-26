@@ -3,6 +3,7 @@ import { API } from 'aws-amplify';
 
 import Form from '../components-generic/Form';
 import { useRouter } from 'next/router';
+import { useApiData } from '../components-generic/DataProvider';
 
 const fieldConfig = {
     name: {
@@ -30,6 +31,7 @@ const fieldConfig = {
 const GroupForm = ({ group, isNew }) => {
     const router = useRouter();
     const [loading, setLoading] = useState({ isLoading: false });
+    const { reloadData } = useApiData('groups', '/groups', true);
     const onSubmit = async (fields) => {
         setLoading({ isLoading: true });
         try {
@@ -42,6 +44,7 @@ const GroupForm = ({ group, isNew }) => {
             } else {
                 alert('save update');
             }
+            reloadData();
             setLoading({ success: 'Successfully saved group', isLoading: false });
         } catch (e) {
             console.log(e.message);

@@ -13,7 +13,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
     const pond = useRef(null);
     const user = useUser();
     const { profile } = user;
-    const [ myPhotos, reloadMyPhotos ] = useApiData('myPhotos', '/photos', true);
+    const { reloadData } = useApiData('myPhotos', '/photos', true);
     const [file, setFile] = useState('');
     const onSave = async () => {
         await pond.current.processFiles();
@@ -22,7 +22,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
                 image: 'protected/'+ profile.id + '/' + file,
                 owner: profile.name
             }
-            reloadMyPhotos();
+            reloadData();
             onChange(newImage);
         } else {
             handleClose();

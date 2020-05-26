@@ -37,13 +37,13 @@ export const useApiData = (key, source, withReload) => {
         }
     }, [source]);
 
-    const reload = () => {
+    const reloadData = () => {
         // allow some time for Lambda trigger to work
         setTimeout(getData, 2000);
     }
 
     return (withReload) ?
-        [keyedData, reload]
+        { data: keyedData, reloadData }
         : keyedData;
 }
 

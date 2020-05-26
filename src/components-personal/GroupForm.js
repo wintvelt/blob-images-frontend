@@ -31,7 +31,7 @@ const fieldConfig = {
 const GroupForm = ({ group, isNew }) => {
     const router = useRouter();
     const [loading, setLoading] = useState({ isLoading: false });
-    const { reloadData } = useApiData('groups', '/groups', true);
+    const { data, reloadData } = useApiData('groups', '/groups', true);
     const onSubmit = async (fields) => {
         setLoading({ isLoading: true });
         try {
@@ -54,7 +54,11 @@ const GroupForm = ({ group, isNew }) => {
     const handleDelete = (e) => {
         alert('deleted');
     }
-    const title = (isNew) ? 'Add details for your new group' : 'Edit group details';
+    const title = (isNew) ?
+        (data && data.length > 0) ?
+            'Add details for your new group'
+            : 'Create your first new group!'
+        : 'Edit group details';
     const submitText = (isNew) ? 'Save new group' : 'Save changes';
     const onDelete = (isNew) ? undefined : handleDelete;
 

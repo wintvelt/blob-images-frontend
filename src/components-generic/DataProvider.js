@@ -43,7 +43,7 @@ export const useApiData = (key, source, withReload) => {
     }
 
     return (withReload) ?
-        { data: keyedData, reloadData }
+        { data: keyedData.data, reloadData }
         : keyedData;
 }
 

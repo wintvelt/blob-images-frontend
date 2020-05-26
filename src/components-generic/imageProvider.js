@@ -44,7 +44,6 @@ export const makeImageUrl = (key, width = 200, height = 200) => {
     if (isRemote) {
         return imageBaseUrl + otoa(body);
     } else {
-        console.log({ imageFrom: body })
         return key;
     }
 }

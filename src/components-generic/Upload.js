@@ -16,7 +16,6 @@ const server = {
     url: 'https://blob-images.s3.eu-central-1.amazonaws.com',
     process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
         try {
-            console.log(file.name);
             const result = await Storage.put(file.name, file, {
                 level: 'protected',
                 contentType: file.type,

@@ -6,12 +6,12 @@ import GroupCardAdd from './GroupCardAdd';
 import CardList from '../components-generic/CardList';
 
 const GroupList = () => {
-    const source = 'myUrl/groups';
+    const source = '/groups';
     const groups = useApiData('groups', source);
     const groupsList = groups.data || [1, 2].map(id => ({ id, isLoading: true }));
     const groupsWithEdit = (groups.isLoading) ?
         groupsList
-        : groupsList.map(item => ({ ...item, withEdit: true }));
+        : groupsList.map(item => ({ ...item.group, withEdit: true }));
     return <div style={{ padding: '24px' }}>
         <CardList list={groupsWithEdit} component={GroupCardLayout} addComponent={GroupCardAdd}
             width={3} spacing={2} isLoading={groups.isLoading}/>

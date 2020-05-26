@@ -35,7 +35,7 @@ export const useApiData = (key, source, withReload) => {
         if (!alreadyHasData) {
             getData();
         }
-    }, []);
+    }, [source]);
 
     const reload = () => {
         // allow some time for Lambda trigger to work

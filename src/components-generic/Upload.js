@@ -8,16 +8,15 @@ import { now } from './helpers';
 
 registerPlugin(FilePondPluginImagePreview, FilePondPluginFileRename);
 
-const options = {
-    fileRenameFunction: (file) => {
-        return `${now()}-${file.extension}`;
-    }
+const fileRenameFunction = (file) => {
+    return `${now()}-${file.name}`;
 };
 
 const server = {
     url: 'https://blob-images.s3.eu-central-1.amazonaws.com',
     process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
         try {
+            console.log(file.name);
             const result = await Storage.put(file.name, file, {
                 level: 'protected',
                 contentType: file.type,
@@ -52,8 +51,8 @@ const server = {
 const Upload = ({ pond, onAddFile }) => {
     return <>
         <FilePond allowMultiple={false} server={server} instantUpload={false}
-            ref={pond} onaddfile={onAddFile} onremovefile={onAddFile} 
-            options={options}/>
+            ref={pond} onaddfile={onAddFile} onremovefile={onAddFile}
+            fileRenameFunction={fileRenameFunction} />
     </>
 }
 

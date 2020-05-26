@@ -2,14 +2,22 @@ import React from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginFileRename from 'filepond-plugin-file-rename';
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
 
 import { Storage } from "aws-amplify";
 import { now } from './helpers';
 
-registerPlugin(FilePondPluginImagePreview, FilePondPluginFileRename);
+registerPlugin(
+    FilePondPluginImageExifOrientation,
+    FilePondPluginImagePreview,
+    FilePondPluginFileRename, 
+    FilePondPluginImageTransform
+);
 
 const fileRenameFunction = (file) => {
-    return `${now()}-${file.name}`;
+    const cleanFilename = file.name.replace('.jpeg', '.jpg');
+    return `${now()}-${cleanFilename}`;
 };
 
 const server = {

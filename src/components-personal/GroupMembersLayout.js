@@ -46,7 +46,6 @@ const initials = (name) => {
 
 const MemberSummary = (props) => {
     const { avatarClass, panelTitleClass, summaryClass, members, isLoading } = props;
-    console.log({members});
     const membersList = (isLoading) ?
         [{}, {}, {}]
         : members;

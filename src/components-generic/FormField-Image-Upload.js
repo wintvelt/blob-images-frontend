@@ -20,7 +20,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
         if (file) {
             const newImage = {
                 image: 'protected/'+ profile.id + '/' + file,
-                owner: profile.name
+                owner: profile
             }
             reloadData();
             onChange(newImage);

@@ -7,7 +7,7 @@ import GroupHeaderLayout from './GroupHeaderLayout';
 const GroupHeader = () => {
     const router = useRouter();
     const groupId = router.query && router.query.id;
-    const source = `myUrl/groups/${groupId}`;
+    const source = `/groups/${groupId}`;
     const groupData = useApiData('group',source);
     return <GroupHeaderLayout group={groupData}/>
 }

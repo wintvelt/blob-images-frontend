@@ -64,6 +64,7 @@ const ImageField = (props) => {
     const { field, onChange } = props;
     const { value, isGroup, isAlbum, isAvatar, label } = field;
     const { image, owner, album } = value || {};
+    const { name } = owner || {};
     const classes = useStyles();
     const myPhotos = useApiData('myPhotos', '/photos');
     const hasMyPhotos = (myPhotos.data && myPhotos.data.length > 0);
@@ -127,7 +128,7 @@ const ImageField = (props) => {
             <div>
                 {(owner) && <>
                     <Typography variant='caption'>Photo by:</Typography>
-                    <Typography variant='body1' gutterBottom>{owner}</Typography>
+                    <Typography variant='body1' gutterBottom>{name}</Typography>
                 </>}
                 {(isGroup || isAlbum) && album && <>
                     <Typography variant='caption'>From album:</Typography>

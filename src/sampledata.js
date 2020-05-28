@@ -70,7 +70,7 @@ const sampleData = {
         },
         userIsAdmin: true,
     },
-    'myUrl/groups/group2/members': [
+    'myUrl/groups/Gf70bcaf0-a0c8-11ea-b78d-1d7f57280292/members': [
         { name: 'LJ van Berkestijn', avatar: '' },
         { name: 'Paul Botje', avatar: '' },
         { name: 'Dave del Canho', avatar: '' },

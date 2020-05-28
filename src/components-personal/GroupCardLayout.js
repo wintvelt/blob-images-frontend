@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
     card: {
         position: 'relative',
         // backgroundColor: theme.palette.background.paper,
+        background: 'linear-gradient(308deg, rgba(88,163,69,1) 14%, rgba(151,164,71,1) 43%, rgba(100,105,167,1) 77%)',
         color: 'white',
         height: '200px',
     },

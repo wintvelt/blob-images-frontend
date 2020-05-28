@@ -49,6 +49,7 @@ const Photo = ({ photo, isSmall, onClick, noOwner }) => {
     const [isSelected, setIsSelected] = useState(false);
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
     const { image, owner, album, date, id } = photo;
+    const { name } = owner || {};
     const isLoading = (!image);
     const imageUrl = makeImageUrl(image);
     const handleClick = () => {
@@ -61,8 +62,8 @@ const Photo = ({ photo, isSmall, onClick, noOwner }) => {
         <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
         <GridListTileBar
             style={{ height: 'fit-content' }}
-            title={((owner && !noOwner) || isLoading) &&
-                <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by: '}{owner}</TextSkeleton>}
+            title={((name && !noOwner) || isLoading) &&
+                <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by: '}{name}</TextSkeleton>}
             subtitle={(!isSmall || noOwner) && <>
                 {(album || isLoading) &&
                     <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'album: '}{album}</TextSkeleton>}

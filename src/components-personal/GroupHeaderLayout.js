@@ -17,7 +17,8 @@ import Link from '../components-generic/Link';
 const useStyles = makeStyles(theme => ({
     card: {
         position: 'relative',
-        backgroundColor: theme.palette.background.paper,
+        // backgroundColor: theme.palette.background.paper,
+        background: 'linear-gradient(308deg, rgba(88,163,69,1) 14%, rgba(151,164,71,1) 43%, rgba(100,105,167,1) 77%)',
         width: '100%',
         height: '384px',
     },
@@ -47,6 +48,7 @@ const useStyles = makeStyles(theme => ({
         right: theme.spacing(3),
         zIndex: 99,
         backgroundColor: 'rgba(0,0,0,.2)',
+        color: 'white',
         marginLeft: theme.spacing(1),
     },
     groupText: {
@@ -72,16 +74,18 @@ const GroupImage = (props) => {
     const { imageClass, buttonClass, group } = props;
     const { data } = group;
     const { image, userIsAdmin } = data || {};
-    const imageUrl = makeImageUrl(image, 1440, 384);
+    const imgUrl = image && image.image;
+    const imgOwner = image && image.owner;
+    const imageUrl = makeImageUrl(imgUrl, 1440, 384);
 
     return <>
         {imageUrl && <CardMedia className={imageClass}
             image={imageUrl}
             title='Group cover image'
         />}
-        {imageUrl && userIsAdmin && <Link href={href} as={asPath}>
-            <IconButton size='small' className={buttonClass} >
-                <Icon fontSize='small' color='secondary'>edit</Icon>
+        {userIsAdmin && <Link href={href} as={asPath}>
+            <IconButton size='small' className={buttonClass}>
+                <Icon fontSize='small'>edit</Icon>
             </IconButton>
         </Link>}
     </>
@@ -90,18 +94,18 @@ const GroupImage = (props) => {
 const GroupContent = (props) => {
     const { contentClass, textClass, group } = props;
     const { data, isLoading } = group;
-    const { title, subtitle, stats } = data || {};
+    const { name, description, stats } = data || {};
     return <CardContent className={contentClass}>
         <Grid container>
             <Grid item md={11} xs={12}>
                 <Typography gutterBottom variant='h2' color='inherit'>
                     <TextSkeleton className={textClass} isLoading={isLoading}>
-                        {title}
+                        {name}
                     </TextSkeleton>
                 </Typography>
                 <Typography variant="subtitle1" color="inherit" component="p">
                     <TextSkeleton className={textClass} isLoading={isLoading}>
-                        {subtitle}
+                        {description}
                     </TextSkeleton>
                 </Typography>
             </Grid>

@@ -28,23 +28,32 @@ const fieldConfig = {
     },
 };
 
-const GroupForm = ({ group, isNew }) => {
+const GroupForm = ({ group }) => {
     const router = useRouter();
+    const groupId = router.query && router.query.id;
+    const isNew = (groupId === 'new');
     const [loading, setLoading] = useState({ isLoading: false });
-    const { data, reloadData } = useApiData('groups', '/groups', true);
+    const groups = useApiData('groups', '/groups', true);
+    const { reloadData } = useApiData('group', `/groups/${groupId}`, true)
+
     const onSubmit = async (fields) => {
         setLoading({ isLoading: true });
         try {
-            if (isNew) {
-                const result = await API.post('blob-images', '/groups', {
+            const result = (isNew) ?
+                await API.post('blob-images', '/groups', {
+                    body: fields
+                }) :
+                await API.put('blob-images', `/groups/${groupId}`, {
                     body: fields
                 });
-                const groupId = result.SK;
-                router.push('/personal/groups/[id]/edit', `/personal/groups/${groupId}/edit`);
+            const newGroupId = result.SK;
+            if (isNew) {
+                router.push('/personal/groups/[id]/edit', `/personal/groups/${newGroupId}/edit`)
             } else {
-                alert('save update');
-            }
-            reloadData();
+                reloadData();
+            };
+            groups.reloadData();
+
             setLoading({ success: 'Successfully saved group', isLoading: false });
         } catch (e) {
             console.log(e.message);
@@ -55,7 +64,7 @@ const GroupForm = ({ group, isNew }) => {
         alert('deleted');
     }
     const title = (isNew) ?
-        (data && data.length > 0) ?
+        (groups.data && groups.data.length > 0) ?
             'Add details for your new group'
             : 'Create your first new group!'
         : 'Edit group details';

@@ -59,6 +59,9 @@ const Photo = ({ photo, isSmall, onClick, noOwner, onClickMenu }) => {
             onClick({ id, image, owner });
         }
     }
+    const handleMenuClick = (e) => {
+        return onClickMenu(e, id, image);
+    }
     return <div onClick={handleClick} style={{ width: '100%', height: '100%' }}>
         <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
         <GridListTileBar
@@ -73,7 +76,7 @@ const Photo = ({ photo, isSmall, onClick, noOwner, onClickMenu }) => {
             </>}
             actionIcon={(!onClickMenu) && <SelectButton iconClass={classes.icon} icon={icon} />}
         />
-        {(onClickMenu) && <MenuButton className={classes.menuIcon} onClick={onClickMenu} />}
+        {(onClickMenu) && <MenuButton className={classes.menuIcon} onClick={handleMenuClick} />}
     </div>
 }
 

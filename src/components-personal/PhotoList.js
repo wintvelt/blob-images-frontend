@@ -9,6 +9,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Photo from './PhotoCard';
 import { useApiData } from '../components-generic/DataProvider';
+import { useUser } from '../components-generic/UserContext';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -36,38 +37,45 @@ const Empty = ({ message }) => {
     </div>
 }
 
-const PhotoMenu = ({ anchorEl, handleClick, handleClose }) => {
+const PhotoMenu = ({ anchor, handleClose }) => {
+    const { user, saveProfile } = useUser(true);
+    const onSetProfilePic = async () => {
+        const name = user.profile.name;
+        saveProfile(name, anchor.url);
+        handleClose();
+    };
     return (
         <Menu
             id="simple-menu"
-            anchorEl={anchorEl}
+            anchorEl={anchor.el}
+            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             keepMounted
-            open={Boolean(anchorEl)}
+            open={Boolean(anchor.el)}
             onClose={handleClose}
         >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={onSetProfilePic}>Set as profile picture</MenuItem>
+            <MenuItem onClick={handleClose}>Delete</MenuItem>
         </Menu>
     );
 }
 
 const PhotoList = (props) => {
     const { apiKey, source, empty, menu } = props;
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchor, setAnchor] = useState({ el: null });
 
-    const handleClick = (e) => {
+    const handleClick = (e, photoId, url) => {
         e.preventDefault();
         e.stopPropagation();
-        setAnchorEl(e.currentTarget);
+        setAnchor({ el: e.currentTarget, photoId, url });
     };
 
     const handleClose = () => {
-        setAnchorEl(null);
+        setAnchor({ el: null });
     };
 
-    const data = useApiData(apiKey, source);
-    const photos = data.data || [1, 2, 3].map(id => ({ id, isLoading: true }));
+    const { data } = useApiData(apiKey, source, true);
+    const photos = data || [1, 2, 3].map(id => ({ id, isLoading: true }));
 
     const classes = useStyles();
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('md'));
@@ -87,7 +95,7 @@ const PhotoList = (props) => {
                 </GridListTile>
             })}
         </GridList>
-        {menu && <PhotoMenu anchorEl={anchorEl} handleClick={handleClick} handleClose={handleClose} />}
+        {menu && <PhotoMenu anchor={anchor} handleClick={handleClick} handleClose={handleClose} />}
         {empty && (photos.length === 0) && <Empty message={empty} />}
     </div>
 }

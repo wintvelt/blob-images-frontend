@@ -18,7 +18,7 @@ import { Typography } from '@material-ui/core';
 const userMenu = [
     { icon: 'group', text: 'Groups', href: '/personal/groups' },
     { icon: 'mail_outline', text: 'Invitations' },
-    { icon: 'photo_library', text: 'My photos' },
+    { icon: 'photo_library', text: 'My photos', href: '/personal/photos' },
     { icon: 'settings', text: 'My account', href: '/personal/profile' },
     { icon: 'exit_to_app', text: 'Logout', action: 'logout' },
 ];

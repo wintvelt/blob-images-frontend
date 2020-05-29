@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import { makeImageUrl } from '../components-generic/imageProvider';
-import { TextSkeleton, ImageSkeleton } from '../components-generic/Skeleton';
+import Photo from './PhotoCard';
 import { useApiData } from '../components-generic/DataProvider';
 
 const useStyles = makeStyles(theme => ({
@@ -30,57 +28,7 @@ const useStyles = makeStyles(theme => ({
             transform: 'scale(1.5)'
         },
     },
-    icon: {
-        color: 'white',
-        width: theme.spacing(4),
-        height: theme.spacing(4),
-        padding: 0,
-    },
-    img: {
-        transition: 'transform .5s ease',
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover',
-    }
 }));
-
-const Photo = ({ photo, isSmall, onClick, noOwner }) => {
-    const classes = useStyles();
-    const [isSelected, setIsSelected] = useState(false);
-    const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
-    const { image, owner, album, date, id } = photo;
-    const { name } = owner || {};
-    const isLoading = (!image);
-    const imageUrl = makeImageUrl(image);
-    const handleClick = () => {
-        if (!isLoading) {
-            setIsSelected(true);
-            onClick({ image, owner });
-        }
-    }
-    return <div onClick={handleClick} style={{ width: '100%', height: '100%' }}>
-        <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
-        <GridListTileBar
-            style={{ height: 'fit-content' }}
-            title={((name && !noOwner) || isLoading) &&
-                <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by: '}{name}</TextSkeleton>}
-            subtitle={(!isSmall || noOwner) && <>
-                {(album || isLoading) &&
-                    <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'album: '}{album}</TextSkeleton>}
-                {(date || isLoading) &&
-                    <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added: '}{date}</TextSkeleton>}
-            </>}
-            actionIcon={
-                <div style={{ display: 'flex' }}>
-                    <IconButton aria-label={`select photo`}
-                        className={classes.icon}>
-                        <Icon fontSize='small'>{icon}</Icon>
-                    </IconButton>
-                </div>
-            }
-        />
-    </div>
-}
 
 const Empty = ({ message }) => {
     return <div style={{ height: '100%' }}>
@@ -88,7 +36,36 @@ const Empty = ({ message }) => {
     </div>
 }
 
-const PhotoList = ({ apiKey, source, onClick, noOwner, empty }) => {
+const PhotoMenu = ({ anchorEl, handleClick, handleClose }) => {
+    return (
+        <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+        >
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleClose}>Logout</MenuItem>
+        </Menu>
+    );
+}
+
+const PhotoList = (props) => {
+    const { apiKey, source, empty, menu } = props;
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setAnchorEl(e.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     const data = useApiData(apiKey, source);
     const photos = data.data || [1, 2, 3].map(id => ({ id, isLoading: true }));
 
@@ -101,10 +78,16 @@ const PhotoList = ({ apiKey, source, onClick, noOwner, empty }) => {
         <GridList cellHeight={cellHeight} cols={cols} className={classes.gridList}>
             {photos.map(photo => {
                 return <GridListTile key={photo.id} className={classes.tile}>
-                    <Photo photo={photo} isSmall={(!isLarge && !isMedium)} onClick={onClick} noOwner={noOwner} />
+                    <Photo
+                        photo={photo}
+                        isSmall={(!isLarge && !isMedium)}
+                        {...props}
+                        onClickMenu={menu && handleClick}
+                    />
                 </GridListTile>
             })}
         </GridList>
+        {menu && <PhotoMenu anchorEl={anchorEl} handleClick={handleClick} handleClose={handleClose} />}
         {empty && (photos.length === 0) && <Empty message={empty} />}
     </div>
 }

@@ -12,10 +12,10 @@ const AlbumList = () => {
     const albumsList = albums.data || [1, 2, 3].map(id => ({ id, isLoading: true }));
     const albumsWithEdit = (albums.isLoading) ?
         albumsList
-        : albumsList.map(item => ({ ...item, withEdit: true }));
+        : albumsList.map(item => ({ ...item, groupId, withEdit: true }));
     const albumAddProps = {
         text: 'new album',
-        path: '/personal/groups/[id]/albums/[albumId]/edit',
+        path: '/personal/groups/[id]/albums/[albumid]/edit',
         asPath: `/personal/groups/${groupId}/albums/new/edit`
     };
     return <div style={{ padding: '8px' }}>

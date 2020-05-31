@@ -66,27 +66,28 @@ const AlbumCardContent = (props) => {
 }
 
 const AlbumCardLayout = (props) => {
-    const { groupId, albumId, groupRole, withEdit } = props;
+    const { groupId, id, groupRole, withEdit } = props;
+    console.log(props);
     const mayEdit = ((groupRole === 'admin') && withEdit);
     const classes = useStyles();
     const router = useRouter();
 
-    const detailUrl = `/personal/groups/[id]/albums/[albumId]`;
+    const detailUrl = `/personal/groups/[id]/albums/[albumid]`;
 
     const onClick = (e) => {
         e.preventDefault();
-        router.push(detailUrl, detailUrl.replace('[id]', groupId).replace('[albumId]', albumId));
+        router.push(detailUrl, detailUrl.replace('[id]', groupId).replace('[albumid]', id));
     }
 
     const onClickEdit = (e) => {
         e.preventDefault();
         const editUrl = detailUrl + '/edit';
-        router.push(editUrl, editUrl.replace('[id]', groupId).replace('[albumId]', albumId));
+        router.push(editUrl, editUrl.replace('[id]', groupId).replace('[albumid]', id));
     }
 
     return <Card className={classes.card}>
         {(withEdit) ?
-            <CardActionArea>
+            <CardActionArea onClick={onClick}>
                 <AlbumCardContent {...props} />
             </CardActionArea>
             : <AlbumCardContent {...props} />

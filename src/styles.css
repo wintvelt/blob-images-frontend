@@ -23,3 +23,6 @@ html {
 .filepond--item-panel {
     border-radius: 4px;
 }
+main {
+    overflow-x: hidden;
+}

@@ -16,14 +16,6 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'stretch',
         justifyContent: 'flex-start'
     },
-    info: {
-        textAlign: 'center',
-        color: 'white',
-        padding: theme.spacing(1, 2),
-        margin: theme.spacing(2, 0),
-        backgroundColor: 'cornflowerblue',
-        borderRadius: theme.spacing(1)
-    }
 }));
 
 const getValues = (fields) => {
@@ -34,9 +26,8 @@ const getValues = (fields) => {
     return result;
 }
 
-const Form = ({ title, subtitle, formFields, initialValues, loading, onSubmit, onDelete,
+const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit, onDelete,
     submitText, deleteText }) => {
-    const { isLoading, success, error } = loading || {};
     const classes = useStyles();
     const [fields, setFields] = useFields(formFields);
 
@@ -76,11 +67,6 @@ const Form = ({ title, subtitle, formFields, initialValues, loading, onSubmit, o
                         onChange={onChange(fieldName)}
                         showValidation={fields.showValidation} />
                 )}
-                {(error || success) &&
-                    <Typography variant='body2' className={classes.info} color={(error) ? 'error' : 'inherit'}>
-                        {error || success}
-                    </Typography>
-                }
                 <FormButton type='submit' isLoading={isLoading} onClick={handleSubmit}>
                     {submitText}
                 </FormButton>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { API } from 'aws-amplify';
+import { useSnackbar } from 'notistack';
 
 import Form from '../components-generic/Form';
 import { useRouter } from 'next/router';
@@ -32,12 +33,13 @@ const GroupForm = ({ group }) => {
     const router = useRouter();
     const groupId = router.query && router.query.id;
     const isNew = (groupId === 'new');
-    const [loading, setLoading] = useState({ isLoading: false });
+    const { enqueueSnackbar } = useSnackbar();
+    const [isLoading, setIsLoading] = useState(false);
     const groups = useApiData('groups', '/groups', true);
     const { reloadData } = useApiData('group', `/groups/${groupId}`, true)
 
     const onSubmit = async (fields) => {
-        setLoading({ isLoading: true });
+        setIsLoading(true);
         try {
             const result = (isNew) ?
                 await API.post('blob-images', '/groups', {
@@ -47,18 +49,23 @@ const GroupForm = ({ group }) => {
                     body: fields
                 });
             const newGroupId = result.SK;
+            const message = (isNew) ?
+                (groups.data && groups.data.length > 0) ?
+                    'new group created'
+                    : 'congrats! you created your first group.'
+                : 'saved changes';
+            enqueueSnackbar(message, { variant: 'success' });
             if (isNew) {
                 router.push('/personal/groups/[id]/edit', `/personal/groups/${newGroupId}/edit`)
             } else {
                 reloadData();
             };
             groups.reloadData();
-
-            setLoading({ success: 'Successfully saved group', isLoading: false });
         } catch (e) {
             console.log(e.message);
-            setLoading({ error: e.message, isLoading: false });
+            enqueueSnackbar('Could not save group', { variant: 'error' });
         }
+        setIsLoading(false);
     }
     const handleDelete = (e) => {
         alert('deleted');
@@ -76,7 +83,7 @@ const GroupForm = ({ group }) => {
             title={title}
             formFields={fieldConfig}
             initialValues={group}
-            loading={loading}
+            isLoading={isLoading}
             submitText={submitText}
             onSubmit={onSubmit}
             onDelete={onDelete}

@@ -6,6 +6,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useSnackbar } from 'notistack';
 
 import Photo from './PhotoCard';
 import { useApiData } from '../components-generic/DataProvider';
@@ -39,8 +40,15 @@ const Empty = ({ message }) => {
 
 const PhotoMenu = ({ anchor, handleClose }) => {
     const { user, saveProfile } = useUser(true);
+    const { enqueueSnackbar } = useSnackbar();
     const onSetProfilePic = async () => {
         const name = user.profile.name;
+        try {
+            saveProfile(name, anchor.url);
+            enqueueSnackbar('profile picture saved', { variant: 'success' });
+        } catch (error) {
+            enqueueSnackbar('could not set profile picture', { variant: 'error' });
+        }
         saveProfile(name, anchor.url);
         handleClose();
     };

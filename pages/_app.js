@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Auth } from 'aws-amplify';
 import PropTypes from 'prop-types';
+import { Auth } from 'aws-amplify';
 import { Amplify } from 'aws-amplify';
 import { amplifyConfig } from '../src/aws-amplify/config';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { SnackbarProvider } from 'notistack';
+
 import theme from '../src/theme';
 import Nav from '../src/Nav';
 import Footer from '../src/Footer';
@@ -57,12 +59,14 @@ export default function MyApp(props) {
             </Head>
             <ThemeProvider theme={theme}>
                 <UserContext.Provider value={{ user, setUser }}>
-                    <DataProvider>
-                        <CssBaseline />
-                        <Nav />
-                        <Component {...pageProps} />
-                        <Footer />
-                    </DataProvider>
+                    <SnackbarProvider maxSnack={3}>
+                        <DataProvider>
+                            <CssBaseline />
+                            <Nav />
+                            <Component {...pageProps} />
+                            <Footer />
+                        </DataProvider>
+                    </SnackbarProvider>
                 </UserContext.Provider>
             </ThemeProvider>
         </React.Fragment >

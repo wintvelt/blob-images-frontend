@@ -13,7 +13,7 @@ const PhotosMain = () => {
                 Your Photos
             </Header>
             <PhotoList
-                apiKey='photos'
+                apiKey='myPhotos'
                 source='/photos'
                 onClick={(e) => alert(JSON.stringify(e))}
                 noOwner

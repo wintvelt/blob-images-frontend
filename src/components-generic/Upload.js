@@ -16,7 +16,9 @@ registerPlugin(
 );
 
 const fileRenameFunction = (file) => {
-    const cleanFilename = file.name.replace('.jpeg', '.jpg');
+    const cleanFilename = file.name
+        .replace('.jpeg', '.jpg')
+        .replace(/\s/g,'+');
     return `${now()}-${cleanFilename}`;
 };
 

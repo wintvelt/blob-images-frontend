@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { API } from 'aws-amplify';
+
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Typography from '@material-ui/core/Typography';
@@ -41,15 +43,27 @@ const Empty = ({ message }) => {
 const PhotoMenu = ({ anchor, handleClose }) => {
     const { user, saveProfile } = useUser(true);
     const { enqueueSnackbar } = useSnackbar();
+    const { reloadData } = useApiData('myPhotos', '/photos', true)
     const onSetProfilePic = async () => {
         const name = user.profile.name;
         try {
             saveProfile(name, anchor.url);
-            enqueueSnackbar('profile picture saved', { variant: 'success' });
+            enqueueSnackbar('profile picture set', { variant: 'success' });
         } catch (error) {
             enqueueSnackbar('could not set profile picture', { variant: 'error' });
         }
-        saveProfile(name, anchor.url);
+        handleClose();
+    };
+    const onDelete = async () => {
+        try {
+            const path = `/photos/${anchor.photoId}`;
+            await API.del('blob-images', path);
+            enqueueSnackbar('photo deleted', { variant: 'success' });
+            reloadData();
+        } catch (error) {
+            console.log(error);
+            enqueueSnackbar('could not delete picture', { variant: 'error' });
+        }
         handleClose();
     };
     return (
@@ -63,7 +77,7 @@ const PhotoMenu = ({ anchor, handleClose }) => {
             onClose={handleClose}
         >
             <MenuItem onClick={onSetProfilePic}>Set as profile picture</MenuItem>
-            <MenuItem onClick={handleClose}>Delete</MenuItem>
+            <MenuItem onClick={onDelete}>Delete</MenuItem>
         </Menu>
     );
 }

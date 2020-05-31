@@ -30,19 +30,21 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const AlbumCardAdd = () => {
+const CardAdd = ({ text, path, asPath }) => {
     const classes = useStyles();
     const router = useRouter();
-    const groupId = router.query.groupId
     const onClick = () => {
-        router.push('/personal/groups/[id]/albums/new/edit',`/personal/groups/${groupId}/albums/new/edit`);
+        router.push(
+            path,
+            asPath,
+        );
     }
     return <Card className={classes.newCard}>
         <CardActionArea className={classes.link} onClick={onClick}>
             <Icon fontSize='large'>add</Icon>
-            <Typography variant='h5'>new album</Typography>
+            <Typography variant='h5'>{text}</Typography>
         </CardActionArea>
     </Card>
 }
 
-export default AlbumCardAdd;
+export default CardAdd;

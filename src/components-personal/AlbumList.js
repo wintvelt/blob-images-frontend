@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 
 import { useApiData } from '../../src/components-generic/DataProvider';
 import AlbumCardLayout from './AlbumCardLayout';
-import AlbumCardAdd from './AlbumCardAdd';
 import CardList from '../components-generic/CardList';
 
 const AlbumList = () => {
@@ -14,8 +13,13 @@ const AlbumList = () => {
     const albumsWithEdit = (albums.isLoading) ?
         albumsList
         : albumsList.map(item => ({ ...item, withEdit: true }));
-    return <div style={{ padding: '24px' }}>
-        <CardList list={albumsWithEdit} component={AlbumCardLayout} addComponent={AlbumCardAdd}
+    const albumAddProps = {
+        text: 'new album',
+        path: '/personal/groups/[id]/albums/[albumId]/edit',
+        asPath: `/personal/groups/${groupId}/albums/new/edit`
+    };
+    return <div style={{ padding: '8px' }}>
+        <CardList list={albumsWithEdit} component={AlbumCardLayout} addProps={albumAddProps}
             width={3} spacing={2} isLoading={albums.isLoading} />
     </div>
 }

@@ -35,24 +35,14 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         zIndex: 0,
     },
-    // edit: {
-    //     backgroundColor: 'rgba(0,0,0,.2)',
-    //     marginLeft: theme.spacing(1),
-    //     position: 'relative',
-    // },
-    // imageEdit: {
-    //     position: 'absolute',
-    //     top: theme.spacing(1),
-    //     right: theme.spacing(1),
-    //     zIndex: 99,
-    //     backgroundColor: 'rgba(0,0,0,.2)',
-    //     marginLeft: theme.spacing(1),
-    // },
-    // text: {
-    //     backgroundColor: 'rgba(0,0,0,0.2)',
-    //     padding: theme.spacing(0, .4),
-    //     borderRadius: theme.spacing(.5),
-    // },
+    imageEdit: {
+        position: 'absolute',
+        top: theme.spacing(1),
+        right: theme.spacing(1),
+        zIndex: 99,
+        color: 'white   ',
+        marginLeft: theme.spacing(1),
+    },
 }));
 
 const GroupCardContent = (props) => {

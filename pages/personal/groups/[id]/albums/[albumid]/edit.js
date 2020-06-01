@@ -1,68 +1,53 @@
 import React from 'react';
+import { useRouter } from 'next/router';
+
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core';
 
-import Container from '@material-ui/core/Container';
-import PhotoList from '../../../../../../src/components-personal/PhotoList';
-import Link from '../../../../../../src/components-generic/UnstyledLink';
-import AlbumForm from '../../../../../../src/AlbumForm';
+import { useApiData } from '../../../../../../src/components-generic/DataProvider';
 import PrivatePage from '../../../../../../src/components-personal/PrivatePage';
+import AlbumCardLayout from '../../../../../../src/components-personal/AlbumCardLayout';
+import AlbumForm from '../../../../../../src/components-personal/AlbumForm';
 
-const AlbumEditMain = (props) => {
-    const { id, albumid } = props;
+const useStyles = makeStyles(theme => ({
+    container: {
+        [theme.breakpoints.up('sm')]: {
+            padding: theme.spacing(3),
+        },
+    }
+}))
+
+const AlbumEditMain = () => {
+    const router = useRouter();
+    const classes = useStyles();
+    const groupId = router.query && router.query.id;
+    const albumId = router.query && router.query.albumid;
+    const isNew = (albumId === 'new');
+    const source = `/groups/${groupId}/albums/${albumId}`;
+    const albumData = useApiData('album', source);
+    const album = albumData.data || {};
 
     return (
         <main>
             <Toolbar />
-            <Container>
-                <Link style={{ display: 'flex', alignItems: 'center' }}
-                    title={`Back to album page`}
-                    href={`/personal/groups/${id}/albums/${albumid}`}
-                >
-                    <IconButton>
-                        <Icon color='secondary'>arrow_back</Icon>
-                    </IconButton>
-                    <Typography>{'Foto\'s van Blob - Blob in ..ergens..'}</Typography>
-                </Link>
-                <Grid container spacing={8}>
-                    <Grid item md={5} xs={12}>
-                        <CardAlbum
-                            title=''
-                            description=''
-                            // stats={['432 photos', 'since 1 Jan 1985']}
-                            image={{ name: 'Blob in Afrika', src: '/img/cover.jpg' }}
-                            isHeader
-                        />
-                    </Grid>
-                    <Grid item md={7}>
-                        <AlbumForm {...props} />
-                        <p>Group ID: {id}</p>
-                        <p>Album ID: {albumid}</p>
-                        <PhotoList />
-                    </Grid>
+            <Grid container className={classes.container}>
+                {(!isNew) && <Grid item md={3} xs={12}>
+                    <AlbumCardLayout {...album} withEdit={false} isLoading={albumData.isLoading} />
+                </Grid>}
+                <Grid item md={(isNew) ? 3 : 1} />
+                <Grid item md={(isNew) ? 6 : 8} xs={12}>
+                    <AlbumForm album={album} />
                 </Grid>
-            </Container>
+                {(isNew) && <Grid item md={3} />}
+            </Grid>
         </main>
     )
 }
 
-export async function getServerSideProps(context) {
-    const { params } = context;
-    const { id, albumid } = params;
-    return {
-        props: {
-            id,
-            albumid
-        }
-    }
-}
-
-const AlbumEditPage = (props) => {
+const AlbumEditPage = () => {
     return <PrivatePage>
-        <AlbumEditMain {...props} />
+        <AlbumEditMain />
     </PrivatePage>
 }
 

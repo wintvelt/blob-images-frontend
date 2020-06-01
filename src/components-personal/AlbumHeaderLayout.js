@@ -70,7 +70,7 @@ const useStyles = makeStyles(theme => ({
 const AlbumImage = (props) => {
     const router = useRouter();
     const href = router.pathname + '/edit';
-    const asPath = href.replace('[id]', router.query.id);
+    const asPath = router.asPath + '/edit';
     const { imageClass, buttonClass, album } = props;
     const { data } = album;
     const { image, userIsAdmin } = data || {};

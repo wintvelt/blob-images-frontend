@@ -50,7 +50,7 @@ const AlbumForm = ({ album }) => {
                 (albums.data && albums.data.length > 0) ?
                     'new album created'
                     : 'congrats! you created your first album in this group.'
-                : 'saved changes';
+                : 'changes were saved';
             enqueueSnackbar(message, { variant: 'success' });
             if (isNew) {
                 router.push(

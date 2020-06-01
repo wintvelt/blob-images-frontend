@@ -53,7 +53,7 @@ const GroupForm = ({ group }) => {
                 (groups.data && groups.data.length > 0) ?
                     'new group created'
                     : 'congrats! you created your first group.'
-                : 'saved changes';
+                : 'changes were saved';
             enqueueSnackbar(message, { variant: 'success' });
             if (isNew) {
                 router.push('/personal/groups/[id]/edit', `/personal/groups/${newGroupId}/edit`)

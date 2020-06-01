@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import Container from '@material-ui/core/Container';
-import CardAlbum from '../../../../../../src/CardAlbum';
 import PhotoList from '../../../../../../src/components-personal/PhotoList';
 import Link from '../../../../../../src/components-generic/UnstyledLink';
 import AlbumForm from '../../../../../../src/AlbumForm';

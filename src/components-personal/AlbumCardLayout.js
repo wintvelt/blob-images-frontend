@@ -66,9 +66,8 @@ const AlbumCardContent = (props) => {
 }
 
 const AlbumCardLayout = (props) => {
-    const { groupId, id, groupRole, withEdit } = props;
-    console.log(props);
-    const mayEdit = ((groupRole === 'admin') && withEdit);
+    const { groupId, id, userIsAdmin, withEdit } = props;
+    const mayEdit = (userIsAdmin && withEdit);
     const classes = useStyles();
     const router = useRouter();
 

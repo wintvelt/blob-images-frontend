@@ -91,7 +91,8 @@ const AlbumCardLayout = (props) => {
             </CardActionArea>
             : <AlbumCardContent {...props} />
         }
-        {mayEdit && <IconButton size='small' color='inherit' className={classes.imageEdit}>
+        {mayEdit && <IconButton size='small' color='inherit' className={classes.imageEdit}
+            onClick={onClickEdit}>
             <Icon fontSize='small'>edit</Icon>
         </IconButton>}
     </Card>

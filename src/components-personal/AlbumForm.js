@@ -55,7 +55,7 @@ const AlbumForm = ({ album }) => {
             if (isNew) {
                 router.push(
                     '/personal/groups/[id]/albums/[albumid]/edit', 
-                    `/personal/groups/${groupId}/albums/${albumId}/edit`)
+                    `/personal/groups/${groupId}/albums/${newAlbumId}/edit`)
             } else {
                 reloadData();
             };

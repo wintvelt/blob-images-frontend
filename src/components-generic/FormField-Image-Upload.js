@@ -38,7 +38,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
             fullWidth maxWidth='md'>
             <DialogTitle id="image-upload-dialog">Add a new photo</DialogTitle>
             <DialogContent>
-                <Upload pond={pond} onAddFile={onAddFile} />
+                <Upload pond={pond} onAddFile={onAddFile} allowImagePreview={true}/>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>

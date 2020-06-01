@@ -57,11 +57,12 @@ const server = {
     },
 }
 
-const Upload = ({ pond, onAddFile }) => {
+const Upload = ({ pond, onAddFile, allowMultiple, allowImagePreview }) => {
     return <>
-        <FilePond allowMultiple={false} server={server} instantUpload={false}
+        <FilePond allowMultiple={allowMultiple} server={server} instantUpload={false}
             ref={pond} onaddfile={onAddFile} onremovefile={onAddFile}
-            fileRenameFunction={fileRenameFunction} />
+            fileRenameFunction={fileRenameFunction} 
+            allowImagePreview={allowImagePreview}/>
     </>
 }
 

@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
         background: 'linear-gradient(308deg, rgba(88,163,69,1) 14%, rgba(151,164,71,1) 43%, rgba(100,105,167,1) 77%)',
         width: '100%',
         height: '384px',
+        marginBottom: theme.spacing(1),
     },
     content: {
         position: 'relative',
@@ -55,7 +56,6 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'rgba(0,0,0,0.2)',
         padding: theme.spacing(.4),
         borderRadius: theme.spacing(.5),
-        textAlign: 'right',
     },
     actions: {
         position: 'relative',
@@ -91,11 +91,36 @@ const AlbumImage = (props) => {
     </>
 }
 
+const BackLink = ({ group, className }) => {
+    const { name, id } = group;
+    const href = '/personal/groups/[id]';
+    const as = href.replace('[id]', id);
+    return <Link href={href} as={as} style={{
+        position: 'absolute',
+        top: '64px',
+        left: '24px',
+        color: 'inherit',
+        display: 'flex',
+        alignItems: 'center',
+        color: 'inherit',
+        width: 'fit-content',
+        marginBottom: '24px'
+    }}
+        className={className}
+    >
+        <Icon fontSize='small'>arrow_back</Icon>
+        <Typography variant='body1' component='span'>
+            {` ${name}`}
+        </Typography>
+    </Link>
+}
+
 const AlbumContent = (props) => {
     const { contentClass, textClass, album } = props;
     const { data, isLoading } = album;
-    const { name, stats } = data || {};
+    const { name, stats, group } = data || {};
     return <CardContent className={contentClass}>
+        {group && <BackLink group={group} className={textClass}/>}
         <Grid container>
             <Grid item md={11} xs={12}>
                 <Typography gutterBottom variant='h2' color='inherit'>

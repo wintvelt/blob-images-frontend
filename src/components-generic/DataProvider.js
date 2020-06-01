@@ -2,8 +2,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { API } from 'aws-amplify';
 
-import { getSampleDataFrom } from '../sampledata';
-
 export const DataContext = createContext({
     data: {},
     setDataByKey: () => { }
@@ -24,7 +22,7 @@ export const useApiData = (key, source, withReload) => {
             const isRemote = (source.slice(0, 1) === '/');
             const result = (isRemote) ?
                 await API.get('blob-images', source)
-                : await getSampleDataFrom(source);
+                : null;
             setKeyedData({ data: result })
         } catch (_) {
             setKeyedData({ isError: true });

@@ -8,8 +8,9 @@ const GroupMembers = () => {
     const router = useRouter();
     const groupId = router.query && router.query.id;
     const source = `myUrl/groups/${groupId}/members`;
-    const members = useApiData('members', source);
-    return <GroupMembersLayout members={members.data} isLoading={members.isLoading} />
+    const membersData = useApiData('members', source);
+    const members = membersData.data || [];
+    return <GroupMembersLayout members={members} isLoading={members.isLoading} />
 }
 
 export default GroupMembers;

@@ -1,9 +1,10 @@
 import React from 'react';
+import { useRouter } from 'next/router';
+
 import AlbumHeader from '../../../../../src/components-personal/AlbumHeader';
 import PhotoList from '../../../../../src/components-personal/PhotoList';
 import PrivatePage from '../../../../../src/components-personal/PrivatePage';
 import { useApiData } from '../../../../../src/components-generic/DataProvider';
-import { useRouter } from 'next/router';
 
 const AlbumMain = () => {
     const router = useRouter();

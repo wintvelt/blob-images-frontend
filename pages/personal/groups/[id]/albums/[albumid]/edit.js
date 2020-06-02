@@ -9,6 +9,7 @@ import { useApiData } from '../../../../../../src/components-generic/DataProvide
 import PrivatePage from '../../../../../../src/components-personal/PrivatePage';
 import AlbumCardLayout from '../../../../../../src/components-personal/AlbumCardLayout';
 import AlbumForm from '../../../../../../src/components-personal/AlbumForm';
+import BackLink from '../../../../../../src/components-generic/BackLink';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -31,6 +32,7 @@ const AlbumEditMain = () => {
     return (
         <main>
             <Toolbar />
+            {album && <BackLink group={album.group} album={album}/>}
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
                     <AlbumCardLayout {...album} withEdit={false} isLoading={albumData.isLoading} />

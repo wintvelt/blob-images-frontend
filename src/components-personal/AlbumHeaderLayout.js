@@ -13,12 +13,14 @@ import { TextSkeleton } from '../../src/components-generic/Skeleton';
 import { makeImageUrl } from '../../src/components-generic/imageProvider';
 
 import Link from '../components-generic/Link';
+import BackLink from '../components-generic/BackLink';
 
 const useStyles = makeStyles(theme => ({
     card: {
         position: 'relative',
         // backgroundColor: theme.palette.background.paper,
         background: 'linear-gradient(308deg, rgba(88,163,69,1) 14%, rgba(151,164,71,1) 43%, rgba(100,105,167,1) 77%)',
+        backgroundSize: 'cover',
         width: '100%',
         height: '384px',
         marginBottom: theme.spacing(1),
@@ -54,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     },
     groupText: {
         backgroundColor: 'rgba(0,0,0,0.2)',
-        padding: theme.spacing(.4),
+        padding: theme.spacing(0, .4),
         borderRadius: theme.spacing(.5),
     },
     actions: {
@@ -89,30 +91,6 @@ const AlbumImage = (props) => {
             </IconButton>
         </Link>}
     </>
-}
-
-const BackLink = ({ group, className }) => {
-    const { name, id } = group;
-    const href = '/personal/groups/[id]';
-    const as = href.replace('[id]', id);
-    return <Link href={href} as={as} style={{
-        position: 'absolute',
-        top: '64px',
-        left: '24px',
-        color: 'inherit',
-        display: 'flex',
-        alignItems: 'center',
-        color: 'inherit',
-        width: 'fit-content',
-        marginBottom: '24px'
-    }}
-        className={className}
-    >
-        <Icon fontSize='small'>arrow_back</Icon>
-        <Typography variant='body1' component='span'>
-            {` ${name}`}
-        </Typography>
-    </Link>
 }
 
 const AlbumContent = (props) => {

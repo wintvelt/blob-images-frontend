@@ -9,6 +9,7 @@ import { useApiData } from '../../../../src/components-generic/DataProvider';
 import PrivatePage from '../../../../src/components-personal/PrivatePage';
 import GroupCardLayout from '../../../../src/components-personal/GroupCardLayout';
 import GroupForm from '../../../../src/components-personal/GroupForm';
+import BackLink from '../../../../src/components-generic/BackLink';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -30,6 +31,7 @@ const GroupEditMain = () => {
     return (
         <main>
             <Toolbar />
+            {group && <BackLink group={group} />}
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
                     <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading} />

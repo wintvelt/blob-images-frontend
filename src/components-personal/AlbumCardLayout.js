@@ -20,7 +20,8 @@ const useStyles = makeStyles(theme => ({
     },
     image: {
         background: 'linear-gradient(308deg, rgba(70,52,78,1) 14%, rgba(90,85,96,1) 43%, rgba(157,141,143,1) 77%)',
-        height: '120px'
+        height: '120px',
+        backgroundSize: 'cover',
     },
     actionArea: {
         height: 'inherit'

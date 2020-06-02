@@ -4,6 +4,7 @@ import { Storage } from 'aws-amplify';
 const imageBaseUrl = 'https://d2y9pdc5bc1adh.cloudfront.net/';
 const otoa = (object) => Buffer.from(JSON.stringify(object)).toString('base64');
 export const btoa = (b) => Buffer.from(b, 'base64').toString();
+const btoaDebug = (b) => Buffer.from(b.split('/').slice(-1)[0], 'base64').toString();
 
 export const useImage = (url) => {
     const [safeUrl, setSafeUrl] = useState(null);

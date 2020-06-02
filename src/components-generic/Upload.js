@@ -26,6 +26,7 @@ const server = {
     url: 'https://blob-images.s3.eu-central-1.amazonaws.com',
     process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
         try {
+            console.log(file.name, file.type);
             const result = await Storage.put(file.name, file, {
                 level: 'protected',
                 contentType: file.type,
@@ -46,9 +47,9 @@ const server = {
     },
     revert: async (uniqueFileId, load, error) => {
         try {
-            const result = await Storage.remove(uniqueFileId, {
-                level: 'protected',
-            });
+            // const result = await Storage.remove(uniqueFileId, {
+            //     level: 'protected',
+            // });
             load('deleted');
         } catch (err) {
             console.log({ err });
@@ -57,10 +58,18 @@ const server = {
     },
 }
 
-const Upload = ({ pond, onAddFile, allowMultiple, allowImagePreview }) => {
+const Upload = ({ pond, 
+        onAddFile, onRemoveFile, onProcessFile, 
+        allowMultiple, allowImagePreview, instantUpload
+    }) => {
+
+    const label = 'Drag & Drop photos or <span class="filepond--label-action"> Browse </span>';
     return <>
-        <FilePond allowMultiple={allowMultiple} server={server} instantUpload={false}
-            ref={pond} onaddfile={onAddFile} onremovefile={onAddFile}
+        <FilePond allowMultiple={allowMultiple} server={server} instantUpload={instantUpload}
+            ref={pond} 
+            onaddfile={onAddFile} onremovefile={onRemoveFile} onprocessfile={onProcessFile}
+            allowRevert={false}
+            labelIdle={label}
             fileRenameFunction={fileRenameFunction} 
             allowImagePreview={allowImagePreview}/>
     </>

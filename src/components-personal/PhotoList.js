@@ -95,8 +95,8 @@ const PhotoList = (props) => {
         setAnchor({ el: null });
     };
 
-    const onSelect= (id) => {
-        const newSelected = (selected.includes(id))?
+    const onSelect = (id) => {
+        const newSelected = (selected.includes(id)) ?
             selected.filter(item => item !== id)
             : [...selected, id];
         setSelected(newSelected);
@@ -111,6 +111,7 @@ const PhotoList = (props) => {
     const cols = isLarge ? 4 : isMedium ? 3 : 2;
     const cellHeight = (isLarge || isMedium) ? 180 : 100;
     return <div className={classes.container}>
+        <pre style={{ width: '100%' }}>{JSON.stringify(selected, null, 2)}</pre>
         <GridList cellHeight={cellHeight} cols={cols} className={classes.gridList}>
             {photos.map(photo => {
                 return <GridListTile key={photo.id} className={classes.tile}>

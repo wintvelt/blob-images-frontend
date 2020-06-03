@@ -25,7 +25,7 @@ const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
         handleClose();
     };
     const onSetAlbumCover = async () => {
-        const albumUrl = `/groups/${albumData.PK.slice(2)}/albums/${SK}`;
+        const albumUrl = `/groups/${albumData.PK.slice(2)}/albums/${albumData.SK}`;
         try {
             await API.put('blob-images', albumUrl, {
                 body: {
@@ -34,8 +34,9 @@ const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
                     imageUrl: anchor.photo.url
                 }
             });
-            enqueueSnackbar('set album cover picture', { variant: 'success' });
-            reloadData();
+            enqueueSnackbar('new album cover set', { variant: 'success' });
+            handleClose();
+            album.reloadData();
         } catch (error) {
             console.log(error);
             enqueueSnackbar('could not delete picture', { variant: 'error' });
@@ -63,7 +64,7 @@ const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
             open={Boolean(anchor.el)}
             onClose={handleClose}
         >
-            {album && <MenuItem>Set as album cover</MenuItem>}
+            {album && <MenuItem onClick={onSetAlbumCover}>Set as album cover</MenuItem>}
             <MenuItem onClick={onSetProfilePic}>Set as profile picture</MenuItem>
             {album && userIsOwner && <MenuItem>Remove from album</MenuItem>}
             {userIsOwner && <MenuItem onClick={onDelete} style={{ color: 'red' }}>Delete</MenuItem>}

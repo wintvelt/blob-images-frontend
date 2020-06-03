@@ -14,7 +14,8 @@ const AlbumMain = () => {
     const albumId = router.query.albumid;
     const pond = useRef();
     const albumUrl = `/groups/${groupId}/albums/${albumId}`;
-    const album = useApiData('album', albumUrl);
+    const album = useApiData('album', albumUrl, true);
+    const albumData = album.data;
     const { reloadData } = useApiData('albumPhotos', albumUrl + '/photos', true)
     const [files, setFiles] = useState([]);
 
@@ -26,11 +27,13 @@ const AlbumMain = () => {
     }
     const onProcessFile = async (err, file) => {
         if (err) console.log(err);
-        await reloadData();
-        API.post('blob-images',`/groups/${groupId}/albums/${albumId}/photos`, {
-            body: { filename: file.filename }
-        });
-        pond.current.removeFile(file.id);
+        setTimeout(async () => {
+            await API.post('blob-images', `/groups/${groupId}/albums/${albumId}/photos`, {
+                body: { filename: file.filename }
+            });
+            reloadData();
+            pond.current.removeFile(file.id);
+        }, 1000)
     }
 
 
@@ -38,7 +41,7 @@ const AlbumMain = () => {
         <main>
             <AlbumHeader />
             <PhotoList apiKey='albumPhotos' source={albumUrl + '/photos'}
-                menu={album.data && album.data.userIsAdmin}
+                menu={albumData && albumData.userIsAdmin}
                 select={true}
                 album={album}
             />

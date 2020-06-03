@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.background.paper,
         backgroundSize: 'cover',
         width: '100%',
-        height: '384px',
+        // height: '384px',
         marginBottom: theme.spacing(1),
     },
     content: {
@@ -88,6 +88,7 @@ const AlbumImage = (props) => {
             image={imageUrl}
             title='Album cover image'
         />}
+        {!imageUrl && <div style={{ height: '112px', backgroundColor: 'grey' }} />}
         {group && <BackLink group={group} className={textClass} />}
         {userIsAdmin && <Link href={href} as={asPath}>
             <IconButton size='small' className={buttonClass}>

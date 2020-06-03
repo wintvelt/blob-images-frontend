@@ -18,8 +18,8 @@ import BackLink from '../components-generic/BackLink';
 const useStyles = makeStyles(theme => ({
     card: {
         position: 'relative',
-        // backgroundColor: theme.palette.background.paper,
-        background: 'linear-gradient(308deg, rgba(88,163,69,1) 14%, rgba(151,164,71,1) 43%, rgba(100,105,167,1) 77%)',
+        color: 'white',
+        backgroundColor: theme.palette.background.paper,
         backgroundSize: 'cover',
         width: '100%',
         height: '384px',
@@ -27,18 +27,20 @@ const useStyles = makeStyles(theme => ({
     },
     content: {
         position: 'relative',
-        color: 'white',
-        padding: theme.spacing(8, 3, 3, 3),
-        height: '100%',
+        color: 'rgba(0,0,0,.8)',
+        background: theme.palette.background.paper,
+        padding: theme.spacing(3),
+        // height: '100%',
         display: 'flex',
         alignItems: 'center'
     },
     groupMedia: {
-        position: 'absolute',
-        top: 0,
-        height: '100%',
-        width: '100%',
-        zIndex: 0,
+        height: '240px',
+        // position: 'absolute',
+        // top: 0,
+        // height: '100%',
+        // width: '100%',
+        // zIndex: 0,
     },
     edit: {
         backgroundColor: 'rgba(0,0,0,.2)',
@@ -56,6 +58,7 @@ const useStyles = makeStyles(theme => ({
     },
     groupText: {
         backgroundColor: 'rgba(0,0,0,0.2)',
+        color: 'white',
         padding: theme.spacing(0, .4),
         borderRadius: theme.spacing(.5),
     },
@@ -73,9 +76,9 @@ const AlbumImage = (props) => {
     const router = useRouter();
     const href = router.pathname + '/edit';
     const asPath = router.asPath + '/edit';
-    const { imageClass, buttonClass, album } = props;
+    const { imageClass, buttonClass, album, textClass } = props;
     const { data } = album;
-    const { image, userIsAdmin } = data || {};
+    const { image, userIsAdmin, group } = data || {};
     const imgUrl = image && image.image;
     const imgOwner = image && image.owner;
     const imageUrl = makeImageUrl(imgUrl, 1440, 384);
@@ -85,6 +88,7 @@ const AlbumImage = (props) => {
             image={imageUrl}
             title='Album cover image'
         />}
+        {group && <BackLink group={group} className={textClass} />}
         {userIsAdmin && <Link href={href} as={asPath}>
             <IconButton size='small' className={buttonClass}>
                 <Icon fontSize='small'>edit</Icon>
@@ -98,11 +102,10 @@ const AlbumContent = (props) => {
     const { data, isLoading } = album;
     const { name, stats, group } = data || {};
     return <CardContent className={contentClass}>
-        {group && <BackLink group={group} className={textClass}/>}
         <Grid container>
             <Grid item md={11} xs={12}>
                 <Typography gutterBottom variant='h2' color='inherit'>
-                    <TextSkeleton className={textClass} isLoading={isLoading}>
+                    <TextSkeleton isLoading={isLoading}>
                         {name}
                     </TextSkeleton>
                 </Typography>
@@ -122,7 +125,8 @@ const AlbumContent = (props) => {
 const AlbumHeaderLayout = ({ album }) => {
     const classes = useStyles();
     return <Card className={classes.card}>
-        <AlbumImage imageClass={classes.groupMedia} buttonClass={classes.imageEdit} album={album} />
+        <AlbumImage imageClass={classes.groupMedia} buttonClass={classes.imageEdit}
+            textClass={classes.groupText} album={album} />
         <AlbumContent contentClass={classes.content} textClass={classes.groupText} album={album} />
     </Card>
 }

@@ -11,6 +11,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useSnackbar } from 'notistack';
 
 import Photo from './PhotoCard';
+import PhotoMenu from './PhotoListMenu';
 import { useApiData } from '../components-generic/DataProvider';
 import { useUser } from '../components-generic/UserContext';
 
@@ -40,55 +41,13 @@ const Empty = ({ message }) => {
     </div>
 }
 
-const PhotoMenu = ({ anchor, handleClose }) => {
-    const { user, saveProfile } = useUser(true);
-    const { enqueueSnackbar } = useSnackbar();
-    const { reloadData } = useApiData('myPhotos', '/photos', true)
-    const onSetProfilePic = async () => {
-        const name = user.profile.name;
-        try {
-            saveProfile(name, anchor.url);
-            enqueueSnackbar('profile picture set', { variant: 'success' });
-        } catch (error) {
-            enqueueSnackbar('could not set profile picture', { variant: 'error' });
-        }
-        handleClose();
-    };
-    const onDelete = async () => {
-        try {
-            const path = `/photos/${anchor.photoId}`;
-            await API.del('blob-images', path);
-            enqueueSnackbar('photo deleted', { variant: 'success' });
-            reloadData();
-        } catch (error) {
-            console.log(error);
-            enqueueSnackbar('could not delete picture', { variant: 'error' });
-        }
-        handleClose();
-    };
-    return (
-        <Menu
-            id="simple-menu"
-            anchorEl={anchor.el}
-            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            keepMounted
-            open={Boolean(anchor.el)}
-            onClose={handleClose}
-        >
-            <MenuItem onClick={onSetProfilePic}>Set as profile picture</MenuItem>
-            <MenuItem onClick={onDelete}>Delete</MenuItem>
-        </Menu>
-    );
-}
-
 const PhotoList = (props) => {
-    const { apiKey, source, empty, menu, select } = props;
+    const { apiKey, source, empty, menu, select, album } = props;
     const [anchor, setAnchor] = useState({ el: null });
     const [selected, setSelected] = useState([]);
 
-    const handleClick = (e, photoId, url) => {
-        setAnchor({ el: e.currentTarget, photoId, url });
+    const handleClick = (e, photo) => {
+        setAnchor({ el: e.currentTarget, photo });
     };
 
     const handleClose = () => {
@@ -126,7 +85,13 @@ const PhotoList = (props) => {
                 </GridListTile>
             })}
         </GridList>
-        {menu && <PhotoMenu anchor={anchor} handleClick={handleClick} handleClose={handleClose} />}
+        {menu && <PhotoMenu
+            anchor={anchor}
+            handleClose={handleClose}
+            album={album}
+            apiKey={apiKey}
+            source={source}
+        />}
         {empty && (photos.length === 0) && <Empty message={empty} />}
     </div>
 }

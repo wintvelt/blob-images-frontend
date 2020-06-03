@@ -28,7 +28,7 @@ export const useImage = (url) => {
     return safeUrl;
 }
 
-export const makeImageUrl = (key, width = 200, height = 200) => {
+export const makeImageUrl = (key, width = 400, height = 400) => {
     if (!key) return '';
     const body = {
         "bucket": "blob-images",

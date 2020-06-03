@@ -47,7 +47,7 @@ const MenuButton = ({ className, onClick }) => (
 const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noOwner }) => {
     const classes = useStyles();
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
-    const { image, owner, album, date, id } = photo;
+    const { image, owner, date, id } = photo;
     const { name } = owner || {};
     const isLoading = (!image);
     const imageUrl = makeImageUrl(image);
@@ -59,7 +59,7 @@ const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noO
     const handleMenuClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        return onClickMenu(e, id, image);
+        return onClickMenu(e, photo);
     }
     const handleSelect = (e) => {
         e.preventDefault();
@@ -73,8 +73,6 @@ const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noO
             title={((name && !noOwner) || isLoading) &&
                 <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by: '}{name}</TextSkeleton>}
             subtitle={(!isSmall || noOwner) && <>
-                {(album || isLoading) &&
-                    <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'album: '}{album}</TextSkeleton>}
                 {(date || isLoading) &&
                     <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added: '}{date}</TextSkeleton>}
             </>}

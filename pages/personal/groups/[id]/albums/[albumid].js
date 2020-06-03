@@ -44,8 +44,10 @@ const AlbumMain = () => {
     return (
         <main>
             <AlbumHeader />
-            <PhotoList apiKey='myPhotos' source='/photos' menu={album.data && album.data.userIsAdmin} />
-            {JSON.stringify(files,null,2)}
+            <PhotoList apiKey='myPhotos' source='/photos' 
+                menu={album.data && album.data.userIsAdmin} 
+                select={true}
+                />
             <Upload pond={pond} allowMultiple={true} allowImagePreview={true} instantUpload={true}
                 onAddFile={onAddFile} onRemoveFile={onRemoveFile}
                 onProcessFile={onProcessFile}

@@ -31,10 +31,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const SelectButton = ({ iconClass, icon }) => (
+const SelectButton = ({ iconClass, icon, onSelect }) => (
     <div style={{ display: 'flex' }}>
-        <IconButton aria-label={`select photo`}
-            className={iconClass}>
+        <IconButton aria-label={`select photo`} className={iconClass} onClick={onSelect}>
             <Icon fontSize='small'>{icon}</Icon>
         </IconButton>
     </div>
@@ -45,9 +44,8 @@ const MenuButton = ({ className, onClick }) => (
     </IconButton>
 )
 
-const Photo = ({ photo, isSmall, onClick, noOwner, onClickMenu }) => {
+const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noOwner }) => {
     const classes = useStyles();
-    const [isSelected, setIsSelected] = useState(false);
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
     const { image, owner, album, date, id } = photo;
     const { name } = owner || {};
@@ -55,12 +53,18 @@ const Photo = ({ photo, isSmall, onClick, noOwner, onClickMenu }) => {
     const imageUrl = makeImageUrl(image);
     const handleClick = () => {
         if (!isLoading) {
-            setIsSelected(!isSelected);
             onClick({ id, image, owner });
         }
     }
     const handleMenuClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         return onClickMenu(e, id, image);
+    }
+    const handleSelect = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onSelect && onSelect(id);
     }
     return <div onClick={handleClick} style={{ width: '100%', height: '100%' }}>
         <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
@@ -74,7 +78,7 @@ const Photo = ({ photo, isSmall, onClick, noOwner, onClickMenu }) => {
                 {(date || isLoading) &&
                     <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added: '}{date}</TextSkeleton>}
             </>}
-            actionIcon={(!onClickMenu) && <SelectButton iconClass={classes.icon} icon={icon} />}
+            actionIcon={(onSelect) && <SelectButton iconClass={classes.icon} icon={icon} onSelect={handleSelect}/>}
         />
         {(onClickMenu) && <MenuButton className={classes.menuIcon} onClick={handleMenuClick} />}
     </div>

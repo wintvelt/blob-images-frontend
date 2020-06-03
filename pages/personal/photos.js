@@ -18,6 +18,7 @@ const PhotosMain = () => {
                 onClick={(e) => alert(JSON.stringify(e))}
                 noOwner
                 menu={true}
+                select={true}
                 empty='hmm no photos yet'
             />
         </main>

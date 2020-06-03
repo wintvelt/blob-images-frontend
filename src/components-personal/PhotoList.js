@@ -83,17 +83,23 @@ const PhotoMenu = ({ anchor, handleClose }) => {
 }
 
 const PhotoList = (props) => {
-    const { apiKey, source, empty, menu } = props;
+    const { apiKey, source, empty, menu, select } = props;
     const [anchor, setAnchor] = useState({ el: null });
+    const [selected, setSelected] = useState([]);
 
     const handleClick = (e, photoId, url) => {
-        e.preventDefault();
-        e.stopPropagation();
         setAnchor({ el: e.currentTarget, photoId, url });
     };
 
     const handleClose = () => {
         setAnchor({ el: null });
+    };
+
+    const onSelect= (id) => {
+        const newSelected = (selected.includes(id))?
+            selected.filter(item => item !== id)
+            : [...selected, id];
+        setSelected(newSelected);
     };
 
     const { data } = useApiData(apiKey, source, true);
@@ -113,6 +119,8 @@ const PhotoList = (props) => {
                         isSmall={(!isLarge && !isMedium)}
                         {...props}
                         onClickMenu={menu && handleClick}
+                        onSelect={select && onSelect}
+                        isSelected={selected.includes(photo.id)}
                     />
                 </GridListTile>
             })}

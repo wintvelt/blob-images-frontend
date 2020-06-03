@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 
 import CardAdd from './CardAdd';
 
-const CardList = ({ list, component, addProps, isLoading, width, spacing }) => {
+const CardList = ({ list, component, addProps, isLoading, onSelect, width, spacing }) => {
     const Component = component;
     return <Grid container spacing={spacing || 0}>
         {list.map(item => {

@@ -104,7 +104,7 @@ const AlbumContent = (props) => {
     return <CardContent className={contentClass}>
         <Grid container>
             <Grid item md={11} xs={12}>
-                <Typography gutterBottom variant='h2' color='inherit'>
+                <Typography gutterBottom variant='h4' color='inherit'>
                     <TextSkeleton isLoading={isLoading}>
                         {name}
                     </TextSkeleton>

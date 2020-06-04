@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { useApiData } from '../../src/components-generic/DataProvider';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
+import { useMediaQuery } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     skeleton: {
@@ -45,7 +46,8 @@ const initials = (name) => {
 }
 
 const MemberSummary = (props) => {
-    const { avatarClass, panelTitleClass, summaryClass, members, isLoading } = props;
+    const { avatarClass, panelTitleClass, summaryClass, members, isLarge, isLoading } = props;
+    const maxAvatars = (isLarge)? 10 : 5;
     return <ExpansionPanelSummary
         className={summaryClass}
         expandIcon={<Icon>expand_more</Icon>}
@@ -55,7 +57,7 @@ const MemberSummary = (props) => {
         <Typography variant='subtitle1' color='textSecondary' className={panelTitleClass}>
             Members:
         </Typography>
-        <AvatarGroup max={10}>
+        <AvatarGroup max={maxAvatars}>
             {members.map((member, i) => (
                 <AvatarSkeleton key={member.name || i} alt={member.name} src={member.avatar}
                     className={avatarClass} isLoading={isLoading}>
@@ -81,12 +83,13 @@ const MemberDetails = (props) => {
 
 const GroupMembersLayout = ({ members, isLoading }) => {
     const classes = useStyles();
+    const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const membersData = (isLoading) ?
         [{}, {}, {}]
         : members.map(member => member.user);
 
     return <ExpansionPanel className={classes.panel}>
-        <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle}
+        <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle} isLarge={isLarge}
             summaryClass={classes.summary} members={membersData} isLoading={isLoading} />
         <MemberDetails contentClass={classes.content} textClass={classes.groupText} members={members} />
     </ExpansionPanel>

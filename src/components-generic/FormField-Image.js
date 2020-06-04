@@ -70,8 +70,11 @@ const ImageField = (props) => {
     const hasMyPhotos = (myPhotos.data && myPhotos.data.length > 0);
     const router = useRouter();
     const groupId = router.query.id;
+    const albumId = router.query.albumid;
     const groupPhotos = useApiData(`groupPhotos`, `/groups/${groupId}/photos`);
     const hasGroupPhotos = (groupPhotos.data && groupPhotos.data.length > 0);
+    const albumPhotos = useApiData(`albumPhotos`, `/groups/${groupId}/albums/${albumId}/photos`);
+    const hasAlbumPhotos = (albumPhotos.data && albumPhotos.data.length > 0);
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;
     const imgClass = isAvatar ? classes.avatar : classes.image;
@@ -100,6 +103,10 @@ const ImageField = (props) => {
 
             case 'group':
                 setImageMenu({ anchor: imageMenu.anchor, pickType: 'group' })
+                break;
+
+            case 'album':
+                setImageMenu({ anchor: imageMenu.anchor, pickType: 'album' })
                 break;
 
             case 'clear':
@@ -162,7 +169,9 @@ const ImageField = (props) => {
                     </MenuItem>
                 }
                 {isAlbum &&
-                    <MenuItem onClick={handleClickMenu('close')}>Pick from album photos</MenuItem>
+                    <MenuItem onClick={handleClickMenu('album')} disabled={!hasAlbumPhotos}>
+                        Pick from album photos
+                    </MenuItem>
                 }
                 <MenuItem onClick={handleClickMenu('myPhotos')} disabled={!hasMyPhotos}>
                     Pick from my photos

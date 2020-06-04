@@ -22,7 +22,6 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.background.paper,
         backgroundSize: 'cover',
         width: '100%',
-        // height: '384px',
         marginBottom: theme.spacing(1),
     },
     content: {
@@ -36,6 +35,7 @@ const useStyles = makeStyles(theme => ({
     },
     groupMedia: {
         height: '240px',
+        background: 'linear-gradient(308deg, rgba(70,52,78,1) 14%, rgba(90,85,96,1) 43%, rgba(157,141,143,1) 77%)',
         // position: 'absolute',
         // top: 0,
         // height: '100%',
@@ -77,7 +77,7 @@ const AlbumImage = (props) => {
     const { image, userIsAdmin, group } = data || {};
     const imgUrl = image && image.image;
     const imgOwner = image && image.owner;
-    const imageUrl = makeImageUrl(imgUrl, 1440, 384);
+    const imageUrl = makeImageUrl(imgUrl, 1440, 320);
 
     const linkStyle = {
         position: 'absolute',
@@ -95,7 +95,7 @@ const AlbumImage = (props) => {
             image={imageUrl}
             title='Album cover image'
         />}
-        {!imageUrl && <div style={{ height: '112px', backgroundColor: 'grey' }} />}
+        {!imageUrl && <div className={imageClass} />}
         {group && <BackLink groupId={group.id} className={textClass} />}
         {userIsAdmin && <Link href={href} as={asPath} style={linkStyle}>
             <IconButton size='small' className={buttonClass}>

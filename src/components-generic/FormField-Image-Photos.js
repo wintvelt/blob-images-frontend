@@ -9,13 +9,21 @@ import Typography from '@material-ui/core/Typography';
 
 import PhotoList from '../components-personal/PhotoList';
 
-const makeListProps = (type, groupId) => {
+const makeListProps = (type, groupId, albumId) => {
     switch (type) {
         case 'group': {
             return {
-                title: 'Pick from the group photos',
+                title: 'Pick from group photos',
                 apiKey: `groupPhotos`,
                 source: `/groups/${groupId}/photos`,
+            }
+        }
+
+        case 'album': {
+            return {
+                title: 'Pick from album photos',
+                apiKey: `albumPhotos`,
+                source: `/groups/${groupId}/albums/${albumId}/photos`,
             }
         }
 
@@ -32,7 +40,8 @@ const makeListProps = (type, groupId) => {
 export default function PhotoPickDialog({ type, open, handleClose, onChange }) {
     const router = useRouter();
     const groupId = router.query.id;
-    const listProps = makeListProps(type, groupId);
+    const albumId = router.query.albumid;
+    const listProps = makeListProps(type, groupId, albumId);
 
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="pick-photos-dialog"

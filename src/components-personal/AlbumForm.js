@@ -19,7 +19,7 @@ const fieldConfig = {
     image: {
         autoComplete: 'album-image',
         type: 'image',
-        isGroup: true,
+        isAlbum: true,
         label: 'album image',
     },
 };

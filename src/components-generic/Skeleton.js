@@ -1,5 +1,6 @@
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
+import { makeImageUrl } from './imageProvider';
 
 export const TextSkeleton = (props) => {
     const { children, className, isLoading, ...rest } = props;
@@ -11,11 +12,12 @@ export const TextSkeleton = (props) => {
 }
 
 export const AvatarSkeleton = (props) => {
-    const { children, className, isLoading, ...rest } = props;
+    const { children, className, isLoading, src, ...rest } = props;
+    const imageUrl = makeImageUrl(src, 100, 100);
     const avatarClass = (isLoading) ?
         ('pulse ' + (className || ''))
         : className;
-    return <Avatar className={avatarClass} {...rest}>
+    return <Avatar className={avatarClass} src={imageUrl} {...rest}>
         {children}
     </Avatar>
 }

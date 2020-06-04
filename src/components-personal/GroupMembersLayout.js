@@ -46,9 +46,6 @@ const initials = (name) => {
 
 const MemberSummary = (props) => {
     const { avatarClass, panelTitleClass, summaryClass, members, isLoading } = props;
-    const membersList = (isLoading) ?
-        [{}, {}, {}]
-        : members;
     return <ExpansionPanelSummary
         className={summaryClass}
         expandIcon={<Icon>expand_more</Icon>}
@@ -59,7 +56,7 @@ const MemberSummary = (props) => {
             Members:
         </Typography>
         <AvatarGroup max={10}>
-            {membersList.map((member, i) => (
+            {members.map((member, i) => (
                 <AvatarSkeleton key={member.name || i} alt={member.name} src={member.avatar}
                     className={avatarClass} isLoading={isLoading}>
                     {(!member.image && initials(member.name))}
@@ -72,7 +69,7 @@ const MemberSummary = (props) => {
 
 const MemberDetails = (props) => {
     const { contentClass, textClass } = props;
-    const data = useApiData('members','/undefined');
+    const data = useApiData('members', '/undefined');
     const { title, subtitle, stats } = data;
     return <ExpansionPanelDetails>
         <Typography>
@@ -84,9 +81,13 @@ const MemberDetails = (props) => {
 
 const GroupMembersLayout = ({ members, isLoading }) => {
     const classes = useStyles();
+    const membersData = (isLoading) ?
+        [{}, {}, {}]
+        : members.map(member => member.user);
+
     return <ExpansionPanel className={classes.panel}>
         <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle}
-            summaryClass={classes.summary} members={members} isLoading={isLoading} />
+            summaryClass={classes.summary} members={membersData} isLoading={isLoading} />
         <MemberDetails contentClass={classes.content} textClass={classes.groupText} members={members} />
     </ExpansionPanel>
 }

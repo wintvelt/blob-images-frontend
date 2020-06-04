@@ -48,10 +48,6 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
     },
     imageEdit: {
-        position: 'absolute',
-        bottom: theme.spacing(3),
-        right: theme.spacing(3),
-        zIndex: 99,
         backgroundColor: 'rgba(0,0,0,.2)',
         color: 'white',
         marginLeft: theme.spacing(1),
@@ -83,6 +79,17 @@ const AlbumImage = (props) => {
     const imgOwner = image && image.owner;
     const imageUrl = makeImageUrl(imgUrl, 1440, 384);
 
+    const linkStyle = {
+        position: 'absolute',
+        bottom: '24px',
+        right: '24px',
+        zIndex: 99,
+        textDecoration: 'none',
+        color: 'inherit',
+        '&:hover': {
+            cursor: 'pointer'
+        }
+    };
     return <>
         {imageUrl && <CardMedia className={imageClass}
             image={imageUrl}
@@ -90,7 +97,7 @@ const AlbumImage = (props) => {
         />}
         {!imageUrl && <div style={{ height: '112px', backgroundColor: 'grey' }} />}
         {group && <BackLink group={group} className={textClass} />}
-        {userIsAdmin && <Link href={href} as={asPath}>
+        {userIsAdmin && <Link href={href} as={asPath} style={linkStyle}>
             <IconButton size='small' className={buttonClass}>
                 <Icon fontSize='small'>edit</Icon>
             </IconButton>

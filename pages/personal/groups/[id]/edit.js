@@ -31,7 +31,7 @@ const GroupEditMain = () => {
     return (
         <main>
             <Toolbar />
-            {group && <BackLink group={group} />}
+            {group && <BackLink groupId={groupId} />}
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
                     <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading} />

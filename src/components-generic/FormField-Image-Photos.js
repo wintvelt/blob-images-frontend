@@ -14,8 +14,8 @@ const makeListProps = (type, groupId) => {
         case 'group': {
             return {
                 title: 'Pick from the group photos',
-                apiKey: `groupPhotos-${groupId}`,
-                source: `myUrl/groups/${groupId}/photos`,
+                apiKey: `groupPhotos`,
+                source: `/groups/${groupId}/photos`,
             }
         }
 

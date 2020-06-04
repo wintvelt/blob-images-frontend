@@ -70,7 +70,7 @@ const ImageField = (props) => {
     const hasMyPhotos = (myPhotos.data && myPhotos.data.length > 0);
     const router = useRouter();
     const groupId = router.query.id;
-    const groupPhotos = useApiData(`groupPhotos-${groupId}`, `myUrl/groups/${groupId}/photos`);
+    const groupPhotos = useApiData(`groupPhotos`, `/groups/${groupId}/photos`);
     const hasGroupPhotos = (groupPhotos.data && groupPhotos.data.length > 0);
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;

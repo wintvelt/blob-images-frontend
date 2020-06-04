@@ -47,7 +47,7 @@ const MenuButton = ({ className, onClick }) => (
 const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noOwner }) => {
     const classes = useStyles();
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
-    const { image, owner, date, id } = photo;
+    const { image, owner, album, date, id } = photo;
     const { name } = owner || {};
     const isLoading = (!image);
     const imageUrl = makeImageUrl(image);
@@ -71,10 +71,10 @@ const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noO
         <GridListTileBar
             style={{ height: 'fit-content' }}
             title={((name && !noOwner) || isLoading) &&
-                <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by: '}{name}</TextSkeleton>}
+                <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by '}{name}</TextSkeleton>}
             subtitle={(!isSmall || noOwner) && <>
                 {(date || isLoading) &&
-                    <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added: '}{date}</TextSkeleton>}
+                    <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added '}{date}</TextSkeleton>}
             </>}
             actionIcon={(onSelect) && <SelectButton iconClass={classes.icon} icon={icon} onSelect={handleSelect}/>}
         />

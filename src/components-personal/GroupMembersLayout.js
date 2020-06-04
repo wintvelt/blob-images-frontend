@@ -72,7 +72,7 @@ const MemberSummary = (props) => {
 
 const MemberDetails = (props) => {
     const { contentClass, textClass } = props;
-    const data = useApiData();
+    const data = useApiData('members','/undefined');
     const { title, subtitle, stats } = data;
     return <ExpansionPanelDetails>
         <Typography>

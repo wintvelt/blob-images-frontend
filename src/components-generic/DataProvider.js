@@ -9,7 +9,6 @@ export const DataContext = createContext({
 
 export const useApiData = (key, source, withReload) => {
     const { data, setDataByKey } = useContext(DataContext);
-
     const isEmptySource = source.includes('/new') || source.includes('/undefined');
     if (isEmptySource) return (withReload) ?
         { data: {}, reloadData: () => { } }

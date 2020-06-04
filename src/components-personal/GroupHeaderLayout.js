@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
     },
     groupText: {
         backgroundColor: 'rgba(0,0,0,0.2)',
-        padding: theme.spacing(.4),
+        padding: theme.spacing(0, .4),
         borderRadius: theme.spacing(.5),
         textAlign: 'right',
     },

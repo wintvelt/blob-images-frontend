@@ -3,7 +3,7 @@ import React from 'react';
 import DataProvider, { useApiData } from '../src/components-generic/DataProvider';
 
 const Child = () => {
-    const data = useApiData();
+    const data = useApiData('groups','/undefined');
     return <pre>
         {JSON.stringify(data, null, 2)}
     </pre>

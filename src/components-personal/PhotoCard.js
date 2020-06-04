@@ -70,13 +70,18 @@ const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noO
         <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
         <GridListTileBar
             style={{ height: 'fit-content' }}
-            title={((name && !noOwner) || isLoading) &&
+            title={(!noOwner && (name || isLoading)) &&
                 <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by '}{name}</TextSkeleton>}
             subtitle={(!isSmall || noOwner) && <>
+                {(album || isLoading) &&
+                    <TextSkeleton isLoading={isLoading}>
+                        {album.name}
+                        <br />
+                    </TextSkeleton>}
                 {(date || isLoading) &&
                     <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added '}{date}</TextSkeleton>}
             </>}
-            actionIcon={(onSelect) && <SelectButton iconClass={classes.icon} icon={icon} onSelect={handleSelect}/>}
+            actionIcon={(onSelect) && <SelectButton iconClass={classes.icon} icon={icon} onSelect={handleSelect} />}
         />
         {(onClickMenu) && <MenuButton className={classes.menuIcon} onClick={handleMenuClick} />}
     </div>

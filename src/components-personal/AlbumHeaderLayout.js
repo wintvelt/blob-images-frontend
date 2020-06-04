@@ -96,7 +96,7 @@ const AlbumImage = (props) => {
             title='Album cover image'
         />}
         {!imageUrl && <div style={{ height: '112px', backgroundColor: 'grey' }} />}
-        {group && <BackLink group={group} className={textClass} />}
+        {group && <BackLink groupId={group.id} className={textClass} />}
         {userIsAdmin && <Link href={href} as={asPath} style={linkStyle}>
             <IconButton size='small' className={buttonClass}>
                 <Icon fontSize='small'>edit</Icon>

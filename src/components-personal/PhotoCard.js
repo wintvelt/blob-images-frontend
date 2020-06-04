@@ -73,9 +73,9 @@ const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noO
             title={(!noOwner && (name || isLoading)) &&
                 <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by '}{name}</TextSkeleton>}
             subtitle={(!isSmall || noOwner) && <>
-                {(album || isLoading) &&
+                {(album) &&
                     <TextSkeleton isLoading={isLoading}>
-                        {album.name}
+                        {album && album.name}
                         <br />
                     </TextSkeleton>}
                 {(date || isLoading) &&

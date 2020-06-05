@@ -3,7 +3,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import Checkbox from '@material-ui/core/Checkbox';
+import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { useUser } from '../../src/components-generic/UserContext';
@@ -12,16 +12,11 @@ import { useMediaQuery } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     line: {
+        position: 'relative',
         height: '64px',
         width: '100%',
         display: 'flex',
         alignItems: 'center',
-    },
-    headerLine: {
-        height: '32px',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'flex-end',
     },
     avatar: {
         width: theme.spacing(5),
@@ -33,6 +28,13 @@ const useStyles = makeStyles(theme => ({
     name: {
         flexGrow: 1,
         lineHeight: 'normal',
+    },
+    badge: {
+        position: 'absolute',
+        bottom: theme.spacing(1),
+        left: theme.spacing(3),
+        fontSize: '18px',
+        color: theme.palette.text.primary,
     }
 }));
 
@@ -63,37 +65,22 @@ const MemberLine = ({ member, currentIsAdmin, isLoading }) => {
             className={classes.avatar} isLoading={isLoading}>
             {(!user.image && initials(user.name))}
         </AvatarSkeleton>
+        <Tooltip title='guest access' aria-label='guest' className={classes.badge}>
+            <Icon>visibility</Icon>
+        </Tooltip>
         <Typography className={classes.name}>
             {user.name}
             {!isLarge && <>
-            <br/>
-            <span style={{fontSize: '70%'}}>{member.createdAt}</span>
+                <br />
+                <span style={{ fontSize: '70%' }}>{member.createdAt}</span>
             </>}
         </Typography>
-        {isLarge && <Typography variant='caption' style={widthStyle(80)}>
-            {member.createdAt}
+        {isLarge && <Typography variant='caption' style={widthStyle(120)}>
+            {'since ' + member.createdAt}
         </Typography>}
-        <div style={{ ...widthStyle(width), display: 'flex', justifyContent: 'center' }}>
-            {(isAdmin) && <Icon>check</Icon>}
-        </div>
         <IconButton color='primary' disabled={!currentIsAdmin} style={widthStyle(48)}>
             <Icon>more_horiz</Icon>
         </IconButton>
-        {/* {JSON.stringify(member)} */}
-    </div>
-}
-
-const HeaderLine = () => {
-    const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
-    const width = (isLarge) ? 100 : 58;
-    const classes = useStyles();
-    return <div className={classes.headerLine}>
-        <div className={classes.name} />
-        {isLarge && <div style={widthStyle(80)}>since</div>}
-        <div style={{ ...widthStyle(width), textAlign: 'center' }}>
-            admin
-        </div>
-        <div style={widthStyle(48)} />
         {/* {JSON.stringify(member)} */}
     </div>
 }
@@ -103,8 +90,8 @@ const MemberDetails = (props) => {
     const currentUser = useUser();
     const { profile } = currentUser;
     const currentIsAdmin = !!members.find(member => member.PK.slice(3) === profile.id);
-    return <ExpansionPanelDetails style={{ flexDirection: 'column' }}>
-        <HeaderLine />
+    return <ExpansionPanelDetails style={{ flexDirection: 'column', padding: '8px 4px 16px 16px' }}>
+        {/* <HeaderLine /> */}
         {members.map(member => (
             <MemberLine key={member.PK || 'header'} member={member}
                 currentIsAdmin={currentIsAdmin} isLoading={isLoading}

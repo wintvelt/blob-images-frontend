@@ -9,3 +9,12 @@ export const now = () => {
     const time = today.toTimeString().slice(0,8).replace(/:/g,'');
     return `${yyyy}${mm}${dd}-${time}`;
 }
+
+export const initials = (name) => {
+    if (!name) return '';
+    return name.split(' ').map(word => {
+        return word[0];
+    }).filter(letter => {
+        return letter && letter.match(/[A-zÀ-ú]/);
+    }).join('')
+}

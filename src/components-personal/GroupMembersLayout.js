@@ -5,10 +5,11 @@ import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { makeStyles } from '@material-ui/core/styles';
+import { useMediaQuery } from '@material-ui/core';
 
 import MemberDetails from './GroupMembersLayout-Member';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
-import { useMediaQuery } from '@material-ui/core';
+import { initials } from '../../src/components-generic/helpers';
 
 const useStyles = makeStyles(theme => ({
     skeleton: {
@@ -34,15 +35,6 @@ const useStyles = makeStyles(theme => ({
         fontSize: '12px',
     }
 }));
-
-const initials = (name) => {
-    if (!name) return '';
-    return name.split(' ').map(word => {
-        return word[0];
-    }).filter(letter => {
-        return letter && letter.match(/[A-zÀ-ú]/);
-    }).join('')
-}
 
 const MemberSummary = (props) => {
     const { avatarClass, panelTitleClass, summaryClass, members, isLarge, isLoading } = props;

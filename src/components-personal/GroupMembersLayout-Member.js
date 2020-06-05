@@ -5,10 +5,11 @@ import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { makeStyles } from '@material-ui/core/styles';
+import { useMediaQuery } from '@material-ui/core';
 
 import { useUser } from '../../src/components-generic/UserContext';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
-import { useMediaQuery } from '@material-ui/core';
+import { initials } from '../../src/components-generic/helpers';
 
 const useStyles = makeStyles(theme => ({
     line: {
@@ -37,15 +38,6 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.text.primary,
     }
 }));
-
-const initials = (name) => {
-    if (!name) return '';
-    return name.split(' ').map(word => {
-        return word[0];
-    }).filter(letter => {
-        return letter && letter.match(/[A-zÀ-ú]/);
-    }).join('')
-}
 
 const widthStyle = (width) => ({
     width: `${width}px`,

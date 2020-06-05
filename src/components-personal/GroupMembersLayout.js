@@ -1,13 +1,12 @@
 import React from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { useApiData } from '../../src/components-generic/DataProvider';
+import MemberDetails from './GroupMembersLayout-Member';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 import { useMediaQuery } from '@material-ui/core';
 
@@ -47,7 +46,7 @@ const initials = (name) => {
 
 const MemberSummary = (props) => {
     const { avatarClass, panelTitleClass, summaryClass, members, isLarge, isLoading } = props;
-    const maxAvatars = (isLarge)? 10 : 5;
+    const maxAvatars = (isLarge) ? 10 : 5;
     return <ExpansionPanelSummary
         className={summaryClass}
         expandIcon={<Icon>expand_more</Icon>}
@@ -69,29 +68,17 @@ const MemberSummary = (props) => {
 
 }
 
-const MemberDetails = (props) => {
-    const { contentClass, textClass } = props;
-    const data = useApiData('members', '/undefined');
-    const { title, subtitle, stats } = data;
-    return <ExpansionPanelDetails>
-        <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-        </Typography>
-    </ExpansionPanelDetails>
-}
-
 const GroupMembersLayout = ({ members, isLoading }) => {
     const classes = useStyles();
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const membersData = (isLoading) ?
         [{}, {}, {}]
-        : members.map(member => member.user);
+        : members.map(member => ({ ...member.user, role: member.role }));
 
     return <ExpansionPanel className={classes.panel}>
         <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle} isLarge={isLarge}
             summaryClass={classes.summary} members={membersData} isLoading={isLoading} />
-        <MemberDetails contentClass={classes.content} textClass={classes.groupText} members={members} />
+        <MemberDetails members={members} isLoading={isLoading}/>
     </ExpansionPanel>
 }
 

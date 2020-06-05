@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
-import Switch from '@material-ui/core/Switch';
+import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { useUser } from '../../src/components-generic/UserContext';
@@ -73,13 +73,12 @@ const MemberLine = ({ member, currentIsAdmin, isLoading }) => {
         {isLarge && <Typography variant='caption' style={widthStyle(80)}>
             {member.createdAt}
         </Typography>}
-        <div style={{ ...widthStyle(width), textAlign: 'center' }}>
-            <Switch color='primary'
-                checked={isAdmin} disabled={!currentIsAdmin} onChange={onCheck} />
+        <div style={{ ...widthStyle(width), display: 'flex', justifyContent: 'center' }}>
+            {(isAdmin) && <Icon>check</Icon>}
         </div>
-        <Button style={widthStyle(64)} color='primary' disabled={!currentIsAdmin}>
-            Ban
-        </Button>
+        <IconButton color='primary' disabled={!currentIsAdmin} style={widthStyle(48)}>
+            <Icon>more_horiz</Icon>
+        </IconButton>
         {/* {JSON.stringify(member)} */}
     </div>
 }
@@ -94,7 +93,7 @@ const HeaderLine = () => {
         <div style={{ ...widthStyle(width), textAlign: 'center' }}>
             admin
         </div>
-        <div style={widthStyle(64)} />
+        <div style={widthStyle(48)} />
         {/* {JSON.stringify(member)} */}
     </div>
 }

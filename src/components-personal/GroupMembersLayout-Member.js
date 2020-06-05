@@ -47,7 +47,7 @@ const widthStyle = (width) => ({
     marginLeft: '8px',
 });
 
-const MemberLine = ({ member, currentIsAdmin, onClick, isLoading }) => {
+const MemberLine = ({ member, currentIsAdmin, hasOtherAdmin, onClick, isLoading }) => {
     const user = member.user || {};
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const isAdmin = (member.role === 'admin');
@@ -81,7 +81,7 @@ const MemberLine = ({ member, currentIsAdmin, onClick, isLoading }) => {
             {'since ' + member.createdAt}
         </Typography>}
         <div style={widthStyle(48)}>
-            {currentIsAdmin && <IconButton color='primary' disabled={!currentIsAdmin}
+            {currentIsAdmin && hasOtherAdmin && <IconButton color='primary' disabled={!currentIsAdmin}
                 onClick={handleClick}>
                 <Icon>more_horiz</Icon>
             </IconButton>}
@@ -95,8 +95,10 @@ const MemberDetails = (props) => {
     const currentUser = useUser();
     const { profile } = currentUser;
     const currentIsAdmin = !!members.find(member => member.PK.slice(3) === profile.id);
+    const hasOtherAdmin = !!members.find(member => (member.PK.slice(3) !== profile.id && member.role === 'admin'));
     const [anchor, setAnchor] = useState({ el: null });
 
+    const selectedIsCurrent = anchor.member && (anchor.member.PK.slice(3) === profile.id);
     const selectedIsAdmin = anchor.member && (anchor.member.role === 'admin');
     const menuText = (selectedIsAdmin)? 'Make guest' : 'Make admin';
 
@@ -110,7 +112,7 @@ const MemberDetails = (props) => {
         {/* <HeaderLine /> */}
         {members.map(member => (
             <MemberLine key={member.PK || 'header'} member={member} onClick={onClick}
-                currentIsAdmin={currentIsAdmin} isLoading={isLoading}
+                currentIsAdmin={currentIsAdmin} hasOtherAdmin={hasOtherAdmin} isLoading={isLoading}
             />
         ))}
         <Menu
@@ -122,8 +124,9 @@ const MemberDetails = (props) => {
             open={Boolean(anchor.el)}
             onClose={handleClose}
         >
-            <MenuItem>{menuText}</MenuItem>
-            <MenuItem style={{ color: 'red' }}>Ban</MenuItem>
+            {selectedIsCurrent && <MenuItem>Leave this group</MenuItem>}
+            {!selectedIsCurrent && <MenuItem>{menuText}</MenuItem>}
+            {!selectedIsCurrent && <MenuItem style={{ color: 'red' }}>Ban</MenuItem>}
         </Menu>
     </ExpansionPanelDetails>
 }

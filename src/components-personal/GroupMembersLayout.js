@@ -1,7 +1,9 @@
 import React from 'react';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import Icon from '@material-ui/core/Icon';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { makeStyles } from '@material-ui/core/styles';
@@ -70,7 +72,10 @@ const GroupMembersLayout = ({ members, isLoading }) => {
     return <ExpansionPanel className={classes.panel}>
         <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle} isLarge={isLarge}
             summaryClass={classes.summary} members={membersData} isLoading={isLoading} />
-        <MemberDetails members={members} isLoading={isLoading}/>
+        <MemberDetails members={members} isLoading={isLoading} />
+        <ExpansionPanelActions>
+            <Button color='primary'>Invite more</Button>
+        </ExpansionPanelActions>
     </ExpansionPanel>
 }
 

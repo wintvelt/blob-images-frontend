@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 
-import { useApiData } from '../../../../../../src/components-generic/DataProvider';
+import { useApiDataValue } from '../../../../../../src/data/apiData';
 import PrivatePage from '../../../../../../src/components-personal/PrivatePage';
 import AlbumCardLayout from '../../../../../../src/components-personal/AlbumCardLayout';
 import AlbumForm from '../../../../../../src/components-personal/AlbumForm';
@@ -26,7 +26,7 @@ const AlbumEditMain = () => {
     const albumId = router.query && router.query.albumid;
     const isNew = (albumId === 'new');
     const source = `/groups/${groupId}/albums/${albumId}`;
-    const albumData = useApiData('album', source);
+    const albumData = useApiDataValue('album', source);
     const album = albumData.data || {};
 
     return (

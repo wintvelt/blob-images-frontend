@@ -1,9 +1,9 @@
 import React from 'react';
 
-import DataProvider, { useApiData } from '../src/components-generic/DataProvider';
+import { useApiDataValue } from '../src/data/apiData';
 
 const Child = () => {
-    const data = useApiData('groups','/undefined');
+    const data = useApiDataValue('groups', '/undefined');
     return <pre>
         {JSON.stringify(data, null, 2)}
     </pre>
@@ -20,9 +20,7 @@ export default (props) => {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <DataProvider source={source}>
-                <Child />
-            </DataProvider>
+            <Child />
         </div>
     </main>
 }

@@ -1,6 +1,5 @@
 import { createContext, useContext } from 'react';
 import { Auth, API } from "aws-amplify";
-import { makeImageUrl } from './imageProvider';
 
 export const initialUser = {
     profile: false,

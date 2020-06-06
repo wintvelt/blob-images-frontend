@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { useApiData } from '../../src/components-generic/DataProvider';
+import { useApiDataValue } from '../../src/data/apiData';
 import GroupCardLayout from './GroupCardLayout';
 import CardList from '../components-generic/CardList';
 
 const GroupList = () => {
     const router = useRouter();
-    const groups = useApiData('groups', '/groups');
+    const groups = useApiDataValue('groups', '/groups');
     const groupsList = groups.data || [1, 2].map(id => ({ id, isLoading: true }));
     const groupAddProps = {
         text: 'new group',

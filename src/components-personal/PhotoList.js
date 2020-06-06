@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
-import { API } from 'aws-amplify';
 
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Typography from '@material-ui/core/Typography';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useSnackbar } from 'notistack';
 
 import Photo from './PhotoCard';
 import PhotoMenu from './PhotoListMenu';
-import { useApiData } from '../components-generic/DataProvider';
-import { useUser } from '../components-generic/UserContext';
+import { useApiData } from '../data/apiData';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -61,8 +56,8 @@ const PhotoList = (props) => {
         setSelected(newSelected);
     };
 
-    const { data } = useApiData(apiKey, source, true);
-    const photos = data || [1, 2, 3].map(id => ({ id, isLoading: true }));
+    const photoData = useApiData(apiKey, source);
+    const photos = photoData.data || [1, 2, 3].map(id => ({ id, isLoading: true }));
 
     const classes = useStyles();
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('md'));

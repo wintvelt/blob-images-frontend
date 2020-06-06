@@ -4,7 +4,7 @@ import { useSnackbar } from 'notistack';
 
 import Form from '../components-generic/Form';
 import { useRouter } from 'next/router';
-import { useApiData } from '../components-generic/DataProvider';
+import { useApiData } from '../data/apiData';
 
 const fieldConfig = {
     name: {
@@ -35,8 +35,8 @@ const GroupForm = ({ group }) => {
     const isNew = (groupId === 'new');
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
-    const groups = useApiData('groups', '/groups', true);
-    const { reloadData } = useApiData('group', `/groups/${groupId}`, true)
+    const groups = useApiData('groups', '/groups');
+    const { reloadData } = useApiData('group', `/groups/${groupId}`);
 
     const onSubmit = async (fields) => {
         setIsLoading(true);

@@ -5,7 +5,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 
-import { useApiData } from '../../../../src/components-generic/DataProvider';
+import { useApiDataValue } from '../../../../src/data/apiData';
 import PrivatePage from '../../../../src/components-personal/PrivatePage';
 import GroupCardLayout from '../../../../src/components-personal/GroupCardLayout';
 import GroupForm from '../../../../src/components-personal/GroupForm';
@@ -25,7 +25,7 @@ const GroupEditMain = () => {
     const groupId = router.query && router.query.id;
     const isNew = (groupId === 'new');
     const source = `/groups/${groupId}`;
-    const groupData = useApiData('group', source);
+    const groupData = useApiDataValue('group', source);
     const group = groupData.data || {};
 
     return (

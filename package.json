@@ -23,12 +23,12 @@
     "filepond-plugin-image-preview": "^4.6.2",
     "filepond-plugin-image-transform": "^3.7.3",
     "moment": "^2.25.3",
-    "next": "^9.3.4",
+    "next": "^9.4.4",
     "notistack": "^0.9.16",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-filepond": "^7.0.1",
-    "recoil": "0.0.8",
+    "recoil": "0.0.7",
     "serverless-next.js": "^1.11.3"
   },
   "devDependencies": {

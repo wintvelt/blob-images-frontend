@@ -3,7 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 
 import Link from '../components-generic/Link';
-import { useApiData } from './DataProvider';
+import { useApiDataValue } from '../data/apiData';
 
 const linkStyle = {
     position: 'absolute',
@@ -18,7 +18,7 @@ const linkStyle = {
 };
 
 const BackLink = ({ groupId, album, className }) => {
-    const groupData = useApiData('group', `/groups/${groupId}`);
+    const groupData = useApiDataValue('group', `/groups/${groupId}`);
     const group = groupData.data;
     const groupPath = '/personal/groups/[id]';
     const groupAs = groupPath.replace('[id]', groupId);

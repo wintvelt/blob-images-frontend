@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { RecoilRoot } from 'recoil';
 import { Auth } from 'aws-amplify';
 import { Amplify } from 'aws-amplify';
 import { amplifyConfig } from '../src/aws-amplify/config';
@@ -12,7 +13,6 @@ import theme from '../src/theme';
 import Nav from '../src/Nav';
 import Footer from '../src/Footer';
 import { UserContext, initialUser, getUserInfo } from '../src/components-generic/UserContext';
-import DataProvider from '../src/components-generic/DataProvider';
 
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
@@ -60,12 +60,12 @@ export default function MyApp(props) {
             <ThemeProvider theme={theme}>
                 <UserContext.Provider value={{ user, setUser }}>
                     <SnackbarProvider maxSnack={3}>
-                        <DataProvider>
+                        <RecoilRoot>
                             <CssBaseline />
                             <Nav />
                             <Component {...pageProps} />
                             <Footer />
-                        </DataProvider>
+                        </RecoilRoot>
                     </SnackbarProvider>
                 </UserContext.Provider>
             </ThemeProvider>

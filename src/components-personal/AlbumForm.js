@@ -4,7 +4,7 @@ import { useSnackbar } from 'notistack';
 
 import Form from '../components-generic/Form';
 import { useRouter } from 'next/router';
-import { useApiData } from '../components-generic/DataProvider';
+import { useApiData } from '../data/apiData';
 
 const fieldConfig = {
     name: {
@@ -32,8 +32,8 @@ const AlbumForm = ({ album }) => {
     const baseUrl = `/groups/${groupId}/albums`;
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
-    const albums = useApiData('albums', baseUrl, true);
-    const { reloadData } = useApiData('album', `${baseUrl}/${albumId}`, true)
+    const albums = useApiData('albums', baseUrl);
+    const { reloadData } = useApiData('album', `${baseUrl}/${albumId}`)
 
     const onSubmit = async (fields) => {
         setIsLoading(true);
@@ -91,4 +91,4 @@ const AlbumForm = ({ album }) => {
     )
 };
 
-export default AlbumForm
+export default AlbumForm;

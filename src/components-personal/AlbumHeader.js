@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import { useApiData } from '../../src/components-generic/DataProvider';
+import { useApiDataValue } from '../../src/data/apiData';
 import AlbumHeaderLayout from './AlbumHeaderLayout';
 
 const AlbumHeader = () => {
@@ -9,7 +9,7 @@ const AlbumHeader = () => {
     const groupId = router.query && router.query.id;
     const albumId = router.query && router.query.albumid;
     const source = `/groups/${groupId}/albums/${albumId}`;
-    const albumData = useApiData('album',source);
+    const albumData = useApiDataValue('album',source);
     return <AlbumHeaderLayout album={albumData}/>
 }
 

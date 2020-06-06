@@ -5,7 +5,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useSnackbar } from 'notistack';
 
-import { useApiData } from '../components-generic/DataProvider';
+import { useApiData } from '../data/apiData';
 import { useUser } from '../components-generic/UserContext';
 
 const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
@@ -13,7 +13,7 @@ const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
     const { user, saveProfile } = useUser(true);
     const userIsOwner = (user.profile && anchor.photo && user.profile.id === anchor.photo.SK.slice(1));
     const { enqueueSnackbar } = useSnackbar();
-    const { reloadData } = useApiData(apiKey, source, true)
+    const { reloadData } = useApiData(apiKey, source);
     const onSetProfilePic = async () => {
         const name = user.profile.name;
         try {

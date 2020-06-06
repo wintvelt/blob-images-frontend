@@ -5,7 +5,7 @@ import { API } from 'aws-amplify';
 import AlbumHeader from '../../../../../src/components-personal/AlbumHeader';
 import PhotoList from '../../../../../src/components-personal/PhotoList';
 import PrivatePage from '../../../../../src/components-personal/PrivatePage';
-import { useApiData } from '../../../../../src/components-generic/DataProvider';
+import { useApiData } from '../../../../../src/data/apiData';
 import Upload from '../../../../../src/components-generic/Upload';
 
 const AlbumMain = () => {
@@ -14,9 +14,9 @@ const AlbumMain = () => {
     const albumId = router.query.albumid;
     const pond = useRef();
     const albumUrl = `/groups/${groupId}/albums/${albumId}`;
-    const album = useApiData('album', albumUrl, true);
+    const album = useApiData('album', albumUrl);
     const albumData = album.data;
-    const { reloadData } = useApiData('albumPhotos', albumUrl + '/photos', true)
+    const { reloadData } = useApiData('albumPhotos', albumUrl + '/photos')
     const [files, setFiles] = useState([]);
 
     const onAddFile = (_, file) => {

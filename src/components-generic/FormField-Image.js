@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core';
 import { makeImageUrl } from './imageProvider';
 import ImageUpload from './FormField-Image-Upload';
 import PhotoPicker from './FormField-Image-Photos';
-import { useApiData } from './DataProvider';
+import { useApiDataValue } from '../data/apiData';
 
 
 const useStyles = makeStyles(theme => ({
@@ -66,14 +66,14 @@ const ImageField = (props) => {
     const { image, owner, album } = value || {};
     const { name } = owner || {};
     const classes = useStyles();
-    const myPhotos = useApiData('myPhotos', '/photos');
+    const myPhotos = useApiDataValue('myPhotos', '/photos');
     const hasMyPhotos = (myPhotos.data && myPhotos.data.length > 0);
     const router = useRouter();
     const groupId = router.query.id;
     const albumId = router.query.albumid;
-    const groupPhotos = useApiData(`groupPhotos`, `/groups/${groupId}/photos`);
+    const groupPhotos = useApiDataValue(`groupPhotos`, `/groups/${groupId}/photos`);
     const hasGroupPhotos = (groupPhotos.data && groupPhotos.data.length > 0);
-    const albumPhotos = useApiData(`albumPhotos`, `/groups/${groupId}/albums/${albumId}/photos`);
+    const albumPhotos = useApiDataValue(`albumPhotos`, `/groups/${groupId}/albums/${albumId}/photos`);
     const hasAlbumPhotos = (albumPhotos.data && albumPhotos.data.length > 0);
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;

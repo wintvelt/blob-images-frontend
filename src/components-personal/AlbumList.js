@@ -1,14 +1,14 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import { useApiData } from '../../src/components-generic/DataProvider';
+import { useApiDataValue } from '../../src/data/apiData';
 import AlbumCardLayout from './AlbumCardLayout';
 import CardList from '../components-generic/CardList';
 
 const AlbumList = () => {
     const router = useRouter();
     const groupId = router.query.id;
-    const albums = useApiData('albums', `/groups/${groupId}/albums`);
+    const albums = useApiDataValue('albums', `/groups/${groupId}/albums`);
     const albumsList = albums.data || [1, 2, 3].map(id => ({ id, isLoading: true }));
     const albumsWithEdit = (albums.isLoading) ?
         albumsList

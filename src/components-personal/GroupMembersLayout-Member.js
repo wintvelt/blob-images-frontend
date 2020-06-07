@@ -38,6 +38,13 @@ const useStyles = makeStyles(theme => ({
         left: theme.spacing(3),
         fontSize: '18px',
         color: theme.palette.text.primary,
+    },
+    badgeInvite: {
+        position: 'absolute',
+        top: theme.spacing(1),
+        left: theme.spacing(3),
+        fontSize: '18px',
+        color: theme.palette.text.primary,
     }
 }));
 
@@ -47,10 +54,11 @@ const widthStyle = (width) => ({
     marginLeft: '8px',
 });
 
-const MemberLine = ({ member, currentIsAdmin, hasOtherAdmin, onClick, isLoading }) => {
+const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick, isLoading }) => {
     const user = member.user || {};
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const isAdmin = (member.role === 'admin');
+    const isInvite = (member.status === 'invite');
     const classes = useStyles();
 
     const handleClick = (e) => {
@@ -64,7 +72,10 @@ const MemberLine = ({ member, currentIsAdmin, hasOtherAdmin, onClick, isLoading 
             className={classes.avatar} isLoading={isLoading}>
             {(!user.image && initials(user.name))}
         </AvatarSkeleton>
-        {(!isAdmin) && <Tooltip title='guest access' aria-label='guest' className={classes.badge}>
+        {(isInvite) && <Tooltip title='invited' aria-label='invited' className={classes.badgeInvite}>
+            <Icon>mail</Icon>
+        </Tooltip>}
+        {(!isAdmin) && <Tooltip title='guest access' aria-label='guest access' className={classes.badge}>
             <Icon>visibility</Icon>
         </Tooltip>}
         <Typography className={classes.name}>
@@ -78,10 +89,10 @@ const MemberLine = ({ member, currentIsAdmin, hasOtherAdmin, onClick, isLoading 
             {user.email}
         </Typography>}
         {isLarge && <Typography variant='caption' style={widthStyle(120)}>
-            {'since ' + member.createdAt}
+            {(member.status === 'invite' ? 'invited ' : 'since ') + member.createdAt}
         </Typography>}
         <div style={widthStyle(48)}>
-            {currentIsAdmin && hasOtherAdmin && <IconButton color='primary' disabled={!currentIsAdmin}
+            {((currentIsAdmin && hasOtherAdmin) || !isCurrent) && <IconButton color='primary' disabled={!currentIsAdmin}
                 onClick={handleClick}>
                 <Icon>more_horiz</Icon>
             </IconButton>}
@@ -95,24 +106,32 @@ const MemberDetails = (props) => {
     const currentUser = useUser();
     const { profile } = currentUser;
     const currentIsAdmin = !!members.find(member => member.PK.slice(3) === profile.id);
-    const hasOtherAdmin = !!members.find(member => (member.PK.slice(3) !== profile.id && member.role === 'admin'));
+    const hasOtherAdmin = !!members.find(member => (
+        member.PK.slice(3) !== profile.id &&
+        member.role === 'admin' &&
+        member.status !== 'invite'
+    ));
     const [anchor, setAnchor] = useState({ el: null });
 
     const selectedIsCurrent = anchor.member && (anchor.member.PK.slice(3) === profile.id);
     const selectedIsAdmin = anchor.member && (anchor.member.role === 'admin');
-    const menuText = (selectedIsAdmin)? 'Make guest' : 'Make admin';
+    const selectedIsInvite = anchor.member && (anchor.member.status === 'invite');
+    const roleText = (selectedIsAdmin) ? 'Make guest' : 'Make admin';
+    const redText = (selectedIsInvite) ? 'Uninvite' : 'Ban';
+    const open = Boolean(anchor.el);
 
     const onClick = (e, member) => {
         setAnchor({ el: e.currentTarget, member });
     };
 
-    const handleClose = () => setAnchor({ el: null });
+    const handleClose = () => setAnchor({ ...anchor, el: null });
 
     return <ExpansionPanelDetails style={{ flexDirection: 'column', padding: '8px 4px 16px 16px' }}>
         {/* <HeaderLine /> */}
         {members.map(member => (
             <MemberLine key={member.PK || 'header'} member={member} onClick={onClick}
                 currentIsAdmin={currentIsAdmin} hasOtherAdmin={hasOtherAdmin} isLoading={isLoading}
+                isCurrent={(member.PK.slice(3) === profile.id)}
             />
         ))}
         <Menu
@@ -121,12 +140,12 @@ const MemberDetails = (props) => {
             anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
             transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             keepMounted
-            open={Boolean(anchor.el)}
+            open={open}
             onClose={handleClose}
         >
             {selectedIsCurrent && <MenuItem>Leave this group</MenuItem>}
-            {!selectedIsCurrent && <MenuItem>{menuText}</MenuItem>}
-            {!selectedIsCurrent && <MenuItem style={{ color: 'red' }}>Ban</MenuItem>}
+            {!selectedIsCurrent && !selectedIsInvite && <MenuItem>{roleText}</MenuItem>}
+            {!selectedIsCurrent && <MenuItem style={{ color: 'red' }}>{redText}</MenuItem>}
         </Menu>
     </ExpansionPanelDetails>
 }

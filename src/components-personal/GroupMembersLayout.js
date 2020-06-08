@@ -54,7 +54,9 @@ const MemberSummary = (props) => {
             {members.map((member, i) => (
                 <AvatarSkeleton key={member.name || i} alt={member.name} src={member.avatar}
                     className={avatarClass} isLoading={isLoading}>
-                    {(!member.image && initials(member.name))}
+                    {(!member.image) &&
+                        <span style={{ paddingLeft: '4px' }}>{initials(member.name)}</span>
+                    }
                 </AvatarSkeleton>
             ))}
         </AvatarGroup>

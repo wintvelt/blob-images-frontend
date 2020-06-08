@@ -14,7 +14,8 @@ const linkStyle = {
     alignItems: 'center',
     color: 'inherit',
     width: 'fit-content',
-    marginBottom: '24px'
+    marginBottom: '24px',
+    zIndex: 1,
 };
 
 const BackLink = ({ groupId, album, className }) => {

@@ -159,8 +159,7 @@ const CheckboxField = (props) => {
     const { fieldName, field, onChange, helperText, error } = props;
     return <>
         <FormControlLabel
-            control={<Checkbox name={fieldName}
-                onChange={onChange} checked={!!field.value} />}
+            control={<Checkbox name={fieldName} color='primary' onChange={onChange} checked={!!field.value} />}
             label={field.label}
         />
         {helperText && helperText}
@@ -207,6 +206,7 @@ export const Field = (props) => {
                     </>
                     : <>
                         <TextField variant='outlined' size='small' margin='normal'
+                            style={{ width: '100%' }}
                             type={field.type}
                             label={field.label} autoComplete={field.autoComplete}
                             multiline={field.multiline || undefined}

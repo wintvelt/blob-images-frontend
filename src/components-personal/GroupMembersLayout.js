@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
@@ -10,8 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 
 import MemberDetails from './GroupMembersLayout-Member';
+import Link from '../components-generic/Link';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
-import { initials } from '../../src/components-generic/helpers';
+import { initials } from '../components-generic/helpers';
+import { useUser } from '../components-generic/UserContext';
 
 const useStyles = makeStyles(theme => ({
     skeleton: {
@@ -70,14 +73,22 @@ const GroupMembersLayout = ({ members, isLoading }) => {
     const membersData = (isLoading) ?
         [{}, {}, {}]
         : members.map(member => ({ ...member.user, role: member.role }));
+    const currentUser = useUser();
+    const { profile } = currentUser;
+    const currentIsAdmin = !!members.find(member => member.PK.slice(3) === profile.id);
+    const router = useRouter();
+    const groupId = router.query && router.query.id;
 
     return <ExpansionPanel className={classes.panel}>
         <MemberSummary avatarClass={classes.avatar} panelTitleClass={classes.panelTitle} isLarge={isLarge}
             summaryClass={classes.summary} members={membersData} isLoading={isLoading} />
         <MemberDetails members={members} isLoading={isLoading} />
-        <ExpansionPanelActions>
-            <Button color='primary'>Invite more</Button>
-        </ExpansionPanelActions>
+        {(currentIsAdmin) && <ExpansionPanelActions>
+            <Link href='/personal/groups/[id]/invite'
+                as={`/personal/groups/${groupId}/invite`}>
+                <Button color='primary'>Invite more</Button>
+            </Link>
+        </ExpansionPanelActions>}
     </ExpansionPanel>
 }
 

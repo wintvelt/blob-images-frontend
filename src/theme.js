@@ -37,6 +37,9 @@ const theme = createMuiTheme({
             paper: {
                 // minWidth: '50%',
             }
+        },
+        MuiFormControlLabel: {
+            label: { lineHeight: '12px' }
         }
     }
 });

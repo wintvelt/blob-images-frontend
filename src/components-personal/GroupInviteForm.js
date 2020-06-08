@@ -119,7 +119,9 @@ const GroupInviteForm = ({ group }) => {
     const [message, setMessage] = useState('');
 
     const onChange = (idx, fieldName) => (e) => {
-        const newValue = (fieldName === 'guestOnly') ? e.target.checked : e.target.value;
+        const newValue = (fieldName === 'guestOnly') ? e.target.checked
+            : (fieldName === 'email') ? e.target.value.toLowerCase()
+                : e.target.value;
         const newInvitee = { ...invitees[idx], [fieldName]: newValue };
         setInvitees({ ...invitees, [idx]: newInvitee });
     };
@@ -160,11 +162,22 @@ const GroupInviteForm = ({ group }) => {
         isValidated = isValidated && !!message;
         if (isValidated) {
             const cleanInviteCount = Object.keys(cleanInvitees).length;
-            enqueueSnackbar(
-                `Invites sent to ${cleanInviteCount} recipient${(cleanInviteCount !== 1) ? 's' : ''}`,
-                { variant: 'success' }
-            );
             // send invites to API
+            try {
+                await Promise.all(Object.keys(invitees).map(key => {
+                    const invitee = invitees[key];
+                    const role = (invitee.guestOnly)? 'guest' : 'admin';
+                    return API.post('blob-images', `/groups/${groupId}/invite`, {
+                        body: { toName: invitee.name, toEmail: invitee.email, message, role }
+                    });
+                }));
+                enqueueSnackbar(
+                    `Invites sent to ${cleanInviteCount} recipient${(cleanInviteCount !== 1) ? 's' : ''}`,
+                    { variant: 'success' }
+                );
+            } catch (error) {
+                enqueueSnackbar('Oops, could not send invites', { variant: 'error' })
+            }
             setInvitees({ 0: initialInvitee(0, memberEmails) });
             setShowValidation(false);
             setMessage('');
@@ -172,7 +185,6 @@ const GroupInviteForm = ({ group }) => {
             setInvitees(cleanInvitees);
             setShowValidation(true);
         }
-
         setIsLoading(false);
     }
     const title = 'Invite new members';

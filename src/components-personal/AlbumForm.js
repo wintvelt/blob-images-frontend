@@ -28,6 +28,7 @@ const AlbumForm = ({ album }) => {
     const router = useRouter();
     const groupId = router.query && router.query.id;
     const albumId = router.query && router.query.albumid;
+    const isNewGroupFlow = router.query && router.query.new;
     const isNew = (albumId === 'new');
     const baseUrl = `/groups/${groupId}/albums`;
     const { enqueueSnackbar } = useSnackbar();
@@ -53,9 +54,15 @@ const AlbumForm = ({ album }) => {
                 : 'changes were saved';
             enqueueSnackbar(message, { variant: 'success' });
             if (isNew) {
-                router.push(
-                    '/personal/groups/[id]/albums/[albumid]/edit', 
-                    `/personal/groups/${groupId}/albums/${newAlbumId}/edit`)
+                if (isNewGroupFlow) {
+                    router.push(
+                        '/personal/groups/[id]/invite', 
+                        `/personal/groups/${groupId}/invite`)    
+                } else {
+                    router.push(
+                        '/personal/groups/[id]/albums/[albumid]/edit',
+                        `/personal/groups/${groupId}/albums/${newAlbumId}/edit`)
+                }
             } else {
                 reloadData();
             };

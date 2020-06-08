@@ -56,7 +56,9 @@ const GroupForm = ({ group }) => {
                 : 'changes were saved';
             enqueueSnackbar(message, { variant: 'success' });
             if (isNew) {
-                router.push('/personal/groups/[id]/edit', `/personal/groups/${newGroupId}/edit`)
+                router.push(
+                    '/personal/groups/[id]/albums/[albumid]/edit?new=true', 
+                    `/personal/groups/${newGroupId}/albums/new/edit?new=true`)
             } else {
                 reloadData();
             };

@@ -32,7 +32,7 @@ const AlbumEditMain = () => {
     return (
         <main>
             <Toolbar />
-            {album && <BackLink groupId={groupId} album={album}/>}
+            {album && <BackLink groupId={groupId} album={album} />}
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
                     <AlbumCardLayout {...album} withEdit={false} isLoading={albumData.isLoading} />

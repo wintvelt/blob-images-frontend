@@ -103,7 +103,7 @@ const InviteeLine = ({ invitee, onChange, onRemove, showValidation, showRemove, 
     </Grid>
 };
 
-const GroupInviteForm = ({ group }) => {
+const GroupInviteForm = ({ title }) => {
     const classes = useStyles()
     const router = useRouter();
     const groupId = router.query && router.query.id;
@@ -187,7 +187,6 @@ const GroupInviteForm = ({ group }) => {
         }
         setIsLoading(false);
     }
-    const title = 'Invite new members';
     const submitText = 'Send invite';
 
     return (

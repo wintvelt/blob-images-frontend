@@ -23,7 +23,6 @@ const GroupInviteMain = () => {
     const router = useRouter();
     const classes = useStyles();
     const groupId = router.query && router.query.id;
-    const isNew = (groupId === 'new');
     const source = `/groups/${groupId}`;
     const groupData = useApiDataValue('group', source);
     const group = groupData.data || {};
@@ -31,16 +30,15 @@ const GroupInviteMain = () => {
     return (
         <main>
             <Toolbar />
-            {group && !isNew && <BackLink groupId={groupId} />}
+            <BackLink groupId={groupId} />
             <Grid container className={classes.container}>
-                {(!isNew) && <Grid item md={3} xs={12}>
+                <Grid item md={3} xs={12}>
                     <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading} />
-                </Grid>}
-                <Grid item md={(isNew) ? 3 : 1} />
-                <Grid item md={(isNew) ? 6 : 8} xs={12}>
-                    <GroupInviteForm group={group} />
                 </Grid>
-                {(isNew) && <Grid item md={3} />}
+                <Grid item md={1} />
+                <Grid item md={8} xs={12}>
+                    <GroupInviteForm title='Invite new members' />
+                </Grid>
             </Grid>
         </main>
     )

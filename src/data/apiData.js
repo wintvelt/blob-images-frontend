@@ -21,6 +21,7 @@ export const useApiData = (apiKey, source) => {
                 setData({ data: newApiData, source, timeStamp: Date.now() });
             };
         } catch (error) {
+            console.log(error.response?.data?.error);
             setData({ isError: true, error });
         }
     }

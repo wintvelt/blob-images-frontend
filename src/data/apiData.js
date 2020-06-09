@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { atom, useRecoilState } from 'recoil';
-import { API } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 
 const apiData = (apiKey) => atom({
     key: apiKey,
@@ -11,11 +11,11 @@ const expirationMs = 3000;
 
 export const useApiData = (apiKey, source) => {
     const [data, setData] = useRecoilState(apiData(apiKey));
-    const isEmptySource = source.includes('/new') || source.includes('/undefined');
-    if (isEmptySource) return { reloadData: () => { } };
+    const isEmptySource = !source || source.includes('/new') || source.includes('/undefined');
 
     const loadData = async () => {
         try {
+            await Auth.currentCredentials();
             const newApiData = await API.get('blob-images', source);
             if (!data.data || JSON.stringify(data.data) !== JSON.stringify(newApiData)) {
                 setData({ data: newApiData, source, timeStamp: Date.now() });
@@ -25,15 +25,17 @@ export const useApiData = (apiKey, source) => {
         }
     }
     useEffect(() => {
-        if ((!data.source || data.source !== source)
-            || (!data.timeStamp || (Date.now() - data.timeStamp > expirationMs))) {
+        if (!isEmptySource && ((!data.source || data.source !== source)
+            || (!data.timeStamp || (Date.now() - data.timeStamp > expirationMs)))) {
             loadData();
         }
     }, [source]);
-    return {
-        ...data,
-        reloadData: loadData
-    };
+    return (isEmptySource) ?
+        { reloadData: () => { } }
+        : {
+            ...data,
+            reloadData: loadData
+        };
 };
 
 export const useApiDataValue = (apiKey, source) => {

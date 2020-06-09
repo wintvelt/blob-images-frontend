@@ -34,7 +34,7 @@ export default function MyApp(props) {
 
     async function onLoad() {
         try {
-            await Auth.currentSession();
+            // await Auth.currentSession();
             const user = await getUserInfo();
             setUser((oldUser) => ({
                 ...oldUser,
@@ -44,10 +44,7 @@ export default function MyApp(props) {
             }));
         }
         catch (e) {
-            if (e !== 'No current user') {
-                alert(JSON.stringify(e));
-                setUser((oldUser) => ({ ...oldUser, isAuthenticating: false }));
-            }
+            setUser((oldUser) => ({ ...oldUser, isAuthenticating: false }));
         }
     }
 

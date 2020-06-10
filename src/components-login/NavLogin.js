@@ -64,6 +64,7 @@ export default function NavLogin(props) {
     const { user, logout } = useUser(true);
     const router = useRouter();
     const name = user.profile.name;
+    const email = user.profile.email;
     const avatar = user.profile.avatar;
     const avatarSrc = makeImageUrl(avatar, 40, 40);
     const [menuAnchor, setMenuAnchor] = useState(null);
@@ -95,7 +96,7 @@ export default function NavLogin(props) {
                         >
                             <Avatar className={classes.avatar}
                                 alt={'user name'} src={avatarSrc} />
-                            <Typography noWrap>{name}</Typography>
+                            <Typography noWrap>{name || email}</Typography>
                         </Button>
                     </Hidden>
                     <Hidden smDown>

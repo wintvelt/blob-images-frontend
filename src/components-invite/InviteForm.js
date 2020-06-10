@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -27,9 +27,8 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const InviteForm = ({ invite, isLoading, profile }) => {
+const InviteForm = ({ invite, isLoading, isSaving, onAccept, onDecline, profile }) => {
     const classes = useStyles();
-    const [isSaving, setIsSaving] = useState(false);
     const isWaiting = isLoading || isSaving;
     const { invitation, group } = invite || {};
     const { from } = invitation || {};
@@ -40,16 +39,12 @@ const InviteForm = ({ invite, isLoading, profile }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        setIsSaving(true);
-        alert('saving');
-        setIsSaving(false);
+        onAccept();
     };
 
-    const onDecline = (e) => {
+    const handleDecline = (e) => {
         e.preventDefault();
-        setIsSaving(true);
-        alert('declining');
-        setIsSaving(false);
+        onDecline();
     };
 
     const submitButtonContent = isWaiting ? <CircularProgress size='1.5rem' color='secondary' />
@@ -103,7 +98,7 @@ const InviteForm = ({ invite, isLoading, profile }) => {
                 </Button>
                 {!isAlreadyMember && <Button variant='outlined' className={classes.button}
                     disabled={isWaiting}
-                    onClick={onSubmit}>
+                    onClick={handleDecline}>
                     {declineButtonContent}
                 </Button>}
             </Paper>

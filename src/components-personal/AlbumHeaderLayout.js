@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
     groupMedia: {
         height: '240px',
         background: 'linear-gradient(308deg, rgba(70,52,78,1) 14%, rgba(90,85,96,1) 43%, rgba(157,141,143,1) 77%)',
+        backgroundSize: 'cover',
         // position: 'absolute',
         // top: 0,
         // height: '100%',

@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         width: '100%',
         zIndex: 0,
+        backgroundSize: 'cover',
     },
     edit: {
         backgroundColor: 'rgba(0,0,0,.2)',

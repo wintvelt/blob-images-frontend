@@ -92,7 +92,8 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick,
             {(member.status === 'invite' ? 'invited ' : 'since ') + member.createdAt}
         </Typography>}
         <div style={widthStyle(48)}>
-            {((currentIsAdmin && hasOtherAdmin) || !isCurrent) && <IconButton color='primary' disabled={!currentIsAdmin}
+            {((currentIsAdmin && hasOtherAdmin) || isCurrent) && 
+            <IconButton color='primary' disabled={!currentIsAdmin && !isCurrent}
                 onClick={handleClick}>
                 <Icon>more_horiz</Icon>
             </IconButton>}
@@ -105,7 +106,11 @@ const MemberDetails = (props) => {
     const { members, isLoading } = props;
     const currentUser = useUser();
     const { profile } = currentUser;
-    const currentIsAdmin = !!members.find(member => member.PK.slice(3) === profile.id);
+    const currentIsAdmin = !!members.find(member => (
+        member.PK.slice(3) === profile.id &&
+        member.role === 'admin' &&
+        member.status !== 'invite'
+    ));
     const hasOtherAdmin = !!members.find(member => (
         member.PK.slice(3) !== profile.id &&
         member.role === 'admin' &&

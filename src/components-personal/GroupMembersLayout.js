@@ -64,7 +64,6 @@ const MemberSummary = (props) => {
             ))}
         </AvatarGroup>
     </ExpansionPanelSummary>
-
 }
 
 const GroupMembersLayout = ({ members, isLoading }) => {

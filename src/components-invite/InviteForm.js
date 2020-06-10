@@ -1,6 +1,4 @@
-import React, { useContext, useState } from 'react';
-import { UserContext } from '../components-generic/UserContext';
-import { Auth } from "aws-amplify";
+import React, { useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -9,7 +7,8 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from '../components-generic/Link';
-import { Field, useFields, validateForm } from '../components-generic/FormField';
+import { useUser } from '../components-generic/UserContext';
+import { expireDate } from '../components-generic/helpers';
 
 const useStyles = makeStyles(theme => ({
     inviteForm: {
@@ -31,92 +30,72 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const fieldConfig = {
-    message: {
-        autoComplete: 'message',
-        type: 'text',
-        label: 'your message (optional)',
-        multiline: true,
-        rows: 3,
-        rowsMax: 8
-    }
-};
-
-
-const InviteForm = (props) => {
-    const { id, invitorName, inviteeId, isToEmail, isNew } = props;
-    const userContext = useContext(UserContext);
-    const { user } = userContext;
+const InviteForm = ({ invite, isLoading }) => {
+    const user = useUser();
+    const { profile } = user;
     const classes = useStyles();
-    const [fields, setFields] = useFields(fieldConfig);
-    const [saveFailed, setSaveFailed] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const isWaiting = isLoading || isSaving;
+    const { invitation } = invite || {};
+    const { group } = invite || {};
+    const { from } = invitation || {};
 
-    const onChange = (fieldName) => (e) => {
-        setFields(fieldName)(e);
-    }
-
-    const onSubmit = async (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
-        if (!validateForm(fields)) {
-            setFields('showValidation')(true);
-        } else {
-            setIsLoading(true);
-            try {
-                const { email, password } = fields;
-                const user = await Auth.signIn(email.value, password.value);
-                userContext.setUser({ user: user.attributes });
-                setIsLoading(false);
-            } catch (e) {
-                setLoginFailed(true);
-            }
-        }
-    }
+        setIsSaving(true);
+        alert('saving');
+        setIsSaving(false);
+    };
 
-    const submitButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
+    const onDecline = (e) => {
+        e.preventDefault();
+        setIsSaving(true);
+        alert('declining');
+        setIsSaving(false);
+    };
+
+    const submitButtonContent = isWaiting ? <CircularProgress size='1.5rem' color='secondary' />
         : 'Accept invite';
-    const declineButtonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
+    const declineButtonContent = isWaiting ? <CircularProgress size='1.5rem' color='secondary' />
         : 'Respectfully decline';
-    const title = (isNew) ? 'Invite a friend' : 'Will you join?';
-    const subtitle = (isNew) ? 'Best to personalize your invite'
-        : `Send a response to ${invitorName}` + ((isToEmail && user && user.email !== inviteeId)?
-            `. NB: this invite was sent to ${inviteeId}. It would be decent only to accept if this is you`
-            : '');
 
     return (
-        <form name='login-form' noValidate>
+        <form name='invite-accept-form' noValidate>
             <Paper className={classes.inviteForm}>
-                <Typography component="h1" variant="h4" color="inherit"
-                    align='left' gutterBottom>
-                    {title}
-                </Typography>
-                <Typography paragraph variant='subtitle1'>
-                    {subtitle}
-                </Typography>
-                {Object.keys(fieldConfig).map(fieldName =>
-                    <Field key={fieldName}
-                        fieldName={fieldName}
-                        field={fields[fieldName]}
-                        onChange={onChange(fieldName)}
-                        showValidation={fields.showValidation} />
-                )}
-                {saveFailed && <Typography variant='body2' color='error' >
-                    Hmm, we could not log you in. <br />Did you{' '}
-                    <Link href='#' color='textPrimary'>
-                        Forget your password
-                        </Link>
-                        ?
-                    </Typography>}
+                <div style={{ textAlign: 'center' }}>
+                    <Typography component="h1" variant="h4" color="inherit"
+                        align='center' gutterBottom>
+                        You are invited!
+                    </Typography>
+                    <Typography variant='h5' align='center'>
+                        {from && from.name}{' '}
+                        cordially invites
+                        {' '}{invite?.user?.name}
+                    </Typography>
+                    <Typography variant='h5' align='center' gutterBottom>
+                        to join "{group && group.name}"
+                    </Typography>
+                    <img src='/img/invite_divider.png' alt='divider' width={64} />
+                    {invitation && invitation.message.split('\n').map((line, i) => (
+                        <Typography key={i} variant='body1' align='center'>
+                            {line || '\u00A0'}
+                        </Typography>
+                    ))}
+                    <img src='/img/invite_divider.png' alt='divider' width={64} />
+                    <em><Typography variant='body1' align='center' gutterBottom style={{ marginTop: '16px' }}>
+                        This invite is valid until{' '}{expireDate(invite.createdAt)}
+                    </Typography></em>
+                </div>
                 <Button type='submit' variant='contained' color='secondary' className={classes.submit}
-                    disabled={isLoading}
+                    disabled={isWaiting}
                     onClick={onSubmit}>
                     {submitButtonContent}
                 </Button>
-                {!isNew && <Button variant='outlined' className={classes.declineButton}
-                    disabled={isLoading}
+                <Button variant='outlined' className={classes.declineButton}
+                    disabled={isWaiting}
                     onClick={onSubmit}>
                     {declineButtonContent}
-                </Button>}
+                </Button>
             </Paper>
         </form>
     )

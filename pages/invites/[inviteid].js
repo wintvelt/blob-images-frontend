@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core';
 
 import { useApiDataValue } from '../../src/data/apiData';
 import GroupCardLayout from '../../src/components-personal/GroupCardLayout';
-import GroupInviteForm from '../../src/components-personal/GroupInviteForm';
+import InviteForm from '../../src/components-invite/InviteForm';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -25,7 +25,7 @@ const InvitePage = () => {
     const inviteData = useApiDataValue('invite', source);
     const invite = inviteData.data || {};
     const group = invite.group;
-    if (inviteData.error) console.log(inviteData.error);
+    if (inviteData.isError) console.log(inviteData.error);
 
     return (
         <main>
@@ -36,7 +36,7 @@ const InvitePage = () => {
                 </Grid>
                 <Grid item md={1} />
                 <Grid item md={8} xs={12}>
-                    {/* <GroupInviteForm title='Invite new members' /> */}
+                    <InviteForm invite={invite} isLoading={inviteData.isLoading} />
                     <pre>{JSON.stringify(invite, null, 2)}</pre>
                 </Grid>
             </Grid>

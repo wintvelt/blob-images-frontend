@@ -132,11 +132,10 @@ const SignupForm = (props) => {
         }
     }
 
-    const FormTitle = title || (() => (
-        <Typography component="h1" variant="h4"
-            align='center' gutterBottom>
-            Sign up today!
-        </Typography>));
+    const FormTitle = () => <Typography component="h1" variant="h4"
+        align='center' gutterBottom>
+        {title || 'Sign up today!'}
+    </Typography>;
 
     const formSubtitle = subtitle || 'Enter your info, then invite friends and family, ' +
         'and share your first photos!';

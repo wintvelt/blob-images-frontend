@@ -1,13 +1,12 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../components-generic/UserContext';
+import React from 'react';
+import { useUser } from '../components-generic/UserContext';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hero from '../components-home/Hero';
 import LoginForm from '../components-login/LoginForm';
 
 const PrivatePage = (props) => {
-    const userContext = useContext(UserContext);
-    const { user } = userContext;
+    const user = useUser();
     return (!user.isAuthenticated) ?
         <main>
             <Hero url='/img/delay.jpg'>

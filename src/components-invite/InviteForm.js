@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { expireDate } from '../components-generic/helpers';
-import { useApiDataValue } from '../data/apiData';
 import { TextSkeleton } from '../components-generic/Skeleton';
 
 const useStyles = makeStyles(theme => ({
@@ -27,13 +26,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const InviteForm = ({ invite, isLoading, isSaving, onAccept, onDecline, profile }) => {
+const InviteForm = ({ invite, isLoading, isSaving, onAccept, onDecline, profile, isAlreadyMember }) => {
     const classes = useStyles();
     const isWaiting = isLoading || isSaving;
     const { invitation, group } = invite || {};
     const { from } = invitation || {};
-    const groupData = useApiDataValue('group', `/groups/${group?.id}`);
-    const isAlreadyMember = (!groupData.isLoading && !groupData.isError);
     const toEmail = invite?.user?.email;
     const isToDifferentEmail = profile.email && profile.email !== toEmail;
 

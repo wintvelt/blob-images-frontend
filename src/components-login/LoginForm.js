@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Link from '../components-generic/Link';
 import { Field, useFields, validateForm } from '../components-generic/FormField';
-import { useUser, getUserInfo } from '../components-generic/UserContext';
+import { useUser } from '../components-generic/UserContext';
 
 const useStyles = makeStyles(theme => ({
     loginForm: {
@@ -65,7 +65,7 @@ const fieldConfig = {
 
 
 const LoginForm = (props) => {
-    const { title, onSignup } = props;
+    const { title, TitleComponent, onSignup, onLogin, redirect } = props;
     const user = useUser(true);
     const router = useRouter();
     const classes = useStyles();
@@ -85,7 +85,8 @@ const LoginForm = (props) => {
             try {
                 const { email, password } = fields;
                 await user.login(email.value, password.value);
-                if (props.redirect) router.push(props.redirect);
+                if (redirect) router.push(props.redirect);
+                if (onLogin) onLogin();
             } catch (e) {
                 console.log(e);
                 setLoading({
@@ -131,10 +132,11 @@ const LoginForm = (props) => {
     return (
         <form name='login-form' noValidate>
             <Paper className={classes.loginForm}>
-                <Typography component="h1" variant="h4"
-                    align='center' gutterBottom>
-                    {title || 'Welcome back!'}
-                </Typography>
+                {TitleComponent ||
+                    <Typography component="h1" variant="h4"
+                        align='center' gutterBottom>
+                        {title || 'Welcome back!'}
+                    </Typography>}
                 <Typography paragraph variant='subtitle1'>
                     Please log in with your email and password
                 </Typography>

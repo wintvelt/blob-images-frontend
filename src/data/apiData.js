@@ -18,11 +18,11 @@ export const useApiData = (apiKey, source) => {
             await Auth.currentCredentials();
             const newApiData = await API.get('blob-images', source);
             if (!data.data || JSON.stringify(data.data) !== JSON.stringify(newApiData)) {
-                setData({ data: newApiData, source, timeStamp: Date.now() });
+                setData({ data: newApiData, source, timeStamp: Date.now(), isLoading: false });
             };
         } catch (error) {
             console.log(error.response?.data?.error);
-            setData({ isError: true, error });
+            setData({ isError: true, error, isLoading: false });
         }
     }
     useEffect(() => {
@@ -32,7 +32,7 @@ export const useApiData = (apiKey, source) => {
         }
     }, [source]);
     return (isEmptySource) ?
-        { reloadData: () => { } }
+        { isLoading: !(source.includes('/new')), reloadData: () => { } }
         : {
             ...data,
             reloadData: loadData
@@ -43,6 +43,3 @@ export const useApiDataValue = (apiKey, source) => {
     const { reloadData, ...data } = useApiData(apiKey, source);
     return data;
 };
-
-
-

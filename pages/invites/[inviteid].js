@@ -8,6 +8,9 @@ import { makeStyles } from '@material-ui/core';
 import { useApiDataValue } from '../../src/data/apiData';
 import GroupCardLayout from '../../src/components-personal/GroupCardLayout';
 import InviteForm from '../../src/components-invite/InviteForm';
+import BackLink from '../../src/components-generic/BackLink';
+import { useUser } from '../../src/components-generic/UserContext';
+
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -25,18 +28,20 @@ const InvitePage = () => {
     const inviteData = useApiDataValue('invite', source);
     const invite = inviteData.data || {};
     const group = invite.group;
-    if (inviteData.isError) console.log(inviteData.error);
+    const user = useUser();
+    const { profile, isAuthenticated } = user;
 
     return (
         <main>
             <Toolbar />
+            {group && isAuthenticated && <BackLink groupId={group.id} />}
             <Grid container className={classes.container}>
                 <Grid item md={3} xs={12}>
                     <GroupCardLayout {...group} withEdit={false} isLoading={inviteData.isLoading} />
                 </Grid>
                 <Grid item md={1} />
                 <Grid item md={8} xs={12}>
-                    <InviteForm invite={invite} isLoading={inviteData.isLoading} />
+                    <InviteForm invite={invite} isLoading={inviteData.isLoading} profile={profile} />
                     <pre>{JSON.stringify(invite, null, 2)}</pre>
                 </Grid>
             </Grid>

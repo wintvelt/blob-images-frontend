@@ -14,13 +14,14 @@ export const UserContext = createContext({
 
 export const getUserInfo = async () => {
     const authUser = await Auth.currentUserInfo();
-    const userId = authUser.id;
+    const userId = authUser?.id;
     if (!userId) return {};
     try {
         const user = await API.get('blob-images', `/users/U${userId}`);
         return {
             id: userId,
             name: user.name,
+            email: user.email,
             avatar: user.avatar
         };
     } catch (error) {
@@ -34,7 +35,8 @@ export const getUserInfo = async () => {
         });
         return {
             id: userId,
-            name
+            name,
+            email,
         }
     }
 }

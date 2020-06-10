@@ -39,7 +39,7 @@ export default function MyApp(props) {
             setUser((oldUser) => ({
                 ...oldUser,
                 profile: user,
-                isAuthenticated: true,
+                isAuthenticated: !!user.id,
                 isAuthenticating: false
             }));
         }

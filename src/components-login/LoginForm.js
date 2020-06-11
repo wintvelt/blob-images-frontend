@@ -65,7 +65,7 @@ const fieldConfig = {
 
 
 const LoginForm = (props) => {
-    const { title, TitleComponent, onSignup, onLogin, redirect } = props;
+    const { title, subtitle, TitleComponent, onSignup, onLogin, noSignup, redirect } = props;
     const user = useUser(true);
     const router = useRouter();
     const classes = useStyles();
@@ -138,7 +138,7 @@ const LoginForm = (props) => {
                         {title || 'Welcome back!'}
                     </Typography>}
                 <Typography paragraph variant='subtitle1'>
-                    Please log in with your email and password
+                    {subtitle || 'Please log in with your email and password'}
                 </Typography>
                 {Object.keys(fieldConfig).map(fieldName =>
                     <Field key={fieldName}
@@ -171,14 +171,14 @@ const LoginForm = (props) => {
                             Forgot password
                         </Button>
                     </Typography>
-                    <Typography variant='caption' gutterBottom>
+                    {!noSignup && <Typography variant='caption' gutterBottom>
                         {(onSignup) ?
                             <Button onClick={onSignup} className={classes.smallButton}>
                                 Sign ON!
                             </Button>
                             : <Link href='/' color='textPrimary'>Sign up</Link>
                         }
-                    </Typography>
+                    </Typography>}
                 </div>
             </Paper>
         </form>

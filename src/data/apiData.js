@@ -21,8 +21,8 @@ export const useApiData = (apiKey, source) => {
                 setData({ data: newApiData, source, timeStamp: Date.now(), isLoading: false });
             };
         } catch (error) {
-            console.log(error.response?.data?.error);
-            setData({ isError: true, error, isLoading: false });
+            const errorMessage = error.response?.data?.error;
+            setData({ isError: true, errorMessage, error, isLoading: false });
         }
     }
     useEffect(() => {

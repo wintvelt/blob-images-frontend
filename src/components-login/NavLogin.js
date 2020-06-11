@@ -77,7 +77,7 @@ export default function NavLogin(props) {
     const handleLogout = () => {
         logout();
         setMenuAnchor(null);
-        router.push('/');
+        // router.push('/');
     }
     const handleMenuClick = (action) => {
         if (action === 'logout') return handleLogout;

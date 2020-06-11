@@ -46,13 +46,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const GroupCardContent = (props) => {
-    const { name, description, image, isLoading } = props;
+    const { name, description, image, isLoading, isInvite } = props;
     const imageUrl = makeImageUrl(image && image.image, 340, 200);
     const classes = useStyles();
     return <>
-        {image && <CardMedia className={classes.media}
-            image={imageUrl}
-            title={`${name} group`}
+        {(image || isInvite) && <CardMedia className={classes.media}
+            image={imageUrl || '/img/confidential.jpg'}
+            title={name ? `${name} group` : 'invite'}
         />}
         <CardContent className={classes.content}>
             <Typography gutterBottom variant='h4' component='h5' align='center'>

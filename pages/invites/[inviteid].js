@@ -8,11 +8,13 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 
 import { useApiData } from '../../src/data/apiData';
+import { useUser } from '../../src/components-generic/UserContext';
 import GroupCardLayout from '../../src/components-personal/GroupCardLayout';
 import InviteForm from '../../src/components-invite/InviteForm';
 import LoginDialog from '../../src/components-invite/LoginDialog';
 import ForOther from '../../src/components-invite/ForOther';
-import { useUser } from '../../src/components-generic/UserContext';
+import Accepted from '../../src/components-invite/Accepted';
+import OtherError from '../../src/components-invite/OtherError';
 import LoginForm from '../../src/components-login/LoginForm';
 
 const useStyles = makeStyles(theme => ({
@@ -41,6 +43,8 @@ const InvitePage = () => {
     const [isAlreadyMember, setIsAlreadyMember] = useState(false);
     const mustLoginToView = !user.isAuthenticated && inviteData.isError && inviteData.errorMessage === 'invite not for you';
     const notForYou = user.isAuthenticated && inviteData.isError && inviteData.errorMessage === 'invite not for you';
+    const otherError = !notForYou && inviteData.isError;
+    const alreadyAccepted = inviteData.data && invite.status !== 'invite';
 
     useEffect(() => {
         const checkMembership = async () => {
@@ -107,10 +111,12 @@ const InvitePage = () => {
                         noSignup
                     />}
                     {(notForYou) && <ForOther onLogout={() => logout()} />}
-                    {(!inviteData.error) && <InviteForm invite={invite} isLoading={inviteData.isLoading}
+                    {(alreadyAccepted) && <Accepted invite={invite}/>}
+                    {(!inviteData.error && !alreadyAccepted) && <InviteForm invite={invite} isLoading={inviteData.isLoading}
                         profile={profile} isAlreadyMember={isAlreadyMember}
                         isSaving={isSaving} onAccept={onAccept} onDecline={onDecline}
                     />}
+                    {(otherError) && <OtherError />}
                     <pre>{JSON.stringify(inviteData, null, 2)}</pre>
                 </Grid>
             </Grid>

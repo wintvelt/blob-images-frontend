@@ -80,6 +80,7 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick,
         </Tooltip>}
         <Typography className={classes.name}>
             {user.name}
+            {!isAdmin && <span style={{ fontSize: '70%' }}>{' (guest)'}</span>}
             {!isLarge && <>
                 <br />
                 <span style={{ fontSize: '70%' }}>{member.createdAt}</span>

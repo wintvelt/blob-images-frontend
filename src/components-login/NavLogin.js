@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NavLogin(props) {
     const { path } = props;
     const classes = useStyles();
-    const { user, logout } = useUser(true);
+    const { user, logout, onShowLogin } = useUser(true);
     const router = useRouter();
     const name = user.profile.name;
     const email = user.profile.email;
@@ -126,10 +126,12 @@ export default function NavLogin(props) {
             }
             {
                 !user.isAuthenticated &&
-                <Link className={classes.navLink}
-                    href={path}>
+                <Button disableElevation
+                    variant='contained'
+                    disabled={user.showLogin}
+                    onClick={onShowLogin}>
                     Login
-                </Link>
+                </Button>
             }
         </>
     );

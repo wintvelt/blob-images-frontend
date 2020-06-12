@@ -102,7 +102,7 @@ export default function HideAppBar(props) {
                         } */}
                         <Grid item md={2} xs={3}
                             style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <NavLogin path='/login' />
+                            <NavLogin />
                         </Grid>
                     </Grid>
                 </Toolbar>

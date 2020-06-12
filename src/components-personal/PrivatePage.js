@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useUser } from '../components-generic/UserContext';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,7 +6,10 @@ import Hero from '../components-home/Hero';
 import LoginForm from '../components-login/LoginForm';
 
 const PrivatePage = (props) => {
-    const user = useUser();
+    const { user, onShowLogin } = useUser(true);
+    useEffect(() => {
+        if (!user.isAuthenticated && !user.isAuthenticating) onShowLogin();
+    }, [user.isAuthenticating, user.isAuthenticated]);
     return (!user.isAuthenticated) ?
         <main>
             <Hero url='/img/delay.jpg'>

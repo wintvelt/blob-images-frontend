@@ -30,7 +30,7 @@ const InvitePage = () => {
     const classes = useStyles();
     const inviteId = router.query && router.query.inviteid;
     const [isSaving, setIsSaving] = useState(false);
-    const [dialogOpen, setDialogOpen] = useState(false);
+    const [accepting, setAccepting] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
@@ -38,7 +38,7 @@ const InvitePage = () => {
     const inviteData = useApiData('invite', source);
     const invite = inviteData.data || {};
     const group = invite.group;
-    const { user, logout } = useUser(true);
+    const { user, logout, onShowLogin } = useUser(true);
     const { profile } = user;
     const [isAlreadyMember, setIsAlreadyMember] = useState(false);
     const mustLoginToView = !user.isAuthenticated && inviteData.isError && inviteData.errorMessage === 'invite not for you';
@@ -63,7 +63,7 @@ const InvitePage = () => {
             inviteData.reloadData();
         };
         reloadInvite();
-    }, [user]);
+    }, [user.isAuthenticated]);
 
     const onAccept = async () => {
         setIsSaving(true);
@@ -77,22 +77,25 @@ const InvitePage = () => {
                 enqueueSnackbar('Oops, could not accept this invite', { variant: 'error' });
             }
         } else {
-            setDialogOpen(true);
+            setAccepting(false);
         }
         setIsSaving(false);
     };
     useEffect(() => {
-        if (user && user.isAuthenticated && loggedIn) onAccept();
-    }, [user, loggedIn])
+        if (user && user.isAuthenticated && accepting) {
+            onAccept();
+            setAccepting(false);
+        };
+    }, [user, accepting])
 
     const onDecline = async () => {
         setIsSaving(true);
         alert('decline');
         setIsSaving(false);
     };
-    const onLogin = () => {
-        setDialogOpen(false);
-        setLoggedIn(true);
+    const onCloseDialog = () => {
+        setAccepting(false);
+        onShowLogin(false);
     };
 
     return (
@@ -111,7 +114,7 @@ const InvitePage = () => {
                         noSignup
                     />}
                     {(notForYou) && <ForOther onLogout={() => logout()} />}
-                    {(alreadyAccepted) && <Accepted invite={invite}/>}
+                    {(alreadyAccepted) && <Accepted invite={invite} />}
                     {(!inviteData.error && !alreadyAccepted) && <InviteForm invite={invite} isLoading={inviteData.isLoading}
                         profile={profile} isAlreadyMember={isAlreadyMember}
                         isSaving={isSaving} onAccept={onAccept} onDecline={onDecline}
@@ -120,7 +123,7 @@ const InvitePage = () => {
                     <pre>{JSON.stringify(inviteData, null, 2)}</pre>
                 </Grid>
             </Grid>
-            <LoginDialog open={dialogOpen} onClose={() => setDialogOpen(false)} onLogin={onLogin} />
+            <LoginDialog open={accepting || !!user.showLogin} onClose={onCloseDialog} />
         </main>
     )
 }

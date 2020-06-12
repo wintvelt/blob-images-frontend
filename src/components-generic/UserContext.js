@@ -5,6 +5,7 @@ export const initialUser = {
     profile: false,
     isAuthenticating: true,
     isAuthenticated: false,
+    showLogin: false,
 };
 
 export const UserContext = createContext({
@@ -55,7 +56,8 @@ export const useUser = (withSetters) => {
         setUser({
             profile: user,
             isAuthenticated: true,
-            isAuthenticating: false
+            isAuthenticating: false,
+            showLogin: false,
         });
     }
     const logout = () => {
@@ -88,6 +90,9 @@ export const useUser = (withSetters) => {
         await API.put('blob-images', '/users', { body: newProfile });
         updateUser({ profile: { ...user.profile, ...newProfile } });
     }
+    const onShowLogin = () => {
+        updateUser({ showLogin: true });
+    }
     return (withSetters) ?
         {
             user,
@@ -96,7 +101,8 @@ export const useUser = (withSetters) => {
             logout,
             signup,
             confirmSignup,
-            saveProfile
+            saveProfile,
+            onShowLogin,
         }
         : user;
 }

@@ -77,7 +77,7 @@ const InvitePage = () => {
                 enqueueSnackbar('Oops, could not accept this invite', { variant: 'error' });
             }
         } else {
-            setAccepting(false);
+            setAccepting(true);
         }
         setIsSaving(false);
     };

@@ -33,8 +33,8 @@ const OtherErrorCard = ({ invite }) => {
                 <br />
                     ‣ The invite was accepted or declined before<br />
                     ‣ The invite has expired (invites are valid for 30 days)<br />
+                    ‣ Our service may be unreachable<br />
                     ‣ The link is not correct, you could try again from the invite mail<br />
-                    ‣ The service may not be unreachable<br />
                 <br />
                 Maybe try again later?
             </Typography>

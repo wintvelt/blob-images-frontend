@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.primary.contrastText,
     },
     navLink: {
-        marginLeft: theme.spacing(1),
         ...theme.typography.button,
+        color: theme.palette.primary.contrastText,
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
     },

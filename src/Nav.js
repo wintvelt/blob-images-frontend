@@ -94,16 +94,16 @@ export default function HideAppBar(props) {
                                 <NavLink {...props} />
                             </Grid>
                         ))} */}
-                        {!user.isAuthenticated &&
-                            <Grid item md={1} xs={4}
+                        {/* {!user.isAuthenticated &&
+                            <Grid item md={2} xs={3}
                                 style={{ display: 'flex', justifyContent: 'center' }}>
                                 <NavLink text='Sign up' href='/' outlined>sign up</NavLink>
                             </Grid>
-                        }
-                        {(user.isAuthenticated) && <Grid item md={2} xs={1}
+                        } */}
+                        <Grid item md={2} xs={3}
                             style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <NavLogin path='/login' />
-                        </Grid>}
+                        </Grid>
                     </Grid>
                 </Toolbar>
             </AppBar>

@@ -31,7 +31,6 @@ const InvitePage = () => {
     const inviteId = router.query && router.query.inviteid;
     const [isSaving, setIsSaving] = useState(false);
     const [accepting, setAccepting] = useState(false);
-    const [loggedIn, setLoggedIn] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
     const source = `/invites/${inviteId}`;

@@ -3,7 +3,6 @@ import { useUser } from '../components-generic/UserContext';
 import { useRouter } from 'next/router';
 import { Auth } from "aws-amplify";
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -11,13 +10,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Field, useFields, validateForm, validateField } from '../components-generic/FormField';
 
 const useStyles = makeStyles(theme => ({
-    signupForm: {
+    loginForm: {
         position: 'relative',
-        marginTop: theme.spacing(12),
-        marginBottom: '-40px',
         padding: theme.spacing(4),
-        marginLeft: '20%',
-        marginRight: '20%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'stretch',
@@ -57,7 +52,7 @@ const formFields = {
 };
 
 const VerifySignupForm = (props) => {
-    const { code, email } = props;
+    const { code, email, redirect } = props;
     const { user, confirmSignup } = useUser(true);
     const router = useRouter();
     const classes = useStyles();
@@ -82,7 +77,7 @@ const VerifySignupForm = (props) => {
             try {
                 const { email, confirmation } = fields;
                 await confirmSignup(email.value, confirmation.value);
-                router.push('/');
+                if (redirect) router.push('/');
             } catch (e) {
                 console.log(e);
                 const message = (e.code) ?
@@ -123,9 +118,9 @@ const VerifySignupForm = (props) => {
         }
     }
 
-    const formTitle = (email && email === user.profile.email)? 
+    const formTitle = (email && email === user.profile.email) ?
         'Check your inbox'
-        :'Validate your account';
+        : 'Validate your account';
     const formSubtitle = 'Just one more step. ' +
         'Complete your email address and the verification code you received by mail. ' +
         'Then you\'re good to go!';
@@ -139,41 +134,39 @@ const VerifySignupForm = (props) => {
         : 'Request new code';
 
     return (
-            <form name='signup-form' noValidate>
-                <Paper className={classes.signupForm}>
-                    <Typography component="h1" variant="h4" color="inherit"
-                        align='center' gutterBottom>
-                        {formTitle}
-                    </Typography>
-                    <Typography variant='subtitle1' gutterBottom>
-                        {formSubtitle}
-                    </Typography>
-                    {Object.keys(formFields).map(fieldName =>
-                        <Field key={fieldName}
-                            fieldName={fieldName}
-                            field={fields[fieldName]}
-                            onChange={onChange(fieldName)}
-                            showValidation={fields.showValidation &&
-                                (fields.showValidation === 'all' ||
-                                    fields.showValidation === fieldName)} />
-                    )}
-                    {loading.message &&
-                        <Typography variant='body2' className={classes.info}>
-                            {loading.message}
-                        </Typography>
-                    }
-                    <Button type='submit' variant='contained' color='secondary' className={classes.submit}
-                        disabled={loading.state}
-                        onClick={onSubmit}>
-                        {submitText}
-                    </Button>
-                    <Button color='primary' className={classes.submit}
-                        disabled={loading.state}
-                        onClick={onResend}>
-                        {resendText}
-                    </Button>
-                </Paper>
-            </form>
+        <form name='signup-form' noValidate className={classes.loginForm}>
+            <Typography component="h1" variant="h4" color="inherit"
+                align='center' gutterBottom>
+                {formTitle}
+            </Typography>
+            <Typography variant='subtitle1' gutterBottom>
+                {formSubtitle}
+            </Typography>
+            {Object.keys(formFields).map(fieldName =>
+                <Field key={fieldName}
+                    fieldName={fieldName}
+                    field={fields[fieldName]}
+                    onChange={onChange(fieldName)}
+                    showValidation={fields.showValidation &&
+                        (fields.showValidation === 'all' ||
+                            fields.showValidation === fieldName)} />
+            )}
+            {loading.message &&
+                <Typography variant='body2' className={classes.info}>
+                    {loading.message}
+                </Typography>
+            }
+            <Button type='submit' variant='contained' color='secondary' className={classes.submit}
+                disabled={loading.state}
+                onClick={onSubmit}>
+                {submitText}
+            </Button>
+            <Button color='primary' className={classes.submit}
+                disabled={loading.state}
+                onClick={onResend}>
+                {resendText}
+            </Button>
+        </form>
     )
 };
 

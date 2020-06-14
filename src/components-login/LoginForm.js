@@ -3,7 +3,6 @@ import { Auth } from "aws-amplify";
 import { useRouter } from 'next/router';
 
 import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -65,7 +64,7 @@ const fieldConfig = {
 
 
 const LoginForm = (props) => {
-    const { title, subtitle, TitleComponent, onSignup, onLogin, noSignup, redirect } = props;
+    const { title, subtitle, TitleComponent, onLogin, noSignup, redirect } = props;
     const user = useUser(true);
     const router = useRouter();
     const classes = useStyles();
@@ -116,8 +115,8 @@ const LoginForm = (props) => {
         e.preventDefault();
         setLoading({ state: true });
         try {
-            await Auth.resendSignUp(fields.email.value);
-            router.push('/verifysignup?email=' + encodeURIComponent(fields.email.value));
+            await user.resendSignup(fields.email.value);
+            if (redirect) router.push('/verifysignup?email=' + encodeURIComponent(fields.email.value));
         } catch (e) {
             setLoading({
                 state: false,
@@ -126,61 +125,61 @@ const LoginForm = (props) => {
         }
     }
 
+    const onSignup = (e) => {
+        e.preventDefault();
+        user.setDialog({ showSignup: true });
+    }
+
     const loginButtonContent = loading.state ? <CircularProgress size='1.5rem' color='secondary' />
         : 'Login';
 
     return (
-        <form name='login-form' noValidate>
-            <Paper className={classes.loginForm}>
-                {TitleComponent ||
-                    <Typography component="h1" variant="h4"
-                        align='center' gutterBottom>
-                        {title || 'Welcome back!'}
-                    </Typography>}
-                <Typography paragraph variant='subtitle1'>
-                    {subtitle || 'Please log in with your email and password'}
-                </Typography>
-                {Object.keys(fieldConfig).map(fieldName =>
-                    <Field key={fieldName}
-                        fieldName={fieldName}
-                        field={fields[fieldName]}
-                        onChange={onChange(fieldName)}
-                        showValidation={fields.showValidation} />
-                )}
-                {loading.message && <Typography variant='body2' color='error' >
-                    Hmm, we could not log you in. <br />
-                    {loading.message}<br />
-                    {loading.unconfirmedUser && <span>
-                        Maybe you need to
-                            <Button onClick={onVerify} className={classes.verifyButton}>
-                            Confirm your email
+        <form name='login-form' noValidate className={classes.loginForm}>
+            {TitleComponent ||
+                <Typography component="h1" variant="h4"
+                    align='center' gutterBottom>
+                    {title || 'Welcome back!'}
+                </Typography>}
+            <Typography paragraph variant='subtitle1'>
+                {subtitle || 'Please log in with your email and password'}
+            </Typography>
+            {Object.keys(fieldConfig).map(fieldName =>
+                <Field key={fieldName}
+                    fieldName={fieldName}
+                    field={fields[fieldName]}
+                    onChange={onChange(fieldName)}
+                    showValidation={fields.showValidation} />
+            )}
+            {loading.message && <Typography variant='body2' color='error' >
+                Hmm, we could not log you in. <br />
+                {loading.message}<br />
+                {loading.unconfirmedUser && <span>
+                    Maybe you need to
+                            <Button onClick={onVerify} className={classes.verifyButton} color='primary'>
+                        Confirm your email
                             </Button>?
                         </span>}
-                </Typography>}
-                <Button type='submit' variant='contained' color='secondary' className={classes.submit}
-                    disabled={loading.state}
-                    onClick={onSubmit}>
-                    {loginButtonContent}
-                </Button>
-                <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between'
-                }}>
-                    <Typography variant='caption' gutterBottom>
-                        <Button onClick={onForgotPsw} className={classes.smallButton}>
-                            Forgot password
+            </Typography>}
+            <Button type='submit' variant='contained' color='secondary' className={classes.submit}
+                disabled={loading.state}
+                onClick={onSubmit}>
+                {loginButtonContent}
+            </Button>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'space-between'
+            }}>
+                <Typography variant='caption' gutterBottom>
+                    <Button onClick={onForgotPsw} className={classes.smallButton}>
+                        Forgot password
                         </Button>
-                    </Typography>
-                    {!noSignup && <Typography variant='caption' gutterBottom>
-                        {(onSignup) ?
-                            <Button onClick={onSignup} className={classes.smallButton}>
-                                Sign ON!
-                            </Button>
-                            : <Link href='/' color='textPrimary'>Sign up</Link>
-                        }
-                    </Typography>}
-                </div>
-            </Paper>
+                </Typography>
+                {!noSignup && <Typography variant='caption' gutterBottom>
+                    <Button onClick={onSignup} className={classes.smallButton}>
+                        Sign up
+                        </Button>
+                </Typography>}
+            </div>
         </form>
     )
 };

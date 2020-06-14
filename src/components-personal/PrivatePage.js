@@ -6,9 +6,9 @@ import Hero from '../components-home/Hero';
 import LoginForm from '../components-login/LoginForm';
 
 const PrivatePage = (props) => {
-    const { user, onShowLogin } = useUser(true);
+    const { user, setDialog } = useUser(true);
     useEffect(() => {
-        if (!user.isAuthenticated && !user.isAuthenticating) onShowLogin();
+        if (!user.isAuthenticated && !user.isAuthenticating) setDialog({ showLogin: true });
     }, [user.isAuthenticating, user.isAuthenticated]);
     return (!user.isAuthenticated) ?
         <main>

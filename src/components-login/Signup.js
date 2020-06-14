@@ -14,7 +14,7 @@ import { Field, useFields, newPasswordValidations, validateForm } from '../compo
 const useStyles = makeStyles(theme => ({
     signupForm: {
         position: 'relative',
-        marginBottom: '-80px',
+        // marginBottom: '-80px',
         padding: theme.spacing(4),
         display: 'flex',
         flexDirection: 'column',
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'flex-start'
     },
     submit: {
-        marginTop: theme.spacing(2),
+        margin: theme.spacing(1, 0),
     },
     info: {
         padding: theme.spacing(.5, 1),
@@ -90,13 +90,22 @@ const fieldConfig = {
 const SignupForm = (props) => {
     const classes = useStyles();
     const router = useRouter();
-    const { signup } = useUser(true);
-    const { title, subtitle } = props;
+    const { signup, setDialog } = useUser(true);
+    const { title, subtitle, noLogin, redirect } = props;
     const [fields, setFields] = useFields(fieldConfig);
     const [loading, setLoading] = useState({ state: false });
 
     const onChange = (fieldName) => (e) => {
         setFields(fieldName)(e);
+    }
+
+    const onLogin = (e) => {
+        e.preventDefault();
+        setDialog({ showLogin: true });
+    };
+    const onVerify = (e) => {
+        e.preventDefault();
+        setDialog({ showVerify: true });
     }
 
     const onSubmit = async (e) => {
@@ -107,7 +116,10 @@ const SignupForm = (props) => {
             setLoading({ state: true });
             try {
                 await signup(fields.email.value, fields.password.value, fields.name.value);
-                router.push('/verifysignup?email=' + encodeURIComponent(fields.email.value));
+                if (redirect) {
+                    router.push('/verifysignup?email=' + encodeURIComponent(fields.email.value));
+                }
+
             } catch (e) {
                 console.log(e);
                 setLoading({
@@ -171,6 +183,12 @@ const SignupForm = (props) => {
                     onClick={onSubmit}>
                     {buttonContent}
                 </Button>
+                {(!noLogin) && <Typography variant='caption' align='center'>
+                    Already have an account?
+                    <Button onClick={onLogin} color='primary' className={classes.smallButton}>
+                        Log in
+                    </Button>
+                </Typography>}
             </Paper>
         </form>
     )

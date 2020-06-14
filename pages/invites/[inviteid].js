@@ -37,7 +37,7 @@ const InvitePage = () => {
     const inviteData = useApiData('invite', source);
     const invite = inviteData.data || {};
     const group = invite.group;
-    const { user, logout, onShowLogin } = useUser(true);
+    const { user, logout, setDialog } = useUser(true);
     const { profile } = user;
     const [isAlreadyMember, setIsAlreadyMember] = useState(false);
     const mustLoginToView = !user.isAuthenticated && inviteData.isError && inviteData.errorMessage === 'invite not for you';
@@ -77,6 +77,7 @@ const InvitePage = () => {
             }
         } else {
             setAccepting(true);
+            setDialog({ showSignup: true });
         }
         setIsSaving(false);
     };
@@ -94,7 +95,7 @@ const InvitePage = () => {
     };
     const onCloseDialog = () => {
         setAccepting(false);
-        onShowLogin(false);
+        setDialog();
     };
 
     return (
@@ -122,7 +123,11 @@ const InvitePage = () => {
                     <pre>{JSON.stringify(inviteData, null, 2)}</pre>
                 </Grid>
             </Grid>
-            <LoginDialog open={accepting || !!user.showLogin} onClose={onCloseDialog} />
+            <LoginDialog open={accepting || !!user.showLogin || !!user.showSignup}
+                onClose={onCloseDialog}
+                user={user}
+                groupName={group && group.name}
+                setDialog={setDialog} />
         </main>
     )
 }

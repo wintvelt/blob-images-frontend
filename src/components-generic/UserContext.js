@@ -6,6 +6,8 @@ export const initialUser = {
     isAuthenticating: true,
     isAuthenticated: false,
     showLogin: false,
+    showSignup: false,
+    showVerify: false,
 };
 
 export const UserContext = createContext({
@@ -50,19 +52,44 @@ export const useUser = (withSetters) => {
             ...newItem,
         }));
     }
-    const login = async (username, password) => {
-        await Auth.signIn(username, password);
-        const user = await getUserInfo();
-        setUser({
-            profile: user,
-            isAuthenticated: true,
-            isAuthenticating: false,
-            showLogin: false,
+    const setDialog = (maybeAction) => {
+        const action = maybeAction || {};
+        updateUser({
+            showLogin: !!action.showLogin,
+            showSignup: !!action.showSignup,
+            showVerify: !!action.showVerify,
         });
+    }
+    const login = async (username, password) => {
+        try {
+            await Auth.signIn(username, password);
+            const user = await getUserInfo();
+            setUser({
+                profile: user,
+                isAuthenticated: true,
+                isAuthenticating: false,
+                showLogin: false,
+                showSignup: false,
+                showVerify: false,
+            });
+        } catch (error) {
+            setUser({
+                profile: { email: username },
+                isAuthenticated: false,
+                isAuthenticating: false,
+                showLogin: true,
+                showSignup: false,
+                showVerify: false,
+            });
+            throw error;
+        }
     }
     const logout = () => {
         Auth.signOut();
-        setUser({ profile: false, isAuthenticated: false, isAuthenticating: false })
+        setUser({
+            profile: false, isAuthenticated: false, isAuthenticating: false,
+            showLogin: false, showSignup: false, showVerify: false,
+        });
     }
     const signup = async (email, password, name) => {
         await Auth.signUp({
@@ -76,13 +103,19 @@ export const useUser = (withSetters) => {
             profile: { name, email, password },
             isAuthenticated: false,
             isAuthenticating: false,
+            showLogin: false, showSignup: false, showVerify: true,
         });
     }
     const confirmSignup = async (email, confirmation) => {
         const { profile } = user;
-        await Auth.confirmSignUp(email, confirmation);
-        if (profile && profile.password && profile.email === email) {
-            await login(email, profile.password);
+        try {            
+            await Auth.confirmSignUp(email, confirmation);
+            if (profile && profile.password && profile.email === email) {
+                await login(email, profile.password);
+            }
+            setDialog();
+        } catch (error) {
+            throw error
         }
     }
     const saveProfile = async (name, avatar) => {
@@ -90,8 +123,9 @@ export const useUser = (withSetters) => {
         await API.put('blob-images', '/users', { body: newProfile });
         updateUser({ profile: { ...user.profile, ...newProfile } });
     }
-    const onShowLogin = () => {
-        updateUser({ showLogin: true });
+    const resendSignup = async (email) => {
+        await Auth.resendSignUp(email);
+        setDialog({ showVerify: true });
     }
     return (withSetters) ?
         {
@@ -101,8 +135,9 @@ export const useUser = (withSetters) => {
             logout,
             signup,
             confirmSignup,
+            resendSignup,
             saveProfile,
-            onShowLogin,
+            setDialog,
         }
         : user;
 }

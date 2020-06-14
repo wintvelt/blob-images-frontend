@@ -59,9 +59,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavLogin(props) {
-    const { path } = props;
     const classes = useStyles();
-    const { user, logout, onShowLogin } = useUser(true);
+    const { user, logout, setDialog } = useUser(true);
     const router = useRouter();
     const name = user.profile.name;
     const email = user.profile.email;
@@ -129,7 +128,7 @@ export default function NavLogin(props) {
                 <Button disableElevation
                     variant='contained'
                     disabled={user.showLogin}
-                    onClick={onShowLogin}>
+                    onClick={() => setDialog({ showLogin: true })}>
                     Login
                 </Button>
             }

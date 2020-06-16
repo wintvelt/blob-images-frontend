@@ -10,6 +10,8 @@ const initialUser = {
     error: false,
 };
 
+let loadCounterHack = 0;
+
 const userData = atom({
     key: 'user',
     default: initialUser,
@@ -27,6 +29,7 @@ const updateUser = (newItems = {}) => (oldUser) => ({
 // load user from session, get additional details from DB, or create new DB entry
 const loadUser = async () => {
     console.log('loading user');
+    loadCounterHack++;
     const authUser = await Auth.currentUserInfo();
     const userId = authUser?.id;
     if (!userId) return {};
@@ -74,9 +77,9 @@ export const useUser = () => {
                 isAuthenticating: false,
             });
         }
-        if (user.isAuthenticating) onLoad();
+        if (user.isAuthenticating && loadCounterHack === 0) onLoad();
     }, []);
-    
+
     const setPath = (path) => setUpdate({ path });
 
     const login = async (username, password) => {

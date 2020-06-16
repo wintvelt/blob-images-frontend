@@ -62,7 +62,7 @@ export default function NavLogin(props) {
     const { user, logout, setPath } = useUser();
     const router = useRouter();
     const isAuthPath = isInAuth(router.pathname);
-    const {name, email, avatar } = user.profile || {};
+    const { name, email, avatar } = user.profile || {};
     const avatarSrc = makeImageUrl(avatar, 40, 40);
     const [menuAnchor, setMenuAnchor] = useState(null);
     const handleClick = (e) => {
@@ -125,7 +125,7 @@ export default function NavLogin(props) {
                 (!user.isAuthenticated && !isAuthPath) &&
                 <Button disableElevation
                     variant='contained'
-                    disabled={!!user.path}
+                    disabled={!!user.path || user.isAuthenticating}
                     onClick={() => setPath('/login')}>
                     Login
                 </Button>

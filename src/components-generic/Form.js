@@ -66,10 +66,10 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
 
     return (
         <FormWrapper noPaper={noPaper}>
-            <Typography component="h1" variant="h4"
+            {title && <Typography component="h1" variant="h4"
                 align='left' gutterBottom>
                 {title}
-            </Typography>
+            </Typography>}
             {subtitle &&
                 <Typography paragraph variant='subtitle1'>
                     {subtitle}

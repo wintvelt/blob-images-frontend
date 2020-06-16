@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
+import { useSnackbar } from 'notistack';
 
 import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
-import { Field, useFields, validateForm } from '../components-generic/FormField';
-import { useUser } from '../../src/components-generic/UserContext';
+import Form from '../components-generic/Form';
+import { useUser } from '../../src/data/userData';
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -51,69 +47,35 @@ const fieldConfig = {
     },
 };
 
-const initialFieldConfig = (entity) => {
-    let outConfig = { ...fieldConfig };
-    Object.keys(entity).forEach(key => {
-        if (outConfig[key]) {
-            outConfig[key].value = entity[key];
-        }
-    });
-    return outConfig;
-}
-
-
 const ProfileForm = (props) => {
     const classes = useStyles();
-    const { saveProfile } = useUser(true);
-    const initialValues = { ...props, avatar: { image: props.avatar } }
-    const [fields, setFields] = useFields(initialFieldConfig(initialValues));
-    const [loading, setLoading] = useState({ isLoading: false });
+    const { saveProfile } = useUser();
+    const [isLoading, setIsLoading] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
 
-    const onChange = (fieldName) => (e) => {
-        setFields(fieldName)(e);
-    }
+    const initialValues = { ...props, avatar: { image: props.avatar } };
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        if (!validateForm(fields)) {
-            setFields('showValidation')(true);
-        } else {
-            setLoading({ isLoading: true });
-            try {
-                const { name, avatar } = fields;
-                const imageUrl = avatar.value.image;
-                await saveProfile(name.value, imageUrl);
-                setLoading({ success: 'profile update saved', isLoading: false });
-            } catch (e) {
-                setLoading({ error: e.message, isLoading: false });
-            }
+    const onSubmit = async (fields) => {
+        setIsLoading(true);
+        try {
+            const { name, avatar } = fields;
+            const imageUrl = avatar.image;
+            await saveProfile(name, imageUrl);
+            enqueueSnackbar('profile update saved', { variant: 'success' });
+        } catch (e) {
+            enqueueSnackbar('profile update failed', { variant: 'error' });
         }
+        setIsLoading(false);
     }
 
-    const saveButtonContent = loading.isLoading ? <CircularProgress size='1.5rem' color='secondary' />
-        : 'Save changes';
     return (
-        <form name='profile-edit-form' noValidate>
-            <Paper className={classes.form}>
-                {Object.keys(fieldConfig).map(fieldName =>
-                    <Field key={fieldName}
-                        fieldName={fieldName}
-                        field={fields[fieldName]}
-                        onChange={onChange(fieldName)}
-                        showValidation={fields.showValidation} />
-                )}
-                {(loading.error || loading.success) &&
-                    <Typography variant='body2' className={classes.info} color={(loading.error) ? 'error' : 'inherit'}>
-                        {loading.error || loading.success}
-                    </Typography>
-                }
-                <Button type='submit' variant='contained' color='secondary' className={classes.submit}
-                    disabled={loading.isLoading}
-                    onClick={onSubmit}>
-                    {saveButtonContent}
-                </Button>
-            </Paper>
-        </form>
+        <Form
+            formFields={fieldConfig}
+            initialValues={initialValues}
+            isLoading={isLoading}
+            submitText='Save profile'
+            onSubmit={onSubmit}
+        />
     )
 };
 

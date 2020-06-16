@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core';
 import PrivatePage from '../../src/components-personal/PrivatePage';
 import ProfileForm from '../../src/components-personal/ProfileForm';
 import PasswordForm from '../../src/components-personal/PasswordForm';
-import { useUser } from '../../src/data/userData';
+import { useUserValue } from '../../src/data/userData';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 const EditProfileMain = () => {
     const classes = useStyles();
-    const user = useUser();
+    const user = useUserValue();
     const { profile } = user;
 
     return (

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useUser } from '../src/components-generic/UserContext';
 import Grid from '@material-ui/core/Grid';
 
 import Hero from '../src/components-home/Hero';
@@ -8,10 +7,9 @@ import Benefits from '../src/components-home/Benefits'
 import Features from '../src/components-home/Features'
 import Quotes from '../src/components-home/Quotes'
 import Pricing from '../src/components-home/Pricing'
-import SignupForm from '../src/components-login/SignupForm';
+import PublicPage from '../src/components-generic/PublicPage';
 
 const Home = () => {
-    const user = useUser();
     return (
         <main>
             <Hero
@@ -25,12 +23,6 @@ const Home = () => {
                     />
                 </Grid>
                 <Grid item md={1} />
-                {!(user && user.isAuthenticated) &&
-                    <Grid item md={4}>
-                        <SignupForm />
-                    </Grid>
-                }
-                <Grid item md={2} />
             </Hero>
             <Benefits />
             <Features />
@@ -40,4 +32,8 @@ const Home = () => {
     )
 }
 
-export default Home
+export default () => (
+    <PublicPage>
+        <Home />
+    </PublicPage>
+);

@@ -6,12 +6,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Upload from './Upload';
-import { useUser } from './UserContext';
+import { useUserValue } from '../data/userData';
 import { useApiData } from '../data/apiData';
 
 export default function UploadDialog({ open, handleClose, onChange }) {
     const pond = useRef(null);
-    const user = useUser();
+    const user = useUserValue();
     const { profile } = user;
     const { reloadData } = useApiData('myPhotos', '/photos');
     const [file, setFile] = useState('');

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { makeImageUrl } from '../components-generic/imageProvider';
-import { useUser } from '../data/userData';
+import { useUser, isInAuth } from '../data/userData';
 import NavMenu from './NavLogin-Menu';
 import NavDrawer from './NavLogin-Drawer';
 
@@ -61,7 +61,7 @@ export default function NavLogin(props) {
     const classes = useStyles();
     const { user, logout, setPath } = useUser();
     const router = useRouter();
-    const isAuthPath = ['/login','/signup','/verifysignup','/forgotpsw','/confirmpsw'].includes(router.pathname);
+    const isAuthPath = isInAuth(router.pathname);
     const {name, email, avatar } = user.profile || {};
     const avatarSrc = makeImageUrl(avatar, 40, 40);
     const [menuAnchor, setMenuAnchor] = useState(null);
@@ -125,7 +125,7 @@ export default function NavLogin(props) {
                 (!user.isAuthenticated && !isAuthPath) &&
                 <Button disableElevation
                     variant='contained'
-                    disabled={user.showLogin}
+                    disabled={!!user.path}
                     onClick={() => setPath('/login')}>
                     Login
                 </Button>

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { UserContext } from './components-generic/UserContext';
 import PropTypes from 'prop-types';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
@@ -71,8 +71,6 @@ const NavLink = (props) => {
 
 export default function HideAppBar(props) {
     const classes = useStyles();
-    const userContext = useContext(UserContext);
-    const { user } = userContext;
 
     return (
         <HideOnScroll {...props}>

@@ -15,6 +15,9 @@ const userData = atom({
     default: initialUser,
 });
 
+const authPaths = ['/login', '/signup', '/forgotpsw', '/verifysignup', '/confirmpsw'];
+export const isInAuth = (path) => authPaths.includes(path);
+
 const updateUser = (newItems = {}) => (oldUser) => ({
     ...oldUser,
     error: false,

@@ -6,11 +6,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { useSnackbar } from 'notistack';
 
 import { useApiData } from '../data/apiData';
-import { useUser } from '../components-generic/UserContext';
+import { useUser } from '../data/userData';
 
 const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
     const albumData = album && album.data;
-    const { user, saveProfile } = useUser(true);
+    const { user, saveProfile } = useUser();
     const userIsOwner = (user.profile && anchor.photo && user.profile.id === anchor.photo.SK.slice(1));
     const { enqueueSnackbar } = useSnackbar();
     const { reloadData } = useApiData(apiKey, source);

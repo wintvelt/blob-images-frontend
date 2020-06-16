@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
-import { useUser } from '../components-generic/UserContext';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Toolbar from '@material-ui/core/Toolbar';
 import Hero from '../components-home/Hero';
-import LoginForm from '../components-login/LoginForm';
+
+import AuthDialog from '../components-login/AuthDialog';
+import { useUser } from '../data/userData';
 
 const PrivatePage = (props) => {
-    const { user, setDialog } = useUser(true);
+    const { user, setPath } = useUser();
     useEffect(() => {
-        if (!user.isAuthenticated && !user.isAuthenticating) setDialog({ showLogin: true });
+        if (!user.isAuthenticated && !user.isAuthenticating) setPath('/login');
     }, [user.isAuthenticating, user.isAuthenticated]);
     return (!user.isAuthenticated) ?
         <main>
@@ -22,10 +24,11 @@ const PrivatePage = (props) => {
                 }}>
                     {(user.isAuthenticating) ?
                         <CircularProgress />
-                        : <LoginForm title='Log in to continue' />
+                        : null
                     }
                 </div>
             </Hero>
+            <AuthDialog />
         </main>
         : props.children
 }

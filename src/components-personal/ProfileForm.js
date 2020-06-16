@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 
 import Form from '../components-generic/Form';
@@ -23,22 +23,21 @@ const fieldConfig = {
 };
 
 const ProfileForm = (props) => {
-    const { saveProfile } = useUser();
+    const { user, saveProfile } = useUser();
     const [isLoading, setIsLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
     const initialValues = { ...props, avatar: { image: props.avatar } };
 
+    useEffect(() => {
+        if (user.error) enqueueSnackbar(user.error.message, { variant: 'error' });
+    }, [user.error]);
+
     const onSubmit = async (fields) => {
         setIsLoading(true);
-        try {
-            const { name, avatar } = fields;
-            const imageUrl = avatar.image;
-            await saveProfile(name, imageUrl);
-            enqueueSnackbar('profile update saved', { variant: 'success' });
-        } catch (e) {
-            enqueueSnackbar('profile update failed', { variant: 'error' });
-        }
+        const { name, avatar } = fields;
+        const imageUrl = avatar.image;
+        await saveProfile(name, imageUrl);
         setIsLoading(false);
     }
 

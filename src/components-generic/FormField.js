@@ -206,7 +206,7 @@ export const Field = (props) => {
                     </>
                     : <>
                         <TextField variant='outlined' size='small' margin='normal'
-                            style={{ width: '100%' }}
+                            style={{ width: '100%', display: (field.hidden) ? 'none' : 'inherit' }}
                             type={field.type}
                             label={field.label} autoComplete={field.autoComplete}
                             multiline={field.multiline || undefined}

@@ -26,6 +26,7 @@ const updateUser = (newItems = {}) => (oldUser) => ({
 
 // load user from session, get additional details from DB, or create new DB entry
 const loadUser = async () => {
+    console.log('loading user');
     const authUser = await Auth.currentUserInfo();
     const userId = authUser?.id;
     if (!userId) return {};
@@ -57,17 +58,6 @@ const loadUser = async () => {
 export const useUser = () => {
     const [user, setUser] = useRecoilState(userData);
     const setUpdate = (action) => setUser(updateUser(action));
-    useEffect(() => {
-        const onLoad = async () => {
-            const newUser = await loadUser();
-            setUpdate({
-                profile: newUser,
-                isAuthenticated: !!user.id,
-                isAuthenticating: false
-            });
-        };
-        if (user.isAuthenticating) onLoad();
-    }, []);
     const errorHandler = async (lambda) => {
         try {
             await lambda();
@@ -75,6 +65,18 @@ export const useUser = () => {
             setUpdate({ error });
         }
     };
+    useEffect(() => {
+        const onLoad = async () => {
+            const prevUser = await loadUser();
+            setUpdate({
+                profile: prevUser,
+                isAuthenticated: !!prevUser.id,
+                isAuthenticating: false,
+            });
+        }
+        if (user.isAuthenticating) onLoad();
+    }, []);
+    
     const setPath = (path) => setUpdate({ path });
 
     const login = async (username, password) => {

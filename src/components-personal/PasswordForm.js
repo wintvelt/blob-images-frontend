@@ -1,37 +1,18 @@
-import React, { useState } from 'react';
-import { Auth } from 'aws-amplify';
+import React, { useState, useEffect } from 'react';
+import { useSnackbar } from 'notistack';
 
-import { makeStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Form from '../components-generic/Form';
+import { newPasswordValidations } from '../components-generic/FormField';
+import { useUser } from '../data/userData';
 
-import { Field, useFields, validateForm, newPasswordValidations } from '../components-generic/FormField';
-
-const useStyles = makeStyles(theme => ({
-    form: {
-        position: 'relative',
-        padding: theme.spacing(3, 4, 4, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        justifyContent: 'flex-start'
-    },
-    submit: {
-        marginTop: theme.spacing(4)
-    },
-    info: {
-        textAlign: 'center',
-        color: 'white',
-        padding: theme.spacing(1, 2),
-        margin: theme.spacing(2, 0),
-        backgroundColor: 'cornflowerblue',
-        borderRadius: theme.spacing(1)
-    }
-}));
 
 const fieldConfig = {
+    email: {
+        autoComplete: 'email',
+        type: 'email',
+        label: 'email',
+        hidden: true,
+    },
     oldPassword: {
         autoComplete: 'current-password',
         type: 'password',
@@ -49,60 +30,28 @@ const fieldConfig = {
 
 
 const PasswordForm = (props) => {
-    const classes = useStyles();
-    const [fields, setFields] = useFields(fieldConfig);
-    const [loading, setLoading] = useState({ isLoading: false });
+    const { user, changePassword } = useUser();
+    const { enqueueSnackbar } = useSnackbar();
+    const [isLoading, setIsLoading] = useState(false);
 
-    const onChange = (fieldName) => (e) => {
-        setFields(fieldName)(e);
-    }
+    useEffect(() => {
+        if (user.error) enqueueSnackbar(user.error.message, { variant: 'error' });
+    }, [user.error]);
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        if (!validateForm(fields)) {
-            setFields('showValidation')(true);
-        } else {
-            setLoading({ isLoading: true });
-            try {
-                const { oldPassword, newPassword } = fields;
-                const authUser = await Auth.currentAuthenticatedUser();
-                await Auth.changePassword(
-                    authUser,
-                    oldPassword.value,
-                    newPassword.value
-                );
-                setLoading({ success: 'successfully changed your password', isLoading: false });
-            } catch (e) {
-                setLoading({ isLoading: false, error: e.message || 'password change failed' });
-            }
-        }
-    }
+    const onSubmit = async (fields) => {
+        setIsLoading(true);
+        const { oldPassword, newPassword } = fields;
+        await changePassword(oldPassword, newPassword);
+        setIsLoading(false);
+    };
 
-    const saveButtonContent = loading.isLoading ? <CircularProgress size='1.5rem' color='secondary' />
-        : 'Change password';
     return (
-        <form name='password-change-form' noValidate>
-            <Paper className={classes.form}>
-                <input type='text' name='username' autoComplete='username' style={{ display: 'none' }} />
-                {Object.keys(fieldConfig).map(fieldName =>
-                    <Field key={fieldName}
-                        fieldName={fieldName}
-                        field={fields[fieldName]}
-                        onChange={onChange(fieldName)}
-                        showValidation={fields.showValidation} />
-                )}
-                {(loading.error || loading.success) &&
-                    <Typography variant='body2' className={classes.info} color={(loading.error) ? 'error' : 'inherit'}>
-                        {loading.error || loading.success}
-                    </Typography>
-                }
-                <Button type='submit' variant='contained' color='secondary' className={classes.submit}
-                    disabled={loading.isLoading}
-                    onClick={onSubmit}>
-                    {saveButtonContent}
-                </Button>
-            </Paper>
-        </form>
+        <Form
+            formFields={fieldConfig}
+            isLoading={isLoading}
+            submitText='Change password'
+            onSubmit={onSubmit}
+        />
     )
 };
 

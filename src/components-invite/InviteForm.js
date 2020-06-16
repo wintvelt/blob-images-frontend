@@ -32,7 +32,7 @@ const InviteForm = ({ invite, isLoading, isSaving, onAccept, onDecline, profile,
     const { invitation, group } = invite || {};
     const { from } = invitation || {};
     const toEmail = invite?.user?.email;
-    const isToDifferentEmail = profile.email && profile.email !== toEmail;
+    const isToDifferentEmail = profile && profile.email && profile.email !== toEmail;
 
     const onSubmit = (e) => {
         e.preventDefault();

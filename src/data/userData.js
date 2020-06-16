@@ -85,7 +85,7 @@ export const useUser = () => {
                 profile: user,
                 isAuthenticated: true,
                 isAuthenticating: false,
-                path: '/',
+                path: '',
             });
         } catch (error) {
             setUpdate({
@@ -130,7 +130,7 @@ export const useUser = () => {
             await Auth.confirmSignUp(email, confirmation);
             if (profile && profile.password && profile.email === email) {
                 await login(email, profile.password);
-                setUpdate({ path: '/' });
+                setUpdate({ path: '' });
             } else {
                 setUpdate({ path: '/login' });
             }

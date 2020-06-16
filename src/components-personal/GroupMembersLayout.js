@@ -14,7 +14,7 @@ import MemberDetails from './GroupMembersLayout-Member';
 import Link from '../components-generic/Link';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 import { initials } from '../components-generic/helpers';
-import { useUser } from '../components-generic/UserContext';
+import { useUserValue } from '../data/userData';
 
 const useStyles = makeStyles(theme => ({
     skeleton: {
@@ -72,7 +72,7 @@ const GroupMembersLayout = ({ members, isLoading }) => {
     const membersData = (isLoading) ?
         [{}, {}, {}]
         : members.map(member => ({ ...member.user, role: member.role }));
-    const currentUser = useUser();
+    const currentUser = useUserValue();
     const { profile } = currentUser;
     const currentIsAdmin = !!members.find(member => member.PK.slice(3) === profile.id);
     const router = useRouter();

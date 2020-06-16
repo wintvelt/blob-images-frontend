@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMediaQuery } from '@material-ui/core';
 
-import { useUser } from '../../src/components-generic/UserContext';
+import { useUserValue } from '../../src/data/userData';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 import { initials } from '../../src/components-generic/helpers';
 
@@ -105,7 +105,7 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick,
 
 const MemberDetails = (props) => {
     const { members, isLoading } = props;
-    const currentUser = useUser();
+    const currentUser = useUserValue();
     const { profile } = currentUser;
     const currentIsAdmin = !!members.find(member => (
         member.PK.slice(3) === profile.id &&

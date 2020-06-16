@@ -28,7 +28,7 @@ const PrivatePage = (props) => {
                     }
                 </div>
             </Hero>
-            <AuthDialog />
+            <AuthDialog noClose />
         </main>
         : props.children
 }

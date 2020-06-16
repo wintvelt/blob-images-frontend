@@ -7,15 +7,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 
+import PublicPage from '../../src/components-generic/PublicPage';
 import { useApiData } from '../../src/data/apiData';
-import { useUser } from '../../src/components-generic/UserContext';
+import { useUser } from '../../src/data/userData';
 import GroupCardLayout from '../../src/components-personal/GroupCardLayout';
 import InviteForm from '../../src/components-invite/InviteForm';
-import LoginDialog from '../../src/components-personal/LoginDialog';
 import ForOther from '../../src/components-invite/ForOther';
 import Accepted from '../../src/components-invite/Accepted';
 import OtherError from '../../src/components-invite/OtherError';
-import LoginForm from '../../src/components-login/LoginForm';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -37,7 +36,7 @@ const InvitePage = () => {
     const inviteData = useApiData('invite', source);
     const invite = inviteData.data || {};
     const group = invite.group;
-    const { user, logout, setDialog } = useUser(true);
+    const { user, logout, setPath } = useUser();
     const { profile } = user;
     const [isAlreadyMember, setIsAlreadyMember] = useState(false);
     const mustLoginToView = !user.isAuthenticated && inviteData.isError && inviteData.errorMessage === 'invite not for you';
@@ -64,6 +63,12 @@ const InvitePage = () => {
         reloadInvite();
     }, [user.isAuthenticated]);
 
+    useEffect(() => {
+        if (mustLoginToView && !user.path) {
+            setPath('/login');
+        }
+    }, [mustLoginToView, user.path]);
+
     const onAccept = async () => {
         setIsSaving(true);
         if (user && user.isAuthenticated) {
@@ -77,7 +82,7 @@ const InvitePage = () => {
             }
         } else {
             setAccepting(true);
-            setDialog({ showSignup: true });
+            setPath('/signup');
         }
         setIsSaving(false);
     };
@@ -93,11 +98,6 @@ const InvitePage = () => {
         alert('decline');
         setIsSaving(false);
     };
-    const onCloseDialog = () => {
-        setAccepting(false);
-        setDialog();
-    };
-
     return (
         <main>
             <Toolbar />
@@ -108,11 +108,6 @@ const InvitePage = () => {
                 </Grid>
                 <Grid item md={1} />
                 <Grid item md={8} xs={12}>
-                    {(mustLoginToView) && <LoginForm
-                        title='You may be invited'
-                        subtitle='This invite is for an existing account, so please log in to continue'
-                        noSignup
-                    />}
                     {(notForYou) && <ForOther onLogout={() => logout()} />}
                     {(alreadyAccepted) && <Accepted invite={invite} />}
                     {(!inviteData.error && !alreadyAccepted) && <InviteForm invite={invite} isLoading={inviteData.isLoading}
@@ -123,13 +118,10 @@ const InvitePage = () => {
                     <pre>{JSON.stringify(inviteData, null, 2)}</pre>
                 </Grid>
             </Grid>
-            <LoginDialog open={accepting || !!user.showLogin || !!user.showSignup}
-                onClose={onCloseDialog}
-                user={user}
-                groupName={group && group.name}
-                setDialog={setDialog} />
         </main>
     )
 }
 
-export default InvitePage;
+export default () => <PublicPage>
+    <InvitePage />
+</PublicPage>

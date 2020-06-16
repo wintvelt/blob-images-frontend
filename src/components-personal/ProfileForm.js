@@ -1,33 +1,8 @@
 import React, { useState } from 'react';
 import { useSnackbar } from 'notistack';
 
-import { makeStyles } from '@material-ui/core/styles'
 import Form from '../components-generic/Form';
 import { useUser } from '../../src/data/userData';
-
-const useStyles = makeStyles(theme => ({
-    form: {
-        position: 'relative',
-        padding: theme.spacing(3, 4, 4, 4),
-        // backgroundColor: theme.palette.background.white,
-        // color: theme.palette.text.secondary,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        justifyContent: 'flex-start'
-    },
-    submit: {
-        marginTop: theme.spacing(4)
-    },
-    info: {
-        textAlign: 'center',
-        color: 'white',
-        padding: theme.spacing(1, 2),
-        margin: theme.spacing(2, 0),
-        backgroundColor: 'cornflowerblue',
-        borderRadius: theme.spacing(1)
-    }
-}));
 
 const fieldConfig = {
     name: {
@@ -48,7 +23,6 @@ const fieldConfig = {
 };
 
 const ProfileForm = (props) => {
-    const classes = useStyles();
     const { saveProfile } = useUser();
     const [isLoading, setIsLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();

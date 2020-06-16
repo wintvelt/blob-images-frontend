@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
         zIndex: theme.zIndex.drawer + 1,
     },
+    homeLink: {
+        maxHeight: theme.spacing(3),
+    },
     navLink: {
         ...theme.typography.overline,
         color: theme.palette.primary.contrastText,
@@ -77,8 +80,8 @@ export default function HideAppBar(props) {
                 <Toolbar>
                     <Grid container spacing={1} alignItems='center' justify='center'>
                         <Grid item md={2} xs={6}>
-                            <Link href='/' className={classes.homeLink}>
-                                <img src='/img/logo_new3.png' width='60%' />
+                            <Link href='/'>
+                                <img src='/img/logo_new3.png' className={classes.homeLink} />
                             </Link>
                             <Hidden smDown><img src='/img/payoff.png' width='40%' /></Hidden>
                         </Grid>

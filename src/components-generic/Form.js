@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography'
 
 import { Field, useFields, validateForm } from '../components-generic/FormField';
 import FormButton from '../components-generic/FormButton';
+import FormSmallButtons from '../components-generic/FormSmallButtons';
+import FormMessage from '../components-generic/FormMessage';
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -26,9 +28,21 @@ const getValues = (fields) => {
     return result;
 }
 
-const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit, onDelete,
-    submitText, deleteText }) => {
+const FormWrapper = ({ noPaper, children }) => {
     const classes = useStyles();
+    return (noPaper) ?
+        <form name='form' noValidate className={classes.form}>
+            {children}
+            </form>
+        : <form name='form' noValidate>
+            <Paper className={classes.form}>
+                {children}
+            </Paper>
+        </form>
+}
+
+const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit, onDelete,
+    submitText, deleteText, smallButtons, Message, noPaper }) => {
     const [fields, setFields] = useFields(formFields);
 
     useEffect(() => {
@@ -51,30 +65,33 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
     }
 
     return (
-        <form name='form' noValidate>
-            <Paper className={classes.form}>
-                <Typography component="h1" variant="h4"
-                    align='left' gutterBottom>
-                    {title}
-                </Typography>
-                {subtitle && <Typography paragraph variant='subtitle1'>
+        <FormWrapper noPaper={noPaper}>
+            <Typography component="h1" variant="h4"
+                align='left' gutterBottom>
+                {title}
+            </Typography>
+            {subtitle &&
+                <Typography paragraph variant='subtitle1'>
                     {subtitle}
-                </Typography>}
-                {Object.keys(formFields).map(fieldName =>
-                    <Field key={fieldName}
-                        fieldName={fieldName}
-                        field={fields[fieldName]}
-                        onChange={onChange(fieldName)}
-                        showValidation={fields.showValidation} />
-                )}
-                <FormButton type='submit' isLoading={isLoading} onClick={handleSubmit}>
-                    {submitText}
-                </FormButton>
-                {onDelete && <FormButton type='delete' isLoading={isLoading} onClick={onDelete}>
-                    {deleteText}
-                </FormButton>}
-            </Paper>
-        </form>
+                </Typography>
+            }
+            {Object.keys(formFields).map(fieldName =>
+                <Field key={fieldName}
+                    fieldName={fieldName}
+                    field={fields[fieldName]}
+                    onChange={onChange(fieldName)}
+                    showValidation={fields.showValidation} />
+            )}
+            {Message && <FormMessage>{Message}</FormMessage>}
+            <FormButton type='submit' isLoading={isLoading} onClick={handleSubmit}>
+                {submitText}
+            </FormButton>
+            {onDelete && <FormButton type='delete' isLoading={isLoading} onClick={onDelete}>
+                {deleteText}
+            </FormButton>
+            }
+            {smallButtons && <FormSmallButtons buttons={smallButtons} />}
+        </FormWrapper>
     )
 };
 

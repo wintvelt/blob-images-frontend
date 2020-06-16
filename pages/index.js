@@ -8,7 +8,7 @@ import Benefits from '../src/components-home/Benefits'
 import Features from '../src/components-home/Features'
 import Quotes from '../src/components-home/Quotes'
 import Pricing from '../src/components-home/Pricing'
-import SignupForm from '../src/components-login/Signup';
+import SignupForm from '../src/components-login/SignupForm';
 
 const Home = () => {
     const user = useUser();

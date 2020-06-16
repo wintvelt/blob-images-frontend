@@ -39,7 +39,7 @@ const theme = createMuiTheme({
             }
         },
         MuiFormControlLabel: {
-            label: { lineHeight: '14px' }
+            label: { lineHeight: '1.2rem' }
         }
     }
 });

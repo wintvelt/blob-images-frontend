@@ -11,7 +11,7 @@ import { useApiData } from '../../src/data/apiData';
 import { useUser } from '../../src/components-generic/UserContext';
 import GroupCardLayout from '../../src/components-personal/GroupCardLayout';
 import InviteForm from '../../src/components-invite/InviteForm';
-import LoginDialog from '../../src/components-invite/LoginDialog';
+import LoginDialog from '../../src/components-personal/LoginDialog';
 import ForOther from '../../src/components-invite/ForOther';
 import Accepted from '../../src/components-invite/Accepted';
 import OtherError from '../../src/components-invite/OtherError';

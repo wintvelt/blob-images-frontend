@@ -6,26 +6,18 @@ import Form from '../components-generic/Form';
 
 const fieldConfig = {
     email: {
-        autoComplete: 'email',
-        type: 'email',
-        label: 'email',
+        autoComplete: 'email', type: 'email', label: 'Your email',
         validations: [{
-            text: 'please enter your email address',
-            validate: (val) => (val && val.split('@')[1] && !!val.split('@')[1].split('.')[1]),
-        }],
-    },
-    password: {
-        autoComplete: 'current-password',
-        type: 'password',
-        label: 'password',
-        validations: [{
-            text: 'please enter your password',
-            validate: (val) => (!!val)
+            text: 'enter a valid email address',
+            validate: (val) => (
+                val &&
+                val.split('@')[1] && !!val.split('@')[1].split('.')[1]
+            )
         }],
     },
 };
 
-const LoginForm = (props) => {
+const ForgotPswForm = (props) => {
     const { title, subtitle } = props;
     const userData = useUser();
     const { user } = userData;
@@ -38,34 +30,28 @@ const LoginForm = (props) => {
     };
 
     const onSubmit = (fields) => handler(async () => {
-        const { email, password } = fields;
-        await userData.login(email, password);
+        const { email } = fields;
+        await userData.forgotPassword(email);
     });
 
-    const onForgotPsw = (fields) => {
+    const onLogin = (fields) => {
         setIsLoading(true);
-        userData.setPath('/forgotpsw');
+        userData.setPath('/login');
     };
-
-    const onVerify = (fields) => {
-        setIsLoading(true);
-        userData.setPath('/verify');
-    };
-
     const onSignup = (fields) => {
         setIsLoading(true);
         userData.setPath('/signup');
     };
 
-    const Message = ({ text }) => (
+    const Message = () => (
         <>
             Hmm, we could not log you in. <br />
-            {text}<br />
+            {'errormessage'}<br />
             {true && <span>
                 Maybe you need to
                 <Button onClick={onVerify} style={{
                     padding: 0,
-                    margin: '0px 4px 2px 4px',
+                    margin: '0 8px',
                     fontWeight: 400,
                     textTransform: 'none'
                 }} color='primary'>
@@ -74,23 +60,22 @@ const LoginForm = (props) => {
                  ?
             </span>}
         </>
-    )
-
+    );
     return <Form
-        title={title || 'Welcome back!'}
-        subtitle={subtitle || 'Please log in with your email and password'}
+        title={title || 'Forgot password'}
+        subtitle={subtitle || 'Leave your email to reset your password'}
         formFields={fieldConfig}
         initialValues={[{ email: user.profile?.email }]}
         isLoading={isLoading}
         onSubmit={onSubmit}
-        submitText='Log in'
+        submitText='Reset password'
         smallButtons={[
-            { onClick: onForgotPsw, text: 'forgot password' },
-            { onClick: onSignup, text: 'sign up' },
+            { onClick: onLogin, text: 'Log in' },
+            { onClick: onSignup, text: 'Sign up' },
         ]}
-        Message={(user.error) ? <Message text={user.error?.message} /> : null}
+        messageComponent={(user.error) ? Message : null}
         noPaper
     />
 };
 
-export default LoginForm;
+export default ForgotPswForm;

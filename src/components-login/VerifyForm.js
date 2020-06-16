@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+
 import Button from '@material-ui/core/Button';
 
 import { useUser } from '../data/userData';
 import Form from '../components-generic/Form';
-import Link from '../components-generic/Link';
-import { newPasswordValidations } from '../components-generic/FormField';
 
 const fieldConfig = {
     email: {
@@ -26,11 +26,14 @@ const fieldConfig = {
     },
 };
 
-
 const VerifyForm = (props) => {
     const { title, subtitle } = props;
     const userData = useUser();
     const { user } = userData;
+    const router = useRouter();
+    const pathEmail = router.query?.email;
+    const userEmail = user.profile?.email;
+    const email = pathEmail || userEmail;
     const [isLoading, setIsLoading] = useState(false);
 
     const handler = async (lambda) => {
@@ -79,7 +82,7 @@ const VerifyForm = (props) => {
         title={title || 'Confirm your account'}
         subtitle={formSubtitle}
         formFields={fieldConfig}
-        initialValues={{ email: user.profile?.email }}
+        initialValues={{ email }}
         isLoading={isLoading}
         onSubmit={onSubmit}
         submitText='Sign up'

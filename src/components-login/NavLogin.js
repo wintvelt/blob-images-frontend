@@ -1,19 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useUser } from '../components-generic/UserContext';
 
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Link from '../components-generic/Link';
+import { makeImageUrl } from '../components-generic/imageProvider';
+import { useUser } from '../data/userData';
 import NavMenu from './NavLogin-Menu';
 import NavDrawer from './NavLogin-Drawer';
-import { makeImageUrl } from '../components-generic/imageProvider';
-import { Typography } from '@material-ui/core';
 
 const userMenu = [
     { icon: 'group', text: 'Groups', href: '/personal/groups' },
@@ -60,11 +59,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NavLogin(props) {
     const classes = useStyles();
-    const { user, logout, setDialog } = useUser(true);
+    const { user, logout, setPath } = useUser();
     const router = useRouter();
-    const name = user.profile.name;
-    const email = user.profile.email;
-    const avatar = user.profile.avatar;
+    const isAuthPath = ['/login','/signup','/verifysignup','/forgotpsw','/confirmpsw'].includes(router.pathname);
+    const {name, email, avatar } = user.profile;
     const avatarSrc = makeImageUrl(avatar, 40, 40);
     const [menuAnchor, setMenuAnchor] = useState(null);
     const handleClick = (e) => {
@@ -124,11 +122,11 @@ export default function NavLogin(props) {
                 </>
             }
             {
-                !user.isAuthenticated &&
+                (!user.isAuthenticated && !isAuthPath) &&
                 <Button disableElevation
                     variant='contained'
                     disabled={user.showLogin}
-                    onClick={() => setDialog({ showLogin: true })}>
+                    onClick={() => setPath('/login')}>
                     Login
                 </Button>
             }

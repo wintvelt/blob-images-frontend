@@ -24,7 +24,7 @@ export default function AuthForms({ path, groupName }) {
             title='Set your new password'
         />}
         {(path === '/verifysignup') && <VerifyForm
-            title={'Sign up to join' + groupText}
+            title={'Confirm your account to join' + groupText}
             subtitle='Check your inbox for the confirmation code'
         />}
     </>

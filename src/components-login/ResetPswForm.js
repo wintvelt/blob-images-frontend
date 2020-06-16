@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+
 import Button from '@material-ui/core/Button';
 
 import { useUser } from '../data/userData';
@@ -33,6 +35,10 @@ const ResetPswForm = (props) => {
     const { title, subtitle } = props;
     const userData = useUser();
     const { user } = userData;
+    const router = useRouter();
+    const pathEmail = router.query?.email;
+    const userEmail = user.profile?.email;
+    const email = pathEmail || userEmail;
     const [isLoading, setIsLoading] = useState(false);
 
     const handler = async (lambda) => {
@@ -77,7 +83,7 @@ const ResetPswForm = (props) => {
         title={title || 'Set new password'}
         subtitle={formSubtitle}
         formFields={fieldConfig}
-        initialValues={[{ email: user.profile?.email }]}
+        initialValues={{ email }}
         isLoading={isLoading}
         onSubmit={onSubmit}
         submitText='Save new password'

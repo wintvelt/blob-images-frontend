@@ -16,12 +16,14 @@ const AuthPage = () => {
     const firstRender = useRef(true);
 
     useEffect(() => {
+        // console.log({ userPath, routerPath })
         if (firstRender.current) {
+            // console.log('first render')
             firstRender.current = false;
             return;
         }
-        console.log({ userPath, routerPath })
         if (userPath !== routerPath) {
+            // console.log(`redirecting to ${userPath}`);
             router.push(userPath || '/');
         }
     }, [userPath]);

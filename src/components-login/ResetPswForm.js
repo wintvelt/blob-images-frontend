@@ -57,22 +57,9 @@ const ResetPswForm = (props) => {
         userData.setPath('/forgotpsw');
     };
 
-    const Message = ({ text }) => (
+    const Message = ({ error }) => (
         <>
-            Hmm, we could not log you in. <br />
-            {text}<br />
-            {true && <span>
-                Maybe you need to
-                <Button onClick={onVerify} style={{
-                    padding: 0,
-                    margin: '0px 4px 2px 4px',
-                    fontWeight: 400,
-                    textTransform: 'none'
-                }} color='primary'>
-                    Confirm your email
-                 </Button>
-                 ?
-            </span>}
+            Something went wrong.{' '}{error.message}
         </>
     );
 
@@ -90,7 +77,7 @@ const ResetPswForm = (props) => {
         smallButtons={[
             { onClick: onForgotPsw, text: 'Send me another code' },
         ]}
-        Message={(user.error) ? <Message text={user.error?.message} /> : null}
+        Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper
     />
 };

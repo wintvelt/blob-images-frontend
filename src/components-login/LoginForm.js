@@ -49,7 +49,7 @@ const LoginForm = (props) => {
 
     const onVerify = (fields) => {
         setIsLoading(true);
-        userData.setPath('/verify');
+        userData.setPath('/verifysignup');
     };
 
     const onSignup = (fields) => {
@@ -57,12 +57,12 @@ const LoginForm = (props) => {
         userData.setPath('/signup');
     };
 
-    const Message = ({ text }) => (
+    const Message = ({ error }) => (
         <>
-            Hmm, we could not log you in. <br />
-            {text}<br />
-            {true && <span>
-                Maybe you need to
+            Hmm, we could not log you in.{' '}
+            {error.message}<br/>
+            {(error.code === 'UserNotConfirmedException') && <span>
+                You probably need to
                 <Button onClick={onVerify} style={{
                     padding: 0,
                     margin: '0px 4px 2px 4px',
@@ -71,10 +71,10 @@ const LoginForm = (props) => {
                 }} color='primary'>
                     Confirm your email
                  </Button>
-                 ?
+                 to complete the signup
             </span>}
         </>
-    )
+    );
 
     return <Form
         title={title || 'Welcome back!'}
@@ -88,7 +88,7 @@ const LoginForm = (props) => {
             { onClick: onForgotPsw, text: 'forgot password' },
             { onClick: onSignup, text: 'sign up' },
         ]}
-        Message={(user.error) ? <Message text={user.error?.message} /> : null}
+        Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper
     />
 };

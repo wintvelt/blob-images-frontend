@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
     },
     homeLink: {
-        maxHeight: theme.spacing(3),
+        maxHeight: theme.spacing(8),
     },
     navLink: {
         ...theme.typography.overline,
@@ -79,7 +79,7 @@ export default function HideAppBar(props) {
             <AppBar className={classes.nav} elevation={0}>
                 <Toolbar>
                     <Grid container spacing={1} alignItems='center' justify='center'>
-                        <Grid item md={2} xs={6}>
+                        <Grid item md={3} xs={6}>
                             <Link href='/'>
                                 <img src='/img/logo_new3.png' className={classes.homeLink} />
                             </Link>

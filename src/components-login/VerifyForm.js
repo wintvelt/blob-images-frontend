@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 
 import Button from '@material-ui/core/Button';
 
@@ -28,12 +29,14 @@ const fieldConfig = {
 
 const VerifyForm = (props) => {
     const { title, subtitle } = props;
+    const { enqueueSnackbar } = useSnackbar();
     const userData = useUser();
     const { user } = userData;
     const router = useRouter();
     const pathEmail = router.query?.email;
     const userEmail = user.profile?.email;
     const email = pathEmail || userEmail;
+    const pathCode = router.query?.code;
     const [isLoading, setIsLoading] = useState(false);
 
     const handler = async (lambda) => {
@@ -42,7 +45,7 @@ const VerifyForm = (props) => {
         setIsLoading(false);
     };
 
-    const onSubmit = (fields) => handler(async () => {
+    const onSubmit = async (fields) => handler(async () => {
         const { email, confirmation } = fields;
         await userData.confirmSignup(email, confirmation);
     });
@@ -52,45 +55,49 @@ const VerifyForm = (props) => {
         userData.setPath('/login');
     };
 
-    const onResend = (fields) => handler(async () => {
+    const onResend = async (fields) => handler(async () => {
         const { email } = fields;
         await userData.requestVerify(email);
+        enqueueSnackbar('New confirmation code was sent, check your inbox');
     });
 
-    const Message = () => (
+    const Message = ({ error }) => (
         <>
-            [placeholder] <br />
-            {'errormessage'}<br />
-            {true && <span>
-                Maybe you need to
-                <Button onClick={onResend} style={{
+            Something went wrong. {' '}{error.message}<br />
+            {(error.code === 'CodeMismatchException') && <span>
+                You could ask for a new code (see below)
+            </span>}
+            {(error.message && error.message.includes('CONFIRMED')) && <span>
+                This means you can already
+                <Button onClick={onLogin} style={{
                     padding: 0,
-                    margin: '0 8px',
+                    margin: '0px 4px 2px 4px',
                     fontWeight: 400,
                     textTransform: 'none'
                 }} color='primary'>
-                    Confirm your email
+                    Log in
                  </Button>
-                 ?
+                 to your account
             </span>}
         </>
     );
-    const formSubtitle = subtitle || 'Please check your email. If you signed up with this address, ' +
-    'you\'ll receive a new verification code.';
+    const formSubtitle = (pathEmail && pathCode && !user.error) ? 'Click "Confirm" to confirm your account'
+        : subtitle || 'Please check your email. If you signed up with this address, ' +
+        'you\'ll receive a new verification code';
 
     return <Form
         title={title || 'Confirm your account'}
         subtitle={formSubtitle}
         formFields={fieldConfig}
-        initialValues={{ email }}
+        initialValues={{ email, confirmation: pathCode }}
         isLoading={isLoading}
         onSubmit={onSubmit}
-        submitText='Sign up'
+        submitText='Confirm'
         smallButtons={[
             { onClick: onResend, text: 'Send email with new code' },
             { onClick: onLogin, text: 'Log in' },
         ]}
-        messageComponent={(user.error) ? Message : null}
+        Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper
     />
 };

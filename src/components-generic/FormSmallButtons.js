@@ -15,8 +15,10 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const FormSmallButtons = ({ buttons }) => {
+const FormSmallButtons = ({ buttons, values }) => {
     const classes = useStyles();
+
+    const handleClick = (onClick) => () => onClick(values);
 
     return <div style={{
         display: 'flex',
@@ -24,7 +26,8 @@ const FormSmallButtons = ({ buttons }) => {
     }}>
         {buttons.map((button, i) => (
             <Typography key={i} variant='caption' gutterBottom>
-                <Button onClick={button.onClick} className={classes.smallButton} color='primary'>
+                <Button onClick={handleClick(button.onClick)}
+                    className={classes.smallButton} color='primary'>
                     {button.text}
                 </Button>
             </Typography>

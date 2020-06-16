@@ -65,9 +65,9 @@ export const useUser = () => {
         };
         if (user.isAuthenticating) onLoad();
     }, []);
-    const errorHandler = (handler) => {
+    const errorHandler = async (lambda) => {
         try {
-            handler();
+            await lambda();
         } catch (error) {
             setUpdate({ error });
         }
@@ -77,12 +77,12 @@ export const useUser = () => {
     const login = async (username, password) => {
         try {
             await Auth.signIn(username, password);
-            const user = await getUserInfo();
+            const user = await loadUser();
             setUpdate({
                 profile: user,
                 isAuthenticated: true,
                 isAuthenticating: false,
-                path: '',
+                path: '/',
             });
         } catch (error) {
             setUpdate({
@@ -123,18 +123,22 @@ export const useUser = () => {
     };
     const confirmSignup = async (email, confirmation) => {
         const { profile } = user;
-        errorHandler(async () => {
+        try {
             await Auth.confirmSignUp(email, confirmation);
             if (profile && profile.password && profile.email === email) {
                 await login(email, profile.password);
+                setUpdate({ path: '/' });
+            } else {
+                setUpdate({ path: '/login' });
             }
-            setUpdate({ path: '' });
-        });
+        } catch (error) {
+            setUpdate({ error });
+        };
     };
     const requestVerify = async (email) => {
         errorHandler(async () => {
             await Auth.resendSignUp(email);
-            setUpdate({ path: 'verify' });
+            setUpdate({ path: '/verifysignup' });
         });
     };
     const forgotPassword = async (email) => {

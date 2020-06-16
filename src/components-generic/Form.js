@@ -90,7 +90,7 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
                 {deleteText}
             </FormButton>
             }
-            {smallButtons && <FormSmallButtons buttons={smallButtons} />}
+            {smallButtons && <FormSmallButtons buttons={smallButtons} values={getValues(fields)}/>}
         </FormWrapper>
     )
 };

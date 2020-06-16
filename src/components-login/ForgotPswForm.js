@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import Button from '@material-ui/core/Button';
 
 import { useUser } from '../data/userData';
@@ -21,6 +22,8 @@ const ForgotPswForm = (props) => {
     const { title, subtitle } = props;
     const userData = useUser();
     const { user } = userData;
+    const userEmail = user.profile?.email;
+
     const [isLoading, setIsLoading] = useState(false);
 
     const handler = async (lambda) => {
@@ -43,29 +46,17 @@ const ForgotPswForm = (props) => {
         userData.setPath('/signup');
     };
 
-    const Message = () => (
+    const Message = (error) => (
         <>
-            Hmm, we could not log you in. <br />
-            {'errormessage'}<br />
-            {true && <span>
-                Maybe you need to
-                <Button onClick={onVerify} style={{
-                    padding: 0,
-                    margin: '0 8px',
-                    fontWeight: 400,
-                    textTransform: 'none'
-                }} color='primary'>
-                    Confirm your email
-                 </Button>
-                 ?
-            </span>}
+            Something went wrong. {' '}
+            {error.message}
         </>
     );
     return <Form
         title={title || 'Forgot password'}
         subtitle={subtitle || 'Leave your email to reset your password'}
         formFields={fieldConfig}
-        initialValues={[{ email: user.profile?.email }]}
+        initialValues={{ email: userEmail }}
         isLoading={isLoading}
         onSubmit={onSubmit}
         submitText='Reset password'
@@ -73,7 +64,7 @@ const ForgotPswForm = (props) => {
             { onClick: onLogin, text: 'Log in' },
             { onClick: onSignup, text: 'Sign up' },
         ]}
-        messageComponent={(user.error) ? Message : null}
+        Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper
     />
 };

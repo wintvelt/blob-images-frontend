@@ -20,6 +20,7 @@ const AuthPage = () => {
             firstRender.current = false;
             return;
         }
+        console.log({ userPath, routerPath })
         if (userPath !== routerPath) {
             router.push(userPath || '/');
         }

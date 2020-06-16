@@ -62,7 +62,7 @@ export default function NavLogin(props) {
     const { user, logout, setPath } = useUser();
     const router = useRouter();
     const isAuthPath = ['/login','/signup','/verifysignup','/forgotpsw','/confirmpsw'].includes(router.pathname);
-    const {name, email, avatar } = user.profile;
+    const {name, email, avatar } = user.profile || {};
     const avatarSrc = makeImageUrl(avatar, 40, 40);
     const [menuAnchor, setMenuAnchor] = useState(null);
     const handleClick = (e) => {

@@ -66,20 +66,19 @@ const SignupForm = (props) => {
         userData.setPath('/login');
     };
 
-    const onVerify = (fields) => {
+    const onVerify = () => {
         setIsLoading(true);
-        userData.setPath('/verify');
+        userData.setPath('/verifysignup');
     };
 
-    const Message = () => (
+    const Message = ({error}) => (
         <>
-            Hmm, we could not log you in. <br />
-            {'errormessage'}<br />
-            {true && <span>
+            {error.message}<br/>
+            {(error.code === 'UsernameExistsException') && <span>
                 Maybe you need to
                 <Button onClick={onVerify} style={{
                     padding: 0,
-                    margin: '0 8px',
+                    margin: '0px 4px 2px 4px',
                     fontWeight: 400,
                     textTransform: 'none'
                 }} color='primary'>
@@ -103,7 +102,7 @@ const SignupForm = (props) => {
         smallButtons={[
             { onClick: onLogin, text: 'Log in' },
         ]}
-        messageComponent={(user.error) ? Message : null}
+        Message={(user.error)? <Message error={user.error}/> : null}
         noPaper
     />
 };

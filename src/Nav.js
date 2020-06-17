@@ -81,7 +81,7 @@ export default function HideAppBar(props) {
                             <Link href='/'>
                                 <img src='/img/logo_new3.png' className={classes.homeLink} />
                             </Link>
-                            <Hidden smDown><img src='/img/payoff.png' width='40%' /></Hidden>
+                            <Hidden smDown><img src='/img/payoff.png' width='30%' /></Hidden>
                         </Grid>
                         <Grid item xs />
                         {/* {[

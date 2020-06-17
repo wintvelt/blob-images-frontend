@@ -22,12 +22,15 @@ export const AvatarSkeleton = (props) => {
     </Avatar>
 }
 
+const flexStyle = { display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' };
+const iconStyle = { fontSize: '48px', color: 'grey' };
+
 export const ImageSkeleton = (props) => {
     const { isLoading, ...rest } = props;
     return (isLoading) ?
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}
+        <div style={flexStyle}
             className='pulse' >
-            <Icon style={{fontSize:'48px', color: 'grey'}} >image</Icon>
+            <Icon style={iconStyle} >image</Icon>
         </div>
         : <img {...rest} />
 }

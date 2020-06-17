@@ -3,6 +3,11 @@ import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 import theme from '../src/theme';
 
+const bodyStyle = {
+    backgroundImage: 'url(/img/farmer.png)'
+    //     background: 'linear-gradient(355deg, rgba(70,52,78,1) 10%, rgba(90,85,96,1) 90%)'
+};
+
 export default class MyDocument extends Document {
     render() {
         return (<html lang="en" >
@@ -18,10 +23,7 @@ export default class MyDocument extends Document {
                     rel="stylesheet" />
             </Head>
             <body
-                style={{
-                    backgroundImage: 'url(/img/farmer.png)'
-                    //     background: 'linear-gradient(355deg, rgba(70,52,78,1) 10%, rgba(90,85,96,1) 90%)'
-                }}
+                style={bodyStyle}
             >
                 <Main />
                 <NextScript />

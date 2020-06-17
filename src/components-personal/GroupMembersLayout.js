@@ -41,6 +41,8 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const paddingLeft = { paddingLeft: '4px' };
+
 const MemberSummary = (props) => {
     const { avatarClass, panelTitleClass, summaryClass, members, isLarge, isLoading } = props;
     const maxAvatars = (isLarge) ? 10 : 5;
@@ -58,7 +60,7 @@ const MemberSummary = (props) => {
                 <AvatarSkeleton key={member.name + i} alt={member.name} src={member.avatar}
                     className={avatarClass} isLoading={isLoading}>
                     {(!member.image) &&
-                        <span style={{ paddingLeft: '4px' }}>{initials(member.name)}</span>
+                        <span style={paddingLeft}>{initials(member.name)}</span>
                     }
                 </AvatarSkeleton>
             ))}

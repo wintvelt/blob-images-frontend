@@ -5,6 +5,8 @@ import { useApiDataValue } from '../../src/data/apiData';
 import AlbumCardLayout from './AlbumCardLayout';
 import CardList from '../components-generic/CardList';
 
+const paddingStyle = { padding: '8px' };
+
 const AlbumList = () => {
     const router = useRouter();
     const groupId = router.query.id;
@@ -18,7 +20,7 @@ const AlbumList = () => {
         path: '/personal/groups/[id]/albums/[albumid]/edit',
         asPath: `/personal/groups/${groupId}/albums/new/edit`
     };
-    return <div style={{ padding: '8px' }}>
+    return <div style={paddingStyle}>
         <CardList list={albumsWithEdit} component={AlbumCardLayout} addProps={albumAddProps}
             width={3} spacing={2} isLoading={albums.isLoading} />
     </div>

@@ -9,17 +9,19 @@ const Child = () => {
     </pre>
 }
 
+const divStyle = {
+    height: '300px',
+    width: '700px',
+    background: 'aliceblue',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+};
+
 export default (props) => {
     const source = 'some url';
     return <main>
-        <div style={{
-            height: '300px',
-            width: '700px',
-            background: 'aliceblue',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}>
+        <div style={divStyle}>
             <Child />
         </div>
     </main>

@@ -31,8 +31,12 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const flexStyle = { display: 'flex' };
+const fullSize = { width: '100%', height: '100%' };
+const fitContent = { height: 'fit-content' };
+
 const SelectButton = ({ iconClass, icon, onSelect }) => (
-    <div style={{ display: 'flex' }}>
+    <div style={flexStyle}>
         <IconButton aria-label={`select photo`} className={iconClass} onClick={onSelect}>
             <Icon fontSize='small'>{icon}</Icon>
         </IconButton>
@@ -66,10 +70,10 @@ const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noO
         e.stopPropagation();
         onSelect && onSelect(id);
     }
-    return <div onClick={handleClick} style={{ width: '100%', height: '100%' }}>
+    return <div onClick={handleClick} style={fullSize}>
         <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
         <GridListTileBar
-            style={{ height: 'fit-content' }}
+            style={fitContent}
             title={(!noOwner && (name || isLoading)) &&
                 <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by '}{name}</TextSkeleton>}
             subtitle={(!isSmall || noOwner) && <>

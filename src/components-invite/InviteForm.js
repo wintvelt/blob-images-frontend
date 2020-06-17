@@ -26,6 +26,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const alignCenter = { textAlign: 'center' };
+const gutterTop = { marginTop: '16px' };
+
 const InviteForm = ({ invite, isLoading, isSaving, onAccept, onDecline, profile, isAlreadyMember }) => {
     const classes = useStyles();
     const isWaiting = isLoading || isSaving;
@@ -60,7 +63,7 @@ const InviteForm = ({ invite, isLoading, isSaving, onAccept, onDecline, profile,
                     {isAlreadyMember && ' (again)'}
                     !
                     </Typography>
-                {(!isLoading) && <div style={{ textAlign: 'center' }}>
+                {(!isLoading) && <div style={alignCenter}>
                     <TextSkeleton isLoading={isLoading}>
                         <Typography variant='h5' align='center' gutterBottom>
                             {from && from.name}{' '}
@@ -76,10 +79,10 @@ const InviteForm = ({ invite, isLoading, isSaving, onAccept, onDecline, profile,
                         ))}
                     </Typography>
                     <img src='/img/invite_divider.png' alt='divider' width={64} />
-                    <em><Typography variant='body1' align='center' gutterBottom style={{ marginTop: '16px' }}>
+                    <em><Typography variant='body1' align='center' gutterBottom style={gutterTop}>
                         This invite is valid until{' '}{expireDate(invite.createdAt)}
                     </Typography></em>
-                    {isToDifferentEmail && <Typography variant='body2' align='center' gutterBottom style={{ marginTop: '16px' }}>
+                    {isToDifferentEmail && <Typography variant='body2' align='center' gutterBottom style={gutterTop}>
                         Originally addressed to{' '}{toEmail} <br />
                         It would be decent to only accept if this is you
                     </Typography>}

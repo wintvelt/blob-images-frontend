@@ -66,7 +66,10 @@ const featureList = [
             + 'And of course you download photos or albums if you want to have them printed.'
         ]
     },
-]
+];
+
+const gutterTop = { marginTop: '8px' };
+const flexStyle = { flex: 1 };
 
 const Features = () => {
     const classes = useStyles()
@@ -109,11 +112,11 @@ const Features = () => {
                             ))}
                             {steps && steps.map((step, i) => (
                                 <Grid container key={step} alignItems='baseline' spacing={3}
-                                    style={{ marginTop: '8px' }}>
+                                    style={gutterTop}>
                                     <Grid item>
                                         <Avatar alt={'step ' + i + 1} className={classes.step}>{i + 1}</Avatar>
                                     </Grid>
-                                    <Grid item style={{ flex: 1 }}>
+                                    <Grid item style={flexStyle}>
                                         <Typography variant='h5'>{step}</Typography>
                                         <Hidden smDown>
                                             <Typography variant='body1' color='textSecondary'>

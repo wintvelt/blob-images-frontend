@@ -9,6 +9,9 @@ import Typography from '@material-ui/core/Typography';
 
 import PhotoList from '../components-personal/PhotoList';
 
+const flexCenter = { display: 'flex', alignItems: 'center' };
+const flexGrow = { flexGrow: 1 };
+
 const makeListProps = (type, groupId, albumId) => {
     switch (type) {
         case 'group': {
@@ -46,8 +49,8 @@ export default function PhotoPickDialog({ type, open, handleClose, onChange }) {
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="pick-photos-dialog"
             fullWidth maxWidth='md'>
-            <DialogTitle disableTypography id="image-upload-dialog" style={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant='h6' style={{ flexGrow: 1 }}>{listProps.title}</Typography>
+            <DialogTitle disableTypography id="image-upload-dialog" style={flexCenter}>
+                <Typography variant='h6' style={flexGrow}>{listProps.title}</Typography>
                 <IconButton onClick={handleClose}><Icon>close</Icon></IconButton>
             </DialogTitle>
             <DialogContent>

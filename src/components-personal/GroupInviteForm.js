@@ -30,6 +30,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const smallFont = { fontSize: '80%' };
+
 const inviteeFieldConfig = (index, memberEmails) => ({
     name: {
         autoComplete: `invitee-name-${index}`,
@@ -65,7 +67,7 @@ const inviteeFieldConfig = (index, memberEmails) => ({
     guestOnly: {
         autoComplete: `guest-only-${index}`,
         type: 'checkbox',
-        label: <span style={{ fontSize: '80%' }}>guest only</span>,
+        label: <span style={smallFont}>guest only</span>,
         width: 1,
     },
 });
@@ -77,9 +79,15 @@ const initialInvitee = (idx) => ({
     idx
 });
 
+const gutterBottom = { marginBottom: '16px' };
+const gridStyle = { marginTop: '20px', textAlign: 'end' };
+const fullWidth = { width: '100%' };
+const gutterTop = { marginTop: '16px' };
+const labelStyle = { color: '#f44336', marginLeft: '12px' };
+
 const InviteeLine = ({ invitee, onChange, onRemove, showValidation, showRemove, memberEmails }) => {
     const inviteeFields = inviteeFieldConfig(invitee.idx, memberEmails);
-    return <Grid container spacing={1} style={{ marginBottom: '16px' }}>
+    return <Grid container spacing={1} style={gutterBottom}>
         {Object.keys(inviteeFields).map(fieldName => {
             const field = { ...inviteeFields[fieldName], value: invitee[fieldName] };
             return <Grid item md={field.width} key={fieldName}
@@ -92,14 +100,14 @@ const InviteeLine = ({ invitee, onChange, onRemove, showValidation, showRemove, 
                     showValidation={showValidation} />
             </Grid>
         })}
-        <Grid item md={1} xs={6} style={{ marginTop: '20px', textAlign: 'end' }}>
+        <Grid item md={1} xs={6} style={gridStyle}>
             {(showRemove) &&
                 <IconButton size='small' onClick={onRemove(invitee.idx)}>
                     <Icon>close</Icon>
                 </IconButton>
             }
         </Grid>
-        <Hidden mdUp><Divider style={{ width: '100%' }} /></Hidden>
+        <Hidden mdUp><Divider style={fullWidth} /></Hidden>
     </Grid>
 };
 
@@ -166,7 +174,7 @@ const GroupInviteForm = ({ title }) => {
             try {
                 await Promise.all(Object.keys(invitees).map(key => {
                     const invitee = invitees[key];
-                    const role = (invitee.guestOnly)? 'guest' : 'admin';
+                    const role = (invitee.guestOnly) ? 'guest' : 'admin';
                     return API.post('blob-images', `/groups/${groupId}/invite`, {
                         body: { toName: invitee.name, toEmail: invitee.email, message, role }
                     });
@@ -210,7 +218,7 @@ const GroupInviteForm = ({ title }) => {
                 <TextField
                     value={message}
                     onChange={onChangeMessage}
-                    style={{ marginTop: '16px' }}
+                    style={gutterTop}
                     variant='outlined'
                     label='your message'
                     multiline
@@ -219,7 +227,7 @@ const GroupInviteForm = ({ title }) => {
                     error={showValidation && !message}
                 />
                 {showValidation && !message &&
-                    <Typography variant='caption' style={{ color: '#f44336', marginLeft: '12px' }}>
+                    <Typography variant='caption' style={labelStyle}>
                         Add a personal message
                     </Typography>
                 }

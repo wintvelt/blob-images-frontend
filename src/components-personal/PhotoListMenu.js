@@ -8,6 +8,8 @@ import { useSnackbar } from 'notistack';
 import { useApiData } from '../data/apiData';
 import { useUser } from '../data/userData';
 
+const redStyle = { color: 'red' };
+
 const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
     const albumData = album && album.data;
     const { user, saveProfile } = useUser();
@@ -67,7 +69,7 @@ const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
             {album && <MenuItem onClick={onSetAlbumCover}>Set as album cover</MenuItem>}
             <MenuItem onClick={onSetProfilePic}>Set as profile picture</MenuItem>
             {album && userIsOwner && <MenuItem>Remove from album</MenuItem>}
-            {userIsOwner && <MenuItem onClick={onDelete} style={{ color: 'red' }}>Delete</MenuItem>}
+            {userIsOwner && <MenuItem onClick={onDelete} style={redStyle}>Delete</MenuItem>}
         </Menu>
     );
 }

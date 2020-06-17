@@ -15,15 +15,21 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const divStyle = {
+    display: 'flex',
+    justifyContent: 'space-between'
+};
+const divStyle2 = {
+    display: 'flex',
+    justifyContent: 'center'
+};
+
 const FormSmallButtons = ({ buttons, values }) => {
     const classes = useStyles();
 
     const handleClick = (onClick) => () => onClick(values);
 
-    return <div style={{
-        display: 'flex',
-        justifyContent: (buttons.length > 1) ? 'space-between' : 'center'
-    }}>
+    return <div style={(buttons.length > 1) ? divStyle : divStyle2}>
         {buttons.map((button, i) => (
             <Typography key={i} variant='caption' gutterBottom>
                 <Button onClick={handleClick(button.onClick)}

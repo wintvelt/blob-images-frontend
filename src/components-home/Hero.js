@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        padding: theme.spacing(0,0,2,0),
+        padding: theme.spacing(0, 0, 2, 0),
     },
     overlay: {
         position: 'absolute',
@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
         background: 'linear-gradient(355deg, rgba(155,120,111,.8) 10%, rgba(90,85,96,1) 90%)',
     },
 }));
+
+const hiddenStyle = { display: 'none' };
+const gutterBottom = { marginBottom: '32px' };
+const relativeStyle = { position: 'relative' };
 
 const Hero = (props) => {
     const { url, children } = props;
@@ -37,15 +41,15 @@ const Hero = (props) => {
             {/* Increase the priority of the hero background image */}
             {url &&
                 <img
-                    style={{ display: 'none' }}
+                    style={hiddenStyle}
                     src={safeUrl}
                     alt="background"
                 />
             }
             <div className={classes.overlay} />
-            <Toolbar style={{ marginBottom: '32px' }} />
+            <Toolbar style={gutterBottom} />
             <Grid container alignItems='center' justify='center' spacing={1}
-                style={{ position: 'relative' }}>
+                style={relativeStyle}>
                 {children}
             </Grid>
         </Paper>

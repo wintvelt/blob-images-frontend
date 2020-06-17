@@ -5,6 +5,8 @@ import { useApiDataValue } from '../../src/data/apiData';
 import GroupCardLayout from './GroupCardLayout';
 import CardList from '../components-generic/CardList';
 
+const paddingStyle = { padding: '24px' };
+
 const GroupList = () => {
     const router = useRouter();
     const groups = useApiDataValue('groups', '/groups');
@@ -22,7 +24,7 @@ const GroupList = () => {
     const groupsWithEdit = (groups.isLoading) ?
         groupsList
         : groupsList.map(item => ({ ...item.group, withEdit: true, userIsAdmin: (item.role === 'admin') }));
-    return <div style={{ padding: '24px' }}>
+    return <div style={paddingStyle}>
         <CardList list={groupsWithEdit} component={GroupCardLayout} addProps={groupAddProps}
             width={3} spacing={2} isLoading={groups.isLoading} />
     </div>

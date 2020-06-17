@@ -166,6 +166,8 @@ const CheckboxField = (props) => {
     </>
 };
 
+const gutterTop = { marginTop: '16px' };
+
 const DateField = (props) => {
     const { fieldName, field, onChange, helperText, error } = props;
     const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
@@ -185,10 +187,13 @@ const DateField = (props) => {
             KeyboardButtonProps={{
                 'aria-label': 'change date',
             }}
-            style={{ marginTop: '16px' }}
+            style={gutterTop}
         />
     </MuiPickersUtilsProvider>
 }
+
+const hideStyle = { display: 'none' };
+const fullWidthStyle = { width: '100%' }
 
 export const Field = (props) => {
     const { field, onChange, showValidation } = props;
@@ -206,7 +211,7 @@ export const Field = (props) => {
                     </>
                     : <>
                         <TextField variant='outlined' size='small' margin='normal'
-                            style={{ width: '100%', display: (field.hidden) ? 'none' : 'inherit' }}
+                            style={(field.hidden) ? hideStyle : fullWidthStyle}
                             type={field.type}
                             label={field.label} autoComplete={field.autoComplete}
                             multiline={field.multiline || undefined}

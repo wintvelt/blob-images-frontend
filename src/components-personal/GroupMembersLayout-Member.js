@@ -53,6 +53,11 @@ const widthStyle = (width) => ({
     textAlign: 'right',
     marginLeft: '8px',
 });
+const smallFont = { fontSize: '70%' };
+const widthStyle200Left = { ...widthStyle(200), textAlign: 'left' };
+const widthStyle120 = widthStyle(120);
+const panelStyle = { flexDirection: 'column', padding: '8px 4px 16px 16px' };
+const redStyle = { color: 'red' };
 
 const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick, isLoading }) => {
     const user = member.user || {};
@@ -80,24 +85,24 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick,
         </Tooltip>}
         <Typography className={classes.name}>
             {user.name}
-            {!isAdmin && <span style={{ fontSize: '70%' }}>{' (guest)'}</span>}
+            {!isAdmin && <span style={smallFont}>{' (guest)'}</span>}
             {!isLarge && <>
                 <br />
-                <span style={{ fontSize: '70%' }}>{member.createdAt}</span>
+                <span style={smallFont}>{member.createdAt}</span>
             </>}
         </Typography>
-        {isLarge && <Typography variant='caption' style={{ ...widthStyle(200), textAlign: 'left' }}>
+        {isLarge && <Typography variant='caption' style={widthStyle200Left}>
             {user.email}
         </Typography>}
-        {isLarge && <Typography variant='caption' style={widthStyle(120)}>
+        {isLarge && <Typography variant='caption' style={widthStyle120}>
             {(member.status === 'invite' ? 'invited ' : 'since ') + member.createdAt}
         </Typography>}
         <div style={widthStyle(48)}>
-            {((currentIsAdmin && hasOtherAdmin) || isCurrent) && 
-            <IconButton color='primary' disabled={!currentIsAdmin && !isCurrent}
-                onClick={handleClick}>
-                <Icon>more_horiz</Icon>
-            </IconButton>}
+            {((currentIsAdmin && hasOtherAdmin) || isCurrent) &&
+                <IconButton color='primary' disabled={!currentIsAdmin && !isCurrent}
+                    onClick={handleClick}>
+                    <Icon>more_horiz</Icon>
+                </IconButton>}
         </div>
         {/* {JSON.stringify(member)} */}
     </div>
@@ -132,7 +137,7 @@ const MemberDetails = (props) => {
 
     const handleClose = () => setAnchor({ ...anchor, el: null });
 
-    return <ExpansionPanelDetails style={{ flexDirection: 'column', padding: '8px 4px 16px 16px' }}>
+    return <ExpansionPanelDetails style={panelStyle}>
         {/* <HeaderLine /> */}
         {members.map(member => (
             <MemberLine key={member.PK || 'header'} member={member} onClick={onClick}
@@ -151,7 +156,7 @@ const MemberDetails = (props) => {
         >
             {selectedIsCurrent && <MenuItem>Leave this group</MenuItem>}
             {!selectedIsCurrent && !selectedIsInvite && <MenuItem>{roleText}</MenuItem>}
-            {!selectedIsCurrent && <MenuItem style={{ color: 'red' }}>{redText}</MenuItem>}
+            {!selectedIsCurrent && <MenuItem style={redStyle}>{redText}</MenuItem>}
         </Menu>
     </ExpansionPanelDetails>
 }

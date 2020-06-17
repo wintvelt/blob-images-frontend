@@ -7,6 +7,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import Link from '../components-generic/Link';
 
+const paddingRight = { paddingRight: '16px' };
+
 const NavMenu = ({ menu, onClick, onClose, isOpen, anchor, menuLinkClass, menuLinkActiveClass, pathname,
     iconActiveClass, iconInactiveClass }) => (
         <Menu
@@ -44,7 +46,7 @@ const NavMenu = ({ menu, onClick, onClose, isOpen, anchor, menuLinkClass, menuLi
                                 </Icon>
                             </ListItemIcon>
                             <ListItemText primary={menuItem.text}
-                                style={{ paddingRight: '16px' }} />
+                                style={paddingRight} />
                         </Link>
                         :
                         <div className={
@@ -59,7 +61,7 @@ const NavMenu = ({ menu, onClick, onClose, isOpen, anchor, menuLinkClass, menuLi
                                 }>{menuItem.icon}</Icon>
                             </ListItemIcon>
                             <ListItemText primary={menuItem.text}
-                                style={{ paddingRight: '16px' }} />
+                                style={paddingRight} />
                         </div>
                     }
                 </MenuItem>

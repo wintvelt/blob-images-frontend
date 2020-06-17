@@ -60,6 +60,8 @@ const useStyles = makeStyles(theme => ({
 
 const setValue = (value) => ({ target: { value } });
 
+const largeFont = { fontSize: '40px' };
+
 const ImageField = (props) => {
     const { field, onChange } = props;
     const { value, isGroup, isAlbum, isAvatar, label } = field;
@@ -128,7 +130,7 @@ const ImageField = (props) => {
                 <img src={imageUrl} alt='group image thumbnail' className={imgClass} />
             }
             {!imageUrl &&
-                <Icon color='disabled' style={{ fontSize: '40px' }}>image</Icon>
+                <Icon color='disabled' style={largeFont}>image</Icon>
             }
         </Grid>
         <Grid item xs={6} className={classes.item}>

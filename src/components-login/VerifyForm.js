@@ -27,6 +27,13 @@ const fieldConfig = {
     },
 };
 
+const buttonStyle = {
+    padding: 0,
+    margin: '0px 4px 2px 4px',
+    fontWeight: 400,
+    textTransform: 'none'
+};
+
 const VerifyForm = (props) => {
     const { title, subtitle } = props;
     const { enqueueSnackbar } = useSnackbar();
@@ -69,12 +76,7 @@ const VerifyForm = (props) => {
             </span>}
             {(error.message && error.message.includes('CONFIRMED')) && <span>
                 This means you can already
-                <Button onClick={onLogin} style={{
-                    padding: 0,
-                    margin: '0px 4px 2px 4px',
-                    fontWeight: 400,
-                    textTransform: 'none'
-                }} color='primary'>
+                <Button onClick={onLogin} style={buttonStyle} color='primary'>
                     Log in
                  </Button>
                  to your account

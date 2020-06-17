@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: theme.spacing(4,8),
+        padding: theme.spacing(4, 8),
         color: 'white',
     },
     icon: {
@@ -45,6 +45,8 @@ const featureList = [
     },
 ]
 
+const gridStyle = { paddingTop: '64px' };
+
 const Benefits = () => {
     const classes = useStyles()
 
@@ -53,7 +55,7 @@ const Benefits = () => {
             direction="row"
             justify="center"
             alignItems="stretch"
-            style={{ paddingTop: '64px' }}
+            style={gridStyle}
         >
             {featureList.map(feature => (
                 <Grid item key={feature.title} xs={12} md={4} className={classes.feature}>

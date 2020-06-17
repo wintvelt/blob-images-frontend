@@ -22,6 +22,8 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
+const gridStyle = { minHeight: '32px' };
+
 const EditProfileMain = () => {
     const classes = useStyles();
     const user = useUserValue();
@@ -44,7 +46,7 @@ const EditProfileMain = () => {
                 </Grid>
             </Grid>
             <Grid container className={classes.container}>
-                <Grid item md={3} xs={12} style={{ minHeight: '32px' }}>
+                <Grid item md={3} xs={12} style={gridStyle}>
                     <Hidden smDown>
                         <Typography variant='h4' className={classes.sectionTitle} color='textSecondary'>
                             Change password

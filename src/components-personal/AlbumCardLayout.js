@@ -39,6 +39,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const flexEndStyle = { display: 'flex', justifyContent: 'flex-end' };
+
 const AlbumCardContent = (props) => {
     const { name, image, stats, isLoading } = props;
     const imageUrl = makeImageUrl(image && image.image, 340, 200);
@@ -54,7 +56,7 @@ const AlbumCardContent = (props) => {
             <Typography gutterBottom variant='h6' component='h5'>
                 <TextSkeleton className={classes.text} isLoading={isLoading}>{name}</TextSkeleton>
             </Typography>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div style={flexEndStyle}>
                 {stats && <Typography variant="caption" color="textSecondary" component="p"
                     className={classes.text}>
                     {stats.map((stat) => (

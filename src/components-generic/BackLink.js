@@ -17,6 +17,7 @@ const linkStyle = {
     marginBottom: '24px',
     zIndex: 1,
 };
+const linkStyle2 = { color: 'inherit' };
 
 const BackLink = ({ groupId, album, className }) => {
     const groupData = useApiDataValue('group', `/groups/${groupId}`);
@@ -34,7 +35,7 @@ const BackLink = ({ groupId, album, className }) => {
         <Icon fontSize='small'>arrow_back</Icon>
         <Link href={path} as={as}
             className={className}
-            style={{ color: 'inherit' }}
+            style={linkStyle2}
         >
             {` ${text}`}
         </Link>

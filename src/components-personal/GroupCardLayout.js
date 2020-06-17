@@ -58,14 +58,14 @@ const GroupCardContent = (props) => {
             <Typography gutterBottom variant='h4' component='h5' align='center'>
                 <TextSkeleton className={classes.text} isLoading={isLoading}>{name}</TextSkeleton>
             </Typography>
-            {/* <div style={{ display: 'flex', justifyContent: 'center' }}> */}
             <Typography variant="body1" component="p" align='center'>
                 <TextSkeleton className={classes.text} isLoading={isLoading}>{description}</TextSkeleton>
             </Typography>
-            {/* </div> */}
         </CardContent>
     </>
-}
+};
+
+const fullHeight = { height: '100%' };
 
 const GroupCardLayout = (props) => {
     const { id, userIsAdmin, image, withEdit } = props;
@@ -88,7 +88,7 @@ const GroupCardLayout = (props) => {
 
     return <Card className={classes.card}>
         {(withEdit) ?
-            <CardActionArea style={{ height: '100%' }} onClick={onClick}>
+            <CardActionArea style={fullHeight} onClick={onClick}>
                 <GroupCardContent {...props} />
             </CardActionArea>
             : <GroupCardContent {...props} onClick={onClick} />

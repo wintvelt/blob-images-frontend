@@ -13,6 +13,9 @@ import Link from './components-generic/Link';
 import NavLogin from './components-login/NavLogin';
 import { useInitialUser } from './data/userData';
 
+const gridStyle = { display: 'flex', justifyContent: 'flex-end' };
+const gridStyle2 = { display: 'flex', justifyContent: 'center' };
+
 const useStyles = makeStyles((theme) => ({
     nav: {
         backgroundColor: 'rgba(90,85,96,.5)',
@@ -93,18 +96,18 @@ export default function HideAppBar(props) {
                             { text: 'About', href: '#' },
                         ].map((props) => (
                             <Grid key={props.text} item xs={1}
-                                style={{ display: 'flex', justifyContent: 'center' }}>
+                                style={gridStyle2}>
                                 <NavLink {...props} />
                             </Grid>
                         ))} */}
                         {/* {!user.isAuthenticated &&
                             <Grid item md={2} xs={3}
-                                style={{ display: 'flex', justifyContent: 'center' }}>
+                                style={gridStyle2}>
                                 <NavLink text='Sign up' href='/' outlined>sign up</NavLink>
                             </Grid>
                         } */}
                         <Grid item md={2} xs={3}
-                            style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            style={gridStyle}>
                             <NavLogin />
                         </Grid>
                     </Grid>

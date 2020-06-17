@@ -43,6 +43,12 @@ const fieldConfig = {
     }
 };
 
+const buttonStyle = {
+    padding: 0,
+    margin: '0px 4px 2px 4px',
+    fontWeight: 400,
+    textTransform: 'none'
+};
 
 const SignupForm = (props) => {
     const { title, subtitle } = props;
@@ -71,17 +77,12 @@ const SignupForm = (props) => {
         userData.setPath('/verifysignup');
     };
 
-    const Message = ({error}) => (
+    const Message = ({ error }) => (
         <>
-            {error.message}<br/>
+            {error.message}<br />
             {(error.code === 'UsernameExistsException') && <span>
                 Maybe you need to
-                <Button onClick={onVerify} style={{
-                    padding: 0,
-                    margin: '0px 4px 2px 4px',
-                    fontWeight: 400,
-                    textTransform: 'none'
-                }} color='primary'>
+                <Button onClick={onVerify} style={buttonStyle} color='primary'>
                     Confirm your email
                  </Button>
                  ?
@@ -102,7 +103,7 @@ const SignupForm = (props) => {
         smallButtons={[
             { onClick: onLogin, text: 'Log in' },
         ]}
-        Message={(user.error)? <Message error={user.error}/> : null}
+        Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper
     />
 };

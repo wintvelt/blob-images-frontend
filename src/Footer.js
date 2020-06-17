@@ -5,10 +5,12 @@ import Link from './components-generic/Link';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
 
+const dividerStyle = { backgroundColor: 'darkgrey' };
+
 function Copyright(props) {
     return (
         <Container maxWidth='sm'>
-            <Divider variant='middle' style={{ backgroundColor: 'darkgrey' }} />
+            <Divider variant='middle' style={dividerStyle} />
             <Typography variant="body2" align="center" className={props.className}>
                 {'© '}Photo Duck{' '}
                 {new Date().getFullYear()}
@@ -42,7 +44,7 @@ export default function Footer() {
                 <Link href='#' className={classes.white}>Support</Link>{' | '}
                 <Link href='#' className={classes.white}>Contact</Link>
             </Typography>
-            <Copyright className={classes.white}/>
+            <Copyright className={classes.white} />
         </footer>
     );
 }

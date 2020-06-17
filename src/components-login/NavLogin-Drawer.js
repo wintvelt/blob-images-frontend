@@ -21,6 +21,9 @@ const useStyles = makeStyles({
     },
 });
 
+const paddingRight = { paddingRight: '16px' };
+const headerStyle = { backgroundColor: 'black', color: 'white' };
+
 export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClick, pathname,
     menuLinkClass, menuLinkActiveClass, name, avatar,
     iconActiveClass, iconInactiveClass }) {
@@ -46,7 +49,7 @@ export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClic
                             </Icon>
                         </ListItemIcon>
                         <ListItemText primary={menuItem.text}
-                            style={{ paddingRight: '16px' }} />
+                            style={paddingRight} />
                     </Link>
                     :
                     <>
@@ -58,7 +61,7 @@ export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClic
                             }>{menuItem.icon}</Icon>
                         </ListItemIcon>
                         <ListItemText primary={menuItem.text}
-                            style={{ paddingRight: '16px' }} />
+                            style={paddingRight} />
                     </>
                 }
             </ListItem>
@@ -78,7 +81,7 @@ export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClic
                 onClick={onClose}
                 onKeyDown={handleKey}
             >
-                <ListItem style={{ backgroundColor: 'black', color: 'white' }} divider>
+                <ListItem style={headerStyle} divider>
                     <ListItemIcon>
                         <Avatar src={avatarUrl} />
                     </ListItemIcon>

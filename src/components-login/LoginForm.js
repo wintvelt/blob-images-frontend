@@ -25,6 +25,13 @@ const fieldConfig = {
     },
 };
 
+const buttonStyle = {
+    padding: 0,
+    margin: '0px 4px 2px 4px',
+    fontWeight: 400,
+    textTransform: 'none'
+};
+
 const LoginForm = (props) => {
     const { title, subtitle } = props;
     const userData = useUser();
@@ -60,15 +67,10 @@ const LoginForm = (props) => {
     const Message = ({ error }) => (
         <>
             Hmm, we could not log you in.{' '}
-            {error.message}<br/>
+            {error.message}<br />
             {(error.code === 'UserNotConfirmedException') && <span>
                 You probably need to
-                <Button onClick={onVerify} style={{
-                    padding: 0,
-                    margin: '0px 4px 2px 4px',
-                    fontWeight: 400,
-                    textTransform: 'none'
-                }} color='primary'>
+                <Button onClick={onVerify} style={buttonStyle} color='primary'>
                     Confirm your email
                  </Button>
                  to complete the signup

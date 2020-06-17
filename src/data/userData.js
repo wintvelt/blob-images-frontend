@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { atom, useRecoilState, useRecoilValue } from 'recoil';
+import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { API, Auth } from 'aws-amplify';
 
 const initialUser = {
@@ -9,8 +9,6 @@ const initialUser = {
     path: '',
     error: false,
 };
-
-let loadCounterHack = 0;
 
 const userData = atom({
     key: 'user',
@@ -28,8 +26,6 @@ const updateUser = (newItems = {}) => (oldUser) => ({
 
 // load user from session, get additional details from DB, or create new DB entry
 const loadUser = async () => {
-    console.log('loading user');
-    loadCounterHack++;
     const authUser = await Auth.currentUserInfo();
     const userId = authUser?.id;
     if (!userId) return {};
@@ -68,18 +64,6 @@ export const useUser = () => {
             setUpdate({ error });
         }
     };
-    useEffect(() => {
-        const onLoad = async () => {
-            const prevUser = await loadUser();
-            setUpdate({
-                profile: prevUser,
-                isAuthenticated: !!prevUser.id,
-                isAuthenticating: false,
-            });
-        }
-        if (user.isAuthenticating && loadCounterHack === 0) onLoad();
-    }, []);
-
     const setPath = (path) => setUpdate({ path });
 
     const login = async (username, password) => {
@@ -205,3 +189,19 @@ export const useUser = () => {
 };
 
 export const useUserValue = () => useRecoilValue(userData);
+
+export const useInitialUser = () => {
+    const [user, setUser] = useRecoilState(userData);
+    const setUpdate = (action) => setUser(updateUser(action));
+    useEffect(() => {
+        const onLoad = async () => {
+            const prevUser = await loadUser();
+            setUpdate({
+                profile: prevUser,
+                isAuthenticated: !!prevUser.id,
+                isAuthenticating: false,
+            });
+        }
+        if (user.isAuthenticating) onLoad();
+    }, []);
+}

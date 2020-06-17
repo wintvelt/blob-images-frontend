@@ -39,8 +39,7 @@ const InvitePage = () => {
     const { user, logout, setPath } = useUser();
     const { profile } = user;
     const [isAlreadyMember, setIsAlreadyMember] = useState(false);
-    const mustLoginToView = !user.isAuthenticated && inviteData.isError && inviteData.errorMessage === 'invite not for you';
-    const notForYou = user.isAuthenticated && inviteData.isError && inviteData.errorMessage === 'invite not for you';
+    const notForYou = inviteData.isError && inviteData.errorMessage === 'invite not for you';
     const otherError = !notForYou && inviteData.isError;
     const alreadyAccepted = inviteData.data && invite.status !== 'invite';
 
@@ -62,12 +61,6 @@ const InvitePage = () => {
         };
         reloadInvite();
     }, [user.isAuthenticated]);
-
-    useEffect(() => {
-        if (mustLoginToView && !user.path) {
-            setPath('/login');
-        }
-    }, [mustLoginToView, user.path]);
 
     const onAccept = async () => {
         setIsSaving(true);
@@ -108,7 +101,10 @@ const InvitePage = () => {
                 </Grid>
                 <Grid item md={1} />
                 <Grid item md={8} xs={12}>
-                    {(notForYou) && <ForOther onLogout={() => logout()} />}
+                    {(notForYou) &&
+                        <ForOther onLogout={() => logout()} onLogin={() => setPath('/login')}
+                            isLoggedIn={user.isAuthenticated} />
+                    }
                     {(alreadyAccepted) && <Accepted invite={invite} />}
                     {(!inviteData.error && !alreadyAccepted) && <InviteForm invite={invite} isLoading={inviteData.isLoading}
                         profile={profile} isAlreadyMember={isAlreadyMember}

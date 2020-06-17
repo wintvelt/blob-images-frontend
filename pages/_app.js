@@ -27,7 +27,6 @@ export default function MyApp(props) {
             jssStyles.parentElement.removeChild(jssStyles);
         }
     }, []);
-
     return (
         <React.Fragment>
             <Head>

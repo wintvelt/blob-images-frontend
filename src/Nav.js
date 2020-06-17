@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Link from './components-generic/Link';
 import NavLogin from './components-login/NavLogin';
+import { useInitialUser } from './data/userData';
 
 const useStyles = makeStyles((theme) => ({
     nav: {
@@ -71,6 +72,7 @@ const NavLink = (props) => {
 
 export default function HideAppBar(props) {
     const classes = useStyles();
+    useInitialUser();
 
     return (
         <HideOnScroll {...props}>

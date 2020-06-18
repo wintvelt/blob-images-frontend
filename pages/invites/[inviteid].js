@@ -22,22 +22,18 @@ const useStyles = makeStyles(theme => ({
             padding: theme.spacing(3),
         },
     }
-}))
+}));
 
-const InvitePage = () => {
-    const router = useRouter();
-    const classes = useStyles();
-    const inviteId = router.query && router.query.inviteid;
-    const [isSaving, setIsSaving] = useState(false);
-    const [accepting, setAccepting] = useState(false);
-    const { enqueueSnackbar } = useSnackbar();
-
-    const source = `/invites/${inviteId}`;
-    const inviteData = useApiData('invite', source);
+const InvitePage = (props) => {
+    const { inviteData, userData, onAccept, isSaving } = props;
     const invite = inviteData.data || {};
     const group = invite.group;
-    const { user, logout, setPath } = useUser();
-    const { profile } = user;
+    const groupId = group?.id;
+    const user = userData.user;
+    const { profile } = user || {};
+
+    const classes = useStyles();
+
     const [isAlreadyMember, setIsAlreadyMember] = useState(false);
     const notForYou = inviteData.isError && inviteData.errorMessage === 'invite not for you';
     const otherError = !notForYou && inviteData.isError;
@@ -45,51 +41,19 @@ const InvitePage = () => {
 
     useEffect(() => {
         const checkMembership = async () => {
-            if (group && user && user.isAuthenticated) {
-                const isMember = await API.get('blob-images', `/groups/${group.id}/membership`);
+            if (groupId && user && user.isAuthenticated) {
+                const isMember = await API.get('blob-images', `/groups/${groupId}/membership`);
                 setIsAlreadyMember(isMember);
             } else {
                 setIsAlreadyMember(false);
             }
         };
         checkMembership();
-    }, [user, group]);
+    }, [user.isAuthenticated, groupId]);
 
-    useEffect(() => {
-        const reloadInvite = async () => {
-            inviteData.reloadData();
-        };
-        reloadInvite();
-    }, [user.isAuthenticated]);
-
-    const onAccept = async () => {
-        setIsSaving(true);
-        if (user && user.isAuthenticated) {
-            try {
-                await API.post('blob-images', `/invites/${inviteId}`);
-                enqueueSnackbar(`Welcome to ${group ? group.name : 'the group'}!`, { variant: 'success' });
-                router.push('/personal/groups/[id]', `/personal/groups/${group.id}`);
-            } catch (error) {
-                console.log(error);
-                enqueueSnackbar('Oops, could not accept this invite', { variant: 'error' });
-            }
-        } else {
-            setAccepting(true);
-            setPath('/signup');
-        }
-        setIsSaving(false);
-    };
-    useEffect(() => {
-        if (user && user.isAuthenticated && accepting) {
-            onAccept();
-            setAccepting(false);
-        };
-    }, [user, accepting])
 
     const onDecline = async () => {
-        setIsSaving(true);
         alert('decline');
-        setIsSaving(false);
     };
     return (
         <main>
@@ -118,6 +82,59 @@ const InvitePage = () => {
     )
 }
 
-export default () => <PublicPage>
-    <InvitePage />
-</PublicPage>
+const InviteHOC = () => {
+    const router = useRouter();
+    const inviteId = router.query && router.query.inviteid;
+    const source = `/invites/${inviteId}`;
+    const inviteData = useApiData('invite', source);
+    const invite = inviteData.data || {};
+    const group = invite.group;
+    const inviteIsToEmail = invite?.user?.email;
+    const userData = useUser();
+    const { user, setPath } = userData;
+    const { enqueueSnackbar } = useSnackbar();
+
+    const [isSaving, setIsSaving] = useState(false);
+    const [isAccepting, setIsAccepting] = useState(false);
+
+    useEffect(() => {
+        const reloadInvite = async () => {
+            inviteData.reloadData();
+        };
+        reloadInvite();
+    }, [user.isAuthenticated]);
+
+    const onAccept = async () => {
+        setIsSaving(true);
+        if (user && user.isAuthenticated) {
+            try {
+                await API.post('blob-images', `/invites/${inviteId}`);
+                enqueueSnackbar(`Welcome to ${group ? group.name : 'the group'}!`, { variant: 'success' });
+                router.push('/personal/groups/[id]', `/personal/groups/${group.id}`);
+            } catch (error) {
+                console.log(error);
+                enqueueSnackbar('Oops, could not accept this invite', { variant: 'error' });
+            }
+        } else {
+            setIsAccepting(true);
+            setPath('/signup');
+        }
+        setIsSaving(false);
+    };
+
+    useEffect(() => {
+        if (isAccepting && !user.path) {
+            if (user.isAuthenticated) {
+                onAccept();
+            } else {
+                setIsAccepting(false);
+            }
+        }
+    },[user.isAuthenticated, user.path])
+
+    return <PublicPage>
+        <InvitePage inviteData={inviteData} userData={userData} onAccept={onAccept} isSaving={isSaving} />
+    </PublicPage>
+};
+
+export default InviteHOC;

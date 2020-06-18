@@ -2,10 +2,10 @@ import React from 'react';
 
 import AuthDialog from '../components-login/AuthDialog';
 
-const PublicPage = (props) => {
+const PublicPage = ({ noClose, children }) => {
     return <>
-        {props.children}
-        <AuthDialog noClose={props.noClose}/>
+        {children}
+        <AuthDialog noClose={noClose} />
     </>
 }
 

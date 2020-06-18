@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
@@ -33,7 +33,7 @@ const FormWrapper = ({ noPaper, children }) => {
     return (noPaper) ?
         <form name='form' noValidate className={classes.form}>
             {children}
-            </form>
+        </form>
         : <form name='form' noValidate>
             <Paper className={classes.form}>
                 {children}
@@ -44,9 +44,12 @@ const FormWrapper = ({ noPaper, children }) => {
 const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit, onDelete,
     submitText, deleteText, smallButtons, Message, noPaper }) => {
     const [fields, setFields] = useFields(formFields);
+    const initialValuesStr = useRef(initialValues);
 
     useEffect(() => {
-        if (initialValues) {
+        const newInitialValuesStr = JSON.stringify(initialValues);
+        if (initialValuesStr.current !== newInitialValuesStr) {
+            initialValuesStr.current = newInitialValuesStr
             setFields('MULTI')(initialValues);
         }
     }, [initialValues])
@@ -90,7 +93,7 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
                 {deleteText}
             </FormButton>
             }
-            {smallButtons && <FormSmallButtons buttons={smallButtons} values={getValues(fields)}/>}
+            {smallButtons && <FormSmallButtons buttons={smallButtons} values={getValues(fields)} />}
         </FormWrapper>
     )
 };

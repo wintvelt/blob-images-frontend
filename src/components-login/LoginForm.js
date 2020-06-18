@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 
 import { useUser } from '../data/userData';
@@ -38,16 +38,15 @@ const LoginForm = (props) => {
     const { user } = userData;
     const [isLoading, setIsLoading] = useState(false);
 
-    const handler = async (lambda) => {
-        setIsLoading(true);
-        await lambda();
-        setIsLoading(false);
-    };
+    useEffect(() => {
+        if (user.error) setIsLoading(false);
+    }, [user.error])
 
-    const onSubmit = (fields) => handler(async () => {
+    const onSubmit = async (fields) => {
+        setIsLoading(true);
         const { email, password } = fields;
         await userData.login(email, password);
-    });
+    };
 
     const onForgotPsw = (fields) => {
         setIsLoading(true);

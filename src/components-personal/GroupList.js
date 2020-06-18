@@ -11,16 +11,17 @@ const GroupList = () => {
     const router = useRouter();
     const groups = useApiDataValue('groups', '/groups');
     const groupsList = groups.data || [1, 2].map(id => ({ id, isLoading: true }));
+    const groupsListLength = groupsList?.length;
     const groupAddProps = {
         text: 'new group',
         path: '/personal/groups/[id]/edit',
         asPath: '/personal/groups/new/edit'
     };
     useEffect(() => {
-        if (groupsList.length === 0) {
+        if (groupsListLength === 0) {
             router.push(groupAddProps.path, groupAddProps.asPath);
         }
-    }, [groupsList]);
+    }, [groupsListLength]);
     const groupsWithEdit = (groups.isLoading) ?
         groupsList
         : groupsList.map(item => ({ ...item.group, withEdit: true, userIsAdmin: (item.role === 'admin') }));

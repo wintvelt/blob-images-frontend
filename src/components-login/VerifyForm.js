@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
@@ -46,27 +46,27 @@ const VerifyForm = (props) => {
     const pathCode = router.query?.code;
     const [isLoading, setIsLoading] = useState(false);
 
-    const handler = async (lambda) => {
-        setIsLoading(true);
-        await lambda();
-        setIsLoading(false);
-    };
+    useEffect(() => {
+        if (user.error) setIsLoading(false);
+    }, [user.error]);
 
-    const onSubmit = async (fields) => handler(async () => {
+    const onSubmit = async (fields) => {
+        setIsLoading(true);
         const { email, confirmation } = fields;
         await userData.confirmSignup(email, confirmation);
-    });
+    };
 
-    const onLogin = () => {
+    const toLogin = () => {
         setIsLoading(true);
         userData.setPath('/login');
     };
 
-    const onResend = async (fields) => handler(async () => {
+    const onResend = async (fields) => {
+        setIsLoading(true);
         const { email } = fields;
         await userData.requestVerify(email);
         enqueueSnackbar('New confirmation code was sent, check your inbox');
-    });
+    };
 
     const Message = ({ error }) => (
         <>
@@ -76,7 +76,7 @@ const VerifyForm = (props) => {
             </span>}
             {(error.message && error.message.includes('CONFIRMED')) && <span>
                 This means you can already
-                <Button onClick={onLogin} style={buttonStyle} color='primary'>
+                <Button onClick={toLogin} style={buttonStyle} color='primary'>
                     Log in
                  </Button>
                  to your account
@@ -86,19 +86,21 @@ const VerifyForm = (props) => {
     const formSubtitle = (pathEmail && pathCode && !user.error) ? 'Click "Confirm" to confirm your account'
         : subtitle || 'Please check your email. If you signed up with this address, ' +
         'you\'ll receive a new verification code';
+    const smallButtons = [
+        { onClick: onResend, text: 'Send email with new code' },
+        { onClick: toLogin, text: 'Log in' },
+    ];
+    const initialValues = { email, confirmation: pathCode };
 
     return <Form
         title={title || 'Confirm your account'}
         subtitle={formSubtitle}
         formFields={fieldConfig}
-        initialValues={{ email, confirmation: pathCode }}
+        initialValues={initialValues}
         isLoading={isLoading}
         onSubmit={onSubmit}
         submitText='Confirm'
-        smallButtons={[
-            { onClick: onResend, text: 'Send email with new code' },
-            { onClick: onLogin, text: 'Log in' },
-        ]}
+        smallButtons={smallButtons}
         Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper
     />

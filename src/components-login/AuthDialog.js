@@ -4,7 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import AuthForms from './AuthForms';
 import { useUser, isInAuth } from '../data/userData';
 
-export default function LoginDialog({ groupName, noClose }) {
+export default function AuthDialog({ groupName, noClose }) {
     const userData = useUser();
     const { user } = userData;
     const userPath = user.path;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
 import { makeImageUrl } from '../components-generic/imageProvider';
+import { useSetLoadingPath } from '../data/loadingData';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -72,19 +72,19 @@ const AlbumCardLayout = (props) => {
     const { groupId, id, userIsAdmin, withEdit } = props;
     const mayEdit = (userIsAdmin && withEdit);
     const classes = useStyles();
-    const router = useRouter();
+    const setLoadingPath = useSetLoadingPath();
 
     const detailUrl = `/personal/groups/[id]/albums/[albumid]`;
 
     const onClick = (e) => {
         e.preventDefault();
-        router.push(detailUrl, detailUrl.replace('[id]', groupId).replace('[albumid]', id));
+        setLoadingPath(detailUrl, detailUrl.replace('[id]', groupId).replace('[albumid]', id));
     }
 
     const onClickEdit = (e) => {
         e.preventDefault();
         const editUrl = detailUrl + '/edit';
-        router.push(editUrl, editUrl.replace('[id]', groupId).replace('[albumid]', id));
+        setLoadingPath(editUrl, editUrl.replace('[id]', groupId).replace('[albumid]', id));
     }
 
     return <Card className={classes.card}>

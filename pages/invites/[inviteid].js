@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core';
 import PublicPage from '../../src/components-generic/PublicPage';
 import { useApiData } from '../../src/data/apiData';
 import { useUser } from '../../src/data/userData';
+import { useSetLoadingPath } from '../../src/data/loadingData';
 import GroupCardLayout from '../../src/components-personal/GroupCardLayout';
 import InviteForm from '../../src/components-invite/InviteForm';
 import ForOther from '../../src/components-invite/ForOther';
@@ -88,10 +89,10 @@ const InviteHOC = () => {
     const inviteData = useApiData('invite', source);
     const invite = inviteData.data || {};
     const group = invite.group;
-    const inviteIsToEmail = invite?.user?.email;
     const userData = useUser();
     const { user, setPath } = userData;
     const { enqueueSnackbar } = useSnackbar();
+    const setLoadingPath = useSetLoadingPath();
 
     const [isSaving, setIsSaving] = useState(false);
     const [isAccepting, setIsAccepting] = useState(false);
@@ -109,7 +110,7 @@ const InviteHOC = () => {
             try {
                 await API.post('blob-images', `/invites/${inviteId}`);
                 enqueueSnackbar(`Welcome to ${group ? group.name : 'the group'}!`, { variant: 'success' });
-                router.push('/personal/groups/[id]', `/personal/groups/${group.id}`);
+                setLoadingPath('/personal/groups/[id]', `/personal/groups/${group.id}`);
             } catch (error) {
                 console.log(error);
                 enqueueSnackbar('Oops, could not accept this invite', { variant: 'error' });

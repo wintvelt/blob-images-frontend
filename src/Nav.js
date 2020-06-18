@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Link from './components-generic/Link';
 import NavLogin from './components-login/NavLogin';
 import { useInitialUser } from './data/userData';
+import { resetLoadingPath } from './data/loadingData';
 
 const gridStyle = { display: 'flex', justifyContent: 'flex-end' };
 const gridStyle2 = { display: 'flex', justifyContent: 'center' };
@@ -76,6 +77,7 @@ const NavLink = (props) => {
 export default function HideAppBar(props) {
     const classes = useStyles();
     useInitialUser();
+    resetLoadingPath();
 
     return (
         <HideOnScroll {...props}>

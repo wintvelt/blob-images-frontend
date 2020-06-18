@@ -1,10 +1,10 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
+import { useSetLoadingPath } from '../data/loadingData';
 
 const useStyles = makeStyles(theme => ({
     newCard: {
@@ -32,9 +32,9 @@ const useStyles = makeStyles(theme => ({
 
 const CardAdd = ({ text, path, asPath }) => {
     const classes = useStyles();
-    const router = useRouter();
+    const setLoadingPath = useSetLoadingPath();
     const onClick = () => {
-        router.push(
+        setLoadingPath(
             path,
             asPath,
         );

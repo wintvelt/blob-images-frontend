@@ -11,6 +11,7 @@ import { SnackbarProvider } from 'notistack';
 import theme from '../src/theme';
 import Nav from '../src/Nav';
 import Footer from '../src/Footer';
+import LoadingBar from '../src/LoadingBar';
 
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
@@ -40,6 +41,7 @@ export default function MyApp(props) {
                         <Nav />
                         <Component {...pageProps} />
                         <Footer />
+                        <LoadingBar />
                     </RecoilRoot>
                 </SnackbarProvider>
             </ThemeProvider>

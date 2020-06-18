@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import { API, Auth } from 'aws-amplify';
 
 const initialUser = {

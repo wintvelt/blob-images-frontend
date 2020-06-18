@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import Form from '../components-generic/Form';
 import { useRouter } from 'next/router';
 import { useApiData } from '../data/apiData';
+import { useSetLoadingPath } from '../data/loadingData';
 
 const fieldConfig = {
     name: {
@@ -33,6 +34,7 @@ const GroupForm = ({ group }) => {
     const router = useRouter();
     const groupId = router.query && router.query.id;
     const isNew = (groupId === 'new');
+    const setLoadingPath = useSetLoadingPath();
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
     const groups = useApiData('groups', '/groups');
@@ -56,7 +58,7 @@ const GroupForm = ({ group }) => {
                 : 'changes were saved';
             enqueueSnackbar(message, { variant: 'success' });
             if (isNew) {
-                router.push(
+                setLoadingPath(
                     '/personal/groups/[id]/albums/[albumid]/edit?new=true', 
                     `/personal/groups/${newGroupId}/albums/new/edit?new=true`)
             } else {

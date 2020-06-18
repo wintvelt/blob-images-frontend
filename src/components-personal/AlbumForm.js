@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import Form from '../components-generic/Form';
 import { useRouter } from 'next/router';
 import { useApiData } from '../data/apiData';
+import { useSetLoadingPath } from '../data/loadingData';
 
 const fieldConfig = {
     name: {
@@ -29,6 +30,7 @@ const AlbumForm = ({ album }) => {
     const groupId = router.query && router.query.id;
     const albumId = router.query && router.query.albumid;
     const isNewGroupFlow = router.query && router.query.new;
+    const setLoadingPath = useSetLoadingPath();
     const isNew = (albumId === 'new');
     const baseUrl = `/groups/${groupId}/albums`;
     const { enqueueSnackbar } = useSnackbar();
@@ -55,11 +57,11 @@ const AlbumForm = ({ album }) => {
             enqueueSnackbar(message, { variant: 'success' });
             if (isNew) {
                 if (isNewGroupFlow) {
-                    router.push(
+                    setLoadingPath(
                         '/personal/groups/[id]/invite', 
                         `/personal/groups/${groupId}/invite`)    
                 } else {
-                    router.push(
+                    setLoadingPath(
                         '/personal/groups/[id]/albums/[albumid]/edit',
                         `/personal/groups/${groupId}/albums/${newAlbumId}/edit`)
                 }

@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
 
 import { useApiDataValue } from '../../src/data/apiData';
 import GroupCardLayout from './GroupCardLayout';
 import CardList from '../components-generic/CardList';
+import { useSetLoadingPath } from '../data/loadingData';
 
 const paddingStyle = { padding: '24px' };
 
 const GroupList = () => {
-    const router = useRouter();
+    const setLoadingPath = useSetLoadingPath();
     const groups = useApiDataValue('groups', '/groups');
     const groupsList = groups.data || [1, 2].map(id => ({ id, isLoading: true }));
     const groupsListLength = groupsList?.length;
@@ -19,7 +19,7 @@ const GroupList = () => {
     };
     useEffect(() => {
         if (groupsListLength === 0) {
-            router.push(groupAddProps.path, groupAddProps.asPath);
+            setLoadingPath(groupAddProps.path, groupAddProps.asPath);
         }
     }, [groupsListLength]);
     const groupsWithEdit = (groups.isLoading) ?

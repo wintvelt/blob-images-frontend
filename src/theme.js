@@ -40,6 +40,9 @@ const theme = createMuiTheme({
         },
         MuiFormControlLabel: {
             label: { lineHeight: '1.2rem' }
+        },
+        MuiToolbar: {
+            root: { height: '64px' }
         }
     }
 });

@@ -63,9 +63,9 @@ const PhotoList = (props) => {
     const photos = photoData.data || [1, 2, 3].map(id => ({ id, isLoading: true }));
 
     const classes = useStyles();
-    const isLarge = useMediaQuery(theme => theme.breakpoints.up('md'));
+    const isLarge = useMediaQuery(theme => theme.breakpoints.up('lg'));
     const isMedium = useMediaQuery(theme => theme.breakpoints.up('sm'));
-    const cols = isLarge ? 4 : isMedium ? 3 : 2;
+    const cols = isLarge ? 6 : isMedium ? 4 : 3;
     const cellHeight = (isLarge || isMedium) ? 180 : 100;
     return <div className={classes.container}>
         <pre style={fullWidth}>{JSON.stringify(selected, null, 2)}</pre>

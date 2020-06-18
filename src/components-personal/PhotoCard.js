@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
         padding: 0,
     },
     img: {
+        willChange: 'transform',
         transition: 'transform .5s ease',
         width: '100%',
         height: '100%',
@@ -57,7 +58,7 @@ const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noO
     const imageUrl = makeImageUrl(image);
     const handleClick = () => {
         if (!isLoading) {
-            onClick({ id, image, owner });
+           onClick && onClick({ id, image, owner });
         }
     }
     const handleMenuClick = (e) => {

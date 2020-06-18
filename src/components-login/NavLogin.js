@@ -38,6 +38,8 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(2),
         width: theme.spacing(2),
         marginRight: theme.spacing(1),
+        backgroundColor: 'white',
+        color: 'rgba(0,0,0,.5)'
     },
     menuLink: {
         display: 'flex',

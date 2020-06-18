@@ -66,7 +66,7 @@ const InvitePage = (props) => {
                 <Grid item md={1} />
                 <Grid item md={8} xs={12}>
                     {(notForYou) &&
-                        <ForOther onLogout={() => logout()} onLogin={() => setPath('/login')}
+                        <ForOther onLogout={userData.logout} onLogin={() => userData.setPath('/login')}
                             isLoggedIn={user.isAuthenticated} />
                     }
                     {(alreadyAccepted) && <Accepted invite={invite} />}
@@ -75,7 +75,6 @@ const InvitePage = (props) => {
                         isSaving={isSaving} onAccept={onAccept} onDecline={onDecline}
                     />}
                     {(otherError) && <OtherError />}
-                    <pre>{JSON.stringify(inviteData, null, 2)}</pre>
                 </Grid>
             </Grid>
         </main>

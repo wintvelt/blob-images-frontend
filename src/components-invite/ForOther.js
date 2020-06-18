@@ -26,7 +26,7 @@ const ForOtherCard = ({ onLogout, isLoggedIn, onLogin }) => {
                 You may be invited
             </Typography>
             <img src='/img/invite_divider.png' alt='divider' width={64} />
-            <Typography paragraph variant='subtitle1'>
+            <Typography paragraph variant='subtitle1' align='center'>
                 But this may not be the invite you are looking for
             </Typography>
             <Typography variant='body1' align='center'>

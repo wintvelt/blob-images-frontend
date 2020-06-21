@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { makeImageUrl } from '../components-generic/imageProvider';
+import { makeImageUrl, otoa } from '../components-generic/imageProvider';
 import { TextSkeleton, ImageSkeleton } from '../components-generic/Skeleton';
+import { useApiDataValue } from '../data/apiData';
 
 const useStyles = makeStyles(theme => ({
     icon: {
@@ -49,16 +50,26 @@ const MenuButton = ({ className, onClick }) => (
     </IconButton>
 )
 
-const Photo = ({ photo, isSmall, onSelect, isSelected, onClick, onClickMenu, noOwner }) => {
+const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onClickMenu, noOwner }) => {
     const classes = useStyles();
-    const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
-    const { image, owner, album, date, id } = photo;
+    const Key = { PK: photoParams.PK, SK: photoParams.SK };
+    const source = (!photoParams.PK) ? '/undefined' : `/photos/${otoa(Key)}`;
+    const photoData = useApiDataValue(`photo${photoParams.id || photoParams.PK}`, source);
+    const photo = (photoData.data) ?
+        (photoParams.PK && photoParams.PK.slice(0, 2) === 'GP') ?
+            photoData.data.photo
+            : photoData.data
+        : {};
+    const { url, owner, album, date, PK } = photo;
+    const id = PK;
     const { name } = owner || {};
-    const isLoading = (!image);
-    const imageUrl = makeImageUrl(image);
+    const isLoading = (!url);
+    const imageUrl = makeImageUrl(url);
+
+    const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
     const handleClick = () => {
         if (!isLoading) {
-           onClick && onClick({ id, image, owner });
+            onClick && onClick({ id, url, owner });
         }
     }
     const handleMenuClick = (e) => {

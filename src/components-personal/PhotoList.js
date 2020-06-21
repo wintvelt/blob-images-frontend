@@ -71,7 +71,7 @@ const PhotoList = (props) => {
         <pre style={fullWidth}>{JSON.stringify(selected, null, 2)}</pre>
         <GridList cellHeight={cellHeight} cols={cols} className={classes.gridList}>
             {photos.map(photo => {
-                return <GridListTile key={photo.id} className={classes.tile}>
+                return <GridListTile key={photo.id || photo.PK} className={classes.tile}>
                     <Photo
                         photo={photo}
                         isSmall={(!isLarge && !isMedium)}

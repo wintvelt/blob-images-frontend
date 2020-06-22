@@ -11,24 +11,25 @@ import { now } from './helpers';
 registerPlugin(
     FilePondPluginImageExifOrientation,
     FilePondPluginImagePreview,
-    FilePondPluginFileRename, 
-    FilePondPluginImageTransform
+    FilePondPluginFileRename,
+    FilePondPluginImageTransform,
 );
 
 const fileRenameFunction = (file) => {
     const cleanFilename = file.name
         .replace('.jpeg', '.jpg')
-        .replace(/\s/g,'+');
+        .replace(/\s/g, '+');
     return `${now()}-${cleanFilename}`;
 };
 
-const server = {
+const server = (photoMetadata) => ({
     url: 'https://blob-images.s3.eu-central-1.amazonaws.com',
     process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
         try {
             const result = await Storage.put(file.name, file, {
                 level: 'protected',
                 contentType: file.type,
+                metadata: photoMetadata,
                 progressCallback(info) {
                     progress(true, info.loaded, info.total);
                 },
@@ -55,22 +56,23 @@ const server = {
             error(err);
         }
     },
-}
+});
 
-const Upload = ({ pond, 
-        onAddFile, onRemoveFile, onProcessFile, 
-        allowMultiple, allowImagePreview, instantUpload
-    }) => {
+const Upload = ({ pond,
+    onAddFile, onRemoveFile, onProcessFile,
+    allowMultiple, allowImagePreview, instantUpload,
+    photoMetadata
+}) => {
 
     const label = 'Drag & Drop photos or <span class="filepond--label-action"> Browse </span>';
     return <>
-        <FilePond allowMultiple={allowMultiple} server={server} instantUpload={instantUpload}
-            ref={pond} 
+        <FilePond allowMultiple={allowMultiple} server={server(photoMetadata)} instantUpload={instantUpload}
+            ref={pond}
             onaddfile={onAddFile} onremovefile={onRemoveFile} onprocessfile={onProcessFile}
             allowRevert={false}
             labelIdle={label}
-            fileRenameFunction={fileRenameFunction} 
-            allowImagePreview={allowImagePreview}/>
+            fileRenameFunction={fileRenameFunction}
+            allowImagePreview={allowImagePreview} />
     </>
 }
 

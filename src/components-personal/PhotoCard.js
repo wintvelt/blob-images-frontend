@@ -54,7 +54,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const classes = useStyles();
     const Key = { PK: photoParams.PK, SK: photoParams.SK };
     const source = (!photoParams.PK) ? '/undefined' : `/photos/${otoa(Key)}`;
-    const photoData = useApiDataValue(`photo${photoParams.id || photoParams.PK}`, source);
+    const photoData = useApiDataValue(`photo${photoParams.id || photoParams.comp}`, source);
     const photo = (photoData.data) ?
         (photoParams.PK && photoParams.PK.slice(0, 2) === 'GP') ?
             photoData.data.photo

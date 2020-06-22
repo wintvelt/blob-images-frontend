@@ -53,6 +53,7 @@ const PhotoList = (props) => {
     };
 
     const onSelect = (id) => {
+        console.log(`clicked select with id "${id}"`);
         const newSelected = (selected.includes(id)) ?
             selected.filter(item => item !== id)
             : [...selected, id];
@@ -72,14 +73,15 @@ const PhotoList = (props) => {
         <pre style={fullWidth}>{JSON.stringify(photos, null, 2)}</pre>
         <GridList cellHeight={cellHeight} cols={cols} className={classes.gridList}>
             {photos.map(photo => {
-                return <GridListTile key={photo.id || photo.comp} className={classes.tile}>
+                const photoId = photo.id || photo.comp.slice(11);
+                return <GridListTile key={photoId} className={classes.tile}>
                     <Photo
                         photo={photo}
                         isSmall={(!isLarge && !isMedium)}
                         {...props}
                         onClickMenu={menu && handleClick}
                         onSelect={select && onSelect}
-                        isSelected={selected.includes(photo.id)}
+                        isSelected={selected.includes(photoId)}
                     />
                 </GridListTile>
             })}

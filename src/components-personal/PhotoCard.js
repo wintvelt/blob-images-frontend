@@ -61,7 +61,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
             : photoData.data
         : {};
     const { url, owner, album, date, PK } = photo;
-    const id = PK;
+    const id = PK && PK.slice(2);
     const { name } = owner || {};
     const isLoading = (!url);
     const imageUrl = makeImageUrl(url);

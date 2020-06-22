@@ -4,6 +4,7 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginFileRename from 'filepond-plugin-file-rename';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
 import { Storage } from "aws-amplify";
 import { now } from './helpers';
@@ -13,6 +14,7 @@ registerPlugin(
     FilePondPluginImagePreview,
     FilePondPluginFileRename,
     FilePondPluginImageTransform,
+    FilePondPluginFileValidateType
 );
 
 const fileRenameFunction = (file) => {
@@ -72,7 +74,9 @@ const Upload = ({ pond,
             allowRevert={false}
             labelIdle={label}
             fileRenameFunction={fileRenameFunction}
-            allowImagePreview={allowImagePreview} />
+            allowImagePreview={allowImagePreview}
+            acceptedFileTypes={['image/*']}
+        />
     </>
 }
 

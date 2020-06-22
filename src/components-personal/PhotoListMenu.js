@@ -12,6 +12,7 @@ const redStyle = { color: 'red' };
 
 const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
     const albumData = album && album.data;
+    const currentPhotoId = anchor.photo?.PK.slice(2);
     const { user, saveProfile } = useUser();
     const userIsOwner = (user.profile && anchor.photo && user.profile.id === anchor.photo.SK.slice(1));
     const { enqueueSnackbar } = useSnackbar();
@@ -32,7 +33,7 @@ const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
             await API.put('blob-images', albumUrl, {
                 body: {
                     name: albumData.name,
-                    image: { image: anchor.photo.url, owner: anchor.photo.owner, id: anchor.photo.id },
+                    image: { image: anchor.photo.url, owner: anchor.photo.owner, id: currentPhotoId },
                     imageUrl: anchor.photo.url
                 }
             });
@@ -41,12 +42,12 @@ const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
             album.reloadData();
         } catch (error) {
             console.log(error);
-            enqueueSnackbar('could not delete picture', { variant: 'error' });
+            enqueueSnackbar('could not set album cover', { variant: 'error' });
         }
     }
     const onDelete = async () => {
         try {
-            const path = `/photos/${anchor.photo.id}`;
+            const path = `/photos/${currentPhotoId}`;
             await API.del('blob-images', path);
             enqueueSnackbar('photo deleted', { variant: 'success' });
             reloadData();

@@ -98,7 +98,7 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick,
             {(member.status === 'invite' ? 'invited ' : 'since ') + member.createdAt}
         </Typography>}
         <div style={widthStyle(48)}>
-            {((currentIsAdmin && hasOtherAdmin) || isCurrent) &&
+            {(currentIsAdmin || isCurrent) &&
                 <IconButton color='primary' disabled={!currentIsAdmin && !isCurrent}
                     onClick={handleClick}>
                     <Icon>more_horiz</Icon>
@@ -154,9 +154,11 @@ const MemberDetails = (props) => {
             open={open}
             onClose={handleClose}
         >
-            {selectedIsCurrent && <MenuItem>Leave this group</MenuItem>}
+            {selectedIsCurrent &&
+                <MenuItem disabled={!hasOtherAdmin}>Leave this group</MenuItem>}
             {!selectedIsCurrent && !selectedIsInvite && <MenuItem>{roleText}</MenuItem>}
-            {!selectedIsCurrent && <MenuItem style={redStyle}>{redText}</MenuItem>}
+            {!selectedIsCurrent &&
+                <MenuItem style={redStyle}>{redText}</MenuItem>}
         </Menu>
     </ExpansionPanelDetails>
 }

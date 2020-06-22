@@ -76,7 +76,8 @@ const GroupMembersLayout = ({ members, isLoading }) => {
         : members.map(member => ({ ...member.user, role: member.role }));
     const currentUser = useUserValue();
     const { profile } = currentUser;
-    const currentIsAdmin = !!members.find(member => member.PK.slice(3) === profile.id);
+    const currentMembership = members.find(member => member.PK.slice(3) === profile.id);
+    const currentIsAdmin = currentMembership && currentMembership.role === 'admin';
     const router = useRouter();
     const groupId = router.query && router.query.id;
 

@@ -12,6 +12,8 @@ node_modules
 # next.js
 /.next/
 /out/
+/.serverless
+/.serverless_nextjs
 
 # production
 /build

@@ -6,6 +6,7 @@ import Hero from '../components-home/Hero';
 
 import AuthDialog from '../components-login/AuthDialog';
 import { useUser } from '../data/userData';
+import useActiveRoot from '../data/activeDataTree';
 
 const divStyle = {
     height: '300px',
@@ -16,6 +17,7 @@ const divStyle = {
 
 const PrivatePage = (props) => {
     const { user, setPath } = useUser();
+    useActiveRoot();
     useEffect(() => {
         if (!user.isAuthenticated && !user.isAuthenticating) setPath('/login');
     }, [user.isAuthenticating, user.isAuthenticated]);

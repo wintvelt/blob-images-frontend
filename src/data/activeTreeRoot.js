@@ -32,8 +32,10 @@ const useActiveRoot = () => {
     const [activeGroupId, setActiveGroupId] = useRecoilState(activeGroupIdState);
     const [activeAlbumId, setActiveAlbumId] = useRecoilState(activeAlbumIdState);
     const router = useRouter();
-    const groupId = router.query && router.query.id;
-    const albumId = router.query && router.query.albumid;
+    const pathGroupId = router.query?.id;
+    const pathAlbumId = router.query?.albumid;
+    const groupId = (pathGroupId !== 'new')? pathGroupId : undefined;
+    const albumId = (pathAlbumId !== 'new')? pathAlbumId : undefined;
     useEffect(() => {
         const groupDidChange = (activeGroupId !== groupId);
         if (groupDidChange) {

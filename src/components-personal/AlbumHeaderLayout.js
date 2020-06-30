@@ -15,7 +15,7 @@ import { makeImageUrl } from '../../src/components-generic/imageProvider';
 import Link from '../components-generic/Link';
 import BackLink from '../components-generic/BackLink';
 
-const useStyles = makeStyles(theme => ({
+export const useAlbumHeaderStyles = makeStyles(theme => ({
     card: {
         position: 'relative',
         color: 'white',
@@ -69,13 +69,32 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const AlbumImage = (props) => {
+export const AlbumImage = () => {
+    const classes = useStyles();
+    // only need imgUrl from album = album.image.image
+    const { image, userIsAdmin, group } = album || {};
+    const imgUrl = image && image.image;
+    const imgOwner = image && image.owner;
+    const imageUrl = makeImageUrl(imgUrl, 1440, 320);
+
+    return <>
+        {imgUrl && <CardMedia className={classes.groupMedia}
+            image={imageUrl}
+            title='Album cover image'
+        />}
+        {!imgUrl && <div className={classes.groupMedia} />}
+    </>
+}
+
+export const AlbumImageCOPY = (props) => {
+    //  imageClass={classes.groupMedia} buttonClass={classes.imageEdit textClass={classes.groupText} album={album} 
     const router = useRouter();
     const href = router.pathname + '/edit';
     const asPath = router.asPath + '/edit';
     const { imageClass, buttonClass, album, textClass } = props;
-    const { data } = album;
-    const { image, userIsAdmin, group } = data || {};
+    // const { data } = album;
+    // const { image, userIsAdmin, group } = data || {};
+    const { image, userIsAdmin, group } = album || {};
     const imgUrl = image && image.image;
     const imgOwner = image && image.owner;
     const imageUrl = makeImageUrl(imgUrl, 1440, 320);
@@ -92,11 +111,11 @@ const AlbumImage = (props) => {
         }
     };
     return <>
-        {imageUrl && <CardMedia className={imageClass}
+        {imgUrl && <CardMedia className={imageClass}
             image={imageUrl}
             title='Album cover image'
         />}
-        {!imageUrl && <div className={imageClass} />}
+        {!imgUrl && <div className={imageClass} />}
         {group && <BackLink groupId={group.id} className={textClass} />}
         {userIsAdmin && <Link href={href} as={asPath} style={linkStyle}>
             <IconButton size='small' className={buttonClass}>
@@ -106,7 +125,8 @@ const AlbumImage = (props) => {
     </>
 }
 
-const AlbumContent = (props) => {
+export const AlbumContent = (props) => {
+    // contentClass={classes.content} textClass={classes.groupText} album={album}
     const { contentClass, textClass, album } = props;
     const { data, isLoading } = album;
     const { name, stats, group } = data || {};
@@ -130,14 +150,3 @@ const AlbumContent = (props) => {
         </Grid>
     </CardContent>
 }
-
-const AlbumHeaderLayout = ({ album }) => {
-    const classes = useStyles();
-    return <Card className={classes.card}>
-        <AlbumImage imageClass={classes.groupMedia} buttonClass={classes.imageEdit}
-            textClass={classes.groupText} album={album} />
-        <AlbumContent contentClass={classes.content} textClass={classes.groupText} album={album} />
-    </Card>
-}
-
-export default AlbumHeaderLayout;

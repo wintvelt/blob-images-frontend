@@ -31,6 +31,38 @@ export const activeGroupState = selector({
     }
 });
 
+const activeGroupMembersTrigger = atom({
+    key: 'activeGroupMembersTrigger',
+    default: 0,
+});
+
+export const activeGroupMembers = selector({
+    key: 'activeGroupMembers',
+    get: async ({ get }) => {
+        get(activeGroupMembersTrigger);
+        const groupId = get(activeGroupIdState);
+        if (!groupId) return [];
+        const source = `/groups/${groupId}/members`;
+        const response = await API.get('blob-images', source);
+        if (response.error) {
+            throw response.error;
+        }
+        const members = response.map(member => ({
+            ...member.user,
+            role: member.role,
+            status: member.status,
+            createdAt: member.createdAt,
+        }));
+        return members;
+    },
+    set: async ({ set }, newValue) => {
+        if (newValue instanceof DefaultValue) {
+            set(activeGroupMembersTrigger, v => v + 1);
+        }
+    }
+});
+
+
 export const redirectOnGroupLoadError = () => {
     const { enqueueSnackbar } = useSnackbar();
     const router = useRouter();

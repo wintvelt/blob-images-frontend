@@ -12,7 +12,6 @@ import theme from '../src/theme';
 import Nav from '../src/Nav';
 import Footer from '../src/Footer';
 import LoadingBar from '../src/LoadingBar';
-import ErrorBoundary from '../src/components-generic/ErrorBoundary';
 
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
@@ -37,15 +36,13 @@ export default function MyApp(props) {
             </Head>
             <ThemeProvider theme={theme}>
                 <SnackbarProvider maxSnack={3}>
-                    <ErrorBoundary>
-                        <RecoilRoot>
-                            <CssBaseline />
-                            <Nav />
-                            <Component {...pageProps} />
-                            <Footer />
-                            <LoadingBar />
-                        </RecoilRoot>
-                    </ErrorBoundary>
+                    <RecoilRoot>
+                        <CssBaseline />
+                        <Nav />
+                        <Component {...pageProps} />
+                        <Footer />
+                        <LoadingBar />
+                    </RecoilRoot>
                 </SnackbarProvider>
             </ThemeProvider>
         </React.Fragment >

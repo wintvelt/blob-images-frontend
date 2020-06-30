@@ -12,8 +12,14 @@ import { useMediaQuery } from '@material-ui/core';
 import { useUserValue } from '../../src/data/userData';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 import { initials } from '../../src/components-generic/helpers';
+import { useRecoilValueLoadable } from 'recoil';
+import { activeGroupMembers } from '../data/activeTree-Group';
 
 const useStyles = makeStyles(theme => ({
+    panel: { 
+        flexDirection: 'column', 
+        padding: theme.spacing(1,0.5,2,2),
+    },
     line: {
         position: 'relative',
         height: '64px',
@@ -56,11 +62,9 @@ const widthStyle = (width) => ({
 const smallFont = { fontSize: '70%' };
 const widthStyle200Left = { ...widthStyle(200), textAlign: 'left' };
 const widthStyle120 = widthStyle(120);
-const panelStyle = { flexDirection: 'column', padding: '8px 4px 16px 16px' };
 const redStyle = { color: 'red' };
 
-const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick, isLoading }) => {
-    const user = member.user || {};
+const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading }) => {
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const isAdmin = (member.role === 'admin');
     const isInvite = (member.status === 'invite');
@@ -73,9 +77,9 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick,
     }
 
     return <div className={classes.line}>
-        <AvatarSkeleton alt={user.name} src={user.avatar}
+        <AvatarSkeleton alt={member.name} src={member.avatar}
             className={classes.avatar} isLoading={isLoading}>
-            {(!user.image && initials(user.name))}
+            {(!member.image && initials(member.name))}
         </AvatarSkeleton>
         {(isInvite) && <Tooltip title='invited' aria-label='invited' className={classes.badgeInvite}>
             <Icon>mail</Icon>
@@ -84,7 +88,7 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick,
             <Icon>visibility</Icon>
         </Tooltip>}
         <Typography className={classes.name}>
-            {user.name}
+            {member.name}
             {!isAdmin && <span style={smallFont}>{' (guest)'}</span>}
             {!isLarge && <>
                 <br />
@@ -92,7 +96,7 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick,
             </>}
         </Typography>
         {isLarge && <Typography variant='caption' style={widthStyle200Left}>
-            {user.email}
+            {member.email}
         </Typography>}
         {isLarge && <Typography variant='caption' style={widthStyle120}>
             {(member.status === 'invite' ? 'invited ' : 'since ') + member.createdAt}
@@ -104,27 +108,34 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, hasOtherAdmin, onClick,
                     <Icon>more_horiz</Icon>
                 </IconButton>}
         </div>
-        {/* {JSON.stringify(member)} */}
     </div>
 }
 
-const MemberDetails = (props) => {
-    const { members, isLoading } = props;
+const MemberDetails = () => {
+    const classes = useStyles();
+
     const currentUser = useUserValue();
     const { profile } = currentUser;
+
+    const membersData = useRecoilValueLoadable(activeGroupMembers);
+    const hasValue = (membersData.state === 'hasValue');
+
+    const members = (hasValue) ? membersData.contents : [];
+    console.log({members});
     const currentIsAdmin = !!members.find(member => (
-        member.PK.slice(3) === profile.id &&
+        member.SK.slice(1) === profile.id &&
         member.role === 'admin' &&
         member.status !== 'invite'
     ));
+
     const hasOtherAdmin = !!members.find(member => (
-        member.PK.slice(3) !== profile.id &&
+        member.SK.slice(1) !== profile.id &&
         member.role === 'admin' &&
         member.status !== 'invite'
     ));
     const [anchor, setAnchor] = useState({ el: null });
 
-    const selectedIsCurrent = anchor.member && (anchor.member.PK.slice(3) === profile.id);
+    const selectedIsCurrent = anchor.member && (anchor.member.SK.slice(1) === profile.id);
     const selectedIsAdmin = anchor.member && (anchor.member.role === 'admin');
     const selectedIsInvite = anchor.member && (anchor.member.status === 'invite');
     const roleText = (selectedIsAdmin) ? 'Make guest' : 'Make admin';
@@ -137,12 +148,11 @@ const MemberDetails = (props) => {
 
     const handleClose = () => setAnchor({ ...anchor, el: null });
 
-    return <ExpansionPanelDetails style={panelStyle}>
-        {/* <HeaderLine /> */}
+    return <ExpansionPanelDetails className={classes.panel}>
         {members.map(member => (
-            <MemberLine key={member.PK || 'header'} member={member} onClick={onClick}
-                currentIsAdmin={currentIsAdmin} hasOtherAdmin={hasOtherAdmin} isLoading={isLoading}
-                isCurrent={(member.PK.slice(3) === profile.id)}
+            <MemberLine key={member.SK || 'header'} member={member} onClick={onClick}
+                currentIsAdmin={currentIsAdmin} isLoading={!hasValue}
+                isCurrent={(member.SK.slice(1) === profile.id)}
             />
         ))}
         <Menu

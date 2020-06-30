@@ -70,9 +70,9 @@ export const useAlbumHeaderStyles = makeStyles(theme => ({
 }));
 
 export const AlbumImage = () => {
-    const classes = useStyles();
+    const classes = useAlbumHeaderStyles();
     // only need imgUrl from album = album.image.image
-    const { image, userIsAdmin, group } = album || {};
+    const { image, userIsAdmin, group } = {};
     const imgUrl = image && image.image;
     const imgOwner = image && image.owner;
     const imageUrl = makeImageUrl(imgUrl, 1440, 320);
@@ -128,7 +128,7 @@ export const AlbumImageCOPY = (props) => {
 export const AlbumContent = (props) => {
     // contentClass={classes.content} textClass={classes.groupText} album={album}
     const { contentClass, textClass, album } = props;
-    const { data, isLoading } = album;
+    const { data, isLoading } = album || {};
     const { name, stats, group } = data || {};
     return <CardContent className={contentClass}>
         <Grid container>

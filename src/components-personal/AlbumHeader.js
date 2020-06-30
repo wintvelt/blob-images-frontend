@@ -4,6 +4,7 @@ import Recoil, { selectorFamily, atomFamily, useResetRecoilState, useRecoilValue
 import { API } from 'aws-amplify';
 
 import { useAlbumHeaderStyles, AlbumImage, AlbumContent } from './AlbumHeaderLayout';
+import Card from '@material-ui/core/Card';
 
 const albumTrigger = atomFamily({
     key: 'albumTrigger',

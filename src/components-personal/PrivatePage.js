@@ -6,7 +6,7 @@ import Hero from '../components-home/Hero';
 
 import AuthDialog from '../components-login/AuthDialog';
 import { useUser } from '../data/userData';
-import useActiveRoot from '../data/activeDataTree';
+import useActiveRoot from '../data/activeTreeRoot';
 
 const divStyle = {
     height: '300px',

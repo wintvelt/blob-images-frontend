@@ -3,8 +3,11 @@ import GroupHeader from '../../../src/components-personal/GroupHeader';
 import GroupMembers from '../../../src/components-personal/GroupMembers';
 import AlbumList from '../../../src/components-personal/AlbumList';
 import PrivatePage from '../../../src/components-personal/PrivatePage';
+import { redirectOnGroupLoadError } from '../../../src/data/activeTree-Group';
 
 const GroupMain = () => {
+    redirectOnGroupLoadError();
+
     return (
         <main>
             <GroupHeader />

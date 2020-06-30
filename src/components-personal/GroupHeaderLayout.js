@@ -1,35 +1,20 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import Card from '@material-ui/core/Card';
+import { useRecoilValueLoadable, useRecoilValue } from 'recoil';
+
 import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
 import { makeImageUrl } from '../../src/components-generic/imageProvider';
 
 import Link from '../components-generic/Link';
+import { activeGroupState } from '../data/activeTree-Group';
+import { activePathFront } from '../data/activeTreeRoot';
 
 const useStyles = makeStyles(theme => ({
-    card: {
-        position: 'relative',
-        // backgroundColor: theme.palette.background.paper,
-        background: 'linear-gradient(308deg, rgba(88,163,69,1) 14%, rgba(151,164,71,1) 43%, rgba(100,105,167,1) 77%)',
-        width: '100%',
-        height: '384px',
-    },
-    content: {
-        position: 'relative',
-        color: 'white',
-        padding: theme.spacing(8, 3, 3, 3),
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center'
-    },
     groupMedia: {
         position: 'absolute',
         top: 0,
@@ -37,11 +22,6 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         zIndex: 0,
         backgroundSize: 'cover',
-    },
-    edit: {
-        backgroundColor: 'rgba(0,0,0,.2)',
-        marginLeft: theme.spacing(1),
-        position: 'relative',
     },
     imageEdit: {
         position: 'absolute',
@@ -58,76 +38,68 @@ const useStyles = makeStyles(theme => ({
         borderRadius: theme.spacing(.5),
         textAlign: 'right',
     },
-    actions: {
-        position: 'relative',
-        backgroundColor: 'rgba(0,0,0,0.3)',
-        display: 'flex',
-        alignItems: 'center',
-        padding: theme.spacing(1, 1, 1, 3),
-        justifyContent: 'space-between',
-    }
 }));
 
-const GroupImage = (props) => {
-    const router = useRouter();
-    const href = router.pathname + '/edit';
-    const asPath = href.replace('[id]', router.query.id);
-    const { imageClass, buttonClass, group } = props;
-    const { data } = group;
-    const { image, userIsAdmin } = data || {};
-    const imgUrl = image && image.image;
-    const imgOwner = image && image.owner;
-    const imageUrl = makeImageUrl(imgUrl, 1440, 384);
-
-    return <>
-        {imageUrl && <CardMedia className={imageClass}
-            image={imageUrl}
-            title='Group cover image'
-        />}
-        {userIsAdmin && <Link href={href} as={asPath}>
-            <IconButton size='small' className={buttonClass}>
-                <Icon fontSize='small'>edit</Icon>
-            </IconButton>
-        </Link>}
-    </>
-}
-
-const GroupContent = (props) => {
-    const { contentClass, textClass, group } = props;
-    const { data, isLoading } = group;
-    const { name, description, stats } = data || {};
-    return <CardContent className={contentClass}>
-        <Grid container>
-            <Grid item md={11} xs={12}>
-                <Typography gutterBottom variant='h2' color='inherit'>
-                    <TextSkeleton className={textClass} isLoading={isLoading}>
-                        {name}
-                    </TextSkeleton>
-                </Typography>
-                <Typography variant="subtitle1" color="inherit" component="p">
-                    <TextSkeleton className={textClass} isLoading={isLoading}>
-                        {description}
-                    </TextSkeleton>
-                </Typography>
-            </Grid>
-            <Grid item md={1} xs={12}>
-                {stats && <Typography variant="caption" color="inherit" component="p"
-                    className={textClass}>
-                    {stats.map((stat) => (
-                        <React.Fragment key={stat}>{stat}<br /></React.Fragment>
-                    ))}
-                </Typography>}
-            </Grid>
-        </Grid>
-    </CardContent>
-}
-
-const GroupHeaderLayout = ({ group }) => {
+export const GroupImage = () => {
     const classes = useStyles();
-    return <Card className={classes.card}>
-        <GroupImage imageClass={classes.groupMedia} buttonClass={classes.imageEdit} group={group} />
-        <GroupContent contentClass={classes.content} textClass={classes.groupText} group={group} />
-    </Card>
-}
+    const groupData = useRecoilValueLoadable(activeGroupState);
+    const hasValue = (groupData.state === 'hasValue');
+    const image = hasValue && groupData.contents.image;
+    if (!image) return null;
 
-export default GroupHeaderLayout;
+    const imageUrl = makeImageUrl(image.image, 1440, 384);
+
+    return <CardMedia className={classes.groupMedia}
+        image={imageUrl}
+        title='Group cover image'
+    />
+};
+
+export const GroupEditButton = () => {
+    const classes = useStyles();
+    const groupData = useRecoilValueLoadable(activeGroupState);
+    const hasValue = (groupData.state === 'hasValue');
+    const userIsAdmin = hasValue && groupData.contents.userIsAdmin;
+    const paths = useRecoilValue(activePathFront);
+    if (!userIsAdmin) return null;
+    return <Link href={paths.path + '/edit'} as={paths.asPath + '/edit'}>
+        <IconButton size='small' className={classes.imageEdit}>
+            <Icon fontSize='small'>edit</Icon>
+        </IconButton>
+    </Link>
+};
+
+
+export const GroupName = () => {
+    const classes = useStyles();
+    const groupData = useRecoilValueLoadable(activeGroupState);
+    const hasValue = (groupData.state === 'hasValue');
+    const name = hasValue && groupData.contents.name;
+    return <TextSkeleton className={classes.groupText} isLoading={!hasValue}>
+        {name}
+    </TextSkeleton>
+};
+
+export const GroupDescription = () => {
+    const classes = useStyles();
+    const groupData = useRecoilValueLoadable(activeGroupState);
+    const hasValue = (groupData.state === 'hasValue');
+    const description = hasValue && groupData.contents.description;
+    return <TextSkeleton className={classes.groupText} isLoading={!hasValue}>
+        {description}
+    </TextSkeleton>
+};
+
+export const GroupStats = () => {
+    const classes = useStyles();
+    const groupData = useRecoilValueLoadable(activeGroupState);
+    const hasValue = (groupData.state === 'hasValue');
+    const stats = hasValue && groupData.contents.stats;
+    if (!stats) return null;
+    return <Typography variant="caption" color="inherit" component="p"
+        className={classes.groupText}>
+        {stats.map((stat) => (
+            <React.Fragment key={stat}>{stat}<br /></React.Fragment>
+        ))}
+    </Typography>
+}

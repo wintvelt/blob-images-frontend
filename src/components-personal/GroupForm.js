@@ -3,7 +3,6 @@ import { API } from 'aws-amplify';
 import { useSnackbar } from 'notistack';
 
 import Form from '../components-generic/Form';
-import { useRouter } from 'next/router';
 import { useApiData } from '../data/apiData';
 import { useSetLoadingPath } from '../data/loadingData';
 
@@ -31,9 +30,8 @@ const fieldConfig = {
 };
 
 const GroupForm = ({ group }) => {
-    const router = useRouter();
-    const groupId = router.query && router.query.id;
-    const isNew = (groupId === 'new');
+    const groupId = group.id;
+    const isNew = !groupId;
     const setLoadingPath = useSetLoadingPath();
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);

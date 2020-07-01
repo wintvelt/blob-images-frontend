@@ -16,9 +16,9 @@ import { useRecoilValueLoadable } from 'recoil';
 import { activeGroupMembers } from '../data/activeTree-Group';
 
 const useStyles = makeStyles(theme => ({
-    panel: { 
-        flexDirection: 'column', 
-        padding: theme.spacing(1,0.5,2,2),
+    panel: {
+        flexDirection: 'column',
+        padding: theme.spacing(1, 0.5, 2, 2),
     },
     line: {
         position: 'relative',
@@ -64,8 +64,7 @@ const widthStyle200Left = { ...widthStyle(200), textAlign: 'left' };
 const widthStyle120 = widthStyle(120);
 const redStyle = { color: 'red' };
 
-const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading }) => {
-    const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
+const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isLarge }) => {
     const isAdmin = (member.role === 'admin');
     const isInvite = (member.status === 'invite');
     const classes = useStyles();
@@ -113,6 +112,7 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading }) =
 
 const MemberDetails = () => {
     const classes = useStyles();
+    const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
 
     const currentUser = useUserValue();
     const { profile } = currentUser;
@@ -121,7 +121,6 @@ const MemberDetails = () => {
     const hasValue = (membersData.state === 'hasValue');
 
     const members = (hasValue) ? membersData.contents : [];
-    console.log({members});
     const currentIsAdmin = !!members.find(member => (
         member.SK.slice(1) === profile.id &&
         member.role === 'admin' &&
@@ -153,6 +152,7 @@ const MemberDetails = () => {
             <MemberLine key={member.SK || 'header'} member={member} onClick={onClick}
                 currentIsAdmin={currentIsAdmin} isLoading={!hasValue}
                 isCurrent={(member.SK.slice(1) === profile.id)}
+                isLarge={isLarge}
             />
         ))}
         <Menu

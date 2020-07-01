@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 
 import { atom, selector, useRecoilValueLoadable, DefaultValue } from 'recoil';
 import { activeGroupIdState } from './activeTreeRoot';
+import { useSetLoadingPath } from './loadingData';
 
 const activeGroupStateTrigger = atom({
     key: 'activeGroupStateTrigger',
@@ -73,13 +74,13 @@ export const activeGroupMembers = selector({
 
 export const redirectOnGroupLoadError = () => {
     const { enqueueSnackbar } = useSnackbar();
-    const router = useRouter();
+    const redirect = useSetLoadingPath();
     const groupData = useRecoilValueLoadable(activeGroupState);
     const hasError = (groupData.state === 'hasError');
     useEffect(() => {
         if (hasError) {
             enqueueSnackbar('Could not load this group, please try again', { variant: 'error' });
-            router.push('/personal/groups');
+            redirect('/personal/groups');
         }
     }, [hasError]);
 };

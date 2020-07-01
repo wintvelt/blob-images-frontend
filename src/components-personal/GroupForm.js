@@ -3,8 +3,10 @@ import { API } from 'aws-amplify';
 import { useSnackbar } from 'notistack';
 
 import Form from '../components-generic/Form';
-import { useApiData } from '../data/apiData';
 import { useSetLoadingPath } from '../data/loadingData';
+import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
+import { userGroups } from '../data/userData';
+import { activeGroupState } from '../data/activeTree-Group';
 
 const fieldConfig = {
     name: {
@@ -29,14 +31,15 @@ const fieldConfig = {
     },
 };
 
-const GroupForm = ({ group }) => {
-    const groupId = group.id;
-    const isNew = !groupId;
+const GroupForm = ({ group, isNew }) => {
+    const groupId = group?.id;
     const setLoadingPath = useSetLoadingPath();
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
-    const groups = useApiData('groups', '/groups');
-    const { reloadData } = useApiData('group', `/groups/${groupId}`);
+    const userGroupsData = useRecoilValueLoadable(userGroups);
+    const groups = (userGroupsData.state === 'hasValue') ? userGroupsData.contents : [];
+    const reloadGroup = useResetRecoilState(activeGroupState);
+    const reloadUserGroups = useResetRecoilState(userGroups);
 
     const onSubmit = async (fields) => {
         setIsLoading(true);
@@ -50,19 +53,19 @@ const GroupForm = ({ group }) => {
                 });
             const newGroupId = result.SK;
             const message = (isNew) ?
-                (groups.data && groups.data.length > 0) ?
+                (groups && groups.length > 0) ?
                     'new group created'
                     : 'congrats! you created your first group.'
                 : 'changes were saved';
             enqueueSnackbar(message, { variant: 'success' });
             if (isNew) {
                 setLoadingPath(
-                    '/personal/groups/[id]/albums/[albumid]/edit?new=true', 
+                    '/personal/groups/[id]/albums/[albumid]/edit?new=true',
                     `/personal/groups/${newGroupId}/albums/new/edit?new=true`)
             } else {
-                reloadData();
+                reloadGroup();
             };
-            groups.reloadData();
+            reloadUserGroups();
         } catch (e) {
             console.log(e.message);
             enqueueSnackbar('Could not save group', { variant: 'error' });
@@ -70,10 +73,10 @@ const GroupForm = ({ group }) => {
         setIsLoading(false);
     }
     const handleDelete = (e) => {
-        alert('deleted');
+        alert('fake deleted');
     }
-    const title = (isNew) ?
-        (groups.data && groups.data.length > 0) ?
+    const title = (isNew && userGroupsData.state === 'hasValue') ?
+        (groups && groups.length > 0) ?
             'Add details for your new group'
             : 'Create your first new group!'
         : 'Edit group details';
@@ -85,7 +88,7 @@ const GroupForm = ({ group }) => {
             title={title}
             formFields={fieldConfig}
             initialValues={group}
-            isLoading={isLoading}
+            isLoading={(!userGroupsData.state === 'hasValue') || isLoading}
             submitText={submitText}
             onSubmit={onSubmit}
             onDelete={onDelete}

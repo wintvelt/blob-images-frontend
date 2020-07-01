@@ -27,7 +27,7 @@ const GroupEditMain = () => {
     const isNew = (groupId === 'new');
     const groupData = useRecoilValueLoadable(activeGroupState);
     const hasValue = hasGroupData(groupData);
-    const group = groupData.contents;
+    const group = (hasValue && groupData.contents) || {};
 
     return (
         <main>
@@ -39,7 +39,7 @@ const GroupEditMain = () => {
                 </Grid>}
                 <Grid item md={(isNew) ? 3 : 1} />
                 <Grid item md={(isNew) ? 6 : 8} xs={12}>
-                    <GroupForm group={group} />
+                    <GroupForm group={group} isNew={isNew}/>
                 </Grid>
                 {(isNew) && <Grid item md={3} />}
             </Grid>

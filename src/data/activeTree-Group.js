@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { API } from 'aws-amplify';
 import { useSnackbar } from 'notistack';
 
@@ -25,7 +24,7 @@ export const activeGroupState = selector({
         }
         return response;
     },
-    set: async ({ set }, newValue) => {
+    set: ({ set }, newValue) => {
         if (newValue instanceof DefaultValue) {
             set(activeGroupStateTrigger, v => v + 1);
         }
@@ -64,7 +63,7 @@ export const activeGroupMembers = selector({
         }));
         return members;
     },
-    set: async ({ set }, newValue) => {
+    set: ({ set }, newValue) => {
         if (newValue instanceof DefaultValue) {
             set(activeGroupMembersTrigger, v => v + 1);
         }

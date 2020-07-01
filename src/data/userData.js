@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { atom, useRecoilState, useRecoilValue } from 'recoil';
+import { atom, useRecoilState, useRecoilValue, selector, DefaultValue } from 'recoil';
 import { API, Auth } from 'aws-amplify';
 
 const initialUser = {
@@ -13,6 +13,30 @@ const initialUser = {
 const userData = atom({
     key: 'user',
     default: initialUser,
+});
+
+const userGroupsTrigger = atom({
+    key: 'userGroupsTrigger',
+    default: 0
+});
+
+export const userGroups = selector({
+    key: 'userGroups',
+    get: async ({ get }) => {
+        get(userData);
+        get(userGroupsTrigger);
+        console.log('fetching user groups');
+        const response = await API.get('blob-images', '/groups');
+        if (response.error) {
+            throw response.error;
+        }
+        return response;
+    },
+    set: ({ set }, newValue) => {
+        if (newValue instanceof DefaultValue) {
+            set(userGroupsTrigger, v => v + 1);
+        }
+    }
 });
 
 const authPaths = ['/login', '/signup', '/forgotpsw', '/verifysignup', '/confirmpsw'];

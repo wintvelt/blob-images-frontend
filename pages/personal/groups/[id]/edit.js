@@ -5,11 +5,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 
-import { useApiDataValue } from '../../../../src/data/apiData';
 import PrivatePage from '../../../../src/components-personal/PrivatePage';
 import GroupCardLayout from '../../../../src/components-personal/GroupCardLayout';
 import GroupForm from '../../../../src/components-personal/GroupForm';
-import BackLink from '../../../../src/components-generic/BackLink';
+import BackLinkToGroup from '../../../../src/components-generic/BackLinkToGroup';
+import { useRecoilValueLoadable } from 'recoil';
+import { activeGroupState, hasGroupData } from '../../../../src/data/activeTree-Group';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -22,19 +23,19 @@ const useStyles = makeStyles(theme => ({
 const GroupEditMain = () => {
     const classes = useStyles();
     const router = useRouter();
-    const groupId = router.query && router.query.id;
+    const groupId = router.query?.id;
     const isNew = (groupId === 'new');
-    const source = `/groups/${groupId}`;
-    const groupData = useApiDataValue('group', source);
-    const group = groupData.data || {};
+    const groupData = useRecoilValueLoadable(activeGroupState);
+    const hasValue = hasGroupData(groupData);
+    const group = groupData.contents;
 
     return (
         <main>
             <Toolbar />
-            {group && !isNew && <BackLink groupId={groupId} />}
+            <BackLinkToGroup />
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
-                    <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading} />
+                    <GroupCardLayout {...group} withEdit={false} isLoading={!hasValue} />
                 </Grid>}
                 <Grid item md={(isNew) ? 3 : 1} />
                 <Grid item md={(isNew) ? 6 : 8} xs={12}>

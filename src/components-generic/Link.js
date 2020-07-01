@@ -45,7 +45,8 @@ function Link(props) {
         [activeClassName]: pathWithHash === pathname && activeClassName,
     });
 
-    const onClick = () => {
+    const onClick = (e) => {
+        e.preventDefault();
         setLoadingPath(href, props.as);
     }
 

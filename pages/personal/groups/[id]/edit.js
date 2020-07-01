@@ -20,8 +20,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const GroupEditMain = () => {
-    const router = useRouter();
     const classes = useStyles();
+    const router = useRouter();
     const groupId = router.query && router.query.id;
     const isNew = (groupId === 'new');
     const source = `/groups/${groupId}`;

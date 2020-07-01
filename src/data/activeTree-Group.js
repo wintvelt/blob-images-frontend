@@ -31,6 +31,14 @@ export const activeGroupState = selector({
     }
 });
 
+
+// helper to check for data in Loadable - sometimes state == hasValue, but contents == undefined
+// if groupId not (yet) in recoil datatree
+export const hasGroupData = (loadable) => (
+    (loadable.state === 'hasValue') && loadable.contents
+);
+
+
 const activeGroupMembersTrigger = atom({
     key: 'activeGroupMembersTrigger',
     default: 0,

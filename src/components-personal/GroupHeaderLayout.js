@@ -11,7 +11,7 @@ import { TextSkeleton } from '../../src/components-generic/Skeleton';
 import { makeImageUrl } from '../../src/components-generic/imageProvider';
 
 import Link from '../components-generic/Link';
-import { activeGroupState } from '../data/activeTree-Group';
+import { activeGroupState, hasGroupData } from '../data/activeTree-Group';
 import { activePathFront } from '../data/activeTreeRoot';
 
 const useStyles = makeStyles(theme => ({
@@ -43,8 +43,9 @@ const useStyles = makeStyles(theme => ({
 export const GroupImage = () => {
     const classes = useStyles();
     const groupData = useRecoilValueLoadable(activeGroupState);
-    const hasValue = (groupData.state === 'hasValue');
+    const hasValue = hasGroupData(groupData);
     const image = hasValue && groupData.contents.image;
+    if (hasValue && !groupData.contents) console.log({groupData});
     if (!image) return null;
 
     const imageUrl = makeImageUrl(image.image, 1440, 384);
@@ -58,7 +59,7 @@ export const GroupImage = () => {
 export const GroupEditButton = () => {
     const classes = useStyles();
     const groupData = useRecoilValueLoadable(activeGroupState);
-    const hasValue = (groupData.state === 'hasValue');
+    const hasValue = hasGroupData(groupData);
     const userIsAdmin = hasValue && groupData.contents.userIsAdmin;
     const paths = useRecoilValue(activePathFront);
     if (!userIsAdmin) return null;
@@ -73,7 +74,7 @@ export const GroupEditButton = () => {
 export const GroupName = () => {
     const classes = useStyles();
     const groupData = useRecoilValueLoadable(activeGroupState);
-    const hasValue = (groupData.state === 'hasValue');
+    const hasValue = hasGroupData(groupData);
     const name = hasValue && groupData.contents.name;
     return <TextSkeleton className={classes.groupText} isLoading={!hasValue}>
         {name}
@@ -83,7 +84,7 @@ export const GroupName = () => {
 export const GroupDescription = () => {
     const classes = useStyles();
     const groupData = useRecoilValueLoadable(activeGroupState);
-    const hasValue = (groupData.state === 'hasValue');
+    const hasValue = hasGroupData(groupData);
     const description = hasValue && groupData.contents.description;
     return <TextSkeleton className={classes.groupText} isLoading={!hasValue}>
         {description}
@@ -93,7 +94,7 @@ export const GroupDescription = () => {
 export const GroupStats = () => {
     const classes = useStyles();
     const groupData = useRecoilValueLoadable(activeGroupState);
-    const hasValue = (groupData.state === 'hasValue');
+    const hasValue = hasGroupData(groupData);
     const stats = hasValue && groupData.contents.stats;
     if (!stats) return null;
     return <Typography variant="caption" color="inherit" component="p"

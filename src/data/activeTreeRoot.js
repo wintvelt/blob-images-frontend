@@ -26,8 +26,9 @@ export const activePathFront = selector({
             asPath: path.replace('[id]', groupId).replace('[albumid]', albumId),
         }
     }
-})
+});
 
+// Main Root function to populate atoms from router
 const useActiveRoot = () => {
     const [activeGroupId, setActiveGroupId] = useRecoilState(activeGroupIdState);
     const [activeAlbumId, setActiveAlbumId] = useRecoilState(activeAlbumIdState);

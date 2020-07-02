@@ -36,7 +36,6 @@ const useStyles = makeStyles(theme => ({
     },
     name: {
         flexGrow: 1,
-        lineHeight: 'normal',
     },
     badge: {
         position: 'absolute',

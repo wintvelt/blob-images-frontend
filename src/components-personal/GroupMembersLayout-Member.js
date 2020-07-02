@@ -7,7 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery, Chip } from '@material-ui/core';
 
 import { useUserValue } from '../../src/data/userData';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
@@ -63,6 +63,7 @@ const smallFont = { fontSize: '70%' };
 const widthStyle200Left = { ...widthStyle(200), textAlign: 'left' };
 const widthStyle120 = widthStyle(120);
 const redStyle = { color: 'red' };
+const leftSpace = { marginLeft: '8px' };
 
 const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isLarge }) => {
     const isAdmin = (member.role === 'admin');
@@ -88,6 +89,7 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isL
         </Tooltip>}
         <Typography className={classes.name}>
             {member.name}
+            {isCurrent && <Chip size='small' label='me' style={leftSpace} />}
             {!isAdmin && <span style={smallFont}>{' (guest)'}</span>}
             {!isLarge && <>
                 <br />

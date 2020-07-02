@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 
-import { useApiDataValue } from '../../src/data/apiData';
 import GroupCardLayout from './GroupCardLayout';
 import CardList from '../components-generic/CardList';
 import { useSetLoadingPath } from '../data/loadingData';
+import { useRecoilValueLoadable } from 'recoil';
+import { userGroups } from '../data/userData';
 
 const paddingStyle = { padding: '24px' };
 
 const GroupList = () => {
     const setLoadingPath = useSetLoadingPath();
-    const groups = useApiDataValue('groups', '/groups');
-    const groupsList = groups.data || [1, 2].map(id => ({ id, isLoading: true }));
+    const groupsData = useRecoilValueLoadable(userGroups);
+    const hasValue = (groupsData.state === 'hasValue');
+    const groupsList = (hasValue)? groupsData.contents : [1, 2].map(id => ({ id, isLoading: true }));
     const groupsListLength = groupsList?.length;
     const groupAddProps = {
         text: 'new group',
@@ -22,12 +24,12 @@ const GroupList = () => {
             setLoadingPath(groupAddProps.path, groupAddProps.asPath);
         }
     }, [groupsListLength]);
-    const groupsWithEdit = (groups.isLoading) ?
+    const groupsWithEdit = (!hasValue) ?
         groupsList
         : groupsList.map(item => ({ ...item.group, withEdit: true, userIsAdmin: (item.role === 'admin') }));
     return <div style={paddingStyle}>
         <CardList list={groupsWithEdit} component={GroupCardLayout} addProps={groupAddProps}
-            width={3} spacing={2} isLoading={groups.isLoading} />
+            width={3} spacing={2} isLoading={!hasValue} />
     </div>
 }
 

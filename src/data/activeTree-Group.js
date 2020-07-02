@@ -70,6 +70,19 @@ export const activeGroupMembers = selector({
     }
 });
 
+export const activeGroupAlbums = selector({
+    key: 'activeGroupAlbums',
+    get: async ({get}) => {
+        const groupId = get(activeGroupIdState);
+        if (!groupId) return [];
+        const source = `/groups/${groupId}/albums`;
+        const response = await API.get('blob-images', source);
+        if (response.error) {
+            throw response.error;
+        }
+        return response;
+    }
+});
 
 export const redirectOnGroupLoadError = () => {
     const { enqueueSnackbar } = useSnackbar();

@@ -5,12 +5,11 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useSnackbar } from 'notistack';
 
-import { useApiData } from '../data/apiData';
 import { useUser } from '../data/userData';
 
 const redStyle = { color: 'red' };
 
-const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum }) => {
+const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum, reloadGroup }) => {
     const albumData = album;
     const currentPhotoId = anchor.photo?.PK.slice(2);
     const { user, saveProfile } = useUser();

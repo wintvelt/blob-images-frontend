@@ -25,7 +25,6 @@ export const userGroups = selector({
     get: async ({ get }) => {
         get(userData);
         get(userGroupsTrigger);
-        console.log('fetching user groups');
         const response = await API.get('blob-images', '/groups');
         if (response.error) {
             throw response.error;
@@ -35,6 +34,29 @@ export const userGroups = selector({
     set: ({ set }, newValue) => {
         if (newValue instanceof DefaultValue) {
             set(userGroupsTrigger, v => v + 1);
+        }
+    }
+});
+
+const userPhotosStateTrigger = atom({
+    key: 'userPhotosStateTrigger',
+    default: 0
+})
+
+export const userPhotosState = selector({
+    key: 'userPhotosState',
+    get: async ({get}) => {
+        get(userData);
+        get(userPhotosStateTrigger);
+        const response = await API.get('blob-images', '/photos');
+        if (response.error) {
+            throw response.error;
+        }
+        return response;
+    },
+    set: ({ set }, newValue) => {
+        if (newValue instanceof DefaultValue) {
+            set(userPhotosStateTrigger, v => v + 1);
         }
     }
 });

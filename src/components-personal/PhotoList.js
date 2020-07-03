@@ -41,7 +41,7 @@ const Empty = ({ message }) => {
 const initialPhotos = [1, 2, 3].map(id => ({ id, isLoading: true }));
 
 const PhotoList = (props) => {
-    const { photoData, empty, menu, select, album, reloadAlbum, reloadPhotos } = props;
+    const { photoData, empty, menu, select, album, reloadAlbum, reloadGroup, reloadPhotos } = props;
     const [photos, setPhotos] = useState(initialPhotos);
     useEffect(() => {
         if (photoData.state === 'hasValue' && photoData.contents) {
@@ -96,6 +96,7 @@ const PhotoList = (props) => {
             album={album}
             reloadAlbum={reloadAlbum}
             reloadPhotos={reloadPhotos}
+            reloadGroup={reloadGroup}
         />}
         {empty && (photos.length === 0) && <Empty message={empty} />}
     </div>

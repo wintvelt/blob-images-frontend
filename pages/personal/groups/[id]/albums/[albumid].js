@@ -35,7 +35,7 @@ const AlbumMain = () => {
     }
 
 
-    return (
+    return ( 
         <main>
             <AlbumHeader />
             <PhotoList

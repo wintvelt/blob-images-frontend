@@ -4,8 +4,13 @@ import Header from '../../src/components-personal/Header';
 import { Toolbar } from '@material-ui/core';
 
 import PhotoList from '../../src/components-personal/PhotoList';
+import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
+import { userPhotosState } from '../../src/data/userData';
 
 const PhotosMain = () => {
+    const photoData = useRecoilValueLoadable(userPhotosState);
+    const reloadPhotos = useResetRecoilState(userPhotosState);
+
     return (
         <main>
             <Toolbar />
@@ -13,8 +18,8 @@ const PhotosMain = () => {
                 Your Photos
             </Header>
             <PhotoList
-                apiKey='myPhotos'
-                source='/photos'
+                photoData={photoData}
+                reloadPhotos={reloadPhotos}
                 onClick={(e) => alert(JSON.stringify(e))}
                 noOwner
                 menu={true}

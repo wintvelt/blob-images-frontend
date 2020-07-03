@@ -24,5 +24,5 @@ export const resetLoadingPath = () => {
     const router = useRouter();
     useEffect(() => {
         setLoading(false);
-    }, [router.pathname]);
+    }, [router.asPath]);
 }

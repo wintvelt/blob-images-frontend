@@ -1,21 +1,17 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
 import { makeImageUrl } from '../../src/components-generic/imageProvider';
 
 import Link from '../components-generic/Link';
-import BackLink from '../components-generic/BackLink';
-import { useRecoilValueLoadable } from 'recoil';
+import { useRecoilValueLoadable, useRecoilValue } from 'recoil';
 import { activeAlbumState, hasAlbumData } from '../data/activeTree-Album';
+import { activePathFront } from '../data/activeTreeRoot';
 
 export const useAlbumHeaderStyles = makeStyles(theme => ({
     card: {
@@ -54,12 +50,7 @@ export const useAlbumHeaderStyles = makeStyles(theme => ({
         backgroundColor: 'rgba(0,0,0,.2)',
         color: 'white',
         marginLeft: theme.spacing(1),
-    },
-    groupText: {
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        color: 'white',
-        padding: theme.spacing(0, .4),
-        borderRadius: theme.spacing(.5),
+        '&:hover': { color: theme.palette.primary.main }
     },
     actions: {
         position: 'relative',
@@ -87,67 +78,49 @@ export const AlbumImage = () => {
     </>
 }
 
-export const AlbumImageCOPY = (props) => {
-    //  imageClass={classes.groupMedia} buttonClass={classes.imageEdit textClass={classes.groupText} album={album} 
-    const router = useRouter();
-    const href = router.pathname + '/edit';
-    const asPath = router.asPath + '/edit';
-    const { imageClass, buttonClass, album, textClass } = props;
-    // const { data } = album;
-    // const { image, userIsAdmin, group } = data || {};
-    const { image, userIsAdmin, group } = album || {};
-    const imgUrl = image && image.image;
-    const imgOwner = image && image.owner;
-    const imageUrl = makeImageUrl(imgUrl, 1440, 320);
+export const AlbumName = () => {
+    const classes = useAlbumHeaderStyles();
+    const albumData = useRecoilValueLoadable(activeAlbumState);
+    const hasValue = hasAlbumData(albumData);
+    const name = hasValue && albumData.contents.name;
+    return <TextSkeleton isLoading={!hasValue}>
+        {name}
+    </TextSkeleton>
+};
 
-    const linkStyle = {
-        position: 'absolute',
-        bottom: '24px',
-        right: '24px',
-        zIndex: 99,
-        textDecoration: 'none',
-        color: 'inherit',
-        '&:hover': {
-            cursor: 'pointer'
-        }
-    };
-    return <>
-        {imgUrl && <CardMedia className={imageClass}
-            image={imageUrl}
-            title='Album cover image'
-        />}
-        {!imgUrl && <div className={imageClass} />}
-        {group && <BackLink groupId={group.id} className={textClass} />}
-        {userIsAdmin && <Link href={href} as={asPath} style={linkStyle}>
-            <IconButton size='small' className={buttonClass}>
-                <Icon fontSize='small'>edit</Icon>
-            </IconButton>
-        </Link>}
-    </>
-}
-
-export const AlbumContent = (props) => {
-    // contentClass={classes.content} textClass={classes.groupText} album={album}
-    const { contentClass, textClass, album } = props;
-    const { data, isLoading } = album || {};
-    const { name, stats, group } = data || {};
-    return <CardContent className={contentClass}>
-        <Grid container>
-            <Grid item md={11} xs={12}>
-                <Typography gutterBottom variant='h4' color='inherit'>
-                    <TextSkeleton isLoading={isLoading}>
-                        {name}
-                    </TextSkeleton>
-                </Typography>
-            </Grid>
-            <Grid item md={1} xs={12}>
-                {stats && <Typography variant="caption" color="inherit" component="p"
-                    className={textClass}>
-                    {stats.map((stat) => (
-                        <React.Fragment key={stat}>{stat}<br /></React.Fragment>
-                    ))}
-                </Typography>}
-            </Grid>
-        </Grid>
-    </CardContent>
-}
+export const AlbumStats = () => {
+    const classes = useAlbumHeaderStyles();
+    const albumData = useRecoilValueLoadable(activeAlbumState);
+    const hasValue = hasAlbumData(albumData);
+    const stats = hasValue && albumData.contents.stats;
+    if (!stats) return null;
+    return <Typography variant="caption" color="inherit" component="p">
+        {stats.map((stat) => (
+            <React.Fragment key={stat}>{stat}<br /></React.Fragment>
+        ))}
+    </Typography>
+};
+const linkStyle = {
+    position: 'absolute',
+    bottom: '24px',
+    right: '24px',
+    zIndex: 99,
+    textDecoration: 'none',
+    color: 'inherit',
+    '&:hover': {
+        cursor: 'pointer',
+    }
+};
+export const AlbumEditButton = () => {
+    const classes = useAlbumHeaderStyles();
+    const albumData = useRecoilValueLoadable(activeAlbumState);
+    const hasValue = hasAlbumData(albumData);
+    const userIsAdmin = hasValue && albumData.contents.userIsAdmin;
+    const paths = useRecoilValue(activePathFront);
+    if (!userIsAdmin) return null;
+    return <Link href={paths.path + '/edit'} as={paths.asPath + '/edit'} style={linkStyle}>
+        <IconButton size='small' className={classes.imageEdit}>
+            <Icon fontSize='small'>edit</Icon>
+        </IconButton>
+    </Link>
+};

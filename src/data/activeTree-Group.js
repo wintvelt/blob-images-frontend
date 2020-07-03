@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import { atom, selector, useRecoilValueLoadable, DefaultValue } from 'recoil';
 import { activeGroupIdState } from './activeTreeRoot';
 import { useSetLoadingPath } from './loadingData';
+import { userData } from './userData';
 
 const activeGroupStateTrigger = atom({
     key: 'activeGroupStateTrigger',
@@ -48,6 +49,7 @@ export const activeGroupMembers = selector({
     key: 'activeGroupMembers',
     get: async ({ get }) => {
         get(activeGroupMembersTrigger);
+        get(userData);
         const groupId = get(activeGroupIdState);
         if (!groupId) return [];
         const source = `/groups/${groupId}/members`;
@@ -57,6 +59,8 @@ export const activeGroupMembers = selector({
         }
         const members = response.map(member => ({
             ...member.user,
+            SK: member.SK,
+            PK: member.PK,
             role: member.role,
             status: member.status,
             createdAt: member.createdAt,

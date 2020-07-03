@@ -123,13 +123,13 @@ const MemberDetails = () => {
 
     const members = (hasValue) ? membersData.contents : [];
     const currentIsAdmin = !!members.find(member => (
-        member.SK.slice(1) === profile.id &&
+        member.PK.slice(3) === profile.id &&
         member.role === 'admin' &&
         member.status !== 'invite'
     ));
 
     const hasOtherAdmin = !!members.find(member => (
-        member.SK.slice(1) !== profile.id &&
+        member.PK.slice(3) !== profile.id &&
         member.role === 'admin' &&
         member.status !== 'invite'
     ));
@@ -152,7 +152,7 @@ const MemberDetails = () => {
         {members.map(member => (
             <MemberLine key={member.SK || 'header'} member={member} onClick={onClick}
                 currentIsAdmin={currentIsAdmin} isLoading={!hasValue}
-                isCurrent={(member.SK.slice(1) === profile.id)}
+                isCurrent={(member.PK.slice(3) === profile.id)}
                 isLarge={isLarge}
             />
         ))}

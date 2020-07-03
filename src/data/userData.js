@@ -10,7 +10,7 @@ const initialUser = {
     error: false,
 };
 
-const userData = atom({
+export const userData = atom({
     key: 'user',
     default: initialUser,
 });

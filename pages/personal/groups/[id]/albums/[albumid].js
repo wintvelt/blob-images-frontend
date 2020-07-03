@@ -1,22 +1,23 @@
 import React, { useState, useRef } from 'react';
-import { useRouter } from 'next/router';
 
 import AlbumHeader from '../../../../../src/components-personal/AlbumHeader';
 import PhotoList from '../../../../../src/components-personal/PhotoList';
 import PrivatePage from '../../../../../src/components-personal/PrivatePage';
-import { useApiData } from '../../../../../src/data/apiData';
 import Upload from '../../../../../src/components-generic/Upload';
+import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
+import { activeAlbumState, hasAlbumData } from '../../../../../src/data/activeTree-Album';
 
 const AlbumMain = () => {
-    const router = useRouter();
-    const groupId = router.query.id;
-    const albumId = router.query.albumid;
+    const activeAlbumData = useRecoilValueLoadable(activeAlbumState);
+    const hasValue = hasAlbumData(activeAlbumData);
+    const activeAlbum = hasValue? activeAlbumData.contents : {};
+    const groupId = activeAlbum.PK?.slice(2);
+    const albumId = activeAlbum.SK;
+    const userIsAdmin = activeAlbumData.userIsAdmin;
     const photoMetaData = { groupId, albumId };
     const pond = useRef();
     const albumUrl = `/groups/${groupId}/albums/${albumId}`;
-    const album = useApiData('album', albumUrl);
-    const albumData = album.data;
-    const { reloadData } = useApiData('albumPhotos', albumUrl + '/photos')
+    const reloadPhotos = useResetRecoilState(activeAlbumState);
     const [files, setFiles] = useState([]);
 
     const onAddFile = (_, file) => {
@@ -27,7 +28,7 @@ const AlbumMain = () => {
     }
     const onProcessFile = async (err, file) => {
         setTimeout(async () => {
-            reloadData();
+            reloadPhotos();
             pond.current.removeFile(file.id);
         }, 1000)
     }
@@ -37,9 +38,9 @@ const AlbumMain = () => {
         <main>
             <AlbumHeader />
             <PhotoList apiKey='albumPhotos' source={albumUrl + '/photos'}
-                menu={albumData && albumData.userIsAdmin}
+                menu={userIsAdmin}
                 select={true}
-                album={album}
+                album={activeAlbum}
             />
             <Upload pond={pond} allowMultiple={true} allowImagePreview={true} instantUpload={true}
                 onAddFile={onAddFile} onRemoveFile={onRemoveFile}

@@ -14,7 +14,7 @@ const activeAlbumStateTrigger = atom({
 export const activeAlbumState = selector({
     key: 'activeAlbum',
     get: async ({ get }) => {
-        get(activeGroupStateTrigger);
+        get(activeAlbumStateTrigger);
         const groupId = get(activeGroupIdState);
         const albumId = get(activeAlbumIdState);
         if (!groupId || !albumId) return undefined;
@@ -44,6 +44,32 @@ export const activeGroupAlbums = selector({
             throw response.error;
         }
         return response;
+    }
+});
+
+const activeAlbumPhotosTrigger = atom({
+    key: 'activeAlbumPhotosTrigger',
+    default: 0
+});
+
+export const activeAlbumPhotos = selector({
+    key: 'activeAlbumPhotos',
+    get: async ({ get }) => {
+        get(activeAlbumStateTrigger);
+        get(activeAlbumPhotosTrigger);
+        const activeAlbum = await get(activeAlbumState);
+        if (!activeAlbum) return [];
+        const source = `/groups/${groupId}/albums/`;
+        const response = await API.get('blob-images', source);
+        if (response.error) {
+            throw response.error;
+        }
+        return response;
+    },
+    set: ({ set }, newValue) => {
+        if (newValue instanceof DefaultValue) {
+            set(activeAlbumStateTrigger, v => v + 1);
+        }
     }
 });
 

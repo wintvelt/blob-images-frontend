@@ -3,9 +3,11 @@ import { API } from 'aws-amplify';
 import { useSnackbar } from 'notistack';
 
 import Form from '../components-generic/Form';
-import { useRouter } from 'next/router';
-import { useApiData } from '../data/apiData';
 import { useSetLoadingPath } from '../data/loadingData';
+import { useRecoilValueLoadable, useResetRecoilState, useRecoilValue } from 'recoil';
+import { activeGroupAlbums, activeAlbumState } from '../data/activeTree-Album';
+import { activeGroupIdState, activeAlbumIdState } from '../data/activeTreeRoot';
+import { useRouter } from 'next/router';
 
 const fieldConfig = {
     name: {
@@ -26,17 +28,18 @@ const fieldConfig = {
 };
 
 const AlbumForm = ({ album }) => {
+    const groupId = useRecoilValue(activeGroupIdState);
+    const albumId = useRecoilValue(activeAlbumIdState);
+    const isNew = (!albumId);
     const router = useRouter();
-    const groupId = router.query && router.query.id;
-    const albumId = router.query && router.query.albumid;
     const isNewGroupFlow = router.query && router.query.new;
     const setLoadingPath = useSetLoadingPath();
-    const isNew = (albumId === 'new');
     const baseUrl = `/groups/${groupId}/albums`;
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
-    const albums = useApiData('albums', baseUrl);
-    const { reloadData } = useApiData('album', `${baseUrl}/${albumId}`)
+    const albumsData = useRecoilValueLoadable(activeGroupAlbums);
+    const albums = (albumsData === 'hasValue' && albumsData.contents) ? albumsData.contents : [];
+    const reloadActiveAlbum = useResetRecoilState(activeAlbumState);
 
     const onSubmit = async (fields) => {
         setIsLoading(true);
@@ -48,27 +51,29 @@ const AlbumForm = ({ album }) => {
                 await API.put('blob-images', `${baseUrl}/${albumId}`, {
                     body: fields
                 });
+            console.log({ isNew, baseUrl, result });
             const newAlbumId = result.SK;
             const message = (isNew) ?
-                (albums.data && albums.data.length > 0) ?
+                (albums.length > 0) ?
                     'new album created'
                     : 'congrats! you created your first album in this group.'
                 : 'changes were saved';
             enqueueSnackbar(message, { variant: 'success' });
+            reloadActiveAlbum();
             if (isNew) {
                 if (isNewGroupFlow) {
                     setLoadingPath(
-                        '/personal/groups/[id]/invite', 
-                        `/personal/groups/${groupId}/invite`)    
+                        '/personal/groups/[id]/invite',
+                        `/personal/groups/${groupId}/invite`)
                 } else {
                     setLoadingPath(
                         '/personal/groups/[id]/albums/[albumid]/edit',
                         `/personal/groups/${groupId}/albums/${newAlbumId}/edit`)
                 }
             } else {
-                reloadData();
+                // reloadData();
             };
-            albums.reloadData();
+            // albums.reloadData();
         } catch (e) {
             console.log(e.message);
             enqueueSnackbar('Could not save album', { variant: 'error' });

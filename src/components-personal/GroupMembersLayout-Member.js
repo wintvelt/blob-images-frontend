@@ -88,7 +88,7 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isL
         </Tooltip>}
         <Typography className={classes.name}>
             {member.name}
-            {isCurrent && <Chip size='small' label='me' style={leftSpace} />}
+            {isCurrent && <Chip size='small' label='me' component='span' style={leftSpace} />}
             {!isAdmin && <span style={smallFont}>{' (guest)'}</span>}
             {!isLarge && <>
                 <br />

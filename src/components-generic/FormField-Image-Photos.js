@@ -8,54 +8,49 @@ import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 
 import PhotoList from '../components-personal/PhotoList';
+import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
+import { userPhotosState } from '../data/userData';
+import { activeAlbumPhotos } from '../data/activeTree-Album';
 
 const flexCenter = { display: 'flex', alignItems: 'center' };
 const flexGrow = { flexGrow: 1 };
 
-const makeListProps = (type, groupId, albumId) => {
-    switch (type) {
-        case 'group': {
-            return {
-                title: 'Pick from group photos',
-                apiKey: `groupPhotos`,
-                source: `/groups/${groupId}/photos`,
-            }
-        }
-
-        case 'album': {
-            return {
-                title: 'Pick from album photos',
-                apiKey: `albumPhotos`,
-                source: `/groups/${groupId}/albums/${albumId}/photos`,
-            }
-        }
-
-        default: {
-            return {
-                title: 'Pick from my own photos',
-                apiKey: 'myPhotos',
-                source: '/photos',
-            }
-        }
-    }
+const MyPhotoList = (props) => {
+    const photoData = useRecoilValueLoadable(userPhotosState);
+    const reloadPhotos = useResetRecoilState(userPhotosState);
+    return <PhotoList photoData={photoData} reloadPhotos={reloadPhotos} noOwner
+        onClick={props.onChange} empty='Oh, it seems there are no photos yet..' />
+};
+const AlbumPhotoList = (props) => {
+    const photoData = useRecoilValueLoadable(activeAlbumPhotos);
+    const reloadPhotos = useResetRecoilState(activeAlbumPhotos);
+    return <PhotoList photoData={photoData} reloadPhotos={reloadPhotos}
+        onClick={props.onChange} empty='Oh, it seems there are no photos yet..' />
+};
+const GroupPhotoList = (props) => {
+    const photoData = useRecoilValueLoadable(userPhotosState);
+    const reloadPhotos = useResetRecoilState(userPhotosState);
+    return <PhotoList photoData={photoData} reloadPhotos={reloadPhotos}
+        onClick={props.onChange} empty='Oh, it seems there are no photos yet..' />
 }
 
 export default function PhotoPickDialog({ type, open, handleClose, onChange }) {
-    const router = useRouter();
-    const groupId = router.query.id;
-    const albumId = router.query.albumid;
-    const listProps = makeListProps(type, groupId, albumId);
-
+    const title = (type === 'album') ?
+        'Pick from album photos'
+        : (type === 'group') ?
+            'Pick from group photos'
+            : 'Pick from my own photos';
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="pick-photos-dialog"
             fullWidth maxWidth='md'>
             <DialogTitle disableTypography id="image-upload-dialog" style={flexCenter}>
-                <Typography variant='h6' style={flexGrow}>{listProps.title}</Typography>
+                <Typography variant='h6' style={flexGrow}>{title}</Typography>
                 <IconButton onClick={handleClose}><Icon>close</Icon></IconButton>
             </DialogTitle>
             <DialogContent>
-                <PhotoList {...listProps} noOwner={(type === 'myPhotos')}
-                    onClick={onChange} empty='Oh, it seems there are no photos yet..' />
+                {(type === 'album') && <AlbumPhotoList onChange={onChange} />}
+                {(type === 'group') && <GroupPhotoList onChange={onChange} />}
+                {(type !== 'group') && (type !== 'album') && <MyPhotoList onChange={onChange} />}
             </DialogContent>
         </Dialog>
     );

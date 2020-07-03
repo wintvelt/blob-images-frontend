@@ -65,9 +65,10 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const imageUrl = makeImageUrl(url);
 
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
-    const handleClick = () => {
+    const handleClick = (e) => {
+        e.preventDefault();
         if (!isLoading) {
-            onClick && onClick({ id, url, owner });
+            onClick && onClick({ id, url, image: url, owner });
         }
     }
     const handleMenuClick = (e) => {

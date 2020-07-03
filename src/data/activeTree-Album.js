@@ -58,8 +58,10 @@ export const activeAlbumPhotos = selector({
         get(activeAlbumStateTrigger);
         get(activeAlbumPhotosTrigger);
         const activeAlbum = await get(activeAlbumState);
-        if (!activeAlbum) return [];
-        const source = `/groups/${groupId}/albums/`;
+        if (!activeAlbum) return undefined;
+        const groupId = activeAlbum.PK?.slice(2);
+        const albumId = activeAlbum.SK;
+        const source = `/groups/${groupId}/albums/${albumId}/photos`;
         const response = await API.get('blob-images', source);
         if (response.error) {
             throw response.error;

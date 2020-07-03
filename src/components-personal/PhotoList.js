@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -8,7 +8,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Photo from './PhotoCard';
 import PhotoMenu from './PhotoListMenu';
-import { useApiData } from '../data/apiData';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -39,8 +38,16 @@ const Empty = ({ message }) => {
     </div>
 }
 
+const initialPhotos = [1, 2, 3].map(id => ({ id, isLoading: true }));
+
 const PhotoList = (props) => {
-    const { apiKey, source, empty, menu, select, album } = props;
+    const { photoData, empty, menu, select, album, reloadAlbum, reloadPhotos } = props;
+    const [photos, setPhotos] = useState(initialPhotos);
+    useEffect(() => {
+        if (photoData.state === 'hasValue' && photoData.contents) {
+            setPhotos(photoData.contents);
+        }
+    }, [photoData]);
     const [anchor, setAnchor] = useState({ el: null });
     const [selected, setSelected] = useState([]);
 
@@ -59,9 +66,6 @@ const PhotoList = (props) => {
             : [...selected, id];
         setSelected(newSelected);
     };
-
-    const photoData = useApiData(apiKey, source);
-    const photos = photoData.data || [1, 2, 3].map(id => ({ id, isLoading: true }));
 
     const classes = useStyles();
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('lg'));
@@ -90,11 +94,11 @@ const PhotoList = (props) => {
             anchor={anchor}
             handleClose={handleClose}
             album={album}
-            apiKey={apiKey}
-            source={source}
+            reloadAlbum={reloadAlbum}
+            reloadPhotos={reloadPhotos}
         />}
         {empty && (photos.length === 0) && <Empty message={empty} />}
     </div>
-}
+};
 
 export default PhotoList;

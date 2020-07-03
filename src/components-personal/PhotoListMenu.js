@@ -10,13 +10,12 @@ import { useUser } from '../data/userData';
 
 const redStyle = { color: 'red' };
 
-const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
-    const albumData = album && album.data;
+const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum }) => {
+    const albumData = album;
     const currentPhotoId = anchor.photo?.PK.slice(2);
     const { user, saveProfile } = useUser();
     const userIsOwner = (user.profile && anchor.photo && user.profile.id === anchor.photo.SK.slice(1));
     const { enqueueSnackbar } = useSnackbar();
-    const { reloadData } = useApiData(apiKey, source);
     const onSetProfilePic = async () => {
         const name = user.profile.name;
         try {
@@ -39,7 +38,7 @@ const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
             });
             enqueueSnackbar('new album cover set', { variant: 'success' });
             handleClose();
-            album.reloadData();
+            reloadAlbum && reloadAlbum();
         } catch (error) {
             console.log(error);
             enqueueSnackbar('could not set album cover', { variant: 'error' });
@@ -50,7 +49,7 @@ const PhotoMenu = ({ anchor, album, handleClose, apiKey, source }) => {
             const path = `/photos/${currentPhotoId}`;
             await API.del('blob-images', path);
             enqueueSnackbar('photo deleted', { variant: 'success' });
-            reloadData();
+            reloadPhotos && reloadPhotos();
         } catch (error) {
             console.log(error);
             enqueueSnackbar('could not delete picture', { variant: 'error' });

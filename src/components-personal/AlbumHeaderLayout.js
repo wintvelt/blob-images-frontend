@@ -14,6 +14,8 @@ import { makeImageUrl } from '../../src/components-generic/imageProvider';
 
 import Link from '../components-generic/Link';
 import BackLink from '../components-generic/BackLink';
+import { useRecoilValueLoadable } from 'recoil';
+import { activeAlbumState, hasAlbumData } from '../data/activeTree-Album';
 
 export const useAlbumHeaderStyles = makeStyles(theme => ({
     card: {
@@ -71,18 +73,17 @@ export const useAlbumHeaderStyles = makeStyles(theme => ({
 
 export const AlbumImage = () => {
     const classes = useAlbumHeaderStyles();
-    // only need imgUrl from album = album.image.image
-    const { image, userIsAdmin, group } = {};
-    const imgUrl = image && image.image;
-    const imgOwner = image && image.owner;
+    const albumData = useRecoilValueLoadable(activeAlbumState);
+    const hasValue = hasAlbumData(albumData);
+    const imgUrl = hasValue && albumData.contents.image?.image;
     const imageUrl = makeImageUrl(imgUrl, 1440, 320);
 
     return <>
-        {imgUrl && <CardMedia className={classes.groupMedia}
+        {hasValue && <CardMedia className={classes.groupMedia}
             image={imageUrl}
             title='Album cover image'
         />}
-        {!imgUrl && <div className={classes.groupMedia} />}
+        {!hasValue && <div className={classes.groupMedia} />}
     </>
 }
 

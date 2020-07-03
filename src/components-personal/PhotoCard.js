@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { makeImageUrl, otoa } from '../components-generic/imageProvider';
 import { TextSkeleton, ImageSkeleton } from '../components-generic/Skeleton';
 import { useApiDataValue } from '../data/apiData';
+import { useRecoilValueLoadable } from 'recoil';
+import { photoState } from '../data/activeTree-Photo';
 
 const useStyles = makeStyles(theme => ({
     icon: {
@@ -53,15 +55,11 @@ const MenuButton = ({ className, onClick }) => (
 const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onClickMenu, noOwner }) => {
     const classes = useStyles();
     const Key = { PK: photoParams.PK, SK: photoParams.SK };
-    const source = (!photoParams.PK) ? '/undefined' : `/photos/${otoa(Key)}`;
-    const photoData = useApiDataValue(`photo${photoParams.id || photoParams.comp}`, source);
-    const photo = (photoData.data) ?
-        (photoParams.PK && photoParams.PK.slice(0, 2) === 'GP') ?
-            photoData.data.photo
-            : photoData.data
-        : {};
+    const source = photoParams.PK && `/photos/${otoa(Key)}`;
+    const photoData = useRecoilValueLoadable(photoState(source));
+    const photo = (photoData.state === 'hasValue' && photoData.contents)? photoData.contents : {};
     const { url, owner, album, date, PK } = photo;
-    const id = PK && PK.slice(2);
+    const id = PK?.slice(2);
     const { name } = owner || {};
     const isLoading = (!url);
     const imageUrl = makeImageUrl(url);

@@ -5,19 +5,20 @@ import PhotoList from '../../../../../src/components-personal/PhotoList';
 import PrivatePage from '../../../../../src/components-personal/PrivatePage';
 import Upload from '../../../../../src/components-generic/Upload';
 import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { activeAlbumState, hasAlbumData } from '../../../../../src/data/activeTree-Album';
+import { activeAlbumState, hasAlbumData, activeAlbumPhotos } from '../../../../../src/data/activeTree-Album';
 
 const AlbumMain = () => {
     const activeAlbumData = useRecoilValueLoadable(activeAlbumState);
     const hasValue = hasAlbumData(activeAlbumData);
-    const activeAlbum = hasValue? activeAlbumData.contents : {};
+    const activeAlbum = hasValue ? activeAlbumData.contents : {};
+    const albumPhotosData = useRecoilValueLoadable(activeAlbumPhotos);
     const groupId = activeAlbum.PK?.slice(2);
     const albumId = activeAlbum.SK;
-    const userIsAdmin = activeAlbumData.userIsAdmin;
+    const userIsAdmin = activeAlbum.userIsAdmin;
     const photoMetaData = { groupId, albumId };
     const pond = useRef();
-    const albumUrl = `/groups/${groupId}/albums/${albumId}`;
-    const reloadPhotos = useResetRecoilState(activeAlbumState);
+    const reloadPhotos = useResetRecoilState(activeAlbumPhotos);
+    const reloadAlbum = useResetRecoilState(activeAlbumState);
     const [files, setFiles] = useState([]);
 
     const onAddFile = (_, file) => {
@@ -37,10 +38,13 @@ const AlbumMain = () => {
     return (
         <main>
             <AlbumHeader />
-            <PhotoList apiKey='albumPhotos' source={albumUrl + '/photos'}
+            <PhotoList
                 menu={userIsAdmin}
                 select={true}
                 album={activeAlbum}
+                photoData={albumPhotosData}
+                reloadPhotos={reloadPhotos}
+                reloadAlbum={reloadAlbum}
             />
             <Upload pond={pond} allowMultiple={true} allowImagePreview={true} instantUpload={true}
                 onAddFile={onAddFile} onRemoveFile={onRemoveFile}

@@ -10,6 +10,7 @@ const activeInviteTrigger = atomFamily({
 export const activeInviteState = selectorFamily({
     key: 'activeInvite',
     get: (inviteId) => async ({get}) => {
+        get(activeInviteTrigger(inviteId));
         if (!inviteId) return undefined;
         const response = await API.get('blob-images', `/invites/${inviteId}`);
         if (response.error) {

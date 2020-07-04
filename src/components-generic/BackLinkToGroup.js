@@ -10,10 +10,8 @@ const linkStyle = {
     position: 'absolute',
     top: '64px',
     left: '24px',
-    color: 'inherit',
     display: 'flex',
     alignItems: 'center',
-    color: 'inherit',
     width: 'fit-content',
     marginBottom: '24px',
     zIndex: 1,
@@ -29,10 +27,9 @@ const BackLinkToGroup = ({ className }) => {
     const groupPath = '/personal/groups/[id]';
     const groupAs = groupPath.replace('[id]', group.id);
     const text = group.name || 'group';
-    return <Typography variant='body1' component='span' style={linkStyle}>
+    return <Typography variant='body1' component='span' style={linkStyle} className={className} >
         <Icon fontSize='small'>arrow_back</Icon>
         <Link href={groupPath} as={groupAs}
-            className={className}
             style={linkStyle2}
         >
             {` ${text}`}

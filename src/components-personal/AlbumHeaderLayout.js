@@ -16,35 +16,16 @@ import { activePathFront } from '../data/activeTreeRoot';
 export const useAlbumHeaderStyles = makeStyles(theme => ({
     card: {
         position: 'relative',
-        color: 'white',
         backgroundColor: theme.palette.background.paper,
         backgroundSize: 'cover',
         width: '100%',
         marginBottom: theme.spacing(1),
     },
-    content: {
-        position: 'relative',
-        color: 'rgba(0,0,0,.8)',
-        background: theme.palette.background.paper,
-        padding: theme.spacing(3),
-        // height: '100%',
-        display: 'flex',
-        alignItems: 'center'
-    },
+    white: { color: 'white' },
     groupMedia: {
-        height: '240px',
+        height: '320px',
         background: 'linear-gradient(308deg, rgba(70,52,78,1) 14%, rgba(90,85,96,1) 43%, rgba(157,141,143,1) 77%)',
         backgroundSize: 'cover',
-        // position: 'absolute',
-        // top: 0,
-        // height: '100%',
-        // width: '100%',
-        // zIndex: 0,
-    },
-    edit: {
-        backgroundColor: 'rgba(0,0,0,.2)',
-        marginLeft: theme.spacing(1),
-        position: 'relative',
     },
     imageEdit: {
         backgroundColor: 'rgba(0,0,0,.2)',
@@ -52,14 +33,6 @@ export const useAlbumHeaderStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(1),
         '&:hover': { color: theme.palette.primary.main }
     },
-    actions: {
-        position: 'relative',
-        backgroundColor: 'rgba(0,0,0,0.3)',
-        display: 'flex',
-        alignItems: 'center',
-        padding: theme.spacing(1, 1, 1, 3),
-        justifyContent: 'space-between',
-    }
 }));
 
 export const AlbumImage = () => {
@@ -79,7 +52,6 @@ export const AlbumImage = () => {
 }
 
 export const AlbumName = () => {
-    const classes = useAlbumHeaderStyles();
     const albumData = useRecoilValueLoadable(activeAlbumState);
     const hasValue = hasAlbumData(albumData);
     const name = hasValue && albumData.contents.name;
@@ -106,7 +78,6 @@ const linkStyle = {
     right: '24px',
     zIndex: 99,
     textDecoration: 'none',
-    color: 'inherit',
     '&:hover': {
         cursor: 'pointer',
     }

@@ -14,12 +14,12 @@ const AlbumHeader = () => {
 
     return <Card className={classes.card}>
         <AlbumImage />
-        <BackLinkToGroup />
+        <BackLinkToGroup className={classes.white}/>
         <AlbumEditButton />
         <CardContent className={classes.content}>
             <Grid container>
                 <Grid item md={11} xs={12}>
-                    <Typography gutterBottom variant='h4' color='inherit'>
+                    <Typography gutterBottom variant='h4'>
                         <AlbumName />
                     </Typography>
                 </Grid>

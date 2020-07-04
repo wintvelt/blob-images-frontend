@@ -15,7 +15,7 @@ import InviteForm from '../../src/components-invite/InviteForm';
 import ForOther from '../../src/components-invite/ForOther';
 import Accepted from '../../src/components-invite/Accepted';
 import OtherError from '../../src/components-invite/OtherError';
-import { useRecoilValueLoadable } from 'recoil';
+import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { activeInviteState } from '../../src/data/activeTree-invite';
 
 const useStyles = makeStyles(theme => ({
@@ -28,9 +28,8 @@ const useStyles = makeStyles(theme => ({
 
 const InvitePage = (props) => {
     const { inviteData, userData, onAccept, isSaving } = props;
-    console.log({ inviteData });
     const invite = (inviteData.state === 'hasValue') ? inviteData.contents : {};
-    const isLoading = (inviteData.state === 'isLoading');
+    const isLoading = (inviteData.state === 'loading');
     const group = invite.group;
     const groupId = group?.id;
     const user = userData.user;
@@ -89,7 +88,8 @@ const InvitePage = (props) => {
 const InviteHOC = () => {
     const router = useRouter();
     const inviteId = router.query?.inviteid;
-    const inviteData = useRecoilValueLoadable(activeInviteState);
+    const inviteData = useRecoilValueLoadable(activeInviteState(inviteId));
+    const reloadInvite = useResetRecoilState(activeInviteState(inviteId));
     const hasInvite = (inviteData.state === 'hasValue');
     const invite = (hasInvite) ? inviteData.contents : {};
     const group = invite?.group;
@@ -107,7 +107,7 @@ const InviteHOC = () => {
             try {
                 await API.post('blob-images', `/invites/${inviteId}`);
                 enqueueSnackbar(`Welcome to ${group ? group.name : 'the group'}!`, { variant: 'success' });
-                setLoadingPath('/personal/groups/[id]', `/personal/groups/${group.id}`);
+                setLoadingPath('/personal/groups/[id]', `/personal/groups/${group?.id}`);
             } catch (error) {
                 console.log(error);
                 enqueueSnackbar('Oops, could not accept this invite', { variant: 'error' });
@@ -124,6 +124,7 @@ const InviteHOC = () => {
             if (user.isAuthenticated) {
                 onAccept();
             } else {
+                reloadInvite();
                 setIsAccepting(false);
             }
         }

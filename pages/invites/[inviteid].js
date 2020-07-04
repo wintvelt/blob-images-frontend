@@ -38,7 +38,8 @@ const InvitePage = (props) => {
     const classes = useStyles();
 
     const [isAlreadyMember, setIsAlreadyMember] = useState(false);
-    const notForYou = (inviteData.state === 'hasError' && inviteData.contents === 'invite not for you');
+    const notForYou = (inviteData.state === 'hasError' &&
+        inviteData.contents.response?.data?.error === 'invite not for you');
     const otherError = !notForYou && inviteData.state === 'hasError';
     const alreadyAccepted = invite.status && invite.status !== 'invite';
 
@@ -127,6 +128,8 @@ const InviteHOC = () => {
                 reloadInvite();
                 setIsAccepting(false);
             }
+        } else if (!user.path) {
+            reloadInvite();
         }
     }, [user.isAuthenticated, user.path])
 

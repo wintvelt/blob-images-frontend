@@ -150,7 +150,7 @@ const MemberDetails = () => {
 
     return <ExpansionPanelDetails className={classes.panel}>
         {members.map(member => (
-            <MemberLine key={member.SK || 'header'} member={member} onClick={onClick}
+            <MemberLine key={member.PK || 'header'} member={member} onClick={onClick}
                 currentIsAdmin={currentIsAdmin} isLoading={!hasValue}
                 isCurrent={(member.PK.slice(3) === profile.id)}
                 isLarge={isLarge}

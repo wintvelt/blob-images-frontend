@@ -27,7 +27,7 @@ const BackLinkToAlbum = ({ className }) => {
     if (!hasValue) return null;
 
     const album = albumData.contents;
-    const albumPath = '/personal/groups/[id]/alumbs/[albumid]';
+    const albumPath = '/personal/groups/[id]/albums/[albumid]';
     const albumAs = albumPath.replace('[id]', album.group?.id).replace('[albumid]', album.SK);
     const text = album.name || 'album';
     return <Typography variant='body1' component='span' style={linkStyle}>

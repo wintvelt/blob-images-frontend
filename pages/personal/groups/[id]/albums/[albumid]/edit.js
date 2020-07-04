@@ -5,11 +5,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 
-import { useApiDataValue } from '../../../../../../src/data/apiData';
 import PrivatePage from '../../../../../../src/components-personal/PrivatePage';
 import AlbumCardLayout from '../../../../../../src/components-personal/AlbumCardLayout';
 import AlbumForm from '../../../../../../src/components-personal/AlbumForm';
-import BackLink from '../../../../../../src/components-generic/BackLink';
+import BackLinkToAlbum from '../../../../../../src/components-generic/BackLinkToAlbum';
+import { useRecoilValueLoadable } from 'recoil';
+import { activeAlbumState, hasAlbumData } from '../../../../../../src/data/activeTree-Album';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -20,22 +21,21 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const AlbumEditMain = () => {
-    const router = useRouter();
     const classes = useStyles();
-    const groupId = router.query && router.query.id;
+    const router = useRouter();
     const albumId = router.query && router.query.albumid;
     const isNew = (albumId === 'new');
-    const source = `/groups/${groupId}/albums/${albumId}`;
-    const albumData = useApiDataValue('album', source);
-    const album = albumData.data || {};
+    const albumData = useRecoilValueLoadable(activeAlbumState);
+    const hasValue = hasAlbumData(albumData);
+    const album = (hasValue)? albumData.contents : {};
 
     return (
         <main>
             <Toolbar />
-            {album && <BackLink groupId={groupId} album={album} />}
+            {album && <BackLinkToAlbum />}
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
-                    <AlbumCardLayout {...album} withEdit={false} isLoading={albumData.isLoading} />
+                    <AlbumCardLayout {...album} withEdit={false} isLoading={!hasValue} />
                 </Grid>}
                 <Grid item md={(isNew) ? 3 : 1} />
                 <Grid item md={(isNew) ? 6 : 8} xs={12}>

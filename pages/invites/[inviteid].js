@@ -8,7 +8,6 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core';
 
 import PublicPage from '../../src/components-generic/PublicPage';
-import { useApiData } from '../../src/data/apiData';
 import { useUser } from '../../src/data/userData';
 import { useSetLoadingPath } from '../../src/data/loadingData';
 import GroupCardLayout from '../../src/components-personal/GroupCardLayout';
@@ -16,6 +15,8 @@ import InviteForm from '../../src/components-invite/InviteForm';
 import ForOther from '../../src/components-invite/ForOther';
 import Accepted from '../../src/components-invite/Accepted';
 import OtherError from '../../src/components-invite/OtherError';
+import { useRecoilValueLoadable } from 'recoil';
+import { activeInviteState } from '../../src/data/activeTree-invite';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -27,7 +28,9 @@ const useStyles = makeStyles(theme => ({
 
 const InvitePage = (props) => {
     const { inviteData, userData, onAccept, isSaving } = props;
-    const invite = inviteData.data || {};
+    console.log({ inviteData });
+    const invite = (inviteData.state === 'hasValue') ? inviteData.contents : {};
+    const isLoading = (inviteData.state === 'isLoading');
     const group = invite.group;
     const groupId = group?.id;
     const user = userData.user;
@@ -36,9 +39,9 @@ const InvitePage = (props) => {
     const classes = useStyles();
 
     const [isAlreadyMember, setIsAlreadyMember] = useState(false);
-    const notForYou = inviteData.isError && inviteData.errorMessage === 'invite not for you';
-    const otherError = !notForYou && inviteData.isError;
-    const alreadyAccepted = inviteData.data && invite.status !== 'invite';
+    const notForYou = (inviteData.state === 'hasError' && inviteData.contents === 'invite not for you');
+    const otherError = !notForYou && inviteData.state === 'hasError';
+    const alreadyAccepted = invite.status && invite.status !== 'invite';
 
     useEffect(() => {
         const checkMembership = async () => {
@@ -61,7 +64,7 @@ const InvitePage = (props) => {
             <Toolbar />
             <Grid container className={classes.container}>
                 <Grid item md={3} xs={12}>
-                    <GroupCardLayout {...group} withEdit={false} isLoading={inviteData.isLoading}
+                    <GroupCardLayout {...group} withEdit={false} isLoading={isLoading}
                         isInvite />
                 </Grid>
                 <Grid item md={1} />
@@ -71,10 +74,11 @@ const InvitePage = (props) => {
                             isLoggedIn={user.isAuthenticated} />
                     }
                     {(alreadyAccepted) && <Accepted invite={invite} />}
-                    {(!inviteData.error && !alreadyAccepted) && <InviteForm invite={invite} isLoading={inviteData.isLoading}
-                        profile={profile} isAlreadyMember={isAlreadyMember}
-                        isSaving={isSaving} onAccept={onAccept} onDecline={onDecline}
-                    />}
+                    {(!(inviteData.state === 'hasError') && !alreadyAccepted) &&
+                        <InviteForm invite={invite} isLoading={isLoading}
+                            profile={profile} isAlreadyMember={isAlreadyMember}
+                            isSaving={isSaving} onAccept={onAccept} onDecline={onDecline}
+                        />}
                     {(otherError) && <OtherError />}
                 </Grid>
             </Grid>
@@ -84,11 +88,11 @@ const InvitePage = (props) => {
 
 const InviteHOC = () => {
     const router = useRouter();
-    const inviteId = router.query && router.query.inviteid;
-    const source = `/invites/${inviteId}`;
-    const inviteData = useApiData('invite', source);
-    const invite = inviteData.data || {};
-    const group = invite.group;
+    const inviteId = router.query?.inviteid;
+    const inviteData = useRecoilValueLoadable(activeInviteState);
+    const hasInvite = (inviteData.state === 'hasValue');
+    const invite = (hasInvite) ? inviteData.contents : {};
+    const group = invite?.group;
     const userData = useUser();
     const { user, setPath } = userData;
     const { enqueueSnackbar } = useSnackbar();
@@ -96,13 +100,6 @@ const InviteHOC = () => {
 
     const [isSaving, setIsSaving] = useState(false);
     const [isAccepting, setIsAccepting] = useState(false);
-
-    useEffect(() => {
-        const reloadInvite = async () => {
-            inviteData.reloadData();
-        };
-        reloadInvite();
-    }, [user.isAuthenticated]);
 
     const onAccept = async () => {
         setIsSaving(true);
@@ -130,7 +127,7 @@ const InviteHOC = () => {
                 setIsAccepting(false);
             }
         }
-    },[user.isAuthenticated, user.path])
+    }, [user.isAuthenticated, user.path])
 
     return <PublicPage>
         <InvitePage inviteData={inviteData} userData={userData} onAccept={onAccept} isSaving={isSaving} />

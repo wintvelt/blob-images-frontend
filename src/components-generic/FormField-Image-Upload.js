@@ -6,14 +6,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Upload from './Upload';
-import { useUserValue } from '../data/userData';
-import { useApiData } from '../data/apiData';
+import { useUserValue, userPhotosState } from '../data/userData';
+import { useResetRecoilState } from 'recoil';
 
 export default function UploadDialog({ open, handleClose, onChange }) {
     const pond = useRef(null);
     const user = useUserValue();
     const { profile } = user;
-    const { reloadData } = useApiData('myPhotos', '/photos');
+    const reloadPhotos = useResetRecoilState(userPhotosState);
     const [file, setFile] = useState('');
     const onSave = async () => {
         await pond.current.processFiles();
@@ -22,7 +22,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
                 image: 'protected/'+ profile.id + '/' + file,
                 owner: profile
             }
-            reloadData();
+            reloadPhotos();
             onChange(newImage);
         } else {
             handleClose();

@@ -66,7 +66,7 @@ export const MemberActions = () => {
 
     const members = membersData.contents;
     const currentIsAdmin = !!members.find(member => (
-        member.SK.slice(1) === profile.id &&
+        member.PK.slice(3) === profile.id &&
         member.role === 'admin' &&
         member.status !== 'invite'
     ));    

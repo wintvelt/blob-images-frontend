@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { makeImageUrl, otoa } from '../components-generic/imageProvider';
 import { TextSkeleton, ImageSkeleton } from '../components-generic/Skeleton';
-import { useApiDataValue } from '../data/apiData';
 import { useRecoilValueLoadable } from 'recoil';
 import { photoState } from '../data/activeTree-Photo';
 

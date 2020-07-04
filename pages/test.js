@@ -1,9 +1,7 @@
 import React from 'react';
 
-import { useApiDataValue } from '../src/data/apiData';
-
 const Child = () => {
-    const data = useApiDataValue('groups', '/undefined');
+    const data = 'Some data';
     return <pre>
         {JSON.stringify(data, null, 2)}
     </pre>

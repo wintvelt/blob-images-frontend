@@ -1,16 +1,13 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-
-import { useApiDataValue } from '../../src/data/apiData';
 import GroupCardLayout from './GroupCardLayout';
+import { useRecoilValueLoadable } from 'recoil';
+import { activeGroupState, hasGroupData } from '../data/activeTree-Group';
 
 const GroupCard = () => {
-    const router = useRouter();
-    const groupId = router.query && router.query.id;
-    const source = `/groups/${groupId}`;
-    const groupData = useApiDataValue('group', source);
-    const group = groupData.data || {};
-    return <GroupCardLayout {...group} isLoading={groupData.isLoading} />
+    const groupData = useRecoilValueLoadable(activeGroupState);
+    const hasValue = hasGroupData(groupData);
+    const group = hasValue? groupData.contents : {};
+    return <GroupCardLayout {...group} isLoading={!hasValue} />
 }
 
 export default GroupCard;

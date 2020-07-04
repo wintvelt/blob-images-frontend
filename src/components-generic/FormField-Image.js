@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { useRouter } from 'next/router';
 import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
@@ -11,7 +10,9 @@ import { makeStyles } from '@material-ui/core';
 import { makeImageUrl } from './imageProvider';
 import ImageUpload from './FormField-Image-Upload';
 import PhotoPicker from './FormField-Image-Photos';
-import { useApiDataValue } from '../data/apiData';
+import { userPhotosState } from '../data/userData';
+import { useRecoilValueLoadable } from 'recoil';
+import { activeGroupPhotos, activeAlbumPhotos } from '../data/activeTree-Album';
 
 
 const useStyles = makeStyles(theme => ({
@@ -62,21 +63,23 @@ const setValue = (value) => ({ target: { value } });
 
 const largeFont = { fontSize: '40px' };
 
+const hasItems = (loadable) => (
+    loadable.state === 'hasValue' && loadable.contents && loadable.contents.length > 0
+);
+
 const ImageField = (props) => {
     const { field, onChange } = props;
     const { value, isGroup, isAlbum, isAvatar, label } = field;
     const { image, owner, album } = value || {};
     const { name } = owner || {};
     const classes = useStyles();
-    const myPhotos = useApiDataValue('myPhotos', '/photos');
-    const hasMyPhotos = (myPhotos.data && myPhotos.data.length > 0);
-    const router = useRouter();
-    const groupId = router.query.id;
-    const albumId = router.query.albumid;
-    const groupPhotos = useApiDataValue(`groupPhotos`, `/groups/${groupId}/photos`);
-    const hasGroupPhotos = (groupPhotos.data && groupPhotos.data.length > 0);
-    const albumPhotos = useApiDataValue(`albumPhotos`, `/groups/${groupId}/albums/${albumId}/photos`);
-    const hasAlbumPhotos = (albumPhotos.data && albumPhotos.data.length > 0);
+    const myPhotosData = useRecoilValueLoadable(userPhotosState);
+    const hasMyPhotos = hasItems(myPhotosData);
+    const groupPhotosData = useRecoilValueLoadable(activeGroupPhotos);
+    const hasGroupPhotos = hasItems(groupPhotosData);
+    const albumPhotosData = useRecoilValueLoadable(activeAlbumPhotos);
+    const hasAlbumPhotos = hasItems(albumPhotosData);
+
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;
     const imgClass = isAvatar ? classes.avatar : classes.image;

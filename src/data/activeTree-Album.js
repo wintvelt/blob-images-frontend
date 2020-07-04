@@ -75,7 +75,20 @@ export const activeAlbumPhotos = selector({
     }
 });
 
-
+export const activeGroupPhotos = selector({
+    key: 'activeGroupPhotos',
+    get: async ({ get }) => {
+        const groupId = get(activeGroupIdState);
+        get(activeAlbumPhotosTrigger);
+        if (!groupId) return [];
+        const source = `/groups/${groupId}/photos`;
+        const response = await API.get('blob-images', source);
+        if (response.error) {
+            throw response.error;
+        }
+        return response;
+    },
+});
 
 // helper to check for data in Loadable - sometimes state == hasValue, but contents == undefined
 // if groupId not (yet) in recoil datatree

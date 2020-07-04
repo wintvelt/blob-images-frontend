@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { API } from 'aws-amplify';
 import { useSnackbar } from 'notistack';
 
-import { useRouter } from 'next/router';
-import { useApiData } from '../data/apiData';
-
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -18,6 +15,9 @@ import { makeStyles } from '@material-ui/core';
 
 import { Field, validateForm } from '../components-generic/FormField';
 import FormButton from '../components-generic/FormButton';
+import { useRecoilValueLoadable, useRecoilValue } from 'recoil';
+import { activeGroupMembers } from '../data/activeTree-Group';
+import { activeGroupIdState } from '../data/activeTreeRoot';
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -113,14 +113,13 @@ const InviteeLine = ({ invitee, onChange, onRemove, showValidation, showRemove, 
 
 const GroupInviteForm = ({ title }) => {
     const classes = useStyles()
-    const router = useRouter();
-    const groupId = router.query && router.query.id;
+    const groupId = useRecoilValue(activeGroupIdState);
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
     const [showValidation, setShowValidation] = useState(false);
-    const members = useApiData('members', `/groups/${groupId}/members`);
-    const memberEmails = members.data ?
-        members.data.map(member => member.user.email) : [];
+    const membersData = useRecoilValueLoadable(activeGroupMembers);
+    const memberEmails = (membersData.state === 'hasValue' && membersData.contents) ?
+        membersData.contents.map(member => member.email) : [];
 
     const [invitees, setInvitees] = useState({ 0: initialInvitee(0, memberEmails) });
     const inviteeCount = Object.keys(invitees).length;

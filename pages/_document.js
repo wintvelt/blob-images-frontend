@@ -4,8 +4,9 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
 import theme from '../src/theme';
 
 const bodyStyle = {
-    backgroundImage: 'url(/img/farmer.png)'
-    //     background: 'linear-gradient(355deg, rgba(70,52,78,1) 10%, rgba(90,85,96,1) 90%)'
+    // backgroundImage: 'url(/img/farmer.png)'
+    // background: 'linear-gradient(355deg, rgba(70,52,78,1) 10%, rgba(90,85,96,1) 90%)'
+    backgroundColor: 'white'
 };
 
 export default class MyDocument extends Document {

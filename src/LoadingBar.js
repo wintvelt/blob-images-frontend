@@ -8,7 +8,7 @@ import { useLoadingValue } from './data/loadingData';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        position: 'absolute',
+        position: 'fixed',
         top: theme.spacing(7.5),
         width: '100%',
         zIndex: theme.zIndex.drawer+10,

@@ -42,7 +42,7 @@ export default function PhotoPickDialog({ type, open, handleClose, onChange }) {
             : 'Pick from my own photos';
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="pick-photos-dialog"
-            fullWidth maxWidth='md'>
+            fullWidth maxWidth='lg'>
             <DialogTitle disableTypography id="image-upload-dialog" style={flexCenter}>
                 <Typography variant='h6' style={flexGrow}>{title}</Typography>
                 <IconButton onClick={handleClose}><Icon>close</Icon></IconButton>

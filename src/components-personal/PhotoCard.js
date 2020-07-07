@@ -36,7 +36,10 @@ const useStyles = makeStyles(theme => ({
 
 const flexStyle = { display: 'flex' };
 const fullSize = { width: '100%', height: '100%' };
-const fitContent = { height: 'fit-content' };
+const fitContent = {
+    height: 'fit-content',
+    background: 'linear-gradient(0deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 100%)'
+};
 
 const SelectButton = ({ iconClass, icon, onSelect }) => (
     <div style={flexStyle}>
@@ -56,7 +59,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const Key = { PK: photoParams.PK, SK: photoParams.SK };
     const source = photoParams.PK && `/photos/${otoa(Key)}`;
     const photoData = useRecoilValueLoadable(photoState(source));
-    const photo = (photoData.state === 'hasValue' && photoData.contents)? photoData.contents : {};
+    const photo = (photoData.state === 'hasValue' && photoData.contents) ? photoData.contents : {};
     const { url, owner, album, date, PK } = photo;
     const id = PK?.slice(2);
     const { name } = owner || {};

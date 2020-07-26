@@ -33,37 +33,53 @@ const useStyles = makeStyles(theme => ({
         borderWidth: '2px',
         borderStyle: 'solid',
         borderColor: theme.palette.primary.main,
-        color: theme.palette.background.white,
+        color: theme.palette.primary.main,
         fontWeight: 'bold',
     },
 }))
 
 const featureList = [
     {
-        imageUrl: '/img/get_started.jpg',
-        photographer: 'Connor Jalbert',
-        photographerLink: 'connor_jalbert',
-        title: 'Get started in less than a minute, no credit card required.',
+        imageUrl: '/img/private.jpg',
+        photographer: 'Khamkéo Vilaysing',
+        photographerLink: 'mahkeo',
+        title: 'Jouw privacy',
         descriptions: [
-            'With just an email address and a password you pick, '
-            + 'you\'re good to go. No credit card required.',
-            'Drop some photos in, to make your place look a bit more familiar ',
-            'Send invites to others, who will get a simple link to also sign-up. '
+            `Om lid te worden moet je wat gegevens delen met ons:`,
+            `✅ email adres - om een account aan te kunnen maken`,
+            `✅ naam - dan weten leden wie je bent (duh)`,
+            `✅ groepen en albums - die je kunt maken om foto's te delen`,
+            `✅ foto's - die je deelt met anderen`,
+            `Al deze gegevens zijn uitsluitend zichtbaar voor jou en voor andere leden in de 
+            betreffende groep(en). En voor de beheerder van deze website (Wouter dus)`,
+            `Daarbuiten zijn deze gegevens voor helemaal niemand zichtbaar, en worden met niemand 
+            gedeeld. En zo heurt het ook.`,
+            `Daarnaast zijn er nog diverse mores, maar die zijn uiteraard nergens beschreven.`
         ],
-        steps: ['Sign up', 'Upload photos', 'Invite others']
     },
     {
-        imageUrl: '/img/album_2.jpg',
-        NOphotographer: 'Roberto Nickson',
-        NOphotographerLink: 'rpnickson',
-        title: 'Share memories in your group, and pick your favorite photos.',
+        imageUrl: '/img/ireland.jpg',
+        photographer: 'Steije Hillewaert',
+        photographerLink: 'steijehillewaert',
+        title: 'Data in Ierland',
         descriptions: [
-            'Create an album for each memory. Upload your own photos to share, ' +
-            'and enjoy pictures from others.',
-            'Drag and drop photos in any album. Add a title or description if you like. '
-            + 'Notify your group to let them know there are new memories waiting for them.',
-            'Pick your favorites, or see the favorite pictures from others in your group. '
-            + 'And of course you download photos or albums if you want to have them printed.'
+            `Alle gegevens staan op servers van Amazon Web Services in Ierland. In de EU dus.`,
+            `Uitsluitend de beheerder (Wouter dus) heeft toegang tot die servers. Verder niemand.`,
+            `Via de website hebben leden - als ze zijn ingelogd - toegang tot hun eigen groepen en albums, 
+            en alle foto's die daar zijn gedeeld.`,
+            `Je kunt op elk moment je gegevens bekijken en wijzigen. En als je wilt, kan je ook je 
+            complete account verwijderen. Al je foto's worden dan ook definitief gewist van de website.`,
+        ]
+    },
+    {
+        imageUrl: '/img/beer.jpg',
+        photographer: 'pablo capra',
+        photographerLink: 'papra',
+        title: 'Cookies',
+        descriptions: [
+            `Er is maar 1 cookie die op je computer wordt opgeslagen.`,
+            `Dat is de cookie die bewaart dat je bent ingelogd. Zodat je niet elke keer opnieuw moet inloggen.`,
+            `Geen tracking cookies, analytics of andere onzin.`
         ]
     },
 ];
@@ -99,13 +115,13 @@ const Features = () => {
                                 className={classes.image} />
                         </Grid>
                         <Grid item md={5} className={classes.textBlock}>
-                            <Typography variant="h4" color="textSecondary" gutterBottom align={alignment}>
+                            <Typography variant="h4" gutterBottom align={alignment}>
                                 {title}
                             </Typography>
                             {!steps && descriptions.map((text, i) => (
                                 <Hidden smDown key={i}>
                                     <Typography variant="body1"
-                                        paragraph align={alignment} color='textSecondary'>
+                                        paragraph align={alignment}>
                                         {text}
                                     </Typography>
                                 </Hidden>
@@ -119,7 +135,7 @@ const Features = () => {
                                     <Grid item style={flexStyle}>
                                         <Typography variant='h5'>{step}</Typography>
                                         <Hidden smDown>
-                                            <Typography variant='body1' color='textSecondary'>
+                                            <Typography variant='body1'>
                                                 {descriptions[i]}
                                             </Typography>
                                         </Hidden>

@@ -70,8 +70,8 @@ const PhotoList = (props) => {
     const classes = useStyles();
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('lg'));
     const isMedium = useMediaQuery(theme => theme.breakpoints.up('sm'));
-    const cols = isLarge ? 6 : isMedium ? 4 : 3;
-    const cellHeight = (isLarge || isMedium) ? 180 : 100;
+    const cols = isLarge ? 6 : isMedium ? 4 : 1;
+    const cellHeight = (isLarge || isMedium) ? 180 : 180;
     return <div className={classes.container}>
         <pre style={fullWidth}>{JSON.stringify(selected, null, 2)}</pre>
         <pre style={fullWidth}>{JSON.stringify(photos, null, 2)}</pre>
@@ -86,6 +86,7 @@ const PhotoList = (props) => {
                         onClickMenu={menu && handleClick}
                         onSelect={select && onSelect}
                         isSelected={selected.includes(photoId)}
+                        menuIsOpen={!!anchor.el}
                     />
                 </GridListTile>
             })}

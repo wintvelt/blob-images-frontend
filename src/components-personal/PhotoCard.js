@@ -38,23 +38,26 @@ const flexStyle = { display: 'flex' };
 const fullSize = { width: '100%', height: '100%' };
 const fitContent = {
     height: 'fit-content',
-    background: 'linear-gradient(0deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 100%)'
+    paddingBottom: '8px',
+    background: 'linear-gradient(0deg, rgba(0,0,0,.8) 0%, rgba(0,0,0,0) 100%)'
 };
 
-const SelectButton = ({ iconClass, icon, onSelect }) => (
+const SelectButton = ({ iconClass, icon, onSelect, disabled }) => (
     <div style={flexStyle}>
-        <IconButton aria-label={`select photo`} className={iconClass} onClick={onSelect}>
+        <IconButton aria-label={`select photo`} className={iconClass}
+            onClick={onSelect} disabled={disabled}>
             <Icon fontSize='small'>{icon}</Icon>
         </IconButton>
     </div>
 )
-const MenuButton = ({ className, onClick }) => (
-    <IconButton className={className} onClick={onClick}>
+const MenuButton = ({ className, onClick, disabled }) => (
+    <IconButton className={className} onClick={onClick} disabled={disabled}>
         <Icon>more_vert</Icon>
     </IconButton>
 )
 
-const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onClickMenu, noOwner }) => {
+const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onClickMenu, noOwner,
+    menuIsOpen }) => {
     const classes = useStyles();
     const Key = { PK: photoParams.PK, SK: photoParams.SK };
     const source = photoParams.PK && `/photos/${otoa(Key)}`;
@@ -87,20 +90,27 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
         <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
         <GridListTileBar
             style={fitContent}
-            title={(!noOwner && (name || isLoading)) &&
-                <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by '}{name}</TextSkeleton>}
-            subtitle={(!isSmall || noOwner) && <>
-                {(album) &&
-                    <TextSkeleton isLoading={isLoading}>
-                        {album && album.name}
-                        <br />
-                    </TextSkeleton>}
-                {(date || isLoading) &&
-                    <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added '}{date}</TextSkeleton>}
+            title={'by Vaatje'}
+            subtitle={<>
+                18 June 2020<br />
+                <span style={{color: 'lightgreen'}}>＋123</span>
             </>}
-            actionIcon={(onSelect) && <SelectButton iconClass={classes.icon} icon={icon} onSelect={handleSelect} />}
+            // title={(!noOwner && (name || isLoading)) &&
+            //     <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by '}{name}</TextSkeleton>}
+            // subtitle={(!isSmall || noOwner) && <>
+            //     {(album) &&
+            //         <TextSkeleton isLoading={isLoading}>
+            //             {album && album.name}
+            //             <br />
+            //         </TextSkeleton>}
+            //     {(date || isLoading) &&
+            //         <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added '}{date}</TextSkeleton>}
+            // </>}
+            actionIcon={(onSelect) && <SelectButton iconClass={classes.icon}
+                icon={icon} onSelect={handleSelect} disabled={menuIsOpen} />}
         />
-        {(onClickMenu) && <MenuButton className={classes.menuIcon} onClick={handleMenuClick} />}
+        {(onClickMenu) && <MenuButton className={classes.menuIcon}
+            onClick={handleMenuClick} disabled={menuIsOpen} />}
     </div>
 }
 

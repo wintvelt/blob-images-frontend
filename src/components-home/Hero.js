@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
         position: 'relative',
         backgroundColor: theme.palette.grey[800],
         color: theme.palette.common.white,
-        minHeight: '580px',
+        minHeight: '256px',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',

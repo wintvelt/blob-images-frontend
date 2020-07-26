@@ -26,9 +26,7 @@ const featureList = [
         descriptions: [
             `Deze website is gemaakt door, en wordt beheerd door Wouter.`,
             `Speciaal om foto's van de jaarclub Blob te kunnen delen met elkaar.`,
-            `Op enig moment merkt men toch dat gewone "gratis" foto-websites 
-            elk decennium komen en gaan. En dat men telkens opnieuw
-            foto's weer moet opgraven en elders moet delen.`,
+            `Omdat andere "gratis" foto-websites maar een paar jaar meegaan.`,
             `Dat is naadje. Deze website lost dat op`
         ]
     },

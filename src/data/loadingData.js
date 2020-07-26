@@ -13,7 +13,8 @@ export const useSetLoadingPath = () => {
     const setLoading = useSetRecoilState(loadingData);
     const router = useRouter();
     const setter = (path, as) => {
-        setLoading(true);
+        const isNewRoute = (as)? as !== router.asPath : path !== router.asPath;
+        setLoading(isNewRoute);
         router.push(path, as);
     };
     return setter;

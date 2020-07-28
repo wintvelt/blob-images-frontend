@@ -7,6 +7,8 @@ import PhotoList from '../../src/components-personal/PhotoList';
 import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { userPhotosState } from '../../src/data/userData';
 
+const onPhotoClick = (e) => alert(JSON.stringify(e));
+
 const PhotosMain = () => {
     const photoData = useRecoilValueLoadable(userPhotosState);
     const reloadPhotos = useResetRecoilState(userPhotosState);
@@ -20,10 +22,10 @@ const PhotosMain = () => {
             <PhotoList
                 photoData={photoData}
                 reloadPhotos={reloadPhotos}
-                onClick={(e) => alert(JSON.stringify(e))}
+                onClick={onPhotoClick}
                 noOwner
                 menu={true}
-                select={true}
+                select={false}
                 empty='hmm no photos yet'
             />
         </main>

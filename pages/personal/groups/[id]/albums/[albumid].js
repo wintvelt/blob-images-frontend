@@ -7,6 +7,8 @@ import Upload from '../../../../../src/components-generic/Upload';
 import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { activeAlbumState, hasAlbumData, activeAlbumPhotos } from '../../../../../src/data/activeTree-Album';
 
+const onPhotoClick = (e) => alert(JSON.stringify(e));
+
 const AlbumMain = () => {
     const activeAlbumData = useRecoilValueLoadable(activeAlbumState);
     const hasValue = hasAlbumData(activeAlbumData);
@@ -40,7 +42,8 @@ const AlbumMain = () => {
             <AlbumHeader />
             <PhotoList
                 menu={userIsAdmin}
-                select={true}
+                select={false}
+                onClick={onPhotoClick}
                 album={activeAlbum}
                 photoData={albumPhotosData}
                 reloadPhotos={reloadPhotos}

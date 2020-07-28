@@ -78,7 +78,7 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isL
     return <div className={classes.line}>
         <AvatarSkeleton alt={member.name} src={member.avatar}
             className={classes.avatar} isLoading={isLoading}>
-            {(!member.image && initials(member.name))}
+            {(!member.avatar && initials(member.name))}
         </AvatarSkeleton>
         {(isInvite) && <Tooltip title='invited' aria-label='invited' className={classes.badgeInvite}>
             <Icon>mail</Icon>

@@ -65,7 +65,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const photo = (photoData.state === 'hasValue' && photoData.contents) ? photoData.contents : {};
     const { url, owner, album, date, PK } = photo;
     const id = PK?.slice(2);
-    const { name } = owner || {};
+    const { name, avatar } = owner || {};
     const isLoading = (!url);
     const imageUrl = makeImageUrl(url);
 
@@ -90,7 +90,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
         <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
         <GridListTileBar
             style={fitContent}
-            title={'by Vaatje'}
+            title={`by ${name}`}
             subtitle={<>
                 18 June 2020<br />
                 <span style={{color: 'lightgreen'}}>＋123</span>

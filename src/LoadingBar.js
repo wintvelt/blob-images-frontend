@@ -9,7 +9,7 @@ import { useLoadingValue } from './data/loadingData';
 const useStyles = makeStyles(theme => ({
     root: {
         position: 'fixed',
-        top: theme.spacing(7.5),
+        top: 0,
         width: '100%',
         zIndex: theme.zIndex.drawer+10,
     }

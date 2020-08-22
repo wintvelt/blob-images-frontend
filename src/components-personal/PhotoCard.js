@@ -67,7 +67,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const id = PK?.slice(2);
     const { name, avatar } = owner || {};
     const isLoading = (!url);
-    const imageUrl = makeImageUrl(url);
+    const imageUrl = makeImageUrl(url, 400);
 
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
     const handleClick = (e) => {

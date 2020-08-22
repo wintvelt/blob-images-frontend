@@ -28,20 +28,19 @@ export const useImage = (url) => {
     return safeUrl;
 }
 
-export const makeImageUrl = (key, width = 400, height = 400) => {
+export const makeImageUrl = (key, width, height) => {
     if (!key) return '';
-    const body = {
+    let body = {
         "bucket": "blob-images",
-        "key": key,
-        "edits": {
-            "resize": {
-                "width": width,
-                "height": height,
-                "fit": "cover"
-            }
-        }
+        "key": key
     }
-    const isRemote = (key.slice(0,10) === 'protected/');
+    if (width || height) {
+        let resize = { "fit": "cover" };
+        if (width) resize.width = width;
+        if (height) resize.height = height;
+        body.edits = { resize };
+    }
+    const isRemote = (key.slice(0, 10) === 'protected/');
     if (isRemote) {
         return imageBaseUrl + otoa(body);
     } else {

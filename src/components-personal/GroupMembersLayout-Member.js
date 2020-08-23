@@ -135,7 +135,7 @@ const MemberDetails = () => {
     ));
     const [anchor, setAnchor] = useState({ el: null });
 
-    const selectedIsCurrent = anchor.member && (anchor.member.SK.slice(1) === profile.id);
+    const selectedIsCurrent = anchor.member && (anchor.member.PK.slice(3) === profile.id);
     const selectedIsAdmin = anchor.member && (anchor.member.role === 'admin');
     const selectedIsInvite = anchor.member && (anchor.member.status === 'invite');
     const roleText = (selectedIsAdmin) ? 'Make guest' : 'Make admin';
@@ -167,11 +167,13 @@ const MemberDetails = () => {
         >
             {selectedIsCurrent &&
                 <MenuItem disabled={!hasOtherAdmin}>Leave this group</MenuItem>}
-            {!selectedIsCurrent && !selectedIsInvite && <MenuItem>{roleText}</MenuItem>}
+            {!selectedIsCurrent && !selectedIsInvite &&
+                <MenuItem>{roleText}</MenuItem>
+            }
             {!selectedIsCurrent &&
                 <MenuItem style={redStyle}>{redText}</MenuItem>}
         </Menu>
-    </ExpansionPanelDetails>
+    </ExpansionPanelDetails >
 }
 
 export default MemberDetails;

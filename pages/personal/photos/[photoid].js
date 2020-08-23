@@ -60,7 +60,7 @@ const PhotoMain = () => {
                     <ImageSkeleton src={photoUrl} className={classes.image} isLoading={isLoading}
                         onLoad={onImageLoad} withLink alt='image' />
                 </Grid>
-                <Grid item md={4} className={classes.caption}>
+                <Grid item md={4} xs={12} className={classes.caption}>
                     <Typography variant='h5' gutterBottom>door {photo.owner?.name}</Typography>
                     <Typography variant='body1' gutterBottom>toegevoegd op {photo.createdAt}</Typography>
                     {(imageSize) &&

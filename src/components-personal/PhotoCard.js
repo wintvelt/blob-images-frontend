@@ -61,7 +61,8 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     menuIsOpen }) => {
     const classes = useStyles();
     const Key = { PK: photoParams.PK, SK: photoParams.SK };
-    const source = photoParams.PK && `/photos/${otoa(Key)}`;
+    const key = otoa(Key);
+    const source = photoParams.PK && `/photos/${key}`;
     const photoData = useRecoilValueLoadable(photoState(source));
     const photo = (photoData.state === 'hasValue' && photoData.contents) ? photoData.contents : {};
     const { url, owner, album, createdAt, PK } = photo;
@@ -74,7 +75,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const handleClick = (e) => {
         e.preventDefault();
         if (!isLoading) {
-            onClick && onClick({ id, url, image: url, owner });
+            onClick && onClick({ id, url, image: url, owner, key });
         }
     }
     const handleMenuClick = (e) => {
@@ -96,17 +97,6 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
                 {createdAt}<br />
                 <Rating value={123}/>
             </>}
-            // title={(!noOwner && (name || isLoading)) &&
-            //     <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by '}{name}</TextSkeleton>}
-            // subtitle={(!isSmall || noOwner) && <>
-            //     {(album) &&
-            //         <TextSkeleton isLoading={isLoading}>
-            //             {album && album.name}
-            //             <br />
-            //         </TextSkeleton>}
-            //     {(date || isLoading) &&
-            //         <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'added '}{date}</TextSkeleton>}
-            // </>}
             actionIcon={(onSelect) && <SelectButton iconClass={classes.icon}
                 icon={icon} onSelect={handleSelect} disabled={menuIsOpen} />}
         />

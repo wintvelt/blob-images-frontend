@@ -6,8 +6,7 @@ import PrivatePage from '../../../../../src/components-personal/PrivatePage';
 import Upload from '../../../../../src/components-generic/Upload';
 import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { activeAlbumState, hasAlbumData, activeAlbumPhotos } from '../../../../../src/data/activeTree-Album';
-
-const onPhotoClick = (e) => alert(JSON.stringify(e));
+import { useSetLoadingPath } from '../../../../../src/data/loadingData';
 
 const AlbumMain = () => {
     const activeAlbumData = useRecoilValueLoadable(activeAlbumState);
@@ -22,6 +21,7 @@ const AlbumMain = () => {
     const reloadPhotos = useResetRecoilState(activeAlbumPhotos);
     const reloadAlbum = useResetRecoilState(activeAlbumState);
     const [files, setFiles] = useState([]);
+    const setLoadingPath = useSetLoadingPath();
 
     const onAddFile = (_, file) => {
         setFiles([...new Set([...files, file.filename])]);
@@ -35,7 +35,10 @@ const AlbumMain = () => {
             pond.current.removeFile(file.id);
         }, 1000)
     }
-
+    const onPhotoClick = (photo) => {
+        const photoPath = '/personal/photos/[photoid]';
+        setLoadingPath(photoPath, photoPath.replace('[photoid]', photo.key));
+    };
 
     return ( 
         <main>

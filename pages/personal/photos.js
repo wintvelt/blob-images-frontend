@@ -6,12 +6,17 @@ import { Toolbar } from '@material-ui/core';
 import PhotoList from '../../src/components-personal/PhotoList';
 import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { userPhotosState } from '../../src/data/userData';
-
-const onPhotoClick = (e) => alert(JSON.stringify(e));
+import { useSetLoadingPath } from '../../src/data/loadingData';
 
 const PhotosMain = () => {
     const photoData = useRecoilValueLoadable(userPhotosState);
     const reloadPhotos = useResetRecoilState(userPhotosState);
+    const setLoadingPath = useSetLoadingPath();
+
+    const onPhotoClick = (photo) => {
+        const photoPath = '/personal/photos/[photoid]';
+        setLoadingPath(photoPath, photoPath.replace('[photoid]', photo.key));
+    };
 
     return (
         <main>

@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 
-const Rating = ({ value }) => {
+const Rating = ({ value, dark }) => {
     const [color, sign] = (value > 0) ?
-        ['lightgreen', '+']
+        [(dark) ? 'green' : 'lightgreen', '+']
         : (value < 0) ? ['red', '-']
             : ['gray', ''];
     const myStyle = useMemo(() => ({ color }), [color]);

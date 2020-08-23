@@ -35,7 +35,7 @@ const AuthPage = () => {
                 url='/img/cover.jpg'
             >
                 <Paper>
-                    <AuthForms path={routerPath} />
+                    <AuthForms path={routerPath} isPage={true}/>
                 </Paper>
             </Hero>
         </main >

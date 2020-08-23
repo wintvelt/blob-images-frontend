@@ -19,7 +19,7 @@ const fieldConfig = {
 };
 
 const ForgotPswForm = (props) => {
-    const { title, subtitle } = props;
+    const { title, subtitle, allowSignup } = props;
     const userData = useUser();
     const { user } = userData;
     const userEmail = user.profile?.email;
@@ -52,6 +52,12 @@ const ForgotPswForm = (props) => {
             {error.message}
         </>
     );
+
+    let smallButtons = [
+        { onClick: onLogin, text: 'Log in' },
+    ];
+    if (allowSignup) smallButtons.push({ onClick: onSignup, text: 'sign up' });
+
     return <Form
         title={title || 'Forgot password'}
         subtitle={subtitle || 'Leave your email to reset your password'}
@@ -60,10 +66,7 @@ const ForgotPswForm = (props) => {
         isLoading={isLoading}
         onSubmit={onSubmit}
         submitText='Reset password'
-        smallButtons={[
-            { onClick: onLogin, text: 'Log in' },
-            { onClick: onSignup, text: 'Sign up' },
-        ]}
+        smallButtons={smallButtons}
         Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper
     />

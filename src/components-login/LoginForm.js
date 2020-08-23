@@ -33,7 +33,7 @@ const buttonStyle = {
 };
 
 const LoginForm = (props) => {
-    const { title, subtitle } = props;
+    const { title, subtitle, allowSignup } = props;
     const userData = useUser();
     const { user } = userData;
     const [isLoading, setIsLoading] = useState(false);
@@ -77,6 +77,11 @@ const LoginForm = (props) => {
         </>
     );
 
+    let smallButtons = [
+        { onClick: onForgotPsw, text: 'forgot password' },
+    ];
+    if (allowSignup) smallButtons.push({ onClick: onSignup, text: 'sign up' });
+
     return <Form
         title={title || 'Welcome back!'}
         subtitle={subtitle || 'Please log in with your email and password'}
@@ -85,10 +90,7 @@ const LoginForm = (props) => {
         isLoading={isLoading}
         onSubmit={onSubmit}
         submitText='Log in'
-        smallButtons={[
-            { onClick: onForgotPsw, text: 'forgot password' },
-            { onClick: onSignup, text: 'sign up' },
-        ]}
+        smallButtons={smallButtons}
         Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper
     />

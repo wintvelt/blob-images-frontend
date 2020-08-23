@@ -13,6 +13,7 @@ import { makeStyles, IconButton, Icon, Button } from '@material-ui/core';
 import { ImageSkeleton } from '../../../src/components-generic/Skeleton';
 import Rating from '../../../src/components-generic/Rating';
 import PhotoPubs from '../../../src/components-personal/PhotoPubs';
+import { useUserValue } from '../../../src/data/userData';
 
 const useStyles = makeStyles(theme => ({
     photo: {
@@ -39,14 +40,17 @@ const useStyles = makeStyles(theme => ({
 
 const PhotoMain = () => {
     const router = useRouter();
+    const classes = useStyles();
     const photoId = router.query?.photoid || 'nophotoId';
     const source = `/photos/${photoId}`;
+    const currentUser = useUserValue();
+    const { profile } = currentUser;
     const photoData = useRecoilValueLoadable(photoState(source));
     const photo = (photoData.state === 'hasValue') && photoData.contents;
+    const currentIsOwner = photo && photo.owner?.SK.slice(1) === profile.id;
     const isLoading = (photoData.state === 'loading');
     const photoUrlRaw = photo?.url;
     const photoUrl = makeImageUrl(photoUrlRaw);
-    const classes = useStyles();
     const [imageSize, setImageSize] = useState('');
 
     const onImageLoad = ({ target }) => {
@@ -77,9 +81,11 @@ const PhotoMain = () => {
                             href={photoUrl} title='download deze pic' download={photo.url?.split('/').slice(-1)[0]}
                         >Download</Button>
                         {'\u00A0'}
-                        <Button startIcon={<Icon>delete</Icon>} style={{ color: 'red' }} variant='outlined' >
-                            Delete
-                        </Button>
+                        {currentIsOwner &&
+                            <Button startIcon={<Icon>delete</Icon>} style={{ color: 'red' }} variant='outlined' >
+                                Delete
+                            </Button>
+                        }
                     </div>
                     <PhotoPubs photo={photo} />
                 </Grid>

@@ -12,6 +12,7 @@ import { makeStyles, IconButton, Icon, Button } from '@material-ui/core';
 
 import { ImageSkeleton } from '../../../src/components-generic/Skeleton';
 import Rating from '../../../src/components-generic/Rating';
+import PhotoPubs from '../../../src/components-personal/PhotoPubs';
 
 const useStyles = makeStyles(theme => ({
     photo: {
@@ -68,8 +69,8 @@ const PhotoMain = () => {
                     <div className={classes.flexLine}>
                         <Typography variant='body1'>rating</Typography>{'\u00A0'}
                         <Rating value={123} dark />{'\u00A0'}
-                        <IconButton size='small'><Icon fontSize='small'>thumb_up</Icon></IconButton>{'\u00A0'}
-                        <IconButton size='small'><Icon fontSize='small'>thumb_down</Icon></IconButton>
+                        <IconButton><Icon fontSize='small'>thumb_up</Icon></IconButton>{'\u00A0'}
+                        <IconButton><Icon fontSize='small'>thumb_down</Icon></IconButton>
                     </div>
                     <div className={classes.flexLine}>
                         <Button color='primary' variant='outlined' startIcon={<Icon>cloud_download</Icon>}>Download</Button>
@@ -78,6 +79,7 @@ const PhotoMain = () => {
                             Delete
                         </Button>
                     </div>
+                    <PhotoPubs photo={photo} />
                 </Grid>
             </Grid>
             <pre>{JSON.stringify(photoData, null, 2)}</pre>

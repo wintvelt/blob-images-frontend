@@ -73,7 +73,9 @@ const PhotoMain = () => {
                         <IconButton><Icon fontSize='small'>thumb_down</Icon></IconButton>
                     </div>
                     <div className={classes.flexLine}>
-                        <Button color='primary' variant='outlined' startIcon={<Icon>cloud_download</Icon>}>Download</Button>
+                        <Button color='primary' variant='outlined' startIcon={<Icon>cloud_download</Icon>}
+                            href={photoUrl} title='download deze pic' download={photo.url?.split('/').slice(-1)[0]}
+                        >Download</Button>
                         {'\u00A0'}
                         <Button startIcon={<Icon>delete</Icon>} style={{ color: 'red' }} variant='outlined' >
                             Delete

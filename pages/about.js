@@ -14,7 +14,7 @@ const Home = () => {
                 url='/cover_2.jpg'
             >
                 <Grid item md={1} />
-                <Grid item md={4}>
+                <Grid item md={4} id='aboutus'>
                     <HeroTitle
                         title='Over ons'
                     />

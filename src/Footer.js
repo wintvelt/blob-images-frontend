@@ -15,8 +15,8 @@ function Copyright(props) {
                 {'© '}Photo Duck{' '}
                 {new Date().getFullYear()}
                 {' | '}
-                <Link href='/about' className={props.className}>Privacy statement</Link>{' | '}
-                <Link href='/about' className={props.className}>Cookies</Link>
+                <Link href='/about#privacy' className={props.className}>Privacy statement</Link>{' | '}
+                <Link href='/about#cookies' className={props.className}>Cookies</Link>
             </Typography>
         </Container>
     );

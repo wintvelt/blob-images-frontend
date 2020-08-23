@@ -8,6 +8,7 @@ import { makeImageUrl, otoa } from '../components-generic/imageProvider';
 import { TextSkeleton, ImageSkeleton } from '../components-generic/Skeleton';
 import { useRecoilValueLoadable } from 'recoil';
 import { photoState } from '../data/activeTree-Photo';
+import Rating from '../components-generic/Rating';
 
 const useStyles = makeStyles(theme => ({
     icon: {
@@ -63,7 +64,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const source = photoParams.PK && `/photos/${otoa(Key)}`;
     const photoData = useRecoilValueLoadable(photoState(source));
     const photo = (photoData.state === 'hasValue' && photoData.contents) ? photoData.contents : {};
-    const { url, owner, album, date, PK } = photo;
+    const { url, owner, album, createdAt, PK } = photo;
     const id = PK?.slice(2);
     const { name, avatar } = owner || {};
     const isLoading = (!url);
@@ -92,8 +93,8 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
             style={fitContent}
             title={(name)? `by ${name}` : ''}
             subtitle={<>
-                18 June 2020<br />
-                <span style={{color: 'lightgreen'}}>＋123</span>
+                {createdAt}<br />
+                <Rating value={123}/>
             </>}
             // title={(!noOwner && (name || isLoading)) &&
             //     <TextSkeleton isLoading={isLoading}>{(!isSmall) && 'by '}{name}</TextSkeleton>}

@@ -26,11 +26,15 @@ const flexStyle = { display: 'flex', alignItems: 'center', justifyContent: 'cent
 const iconStyle = { fontSize: '48px', color: 'grey' };
 
 export const ImageSkeleton = (props) => {
-    const { isLoading, ...rest } = props;
+    const { isLoading, withLink, ...rest } = props;
     return (isLoading) ?
         <div style={flexStyle}
             className='pulse' >
             <Icon style={iconStyle} >image</Icon>
         </div>
-        : <img {...rest} />
+        : (withLink) ?
+            <a href={rest.src} target='_blank' rel='noopener noreferrer'>
+                <img {...rest} />
+            </a>
+            : <img {...rest} />
 }

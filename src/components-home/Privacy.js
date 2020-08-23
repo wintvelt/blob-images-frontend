@@ -82,6 +82,16 @@ const featureList = [
             `Geen tracking cookies, analytics of andere onzin.`
         ]
     },
+    {
+        imageUrl: '/img/wouter.jpeg',
+        title: 'Team',
+        descriptions: [
+            `Wouter heeft deze website gemaakt. Altijd al een beetje een nerd geweest.`,
+            `Een uit de hand gelopen hobby eigenlijk, net als het penningmeesterschap van de jaarclub.`,
+            `Deze website kan in principe altijd blijven bestaan. Ook in de generaties na ons.`,
+            `De bedoeling is dat hij gratis blijft, maar geen garanties (zoals in het leven).`    
+        ]
+    }
 ];
 
 const gutterTop = { marginTop: '8px' };

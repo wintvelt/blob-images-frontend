@@ -90,7 +90,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
         <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
         <GridListTileBar
             style={fitContent}
-            title={`by ${name}`}
+            title={(name)? `by ${name}` : ''}
             subtitle={<>
                 18 June 2020<br />
                 <span style={{color: 'lightgreen'}}>＋123</span>

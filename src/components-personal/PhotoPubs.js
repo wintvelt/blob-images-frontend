@@ -4,18 +4,10 @@ import {
     makeStyles, ListItemSecondaryAction, Icon, IconButton
 }
     from '@material-ui/core';
-
-const dummyList = [
-    { groupName: 'Blob foto dump', albumName: 'in Marokko', url: '/img/album.jpg', id: '123', albumId: '4' },
-    { groupName: 'Blob foto dump', albumName: 'in Sulawesi', url: '/img/cover.jpg', id: '2', albumId: '5' },
-    { groupName: 'In t Velt Familiepics', albumName: 'Sicilië', url: '/img/holiday.jpeg', id: '3', albumId: '6' },
-    { groupName: 'Blob foto dump', albumName: 'in Marokko', url: '/img/album.jpg', id: '123', albumId: '7' },
-    { groupName: 'Blob foto dump', albumName: 'in Sulawesi', url: '/img/cover.jpg', id: '2', albumId: '8' },
-    { groupName: 'In t Velt Familiepics', albumName: 'Sicilië', url: '/img/holiday.jpeg', id: '3', albumId: '9' },
-    { groupName: 'Blob foto dump', albumName: 'in Marokko', url: '/img/album.jpg', id: '123', albumId: 'a' },
-    { groupName: 'Blob foto dump', albumName: 'in Sulawesi', url: '/img/cover.jpg', id: '2', albumId: 'b' },
-    { groupName: 'In t Velt Familiepics', albumName: 'Sicilië', url: '/img/holiday.jpeg', id: '3', albumId: 'c' },
-];
+import { useRecoilValueLoadable } from 'recoil';
+import { userAlbums } from '../data/userData';
+import { publicationState } from '../data/activeTree-Photo';
+import { makeImageUrl } from '../components-generic/imageProvider';
 
 const useStyles = makeStyles(theme => ({
     list: {
@@ -38,16 +30,24 @@ const useStyles = makeStyles(theme => ({
 
 const PhotoPubs = ({ photo }) => {
     const classes = useStyles();
+    const albumsData = useRecoilValueLoadable(userAlbums);
+    const albums = (albumsData.state === 'hasValue')? albumsData.contents : [];
+    const photoId = photo?.PK?.slice(2);
+    const source = `/publications/${photoId}`;
+    const pubData = useRecoilValueLoadable(publicationState(source));
+    const pubs = (pubData.state === 'hasValue')? pubData.contents : [];
+    const pubAlbumIds = pubs.map(pub => pub.PK.split('#')[1]); 
     return <List dense className={classes.list} subheader={
         <ListSubheader className={classes.noPadList}>Publicaties in albums van mijn groepen</ListSubheader>
     }>
-        {dummyList.map(album => {
-            const { albumId, albumName, groupName, url } = album
-            return <ListItem key={albumId} className={classes.noPadList}>
-                <ListItemIcon><img src={url} className={classes.albumImg} /></ListItemIcon>
-                <ListItemText primary={albumName} secondary={groupName} />
+        {albums.map(album => {
+            const { id, name, groupName, image } = album;
+            const imageUrl = makeImageUrl(image?.url, 40);
+            return <ListItem key={id} className={classes.noPadList}>
+                <ListItemIcon><img src={imageUrl} className={classes.albumImg} /></ListItemIcon>
+                <ListItemText primary={name} secondary={groupName} />
                 <ListItemSecondaryAction className={classes.actions}>
-                    {(albumId !== '5') && <Icon>done</Icon>}
+                    {(pubAlbumIds.includes(id)) && <Icon>done</Icon>}
                     <IconButton><Icon color='primary'>more_horiz</Icon></IconButton>
                 </ListItemSecondaryAction>
             </ListItem>

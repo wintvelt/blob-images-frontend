@@ -8,10 +8,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeImageUrl } from '../../../src/components-generic/imageProvider';
-import { makeStyles, IconButton, Icon, Button, Chip } from '@material-ui/core';
+import { makeStyles, Icon, Button, Chip } from '@material-ui/core';
 
 import { ImageSkeleton } from '../../../src/components-generic/Skeleton';
 import Rating from '../../../src/components-generic/Rating';
+import PhotoRating from '../../../src/components-personal/PhotoRating';
 import PhotoPubs from '../../../src/components-personal/PhotoPubs';
 import { useUserValue } from '../../../src/data/userData';
 
@@ -81,8 +82,7 @@ const PhotoMain = () => {
                     <div className={classes.flexLine}>
                         <Typography variant='body1'>rating</Typography>{'\u00A0'}
                         <Rating value={123} dark />{'\u00A0'}
-                        <IconButton><Icon fontSize='small'>thumb_up</Icon></IconButton>{'\u00A0'}
-                        <IconButton><Icon fontSize='small'>thumb_down</Icon></IconButton>
+                        <PhotoRating photo={photo} />
                     </div>
                     <div className={classes.flexLine}>
                         <Button color='primary' variant='outlined' startIcon={<Icon>cloud_download</Icon>}

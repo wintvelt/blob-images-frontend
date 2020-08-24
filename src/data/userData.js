@@ -38,6 +38,19 @@ export const userGroups = selector({
     }
 });
 
+export const userAlbums = selector({
+    key: 'userAlbums',
+    get: async ({ get }) => {
+        get(userData);
+        get(userGroupsTrigger);
+        const response = await API.get('blob-images', '/albums');
+        if (response.error) {
+            throw response.error;
+        }
+        return response;
+    },
+});
+
 const userPhotosStateTrigger = atom({
     key: 'userPhotosStateTrigger',
     default: 0

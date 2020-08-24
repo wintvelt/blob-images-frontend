@@ -12,3 +12,15 @@ export const photoState = selectorFamily({
         return response.photo || response;
     }
 });
+
+export const publicationState = selectorFamily({
+    key: 'publications',
+    get: (source) => async ({ get }) => {
+        if (!source) return undefined;
+        const response = await API.get('blob-images', source);
+        if (response.error) {
+            throw response.error;
+        }
+        return response;
+    }
+});

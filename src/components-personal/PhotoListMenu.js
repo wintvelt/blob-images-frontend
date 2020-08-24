@@ -3,6 +3,9 @@ import { API } from 'aws-amplify';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Icon from '@material-ui/core/Icon';
 import { useSnackbar } from 'notistack';
 
 import { useUser } from '../data/userData';
@@ -69,6 +72,14 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum, relo
             <MenuItem onClick={onSetProfilePic}>Set as profile picture</MenuItem>
             {album && userIsOwner && <MenuItem>Remove from album</MenuItem>}
             {userIsOwner && <MenuItem onClick={onDelete} style={redStyle}>Delete</MenuItem>}
+            {/* <MenuItem>
+                <ListItemIcon><Icon fontSize='small'>thumb_up</Icon></ListItemIcon>
+                Vote up
+            </MenuItem>
+            <MenuItem>
+                <ListItemIcon><Icon fontSize='small'>thumb_down</Icon></ListItemIcon>
+                Vote down
+            </MenuItem> */}
         </Menu>
     );
 }

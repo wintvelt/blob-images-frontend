@@ -56,7 +56,7 @@ const PhotoMain = () => {
     const photoUrl = makeImageUrl(photoUrlRaw, blur);
 
     const onImageLoad = ({ target }) => {
-        if (blur) { 
+        if (blur) {
             setBlur(undefined);
         } else {
             setImageSize(`${target.naturalWidth} x ${target.naturalHeight}`);
@@ -95,7 +95,7 @@ const PhotoMain = () => {
                             </Button>
                         }
                     </div>
-                    <PhotoPubs photo={photo} />
+                    <PhotoPubs photo={photo} currentIsOwner={currentIsOwner} />
                 </Grid>
             </Grid>
             <pre>{JSON.stringify(photoData, null, 2)}</pre>

@@ -12,9 +12,9 @@ import { useUser } from '../data/userData';
 
 const redStyle = { color: 'red' };
 
-const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum, reloadGroup }) => {
+const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum, isAlbum, publications }) => {
     const albumData = album;
-    const currentPhotoId = anchor.photo?.PK.slice(2);
+    const currentPhotoId = anchor.photo?.PK?.slice(2);
     const { user, saveProfile } = useUser();
     const userIsOwner = (user.profile && anchor.photo && user.profile.id === anchor.photo.SK.slice(1));
     const { enqueueSnackbar } = useSnackbar();
@@ -68,10 +68,15 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum, relo
             open={Boolean(anchor.el)}
             onClose={handleClose}
         >
-            {album && <MenuItem onClick={onSetAlbumCover}>Set as album cover</MenuItem>}
-            <MenuItem onClick={onSetProfilePic}>Set as profile picture</MenuItem>
-            {album && userIsOwner && <MenuItem>Remove from album</MenuItem>}
-            {userIsOwner && <MenuItem onClick={onDelete} style={redStyle}>Delete</MenuItem>}
+            {album && (!isAlbum) && <MenuItem onClick={onSetAlbumCover}>Set as album cover</MenuItem>}
+            {!isAlbum && <MenuItem onClick={onSetProfilePic}>Set as profile picture</MenuItem>}
+            {album && userIsOwner && (!isAlbum || publications.includes(album.id)) &&
+                <MenuItem>Remove from album</MenuItem>
+            }
+            {album && userIsOwner && (isAlbum && !publications.includes(album.id)) &&
+                <MenuItem>Add to album</MenuItem>
+            }
+            {userIsOwner && (!isAlbum) && <MenuItem onClick={onDelete} style={redStyle}>Delete</MenuItem>}
             {/* <MenuItem>
                 <ListItemIcon><Icon fontSize='small'>thumb_up</Icon></ListItemIcon>
                 Vote up

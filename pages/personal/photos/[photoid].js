@@ -8,7 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeImageUrl } from '../../../src/components-generic/imageProvider';
-import { makeStyles, IconButton, Icon, Button } from '@material-ui/core';
+import { makeStyles, IconButton, Icon, Button, Chip } from '@material-ui/core';
 
 import { ImageSkeleton } from '../../../src/components-generic/Skeleton';
 import Rating from '../../../src/components-generic/Rating';
@@ -17,13 +17,13 @@ import { useUserValue } from '../../../src/data/userData';
 
 const useStyles = makeStyles(theme => ({
     photo: {
-        height: '520px',
+        height: '640px',
         backgroundColor: '#9d8d8f30',
     },
     image: {
         width: '100%',
         objectFit: 'contain',
-        height: '520px',
+        height: '640px',
     },
     caption: {
         padding: theme.spacing(2),
@@ -65,7 +65,10 @@ const PhotoMain = () => {
                         onLoad={onImageLoad} withLink alt='image' />
                 </Grid>
                 <Grid item md={4} xs={12} className={classes.caption}>
-                    <Typography variant='h5' gutterBottom>door {photo.owner?.name}</Typography>
+                    <Typography variant='h5' gutterBottom>
+                        door {photo.owner?.name}{'\u00A0'}
+                        {currentIsOwner && <Chip size='small' label='me'/>}
+                    </Typography>
                     <Typography variant='body1' gutterBottom>toegevoegd op {photo.createdAt}</Typography>
                     {(imageSize) &&
                         <Typography variant='body1' gutterBottom>pixelgrootte {imageSize}</Typography>

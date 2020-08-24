@@ -50,11 +50,16 @@ const PhotoMain = () => {
     const currentIsOwner = photo && photo.owner?.SK.slice(1) === profile.id;
     const isLoading = (photoData.state === 'loading');
     const photoUrlRaw = photo?.url;
-    const photoUrl = makeImageUrl(photoUrlRaw);
+    const [blur, setBlur] = useState(10);
     const [imageSize, setImageSize] = useState('');
+    const photoUrl = makeImageUrl(photoUrlRaw, blur);
 
     const onImageLoad = ({ target }) => {
-        setImageSize(`${target.naturalWidth} x ${target.naturalHeight}`);
+        if (blur) { 
+            setBlur(undefined);
+        } else {
+            setImageSize(`${target.naturalWidth} x ${target.naturalHeight}`);
+        }
     }
 
     return (
@@ -67,7 +72,7 @@ const PhotoMain = () => {
                 <Grid item md={4} xs={12} className={classes.caption}>
                     <Typography variant='h5' gutterBottom>
                         door {photo.owner?.name}{'\u00A0'}
-                        {currentIsOwner && <Chip size='small' label='me'/>}
+                        {currentIsOwner && <Chip size='small' label='me' />}
                     </Typography>
                     <Typography variant='body1' gutterBottom>toegevoegd op {photo.createdAt}</Typography>
                     {(imageSize) &&

@@ -42,7 +42,8 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
     const pubAlbumIds = pubs.map(pub => pub.PK.split('#')[1]);
     const sortedAlbums = albums
         .map(album => ({ ...album, isPublished: pubAlbumIds.includes(album.id) }))
-        .sort((a, b) => (a.isPublished) ? (b.isPublished) ? 0 : -1 : 1);
+        .sort((a, b) => (a.isPublished) ? (b.isPublished) ? 0 : -1 : 1)
+        .filter(album => (currentIsOwner || album.isPublished));
 
     const [anchor, setAnchor] = useState({ el: null });
 
@@ -53,6 +54,8 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
     const handleClose = () => {
         setAnchor({ el: null });
     };
+
+    if (sortedAlbums.length === 0) return null;
 
     return <>
         <List dense className={classes.list} subheader={

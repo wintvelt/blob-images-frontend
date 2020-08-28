@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { makeImageUrl, otoa } from '../components-generic/imageProvider';
-import { TextSkeleton, ImageSkeleton } from '../components-generic/Skeleton';
+import { ImageSkeleton } from '../components-generic/Skeleton';
 import { useRecoilValueLoadable } from 'recoil';
 import { photoState } from '../data/activeTree-Photo';
 import Rating from '../components-generic/Rating';

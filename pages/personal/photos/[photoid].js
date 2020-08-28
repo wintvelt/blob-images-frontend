@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import PrivatePage from '../../../src/components-personal/PrivatePage';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
+
+import PrivatePage from '../../../src/components-personal/PrivatePage';
 import { useRecoilValueLoadable } from 'recoil';
-import { photoState, photoRatingState } from '../../../src/data/activeTree-Photo';
+import { photoState } from '../../../src/data/activeTree-Photo';
 
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
@@ -16,6 +18,7 @@ import PhotoRating from '../../../src/components-personal/PhotoRating';
 import PhotoPubs from '../../../src/components-personal/PhotoPubs';
 import { useUserValue } from '../../../src/data/userData';
 import { API } from 'aws-amplify';
+import { useSetLoadingPath } from '../../../src/data/loadingData';
 
 const useStyles = makeStyles(theme => ({
     photo: {
@@ -43,6 +46,8 @@ const useStyles = makeStyles(theme => ({
 const PhotoMain = () => {
     const router = useRouter();
     const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
+    const setLoadingPath = useSetLoadingPath();
     const photoId = router.query?.photoid || 'nophotoId';
     const source = `/photos/${photoId}`;
     const currentUser = useUserValue();
@@ -52,9 +57,12 @@ const PhotoMain = () => {
     const [userRating, setUserRating] = useState({ initial: 0, current: 0 });
     useEffect(() => {
         const getRating = async () => {
-            const ratingData = await API.get('blob-images', source + '/rating');
-            const initialRating = ratingData?.rating || 0;
-            if (initialRating) setUserRating({ initial: initialRating, current: initialRating });
+            try {
+                const ratingData = await API.get('blob-images', source + '/rating');
+                const initialRating = ratingData?.rating || 0;
+                if (initialRating) setUserRating({ initial: initialRating, current: initialRating });
+            } catch (_) {
+            }
         };
         getRating();
     }, [photoId]);
@@ -63,17 +71,23 @@ const PhotoMain = () => {
             const ratingUpdate = (userRating.current === clickedRating) ? -clickedRating : clickedRating;
             setUserRating({ ...userRating, current: userRating.current + ratingUpdate });
             await API.put('blob-images', source + '/rating', { body: { ratingUpdate } });
+            enqueueSnackbar(`Je ${(ratingUpdate > 0)? '+1' : '-1'} inbreng over deze foto is verwerkt`);
         };
         setRating();
     };
-    const photoRating = photo.rating - userRating.initial + userRating.current;
+    const photoRating = (photo.rating || 0) - userRating.initial + userRating.current;
 
-    const currentIsOwner = photo && photo.owner?.SK.slice(1) === profile.id;
+    const onDelete = () => {
+        alert('Deleting photo');
+        enqueueSnackbar('Foto verwijderd');
+        setLoadingPath('/personal/photos');
+    };
+    const currentIsOwner = photo && photo.SK?.slice(1) === profile.id;
     const isLoading = (photoData.state === 'loading');
     const photoUrlRaw = photo?.url;
     const [blur, setBlur] = useState(10);
     const [imageSize, setImageSize] = useState('');
-    const photoUrl = makeImageUrl(photoUrlRaw, blur);
+    const photoUrl = (photo) ? makeImageUrl(photoUrlRaw, blur) : '/img/foto_not_found.jpg';
 
     const onImageLoad = ({ target }) => {
         if (blur) {
@@ -92,27 +106,27 @@ const PhotoMain = () => {
                 </Grid>
                 <Grid item md={4} xs={12} className={classes.caption}>
                     <Typography variant='h5' gutterBottom>
-                        door {photo.owner?.name}{'\u00A0'}
+                        door {photo.owner?.name || '-'}{'\u00A0'}
                         {currentIsOwner && <Chip size='small' label='me' />}
                     </Typography>
-                    <Typography variant='body1' gutterBottom>toegevoegd op {photo.createdAt}</Typography>
-                    {(imageSize) &&
-                        <Typography variant='body1' gutterBottom>pixelgrootte {imageSize}</Typography>
-                    }
+                    <Typography variant='body1' gutterBottom>toegevoegd op {photo.createdAt || '-'}</Typography>
+                    <Typography variant='body1' gutterBottom>pixelgrootte {imageSize || '-'}</Typography>
                     <div className={classes.flexLine}>
                         <Typography variant='body1'>rating</Typography>{'\u00A0'}
                         <Rating value={photoRating} dark />
                     </div>
                     <div className={classes.flexLine}>
-                        <PhotoRating userRating={userRating.current} onChange={onChangeRating} />
+                        <PhotoRating userRating={userRating.current} onChange={onChangeRating} disabled={!photo}/>
                     </div>
                     <div className={classes.flexLine}>
                         <Button color='primary' variant='outlined' startIcon={<Icon>cloud_download</Icon>}
+                            disabled={!photo}
                             href={photoUrl} title='download deze pic' download={photo.url?.split('/').slice(-1)[0]}
                         >Download</Button>
                         {'\u00A0'}
                         {currentIsOwner &&
-                            <Button startIcon={<Icon>delete</Icon>} style={{ color: 'red' }} variant='outlined' >
+                            <Button startIcon={<Icon>delete</Icon>} onClick={onDelete}
+                                style={{ color: 'red' }} variant='outlined' >
                                 Delete
                             </Button>
                         }

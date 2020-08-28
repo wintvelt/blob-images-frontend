@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PrivatePage from '../../../src/components-personal/PrivatePage';
 import { useRouter } from 'next/router';
 import { useRecoilValueLoadable } from 'recoil';
-import { photoState } from '../../../src/data/activeTree-Photo';
+import { photoState, photoRatingState } from '../../../src/data/activeTree-Photo';
 
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
@@ -15,6 +15,7 @@ import Rating from '../../../src/components-generic/Rating';
 import PhotoRating from '../../../src/components-personal/PhotoRating';
 import PhotoPubs from '../../../src/components-personal/PhotoPubs';
 import { useUserValue } from '../../../src/data/userData';
+import { API } from 'aws-amplify';
 
 const useStyles = makeStyles(theme => ({
     photo: {
@@ -48,6 +49,25 @@ const PhotoMain = () => {
     const { profile } = currentUser;
     const photoData = useRecoilValueLoadable(photoState(source));
     const photo = (photoData.state === 'hasValue') && photoData.contents;
+    const [userRating, setUserRating] = useState({ initial: 0, current: 0 });
+    useEffect(() => {
+        const getRating = async () => {
+            const ratingData = await API.get('blob-images', source + '/rating');
+            const initialRating = ratingData?.rating || 0;
+            if (initialRating) setUserRating({ initial: initialRating, current: initialRating });
+        };
+        getRating();
+    }, [photoId]);
+    const onChangeRating = (clickedRating) => {
+        const setRating = async () => {
+            const ratingUpdate = (userRating.current === clickedRating) ? -clickedRating : clickedRating;
+            setUserRating({ ...userRating, current: userRating.current + ratingUpdate });
+            await API.put('blob-images', source + '/rating', { body: { ratingUpdate } });
+        };
+        setRating();
+    };
+    const photoRating = photo.rating - userRating.initial + userRating.current;
+
     const currentIsOwner = photo && photo.owner?.SK.slice(1) === profile.id;
     const isLoading = (photoData.state === 'loading');
     const photoUrlRaw = photo?.url;
@@ -61,7 +81,7 @@ const PhotoMain = () => {
         } else {
             setImageSize(`${target.naturalWidth} x ${target.naturalHeight}`);
         }
-    }
+    };
 
     return (
         <main>
@@ -81,8 +101,10 @@ const PhotoMain = () => {
                     }
                     <div className={classes.flexLine}>
                         <Typography variant='body1'>rating</Typography>{'\u00A0'}
-                        <Rating value={123} dark />{'\u00A0'}
-                        <PhotoRating photo={photo} />
+                        <Rating value={photoRating} dark />
+                    </div>
+                    <div className={classes.flexLine}>
+                        <PhotoRating userRating={userRating.current} onChange={onChangeRating} />
                     </div>
                     <div className={classes.flexLine}>
                         <Button color='primary' variant='outlined' startIcon={<Icon>cloud_download</Icon>}

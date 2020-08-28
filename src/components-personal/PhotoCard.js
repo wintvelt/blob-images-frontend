@@ -65,7 +65,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const source = photoParams.PK && `/photos/${key}`;
     const photoData = useRecoilValueLoadable(photoState(source));
     const photo = (photoData.state === 'hasValue' && photoData.contents) ? photoData.contents : {};
-    const { url, owner, album, createdAt, PK } = photo;
+    const { url, owner, album, rating, createdAt, PK } = photo;
     const id = PK?.slice(2);
     const { name, avatar } = owner || {};
     const isLoading = (!url);
@@ -95,7 +95,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
             title={(name)? `by ${name}` : ''}
             subtitle={<>
                 {createdAt}<br />
-                <Rating value={123}/>
+                <Rating value={rating}/>
             </>}
             actionIcon={(onSelect) && <SelectButton iconClass={classes.icon}
                 icon={icon} onSelect={handleSelect} disabled={menuIsOpen} />}

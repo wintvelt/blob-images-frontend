@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
 import PrivatePage from '../../../src/components-personal/PrivatePage';
-import { useRecoilValueLoadable } from 'recoil';
+import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { photoState } from '../../../src/data/activeTree-Photo';
 
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,6 +19,7 @@ import PhotoPubs from '../../../src/components-personal/PhotoPubs';
 import { useUserValue } from '../../../src/data/userData';
 import { API } from 'aws-amplify';
 import { useSetLoadingPath } from '../../../src/data/loadingData';
+import { userPhotosState } from '../../../src/data/userData';
 
 const useStyles = makeStyles(theme => ({
     photo: {
@@ -48,6 +49,8 @@ const PhotoMain = () => {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
     const setLoadingPath = useSetLoadingPath();
+    const reloadPhotos = useResetRecoilState(userPhotosState);
+
     const photoId = router.query?.photoid || 'nophotoId';
     const source = `/photos/${photoId}`;
     const currentUser = useUserValue();
@@ -77,10 +80,17 @@ const PhotoMain = () => {
     };
     const photoRating = (photo.rating || 0) - userRating.initial + userRating.current;
 
-    const onDelete = () => {
-        alert('Deleting photo');
-        enqueueSnackbar('Foto verwijderd');
-        setLoadingPath('/personal/photos');
+    const onDelete = async () => {
+        try {
+            const path = `/photos/${photo?.PK?.slice(2)}`;
+            await API.del('blob-images', path);
+            enqueueSnackbar('Foto verwijderd', { variant: 'success' });
+            reloadPhotos();
+            setLoadingPath('/personal/photos');
+        } catch (error) {
+            console.log(error);
+            enqueueSnackbar('Kon je kiekje niet verwijderen', { variant: 'error' });
+        }
     };
     const currentIsOwner = photo && photo.SK?.slice(1) === profile.id;
     const isLoading = (photoData.state === 'loading');

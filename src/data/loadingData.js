@@ -16,6 +16,7 @@ export const useSetLoadingPath = () => {
         const isNewRoute = (as)? as !== router.asPath : path !== router.asPath;
         setLoading(isNewRoute);
         router.push(path, as);
+        window && window.scrollTo(0,0);
     };
     return setter;
 };

@@ -1,77 +1,37 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
-import Icon from '@material-ui/core/Icon';
-
-const useStyles = makeStyles(theme => ({
-    feature: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: theme.spacing(4, 8),
-        color: 'white',
-    },
-    icon: {
-        marginBottom: theme.spacing(1),
-        fontSize: 40,
-        color: '#9b786f',
-    },
-}))
+import React from 'react';
+import FeatureBlock from './FeatureBlock';
 
 const featureList = [
     {
         icon: 'verified_user',
         title: 'Safe',
-        description:
+        descriptions: [
             'Your photos will always be visible only to you and the ones you trust. ' +
             ' Share them with your friends, your family, ' +
             'or with your team. Safely and securily stored in a trusted environment.'
+        ]
     },
     {
         icon: 'touch_app',
         title: 'Simple',
-        description:
+        descriptions: [
             'Just photos. No ads, no spam, clutter. Simple drag and drop. Easy upload and download. ' +
             'Straightforward sharing. The basics you need, and nothing else.'
+        ]
     },
     {
         icon: 'person_pin',
         title: 'Personal',
-        description:
+        descriptions: [
             'Make it your own. Add albums, titles, and pick favorites. ' +
             'The people you invite get a personal message, to join just your group. ' +
             'No need for everyone to be on whatever social platform.'
+        ]
     },
 ]
 
-const gridStyle = { paddingTop: '64px' };
-
 const Benefits = () => {
-    const classes = useStyles()
-
-    return (
-        <Grid container
-            direction="row"
-            justify="center"
-            alignItems="stretch"
-            style={gridStyle}
-        >
-            {featureList.map(feature => (
-                <Grid item key={feature.title} xs={12} md={4} className={classes.feature}>
-                    <Icon color='secondary' className={classes.icon}>
-                        {feature.icon}
-                    </Icon>
-                    <Typography variant="h5" gutterBottom>
-                        {feature.title}
-                    </Typography>
-                    <Typography variant="body1" paragraph align='center'>
-                        {feature.description}
-                    </Typography>
-                </Grid>
-            ))}
-        </Grid>
-    )
+    return <FeatureBlock featureList={featureList} />
 }
 
 export default Benefits

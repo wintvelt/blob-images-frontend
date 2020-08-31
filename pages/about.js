@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 
 import Hero from '../src/components-home/Hero';

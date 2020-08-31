@@ -16,7 +16,7 @@ const divStyle = {
     justifyContent: 'center',
 };
 
-export default (props) => {
+const Page =  (props) => {
     const source = 'some url';
     return <main>
         <div style={divStyle}>
@@ -24,3 +24,5 @@ export default (props) => {
         </div>
     </main>
 }
+
+export default Page;

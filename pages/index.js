@@ -47,8 +47,8 @@ const Home = () => {
                                 Voorlopig is Photo Duck alleen beschikbaar op uitnodiging.
                             </Typography>
                             <Typography variant='body1' gutterBottom>
-                                Heeft iemand je persoonlijk getipt om je aan te melden?
-                                Vraag dan aan hem of haar om je vanuit Photo Duck uit te nodigen.
+                                Ben je getipt om je aan te melden?
+                                Vraag dan of hij of zij je vanuit Photo Duck uitnodigt.
                                 Je ontvangt dan een persoonlijke mail waarmee je lid kunt worden.
                             </Typography>
                         </div>
@@ -61,8 +61,10 @@ const Home = () => {
     )
 }
 
-export default () => (
+const Page =  () => (
     <PublicPage>
         <Home />
     </PublicPage>
 );
+
+export default Page;

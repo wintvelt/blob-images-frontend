@@ -27,8 +27,10 @@ const Home = () => {
     )
 }
 
-export default () => (
+const AboutPage = () => (
     <PublicPage>
         <Home />
     </PublicPage>
 );
+
+export default AboutPage;

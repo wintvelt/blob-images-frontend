@@ -1,5 +1,7 @@
 import AuthPage from '../src/components-login/AuthPage';
 
-export default () => {
+const Page = () => {
     return <AuthPage/>
-}
+};
+
+export default Page;

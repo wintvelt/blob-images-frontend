@@ -86,9 +86,9 @@ export default function HideAppBar(props) {
                     <Grid container spacing={1} alignItems='center' justify='center'>
                         <Grid item md={3} xs={6}>
                             <Link href='/'>
-                                <img src='/img/logo_new3.png' className={classes.homeLink} />
+                                <img src='/img/logo_fresh.png' height='24px' className={classes.homeLink} />
                             </Link>
-                            <Hidden smDown><img src='/img/payoff.png' width='30%' /></Hidden>
+                            <Hidden smDown><img src='/img/name.png' height='24px' /></Hidden>
                         </Grid>
                         <Grid item xs />
                         {/* {[

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { downloadFile } from '../../../src/helpers/download';
 
 import PrivatePage from '../../../src/components-personal/PrivatePage';
 import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
@@ -107,6 +108,12 @@ const PhotoMain = () => {
         }
     };
 
+    const photoFilename = photo.url?.split('/').slice(-1)[0];
+
+    const onDownload = () => {
+        downloadFile(photoUrl, photoFilename);
+    }
+
     return (
         <main>
             <Grid container>
@@ -131,7 +138,7 @@ const PhotoMain = () => {
                     <div className={classes.flexLine}>
                         <Button color='primary' variant='outlined' startIcon={<Icon>cloud_download</Icon>}
                             disabled={!photo}
-                            href={photoUrl} title='download deze pic' download={photo.url?.split('/').slice(-1)[0]}
+                            onClick={onDownload} title='download deze pic'
                         >Download</Button>
                         {'\u00A0'}
                         {currentIsOwner &&

@@ -27,6 +27,19 @@ export default function MyApp(props) {
         if (jssStyles) {
             jssStyles.parentElement.removeChild(jssStyles);
         }
+        // set right doctype for download
+        const newDoctype = document && document.implementation.createDocumentType(
+            'html',
+            "PUBLIC",
+            "-//W3C//DTD XHTML 1.0 Strict//EN",
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+        );
+        console.log({newDoctype, document});
+        if(document?.doctype) {
+            document.replaceChild(newDoctype, document.doctype);
+        } else {
+            document && document.insertBefore(newDoctype, document.childNodes[0]);
+        }
     }, []);
     return (
         <React.Fragment>

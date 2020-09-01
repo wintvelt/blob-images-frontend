@@ -11,7 +11,7 @@ const bodyStyle = {
 
 export default class MyDocument extends Document {
     render() {
-        return (<html lang="en" >
+        return (<html xmlns="http://www.w3.org/1999/xhtml" lang="en" >
             <Head > { /* PWA primary color */}
                 <meta name="theme-color"
                     content={theme.palette.primary.main} />

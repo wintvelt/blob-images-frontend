@@ -51,7 +51,6 @@ const AlbumForm = ({ album }) => {
                 await API.put('blob-images', `${baseUrl}/${albumId}`, {
                     body: fields
                 });
-            console.log({ isNew, baseUrl, result });
             const newAlbumId = result.SK;
             const message = (isNew) ?
                 (albums.length > 0) ?

@@ -40,7 +40,6 @@ const useActiveRoot = () => {
     useEffect(() => {
         const groupDidChange = (activeGroupId !== groupId);
         if (groupDidChange) {
-            console.log(`setting root groupId from "${activeGroupId}" to "${groupId}"`)
             setActiveGroupId(groupId);
         }
     }, [groupId]);
@@ -49,7 +48,6 @@ const useActiveRoot = () => {
         const groupDidChange = (activeGroupId !== groupId);
         const albumDidChange = (activeAlbumId !== albumId);
         if ((groupDidChange && activeAlbumId) || albumDidChange) {
-            console.log(`setting root albumId from "${activeAlbumId}" to "${albumId}"`)
             setActiveAlbumId(albumId);
         }
     }, [groupId, albumId]);

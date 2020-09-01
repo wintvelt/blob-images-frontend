@@ -34,7 +34,6 @@ export default function MyApp(props) {
             "-//W3C//DTD XHTML 1.0 Strict//EN",
             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
         );
-        console.log({newDoctype, document});
         if(document?.doctype) {
             document.replaceChild(newDoctype, document.doctype);
         } else {

@@ -13,7 +13,8 @@ const styles = {
     paper: {
         padding: '24px',
         display: 'flex',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        marginBottom: '16px'
     },
     icon: {
         color: '#9b786f',
@@ -31,7 +32,7 @@ const Home = () => {
                 <Grid item md={1} />
                 <Grid item md={4}>
                     <HeroTitle
-                        title="Foto's delen met vrienden"
+                        title="Foto's delen met je club"
                         subTitle='In besloten kring'
                     />
                 </Grid>
@@ -44,11 +45,11 @@ const Home = () => {
                                 Alleen op uitnodiging
                             </Typography>
                             <Typography variant='body1' gutterBottom>
-                                Voorlopig is Photo Duck alleen beschikbaar op uitnodiging.
+                                Voorlopig is Clubalmanac alleen beschikbaar op uitnodiging.
                             </Typography>
                             <Typography variant='body1' gutterBottom>
                                 Ben je getipt om je aan te melden?
-                                Vraag dan of hij of zij je vanuit Photo Duck uitnodigt.
+                                Vraag dan of hij of zij je vanuit Clubalmanac uitnodigt.
                                 Je ontvangt dan een persoonlijke mail waarmee je lid kunt worden.
                             </Typography>
                         </div>

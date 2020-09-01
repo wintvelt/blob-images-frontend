@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Footer() {
     const classes = useStyles();
 
-    console.log({ env: process.env });
+    console.log({ DINGES: process.env.DINGES });
 
     return (
         <footer className={classes.footer}>

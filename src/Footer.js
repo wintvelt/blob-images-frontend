@@ -37,8 +37,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Footer() {
     const classes = useStyles();
 
-    console.log({ DINGES: process.env.DINGES });
-
     return (
         <footer className={classes.footer}>
             <Typography variant="subtitle1" align='center' className={classes.white} gutterBottom>
@@ -48,7 +46,7 @@ export default function Footer() {
             </Typography>
             <Copyright className={classes.white} />
             <Typography variant="body2" align='center' className={classes.white} gutterBottom>
-                Versie {process.env.VERSION || '(local new)'}
+                Versie {process.env.NEXT_PUBLIC_VERSION || '(local new)'}
             </Typography>
         </footer>
     );

@@ -1,6 +1,11 @@
 version: 2
 jobs:
   build:
+    shell: /bin/sh -leo pipefail
+
+    environment:
+      - BASH_ENV: /etc/profile
+
     docker:
       - image: circleci/node:latest
 
@@ -46,7 +51,6 @@ jobs:
           command: |
               echo 'export VERSION=$CIRCLE_BUILD_NUM' >> $BASH_ENV
               echo 'export DINGES=laat_maar' >> $BASH_ENV
-              source $BASH_ENV
 
       - run:
           name: Deploy application

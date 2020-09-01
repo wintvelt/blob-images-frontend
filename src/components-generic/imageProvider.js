@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Storage } from 'aws-amplify';
 
-const imageBaseUrl = 'https://d2y9pdc5bc1adh.cloudfront.net/';
+// const imageBaseUrl = 'https://d2y9pdc5bc1adh.cloudfront.net/';
+const imageBaseUrl = 'https://img.clubalmanac.com/';
 export const otoa = (object) => Buffer.from(JSON.stringify(object)).toString('base64');
 export const btoa = (b) => Buffer.from(b, 'base64').toString();
 const btoaDebug = (b) => Buffer.from(b.split('/').slice(-1)[0], 'base64').toString();

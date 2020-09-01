@@ -1,6 +1,6 @@
 import React from 'react';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,8 +26,8 @@ const useStyles = makeStyles(theme => ({
 const GroupMembers = () => {
     const classes = useStyles();
 
-    return <ExpansionPanel className={classes.panel}>
-        <ExpansionPanelSummary
+    return <Accordion className={classes.panel}>
+        <AccordionSummary
             className={classes.summary}
             expandIcon={<Icon>expand_more</Icon>}
             aria-controls="panel1a-content"
@@ -37,10 +37,10 @@ const GroupMembers = () => {
                 Members:
             </Typography>
             <MemberAvatarGroup />
-        </ExpansionPanelSummary>
+        </AccordionSummary>
         <MemberDetails />
         <MemberActions />
-    </ExpansionPanel>
+    </Accordion>
 }
 
 export default GroupMembers;

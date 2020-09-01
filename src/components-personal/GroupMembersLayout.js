@@ -1,5 +1,5 @@
 import React from 'react';
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
+import AccordionActions from '@material-ui/core/AccordionActions';
 import Button from '@material-ui/core/Button';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import { makeStyles } from '@material-ui/core/styles';
@@ -73,10 +73,10 @@ export const MemberActions = () => {
     if (!currentIsAdmin) return null;
 
 
-    return <ExpansionPanelActions>
+    return <AccordionActions>
         <Link href={paths.path + '/invite'}
             as={paths.asPath + '/invite'}>
             <Button color='primary'>Invite more</Button>
         </Link>
-    </ExpansionPanelActions>
+    </AccordionActions>
 };

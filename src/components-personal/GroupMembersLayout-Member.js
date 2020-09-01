@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
@@ -148,7 +148,7 @@ const MemberDetails = () => {
 
     const handleClose = () => setAnchor({ ...anchor, el: null });
 
-    return <ExpansionPanelDetails className={classes.panel}>
+    return <AccordionDetails className={classes.panel}>
         {members.map(member => (
             <MemberLine key={member.PK || 'header'} member={member} onClick={onClick}
                 currentIsAdmin={currentIsAdmin} isLoading={!hasValue}
@@ -173,7 +173,7 @@ const MemberDetails = () => {
             {!selectedIsCurrent &&
                 <MenuItem style={redStyle}>{redText}</MenuItem>}
         </Menu>
-    </ExpansionPanelDetails >
+    </AccordionDetails >
 }
 
 export default MemberDetails;

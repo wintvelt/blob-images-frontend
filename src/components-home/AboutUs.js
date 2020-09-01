@@ -24,6 +24,7 @@ const featureList = [
     {
         icon: 'contact_support',
         title: 'Ondersteuning',
+        id: 'support',
         descriptions: [
             `Als je hulp wilt, stuur dan een berichtje aan Wouter. Die kan je vast helpen.`,
             `Als je geen contactgegevens van Wouter hebt, stuur dan een bericht aan een ander lid. 
@@ -33,7 +34,7 @@ const featureList = [
 ]
 
 const AboutUs = () => {
-    return <FeatureBlock featureList={featureList} />
+    return <FeatureBlock featureList={featureList}/>
 }
 
 export default AboutUs;

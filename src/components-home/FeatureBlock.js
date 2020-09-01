@@ -31,7 +31,8 @@ const FeatureBlock = ({ featureList }) => {
             style={gridStyle}
         >
             {featureList.map(feature => (
-                <Grid item key={feature.title} xs={12} md={4} className={classes.feature}>
+                <Grid item key={feature.title} xs={12} md={4} className={classes.feature}
+                    id={feature.id}>
                     <Icon color='secondary' className={classes.icon}>
                         {feature.icon}
                     </Icon>

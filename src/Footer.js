@@ -41,7 +41,7 @@ export default function Footer() {
         <footer className={classes.footer}>
             <Typography variant="subtitle1" align='center' className={classes.white} gutterBottom>
                 <Link href='/about' className={classes.white}>About us</Link>{' | '}
-                <Link href='/about' className={classes.white}>Support</Link>{' | '}
+                <Link href='/about#support' className={classes.white}>Support</Link>{' | '}
                 <Link href='/about' className={classes.white}>Contact</Link>
             </Typography>
             <Copyright className={classes.white} />

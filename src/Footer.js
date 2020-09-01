@@ -46,7 +46,7 @@ export default function Footer() {
             </Typography>
             <Copyright className={classes.white} />
             <Typography variant="body2" align='center' className={classes.white} gutterBottom>
-                Versie {process.env.CIRCLE_BUILD_NUM || '(local)'}
+                Versie {process.env.VERSION || '(local new)'}
             </Typography>
         </footer>
     );

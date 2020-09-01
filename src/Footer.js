@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Footer() {
     const classes = useStyles();
 
+    console.log({ env: process.env });
+
     return (
         <footer className={classes.footer}>
             <Typography variant="subtitle1" align='center' className={classes.white} gutterBottom>

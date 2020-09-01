@@ -5,7 +5,7 @@ html {
 .pulse {
     width: 100%;
     height: 100%;
-    animation: pulse 1s alternate infinite;
+    animation: pulse 500ms alternate infinite;
 }
 
 @keyframes pulse {
@@ -14,8 +14,8 @@ html {
         color: #E2DFE6;
     }
     100% {
-        background-color: #ccc9cf;
-        color: #ccc9cf;
+        background-color: #504e52;
+        color: #504e52;
     }
 }
 

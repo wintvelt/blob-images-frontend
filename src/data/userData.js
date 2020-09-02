@@ -58,7 +58,7 @@ const userPhotosStateTrigger = atom({
 
 export const userPhotosState = selector({
     key: 'userPhotosState',
-    get: async ({get}) => {
+    get: async ({ get }) => {
         get(userData);
         get(userPhotosStateTrigger);
         const response = await API.get('blob-images', '/photos');

@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { makeImageUrl } from '../components-generic/imageProvider';
@@ -128,7 +129,10 @@ export default function NavLogin(props) {
                     variant='contained'
                     disabled={!!user.path || user.isAuthenticating}
                     onClick={() => setPath('/login')}>
-                    Login
+                    {(user.isAuthenticating) ?
+                        <CircularProgress size={24} />
+                        : 'Login'
+                    }
                 </Button>
             }
         </>

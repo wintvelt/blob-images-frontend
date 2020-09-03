@@ -1,5 +1,5 @@
 import React from 'react';
-import Document, { Head, Main, NextScript } from 'next/document';
+import Document, { Head, Main, NextScript, Html } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 import theme from '../src/theme';
 
@@ -11,7 +11,7 @@ const bodyStyle = {
 
 export default class MyDocument extends Document {
     render() {
-        return (<html xmlns="http://www.w3.org/1999/xhtml" lang="en" >
+        return (<Html xmlns="http://www.w3.org/1999/xhtml" lang="en" >
             <Head > { /* PWA primary color */}
                 <meta name="theme-color"
                     content={theme.palette.primary.main} />
@@ -29,7 +29,7 @@ export default class MyDocument extends Document {
                 <Main />
                 <NextScript />
             </body>
-        </html>
+        </Html>
         );
     }
 }

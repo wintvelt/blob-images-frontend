@@ -4,12 +4,13 @@ import {
     makeStyles, ListItemSecondaryAction, Icon, IconButton
 }
     from '@material-ui/core';
-import { useRecoilValueLoadable } from 'recoil';
+import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { userAlbums } from '../data/userData';
 import { publicationState } from '../data/activeTree-Photo';
 import { makeImageUrl } from '../components-generic/imageProvider';
 import { useSetLoadingPath } from '../data/loadingData';
 import PhotoMenu from './PhotoListMenu';
+import { activeAlbumPhotos } from '../data/activeTree-Album';
 
 const useStyles = makeStyles(theme => ({
     list: {
@@ -40,6 +41,9 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
     const pubData = useRecoilValueLoadable(publicationState(source));
     const pubs = (pubData.state === 'hasValue') ? pubData.contents : [];
     const pubAlbumIds = pubs.map(pub => pub.PK.split('#')[1]);
+    const reloadPubs = useResetRecoilState(publicationState(source));
+    const reloadAlbum = useResetRecoilState(activeAlbumPhotos);
+
     const sortedAlbums = albums
         .map(album => ({ ...album, isPublished: pubAlbumIds.includes(album.id) }))
         .sort((a, b) => (a.isPublished) ? (b.isPublished) ? 0 : -1 : 1)
@@ -90,6 +94,8 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
             album={anchor.album}
             isAlbum
             publications={pubAlbumIds}
+            reloadPubs={reloadPubs}
+            reloadAlbum={reloadAlbum}
         />}
     </>
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
@@ -69,7 +69,11 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const id = PK?.slice(2);
     const { name, avatar } = owner || {};
     const isLoading = (!url);
-    const imageUrl = makeImageUrl(url, 400);
+    const [imgSize, setImgSize] = useState(40);
+    useEffect(() => {
+        if (imgSize === 40) setImgSize(400)
+    }, [url])
+    const imageUrl = makeImageUrl(url, imgSize);
 
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
     const handleClick = (e) => {
@@ -92,10 +96,10 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
         <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
         <GridListTileBar
             style={fitContent}
-            title={(name)? `by ${name}` : ''}
+            title={(name) ? `by ${name}` : ''}
             subtitle={<>
                 {createdAt}<br />
-                <Rating value={rating}/>
+                <Rating value={rating} />
             </>}
             actionIcon={(onSelect) && <SelectButton iconClass={classes.icon}
                 icon={icon} onSelect={handleSelect} disabled={menuIsOpen} />}

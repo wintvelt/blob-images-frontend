@@ -70,7 +70,7 @@ export const activeAlbumPhotos = selector({
     },
     set: ({ set }, newValue) => {
         if (newValue instanceof DefaultValue) {
-            set(activeAlbumStateTrigger, v => v + 1);
+            set(activeAlbumPhotosTrigger, v => v + 1);
         }
     }
 });

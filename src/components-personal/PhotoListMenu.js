@@ -3,17 +3,17 @@ import { API } from 'aws-amplify';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Icon from '@material-ui/core/Icon';
 import { useSnackbar } from 'notistack';
 
 import { useUser } from '../data/userData';
 
 const redStyle = { color: 'red' };
 
-const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum, isAlbum, publications }) => {
+const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
+    isAlbum, publications, reloadPubs }) => {
     const albumData = album;
+    const albumPath = `/groups/${albumData?.PK?.slice(2)}/albums/${albumData?.SK}`;
+
     const currentPhotoId = anchor.photo?.PK?.slice(2);
     const { user, saveProfile } = useUser();
     const userIsOwner = (user.profile && anchor.photo && user.profile.id === anchor.photo.SK.slice(1));
@@ -29,9 +29,8 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum, isAl
         handleClose();
     };
     const onSetAlbumCover = async () => {
-        const albumUrl = `/groups/${albumData.PK.slice(2)}/albums/${albumData.SK}`;
         try {
-            await API.put('blob-images', albumUrl, {
+            await API.put('blob-images', albumPath, {
                 body: {
                     name: albumData.name,
                     image: { image: anchor.photo.url, owner: anchor.photo.owner, id: currentPhotoId },
@@ -58,6 +57,32 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum, isAl
         }
         handleClose();
     };
+    const onAddToAlbum = async () => {
+        try {
+            const path = `${albumPath}/photos`;
+            await API.post('blob-images', path, { body: { photoId: currentPhotoId } });
+            enqueueSnackbar('foto aan album toegevoegd', { variant: 'success' });
+            reloadAlbum && reloadAlbum();
+            reloadPubs && reloadPubs();
+        } catch (error) {
+            console.log(error);
+            enqueueSnackbar('kon foto niet toevoegen', { variant: 'error' });
+        }
+        handleClose();
+    };
+    const onRemoveFromAlbum = async () => {
+        try {
+            const path = `${albumPath}/photos/${currentPhotoId}`;
+            await API.del('blob-images', path);
+            enqueueSnackbar('foto uit album verwijderd', { variant: 'success' });
+            reloadPubs && reloadPubs();
+            reloadAlbum && reloadAlbum();
+        } catch (error) {
+            console.log(error);
+            enqueueSnackbar('foto uit album schrappen is mislukt', { variant: 'error' });
+        }
+        handleClose();
+    };
     return (
         <Menu
             id="simple-menu"
@@ -71,10 +96,10 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum, isAl
             {album && (!isAlbum) && <MenuItem onClick={onSetAlbumCover}>Set as album cover</MenuItem>}
             {!isAlbum && <MenuItem onClick={onSetProfilePic}>Set as profile picture</MenuItem>}
             {album && userIsOwner && (!isAlbum || publications.includes(album.id)) &&
-                <MenuItem>Remove from album</MenuItem>
+                <MenuItem onClick={onRemoveFromAlbum}>Remove from album</MenuItem>
             }
             {album && userIsOwner && (isAlbum && !publications.includes(album.id)) &&
-                <MenuItem>Add to album</MenuItem>
+                <MenuItem onClick={onAddToAlbum}>Add to album</MenuItem>
             }
             {userIsOwner && (!isAlbum) && <MenuItem onClick={onDelete} style={redStyle}>Delete</MenuItem>}
             {/* <MenuItem>

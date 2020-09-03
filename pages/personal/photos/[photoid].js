@@ -151,8 +151,8 @@ const PhotoMain = () => {
                     <PhotoPubs photo={photo} currentIsOwner={currentIsOwner} />
                 </Grid>
             </Grid>
-            <pre>{JSON.stringify(photoData, null, 2)}</pre>
-            <pre>{JSON.stringify(photo, null, 2)}</pre>
+            {/* <pre>{JSON.stringify(photoData, null, 2)}</pre>
+            <pre>{JSON.stringify(photo, null, 2)}</pre> */}
         </main>
     )
 }

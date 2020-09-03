@@ -69,9 +69,9 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const id = PK?.slice(2);
     const { name, avatar } = owner || {};
     const isLoading = (!url);
-    const [imgSize, setImgSize] = useState(40);
+    const [imgSize, setImgSize] = useState(10);
     useEffect(() => {
-        if (imgSize === 40) setImgSize(400)
+        if (imgSize === 10 && !!url) setImgSize(400)
     }, [url])
     const imageUrl = makeImageUrl(url, imgSize);
 

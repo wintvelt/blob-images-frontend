@@ -55,7 +55,6 @@ const activeAlbumPhotosTrigger = atom({
 export const activeAlbumPhotos = selector({
     key: 'activeAlbumPhotos',
     get: async ({ get }) => {
-        console.log('getting activeAlbumPhotos')
         get(activeAlbumPhotosTrigger);
         get(activeAlbumStateTrigger);
         const activeAlbum = await get(activeAlbumState);

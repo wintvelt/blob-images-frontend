@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
@@ -40,7 +40,12 @@ export const AlbumImage = () => {
     const albumData = useRecoilValueLoadable(activeAlbumState);
     const hasValue = hasAlbumData(albumData);
     const imgUrl = hasValue && albumData.contents.image?.image;
-    const imageUrl = makeImageUrl(imgUrl, 1440, 320);
+    const [imgSize, setImgSize] = useState(10);
+    useEffect(() => {
+        if (imgSize === 10 && !!imgUrl) setImgSize(1440)
+    }, [imgUrl]);
+
+    const imageUrl = makeImageUrl(imgUrl, imgSize, 320);
 
     return <>
         {hasValue && <CardMedia className={classes.groupMedia}

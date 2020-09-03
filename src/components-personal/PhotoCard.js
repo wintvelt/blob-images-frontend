@@ -72,7 +72,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const [imgSize, setImgSize] = useState(10);
     useEffect(() => {
         if (imgSize === 10 && !!url) setImgSize(400)
-    }, [url])
+    }, [url]);
     const imageUrl = makeImageUrl(url, imgSize);
 
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';

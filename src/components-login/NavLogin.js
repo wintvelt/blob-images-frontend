@@ -16,10 +16,10 @@ import NavMenu from './NavLogin-Menu';
 import NavDrawer from './NavLogin-Drawer';
 
 const userMenu = [
-    { icon: 'group', text: 'Groups', href: '/personal/groups' },
+    { icon: 'group', text: 'Mijn groepen', href: '/personal/groups' },
     // { icon: 'mail_outline', text: 'Invitations' },
-    { icon: 'photo_library', text: 'My photos', href: '/personal/photos' },
-    { icon: 'settings', text: 'My account', href: '/personal/profile' },
+    { icon: 'photo_library', text: "Mijn foto's", href: '/personal/photos' },
+    { icon: 'settings', text: 'Instellingen', href: '/personal/profile' },
     { icon: 'exit_to_app', text: 'Logout', action: 'logout' },
 ];
 

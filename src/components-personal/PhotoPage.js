@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { API } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { downloadFile } from '../../../src/helpers/download';
 
-import PrivatePage from '../../../src/components-personal/PrivatePage';
 import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { photoState } from '../../../src/data/activeTree-Photo';
+import { photoState } from '../data/activeTree-Photo';
+import { useUserValue } from '../data/userData';
+import { useSetLoadingPath } from '../data/loadingData';
+import { userPhotosState } from '../data/userData';
+import { downloadFile } from '../helpers/download';
 
-import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeImageUrl } from '../../../src/components-generic/imageProvider';
+import { makeImageUrl } from '../components-generic/imageProvider';
 import { makeStyles, Icon, Button, Chip } from '@material-ui/core';
 
-import { ImageSkeleton } from '../../../src/components-generic/Skeleton';
-import Rating from '../../../src/components-generic/Rating';
-import PhotoRating from '../../../src/components-personal/PhotoRating';
-import PhotoPubs from '../../../src/components-personal/PhotoPubs';
-import { useUserValue } from '../../../src/data/userData';
-import { API } from 'aws-amplify';
-import { useSetLoadingPath } from '../../../src/data/loadingData';
-import { userPhotosState } from '../../../src/data/userData';
+import { ImageSkeleton } from '../components-generic/Skeleton';
+import Rating from '../components-generic/Rating';
+import PhotoRating from '../components-personal/PhotoRating';
+import PhotoPubs from '../components-personal/PhotoPubs';
+import BackLinkToAlbum from '../components-generic/BackLinkToAlbum';
 
 const useStyles = makeStyles(theme => ({
     photo: {
@@ -118,6 +117,7 @@ const PhotoMain = () => {
         <main>
             <Grid container>
                 <Grid item md={8} xs={12} className={classes.photo}>
+                    <BackLinkToAlbum />
                     <ImageSkeleton src={photoUrl} className={classes.image} isLoading={isLoading}
                         onLoad={onImageLoad} withLink alt='image' />
                 </Grid>

@@ -36,11 +36,13 @@ const AlbumMain = () => {
         }, 1000)
     }
     const onPhotoClick = (photo) => {
-        const photoPath = '/personal/photos/[photoid]';
-        setLoadingPath(photoPath, photoPath.replace('[photoid]', photo.key));
+        const photoPath = '/personal/groups/[id]/albums/[albumid]/photos/[photoid]';
+        setLoadingPath(
+            photoPath,
+            photoPath.replace('[photoid]', photo.key).replace('[id]', groupId).replace('[albumid]', albumId));
     };
 
-    return ( 
+    return (
         <main>
             <AlbumHeader />
             <PhotoList

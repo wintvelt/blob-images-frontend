@@ -20,6 +20,7 @@ import Rating from '../components-generic/Rating';
 import PhotoRating from '../components-personal/PhotoRating';
 import PhotoPubs from '../components-personal/PhotoPubs';
 import BackLinkToAlbum from '../components-generic/BackLinkToAlbum';
+import { activeAlbumPhotos } from '../data/activeTree-Album';
 
 const useStyles = makeStyles(theme => ({
     photo: {
@@ -50,12 +51,23 @@ const PhotoMain = () => {
     const { enqueueSnackbar } = useSnackbar();
     const setLoadingPath = useSetLoadingPath();
     const reloadPhotos = useResetRecoilState(userPhotosState);
+    const reloadAlbumPhotos = useResetRecoilState(activeAlbumPhotos);
+    const hasAlbum = !!router.query.albumid;
 
     const photoId = router.query?.photoid || 'nophotoId';
     const source = `/photos/${photoId}`;
+    const reloadActivePhoto = useResetRecoilState(photoState(source));
     const currentUser = useUserValue();
     const { profile } = currentUser;
-    const photoData = useRecoilValueLoadable(photoState(source));
+    const basePhotoData = useRecoilValueLoadable(photoState(source));
+    // to prevent redisplay of photo when reloaded
+    useEffect(() => {
+        if (basePhotoData.state !== 'loading' && photoData.state === 'loading') {
+            setPhotoData(basePhotoData);
+        }
+    }, [basePhotoData])
+    const [photoData, setPhotoData] = useState(basePhotoData);
+    const isLoading = (photoData.state === 'loading');
     const photo = (photoData.state === 'hasValue') && photoData.contents;
     const [userRating, setUserRating] = useState({ initial: 0, current: 0 });
     useEffect(() => {
@@ -74,7 +86,8 @@ const PhotoMain = () => {
             const ratingUpdate = (userRating.current === clickedRating) ? -clickedRating : clickedRating;
             setUserRating({ ...userRating, current: userRating.current + ratingUpdate });
             await API.put('blob-images', source + '/rating', { body: { ratingUpdate } });
-            enqueueSnackbar(`Je ${(ratingUpdate > 0)? '+1' : '-1'} inbreng over deze foto is verwerkt`);
+            enqueueSnackbar(`Je ${(ratingUpdate > 0) ? '+1' : '-1'} inbreng over deze foto is verwerkt`);
+            reloadActivePhoto();
         };
         setRating();
     };
@@ -86,14 +99,21 @@ const PhotoMain = () => {
             await API.del('blob-images', path);
             enqueueSnackbar('Foto verwijderd', { variant: 'success' });
             reloadPhotos();
-            setLoadingPath('/personal/photos');
+            hasAlbum && reloadAlbumPhotos();
+            const [newPath, newAs] = (hasAlbum) ?
+                [
+                    '/personal/groups/[id]/albums/[albumid]',
+                    `/personal/groups/${router.query.id}/albums/${router.query.albumid}`
+                ]
+                : ['/personal/photos', undefined];
+
+            setLoadingPath(newPath, newAs);
         } catch (error) {
             console.log(error);
             enqueueSnackbar('Kon je kiekje niet verwijderen', { variant: 'error' });
         }
     };
     const currentIsOwner = photo && photo.SK?.slice(1) === profile.id;
-    const isLoading = (photoData.state === 'loading');
     const photoUrlRaw = photo?.url;
     const [blur, setBlur] = useState(10);
     const [imageSize, setImageSize] = useState('');
@@ -133,7 +153,7 @@ const PhotoMain = () => {
                         <Rating value={photoRating} dark />
                     </div>
                     <div className={classes.flexLine}>
-                        <PhotoRating userRating={userRating.current} onChange={onChangeRating} disabled={!photo}/>
+                        <PhotoRating userRating={userRating.current} onChange={onChangeRating} disabled={!photo} />
                     </div>
                     <div className={classes.flexLine}>
                         <Button color='primary' variant='outlined' startIcon={<Icon>cloud_download</Icon>}

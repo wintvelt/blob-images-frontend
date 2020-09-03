@@ -1,15 +1,26 @@
 import { selectorFamily, atomFamily, DefaultValue } from 'recoil';
 import { API } from 'aws-amplify';
 
+const photoStateTrigger = atomFamily({
+    key: 'photoStateTrigger',
+    default: 0
+});
+
 export const photoState = selectorFamily({
     key: 'photo',
     get: (source) => async ({ get }) => {
+        get(photoStateTrigger(source));
         if (!source) return undefined;
         const response = await API.get('blob-images', source);
         if (response.error) {
             throw response.error;
         }
         return response.photo || response;
+    },
+    set: (source) => ({set}, newValue) => {
+        if (newValue instanceof DefaultValue) {
+            set(photoStateTrigger(source), v => v + 1);
+        }
     }
 });
 

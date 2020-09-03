@@ -55,8 +55,9 @@ const activeAlbumPhotosTrigger = atom({
 export const activeAlbumPhotos = selector({
     key: 'activeAlbumPhotos',
     get: async ({ get }) => {
-        get(activeAlbumStateTrigger);
+        console.log('getting activeAlbumPhotos')
         get(activeAlbumPhotosTrigger);
+        get(activeAlbumStateTrigger);
         const activeAlbum = await get(activeAlbumState);
         if (!activeAlbum) return undefined;
         const groupId = activeAlbum.PK?.slice(2);

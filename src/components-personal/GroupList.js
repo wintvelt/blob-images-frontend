@@ -26,7 +26,12 @@ const GroupList = () => {
     }, [groupsListLength]);
     const groupsWithEdit = (!hasValue) ?
         groupsList
-        : groupsList.map(item => ({ ...item.group, withEdit: true, userIsAdmin: (item.role === 'admin') }));
+        : groupsList.map(item => ({ 
+            ...item.group, 
+            newPicsCount: item.newPicsCount,
+            withEdit: true, 
+            userIsAdmin: (item.role === 'admin') 
+        }));
     return <div style={paddingStyle}>
         <CardList list={groupsWithEdit} component={GroupCardLayout} addProps={groupAddProps}
             width={3} spacing={2} isLoading={!hasValue} />

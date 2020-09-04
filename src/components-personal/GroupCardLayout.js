@@ -6,6 +6,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
@@ -19,6 +20,10 @@ const useStyles = makeStyles(theme => ({
         background: 'linear-gradient(308deg, rgba(88,163,69,1) 14%, rgba(151,164,71,1) 43%, rgba(100,105,167,1) 77%)',
         color: 'white',
         height: '200px',
+        width: '100%',
+    },
+    badge: {
+        width: '100%',
     },
     content: {
         position: 'relative',
@@ -68,7 +73,7 @@ const GroupCardContent = (props) => {
 const fullHeight = { height: '100%' };
 
 const GroupCardLayout = (props) => {
-    const { id, userIsAdmin, image, withEdit } = props;
+    const { id, userIsAdmin, image, newPicsCount, withEdit } = props;
     const mayEdit = (userIsAdmin && withEdit);
     const classes = useStyles();
     const setLoadingPath = useSetLoadingPath();
@@ -86,19 +91,22 @@ const GroupCardLayout = (props) => {
         setLoadingPath(editUrl, editUrl.replace('[id]', id));
     }
 
-    return <Card className={classes.card}>
-        {(withEdit) ?
-            <CardActionArea style={fullHeight} onClick={onClick}>
-                <GroupCardContent {...props} />
-            </CardActionArea>
-            : <GroupCardContent {...props} onClick={onClick} />
-        }
-        {image && mayEdit && <IconButton size='small' className={classes.imageEdit}
-            onClick={onClickEdit}>
-            <Icon fontSize='small'>edit</Icon>
-        </IconButton>}
+    return <Badge badgeContent={newPicsCount} color='secondary' className={classes.badge}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>
+        <Card className={classes.card}>
+            {(withEdit) ?
+                <CardActionArea style={fullHeight} onClick={onClick}>
+                    <GroupCardContent {...props} />
+                </CardActionArea>
+                : <GroupCardContent {...props} onClick={onClick} />
+            }
+            {image && mayEdit && <IconButton size='small' className={classes.imageEdit}
+                onClick={onClickEdit}>
+                <Icon fontSize='small'>edit</Icon>
+            </IconButton>}
 
-    </Card>
+        </Card>
+    </Badge>
 }
 
 export default GroupCardLayout;

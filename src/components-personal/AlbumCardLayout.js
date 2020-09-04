@@ -6,6 +6,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
+import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
@@ -37,12 +38,17 @@ const useStyles = makeStyles(theme => ({
         color: 'white   ',
         marginLeft: theme.spacing(1),
     },
+    chip: {
+        position: 'absolute',
+        top: theme.spacing(1),
+        left: theme.spacing(1),
+    }
 }));
 
 const flexEndStyle = { display: 'flex', justifyContent: 'flex-end' };
 
 const AlbumCardContent = (props) => {
-    const { name, image, stats, isLoading } = props;
+    const { name, image, stats, newPicsCount, isLoading } = props;
     const imageUrl = makeImageUrl(image && image.image, 340, 200);
     const classes = useStyles();
     return <>
@@ -53,6 +59,7 @@ const AlbumCardContent = (props) => {
             : <div className={classes.image} />
         }
         <CardContent className={classes.content}>
+            {(newPicsCount > 0) && <Chip color='secondary' label={newPicsCount} className={classes.chip} />}
             <Typography gutterBottom variant='h6' component='h5'>
                 <TextSkeleton className={classes.text} isLoading={isLoading}>{name}</TextSkeleton>
             </Typography>

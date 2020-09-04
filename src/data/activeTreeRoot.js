@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { atom, selector, useRecoilState } from 'recoil';
+import { userData } from './userData';
 
 export const activeGroupIdState = atom({
     key: 'activeGroupId',
@@ -16,6 +17,7 @@ export const activeAlbumIdState = atom({
 export const activePathFront = selector({
     key: 'activeUrlFront',
     get: ({ get }) => {
+        get(userData);
         const groupId = get(activeGroupIdState);
         const albumId = get(activeAlbumIdState);
         const path = (groupId) ?
@@ -35,8 +37,8 @@ const useActiveRoot = () => {
     const router = useRouter();
     const pathGroupId = router.query?.id;
     const pathAlbumId = router.query?.albumid;
-    const groupId = (pathGroupId !== 'new')? pathGroupId : undefined;
-    const albumId = (pathAlbumId !== 'new')? pathAlbumId : undefined;
+    const groupId = (pathGroupId !== 'new') ? pathGroupId : undefined;
+    const albumId = (pathAlbumId !== 'new') ? pathAlbumId : undefined;
     useEffect(() => {
         const groupDidChange = (activeGroupId !== groupId);
         if (groupDidChange) {

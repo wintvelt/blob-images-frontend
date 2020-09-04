@@ -6,7 +6,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
+import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
@@ -22,8 +22,11 @@ const useStyles = makeStyles(theme => ({
         height: '200px',
         width: '100%',
     },
-    badge: {
-        width: '100%',
+    chip: {
+        position: 'absolute',
+        top: theme.spacing(1),
+        left: theme.spacing(1),
+        zIndex: 99,
     },
     content: {
         position: 'relative',
@@ -91,22 +94,20 @@ const GroupCardLayout = (props) => {
         setLoadingPath(editUrl, editUrl.replace('[id]', id));
     }
 
-    return <Badge badgeContent={newPicsCount} color='secondary' className={classes.badge}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        <Card className={classes.card}>
-            {(withEdit) ?
-                <CardActionArea style={fullHeight} onClick={onClick}>
-                    <GroupCardContent {...props} />
-                </CardActionArea>
-                : <GroupCardContent {...props} onClick={onClick} />
-            }
-            {image && mayEdit && <IconButton size='small' className={classes.imageEdit}
-                onClick={onClickEdit}>
-                <Icon fontSize='small'>edit</Icon>
-            </IconButton>}
+    return <Card className={classes.card}>
+        {(newPicsCount > 0) && <Chip color='secondary' label={newPicsCount} className={classes.chip} />}
+        {(withEdit) ?
+            <CardActionArea style={fullHeight} onClick={onClick}>
+                <GroupCardContent {...props} />
+            </CardActionArea>
+            : <GroupCardContent {...props} onClick={onClick} />
+        }
+        {image && mayEdit && <IconButton size='small' className={classes.imageEdit}
+            onClick={onClickEdit}>
+            <Icon fontSize='small'>edit</Icon>
+        </IconButton>}
 
-        </Card>
-    </Badge>
+    </Card>
 }
 
 export default GroupCardLayout;

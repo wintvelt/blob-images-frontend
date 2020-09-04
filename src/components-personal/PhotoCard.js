@@ -32,6 +32,13 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         height: '100%',
         objectFit: 'cover',
+    },
+    new: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '50%',
+        transform: 'none!important'
     }
 }));
 
@@ -65,7 +72,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const source = photoParams.PK && `/photos/${key}`;
     const photoData = useRecoilValueLoadable(photoState(source));
     const photo = (photoData.state === 'hasValue' && photoData.contents) ? photoData.contents : {};
-    const { url, owner, album, rating, createdAt, PK } = photo;
+    const { url, owner, album, isNew, rating, createdAt, PK } = photo;
     const id = PK?.slice(2);
     const { name, avatar } = owner || {};
     const isLoading = (!url);
@@ -104,6 +111,7 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
             actionIcon={(onSelect) && <SelectButton iconClass={classes.icon}
                 icon={icon} onSelect={handleSelect} disabled={menuIsOpen} />}
         />
+        {isNew && <img src='/img/new.png' className={classes.new} />}
         {(onClickMenu) && <MenuButton className={classes.menuIcon}
             onClick={handleMenuClick} disabled={menuIsOpen} />}
     </div>

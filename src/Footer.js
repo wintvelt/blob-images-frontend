@@ -12,7 +12,7 @@ function Copyright(props) {
         <Container maxWidth='sm'>
             <Divider variant='middle' style={dividerStyle} />
             <Typography variant="body2" align="center" className={props.className} gutterBottom>
-                {'© '}Photo Duck{' '}
+                {'© '}Clubalmanac{' '}
                 {new Date().getFullYear()}
                 {' | '}
                 <Link href='/about#privacy' className={props.className}>Privacy statement</Link>{' | '}
@@ -40,8 +40,8 @@ export default function Footer() {
     return (
         <footer className={classes.footer}>
             <Typography variant="subtitle1" align='center' className={classes.white} gutterBottom>
-                <Link href='/about' className={classes.white}>About us</Link>{' | '}
-                <Link href='/about#support' className={classes.white}>Support</Link>{' | '}
+                <Link href='/about' className={classes.white}>Over ons</Link>{' | '}
+                <Link href='/about#support' className={classes.white}>Ondersteuning</Link>{' | '}
                 <Link href='/about' className={classes.white}>Contact</Link>
             </Typography>
             <Copyright className={classes.white} />

@@ -31,9 +31,9 @@ const AlbumMain = () => {
     }
     const onProcessFile = async (err, file) => {
         setTimeout(async () => {
-            reloadPhotos();
             pond.current.removeFile(file.id);
-        }, 1000)
+            reloadPhotos();
+        }, 2000)
     }
     const onPhotoClick = (photo) => {
         const photoPath = '/personal/groups/[id]/albums/[albumid]/photos/[photoid]';

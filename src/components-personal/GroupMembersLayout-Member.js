@@ -99,7 +99,7 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isL
             {member.email}
         </Typography>}
         {isLarge && <Typography variant='caption' style={widthStyle120}>
-            {(member.status === 'invite' ? 'invited ' : 'since ') + member.createdAt}
+            {(member.status === 'invite' ? 'uitgenodigd ' : 'lid sinds ') + member.createdAt}
         </Typography>}
         <div style={widthStyle(48)}>
             {(currentIsAdmin || isCurrent) &&
@@ -166,7 +166,7 @@ const MemberDetails = () => {
             onClose={handleClose}
         >
             {selectedIsCurrent &&
-                <MenuItem disabled={!hasOtherAdmin}>Leave this group</MenuItem>}
+                <MenuItem disabled={!hasOtherAdmin}>Groep verlaten</MenuItem>}
             {!selectedIsCurrent && !selectedIsInvite &&
                 <MenuItem>{roleText}</MenuItem>
             }

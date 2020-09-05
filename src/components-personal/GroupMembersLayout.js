@@ -76,7 +76,7 @@ export const MemberActions = () => {
     return <AccordionActions>
         <Link href={paths.path + '/invite'}
             as={paths.asPath + '/invite'}>
-            <Button color='primary'>Invite more</Button>
+            <Button color='primary'>Meer uitnodigen</Button>
         </Link>
     </AccordionActions>
 };

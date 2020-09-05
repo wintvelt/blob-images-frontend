@@ -34,7 +34,7 @@ const GroupMembers = () => {
             id="panel1a-header"
         >
             <Typography variant='subtitle1' color='textSecondary' className={classes.panelTitle}>
-                Members:
+                Leden:
             </Typography>
             <MemberAvatarGroup />
         </AccordionSummary>

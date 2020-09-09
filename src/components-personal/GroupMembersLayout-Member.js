@@ -154,14 +154,15 @@ const MemberDetails = () => {
 
     const onChangeRole = async () => {
         const memberId = anchor.member.PK.slice(2);
+        const memberName = anchor.member.name;
         const newRole = (selectedIsAdmin) ? 'guest' : 'admin';
         const apiPath = `/groups/${anchor.member.SK}/membership`;
         try {
             await API.put('blob-images', apiPath, { body: { memberId, newRole } });
-            enqueueSnackbar(`Status van lid is nu "${newRole}"`);
+            enqueueSnackbar(`Status van ${memberName} is nu "${newRole}"`);
             reloadMembers();
         } catch (e) {
-            enqueueSnackbar(`Niet gelukt om dit lid "${newRole}" te maken`, { variant: 'error' });
+            enqueueSnackbar(`Niet gelukt om ${memberName} "${newRole}" te maken`, { variant: 'error' });
         }
         handleClose();
     };

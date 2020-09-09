@@ -54,11 +54,11 @@ const AlbumMain = () => {
                 reloadPhotos={reloadPhotos}
                 reloadAlbum={reloadAlbum}
             />
-            <Upload pond={pond} allowMultiple={true} allowImagePreview={true} instantUpload={true}
+            {userIsAdmin && <Upload pond={pond} allowMultiple={true} allowImagePreview={true} instantUpload={true}
                 onAddFile={onAddFile} onRemoveFile={onRemoveFile}
                 onProcessFile={onProcessFile}
                 photoMetadata={photoMetaData}
-            />
+            />}
         </main>
     )
 }

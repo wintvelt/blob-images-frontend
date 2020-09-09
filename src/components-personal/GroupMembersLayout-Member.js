@@ -12,8 +12,10 @@ import { useMediaQuery, Chip } from '@material-ui/core';
 import { useUserValue } from '../../src/data/userData';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 import { initials } from '../../src/components-generic/helpers';
-import { useRecoilValueLoadable } from 'recoil';
+import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { activeGroupMembers } from '../data/activeTree-Group';
+import { useSnackbar } from 'notistack';
+import { API } from 'aws-amplify';
 
 const useStyles = makeStyles(theme => ({
     panel: {
@@ -114,6 +116,8 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isL
 const MemberDetails = () => {
     const classes = useStyles();
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
+    const { enqueueSnackbar } = useSnackbar();
+    const reloadMembers = useResetRecoilState(activeGroupMembers);
 
     const currentUser = useUserValue();
     const { profile } = currentUser;
@@ -148,6 +152,20 @@ const MemberDetails = () => {
 
     const handleClose = () => setAnchor({ ...anchor, el: null });
 
+    const onChangeRole = async () => {
+        const memberId = anchor.member.PK.slice(2);
+        const newRole = (selectedIsAdmin) ? 'guest' : 'admin';
+        const apiPath = `/groups/${anchor.member.SK}/membership`;
+        try {
+            await API.put('blob-images', apiPath, { body: { memberId, newRole } });
+            enqueueSnackbar(`Status van lid is nu "${newRole}"`);
+            reloadMembers();
+        } catch (e) {
+            enqueueSnackbar(`Niet gelukt om dit lid "${newRole}" te maken`, { variant: 'error' });
+        }
+        handleClose();
+    };
+
     return <AccordionDetails className={classes.panel}>
         {members.map(member => (
             <MemberLine key={member.PK || 'header'} member={member} onClick={onClick}
@@ -168,7 +186,7 @@ const MemberDetails = () => {
             {selectedIsCurrent &&
                 <MenuItem disabled={!hasOtherAdmin}>Groep verlaten</MenuItem>}
             {!selectedIsCurrent && !selectedIsInvite &&
-                <MenuItem>{roleText}</MenuItem>
+                <MenuItem onClick={onChangeRole}>{roleText}</MenuItem>
             }
             {!selectedIsCurrent &&
                 <MenuItem style={redStyle}>{redText}</MenuItem>}

@@ -9,8 +9,9 @@ import Hero from '../src/components-home/Hero';
 import HeroTitle from '../src/components-home/Hero-Title';
 import Benefits from '../src/components-home/Benefits'
 import PublicPage from '../src/components-generic/PublicPage';
-import { useUser } from '../src/data/userData';
+import { useUser, useUserValue } from '../src/data/userData';
 import { useSetLoadingPath } from '../src/data/loadingData';
+import { now } from '../src/components-generic/helpers';
 
 const styles = {
     paper: {
@@ -46,6 +47,11 @@ const ClosedMesssage = () => (
 );
 
 const OpenMessage = () => {
+    const user = useUserValue();
+    const { profile } = user;
+    const { visitDatePrev } = profile;
+    const today = now();
+    const title = (visitDatePrev && visitDatePrev < today) ? 'Welkom terug!' : 'Welkom bij clubalmanac!';
     const setLoadingPath = useSetLoadingPath();
     const onClick = () => {
         setLoadingPath('/personal/groups');
@@ -54,13 +60,13 @@ const OpenMessage = () => {
         <Icon style={styles.icon}>emoji_people</Icon>
         <div>
             <Typography variant='h4' gutterBottom>
-                Welkom terug!
+                {title}
             </Typography>
             <Typography variant='body1' gutterBottom>
                 Mooi dat je de Clubalmanac bezoekt.
             </Typography>
             <Typography variant='body1' gutterBottom>
-                Check weer eens je groepen, om te zien of je clubgenoten weer wat foto's hebben
+                Check in bij je groepen, om te zien of je clubgenoten weer wat foto's hebben
                 gedeeld.
             </Typography>
             <Button color='secondary' variant='contained' onClick={onClick}>
@@ -73,6 +79,7 @@ const OpenMessage = () => {
 const Home = () => {
     const { user } = useUser();
     const isLoggedIn = user.isAuthenticated;
+    const hasLoaded = !user.isAuthenticating;
     return (
         <main>
             <Hero
@@ -87,8 +94,8 @@ const Home = () => {
                 </Grid>
                 <Grid item md={1} />
                 <Grid item md={5}>
-                    {!isLoggedIn && <ClosedMesssage />}
-                    {isLoggedIn && <OpenMessage />}
+                    {hasLoaded && !isLoggedIn && <ClosedMesssage />}
+                    {hasLoaded && isLoggedIn && <OpenMessage />}
                 </Grid>
                 <Grid item md={1} />
             </Hero>

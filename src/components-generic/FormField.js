@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -195,7 +195,12 @@ const DateField = (props) => {
 const hideStyle = { display: 'none' };
 const fullWidthStyle = { width: '100%' }
 
-export const Field = (props) => {
+const fieldPropsAreEqual = (prevProps, nextProps) => (
+    (prevProps.showValidation === nextProps.showValidation) &&
+    (prevProps.field.value === nextProps.field.value)
+);
+
+const BaseField = (props) => {
     const { field, onChange, showValidation } = props;
     const helperText = validationText(field, showValidation);
     const error = showValidation && !validateField(field);
@@ -223,3 +228,8 @@ export const Field = (props) => {
                         {helperText && helperText}
                     </>
 }
+
+export const Field = memo(
+    BaseField,
+    fieldPropsAreEqual
+);

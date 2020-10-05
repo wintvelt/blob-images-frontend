@@ -83,28 +83,24 @@ const updateUser = (newItems = {}) => (oldUser) => ({
     ...newItems,
 });
 
-// load user from session, get additional details from DB, or create new DB entry
+// load user from session, get additional details from DB
 const loadUser = async () => {
     const authUser = await Auth.currentUserInfo();
-    const userId = authUser?.id;
+    const userId = authUser?.attributes?.sub;
     if (!userId) return {};
     try {
-        const user = await API.get('blob-images', `/users/U${userId}`);
+        const user = await API.get('blob-images', `/user`);
         return {
-            id: userId,
+            id: user.SK,
             name: user.name,
             email: user.email,
-            avatar: user.avatar
+            photoUrl: user.photourl,
+            visitDateLast: user.visitDateLast,
+            visitDatePrev: user.visitDatePrev
         };
     } catch (error) {
         const name = authUser.attributes['custom:name'];
         const email = authUser.attributes.email;
-        await API.post('blob-images', '/users', {
-            body: {
-                name,
-                email,
-            }
-        });
         return {
             id: userId,
             name,
@@ -228,7 +224,7 @@ export const useUser = () => {
     const saveProfile = async (name, avatar) => {
         const newProfile = { name, avatar };
         errorHandler(async () => {
-            await API.put('blob-images', '/users', { body: newProfile });
+            await API.put('blob-images', '/user', { body: newProfile });
             setUpdate({ profile: { ...user.profile, ...newProfile } });
         });
     }

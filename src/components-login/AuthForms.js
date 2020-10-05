@@ -11,7 +11,7 @@ import VerifyForm from './VerifyForm';
 import ForgotPswForm from './ForgotPswForm';
 import ResetPswForm from './ResetPswForm';
 
-const allowSignup = false; // for beta purposes
+const allowSignup = true; // for beta purposes
 
 const useStyles = makeStyles(theme => ({
     paper: {

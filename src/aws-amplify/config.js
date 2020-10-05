@@ -1,17 +1,19 @@
+import { bucket, gateway, userPool, appClient, identityPool } from "./config-env";
+
 const config = {
     s3: {
         REGION: "eu-central-1",
-        BUCKET: "blob-images"
+        BUCKET: bucket()
     },
     apiGateway: {
         REGION: "eu-central-1",
-        URL: "https://l9r82gw5rc.execute-api.eu-central-1.amazonaws.com/prod"
+        URL: gateway()
     },
     cognito: {
         REGION: "eu-central-1",
-        USER_POOL_ID: "eu-central-1_yZTQaYgj6",
-        APP_CLIENT_ID: "7h2946k07f1inl7026mson7sf1",
-        IDENTITY_POOL_ID: "eu-central-1:866124e3-9ec9-4b77-bdef-8f3c75e58d9b"
+        USER_POOL_ID: userPool(),
+        APP_CLIENT_ID: appClient(),
+        IDENTITY_POOL_ID: identityPool()
     }
 };
 
@@ -35,6 +37,11 @@ export const amplifyConfig = {
                 endpoint: config.apiGateway.URL,
                 region: config.apiGateway.REGION,
             },
+            {
+                name: "user",
+                endpoint: 'https://evnukpi4o1.execute-api.eu-central-1.amazonaws.com/dev',
+                region: config.apiGateway.REGION,
+            }
         ]
     }
 };

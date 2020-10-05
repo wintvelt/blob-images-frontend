@@ -1,13 +1,10 @@
-const makeSwitch = (devValue, defaultValue) => {
-    switch (process.env.NODE_ENV) {
-        case 'development': {
-            return devValue;
-        }
-        default: {
-            return defaultValue;
-        }
-    }
-};
+const branch = process.env.BRANCH || 'development';
+const isMaster = (branch === 'master');
+console.log(process.env);
+
+const makeSwitch = (devValue, defaultValue) => (
+    (!isMaster) ? devValue : defaultValue
+);
 
 export const gateway = () => makeSwitch(
     'https://api-dev.clubalmanac.com',

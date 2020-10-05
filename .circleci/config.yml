@@ -42,9 +42,10 @@ jobs:
           command: echo $CIRCLE_BUILD_NUM
 
       - run:
-          name: Set version number in env
+          name: Set version number and branch in env
           command: |
               echo 'export NEXT_PUBLIC_VERSION=$CIRCLE_BUILD_NUM' >> $BASH_ENV
+              echo 'export BRANCH=$CIRCLE_BRANCH' >> $BASH_ENV
               source $BASH_ENV
 
       - run:

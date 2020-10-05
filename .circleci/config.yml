@@ -33,7 +33,6 @@ jobs:
           command: |
               echo 'export NEXT_PUBLIC_VERSION=$CIRCLE_BUILD_NUM' >> $BASH_ENV
               echo 'export NEXT_PUBLIC_BRANCH=$CIRCLE_BRANCH' >> $BASH_ENV
-              echo 'export NEXT_PUBLIC_DOMAIN=dev.clubalmanac.com' >> $BASH_ENV
               source $BASH_ENV
 
       # run tests!

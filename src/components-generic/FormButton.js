@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -17,6 +17,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const buttonIsEqual = (prevProps, nextProps) => (
+    (prevProps.isLoading === nextProps.isLoading)
+);
+
 const FormButton = ({ type, onClick, isLoading, children }) => {
     const classes = useStyles();
     const buttonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
@@ -33,4 +37,6 @@ const FormButton = ({ type, onClick, isLoading, children }) => {
     )
 };
 
-export default FormButton
+const MemoFormButton = memo(FormButton, buttonIsEqual);
+
+export default MemoFormButton

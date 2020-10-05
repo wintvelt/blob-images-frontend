@@ -101,21 +101,21 @@ export const useFields = (initialFields) => {
                     }
                 }
             });
-            setFields({
-                ...fields,
+            setFields(oldFields => ({
+                ...oldFields,
                 ...fieldUpdates,
-            });
+            }));
         } else if (fieldName === 'showValidation') {
-            setFields({ ...fields, showValidation: e })
+            setFields(oldFields => ({ ...oldFields, showValidation: e }))
         } else {
             const field = fields[fieldName];
             const newValue = (e.target.checked) ? e.target.checked : e.target.value;
             const newField = { ...field, value: newValue };
-            const newFields = { ...fields, [fieldName]: newField };
-            setFields({
-                ...newFields
+            setFields(oldFields => ({
+                ...oldFields,
+                [fieldName]: newField
                 // showValidation: false,
-            });
+            }));
         }
     }
     return [fields, onChange];
@@ -195,12 +195,16 @@ const DateField = (props) => {
 const hideStyle = { display: 'none' };
 const fullWidthStyle = { width: '100%' }
 
-const fieldPropsAreEqual = (prevProps, nextProps) => (
-    (prevProps.showValidation === nextProps.showValidation) &&
-    (prevProps.field.value === nextProps.field.value)
-);
+const fieldPropsAreEqual = (prevProps, nextProps) => {
+    const didNotChange =
+        (prevProps.showValidation === nextProps.showValidation) &&
+        (prevProps.field.value === nextProps.field.value) &&
+        (prevProps.field.type === nextProps.field.type);
+    return didNotChange;
+};
 
 const BaseField = (props) => {
+    // export const Field = (props) => {
     const { field, onChange, showValidation } = props;
     const helperText = validationText(field, showValidation);
     const error = showValidation && !validateField(field);

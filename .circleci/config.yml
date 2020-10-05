@@ -25,21 +25,12 @@ jobs:
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
-            - ./node_moduless
+            - ./node_modules
             - ./.next/cache
         
-      # run tests!
-      - run: 
-          name: Run tests with coverage
-          command: npm test --coverage
-
       - run:
-          name: Build production version
-          command: npm run build
-      
-      - run:
-          name: The current version number
-          command: echo $CIRCLE_BUILD_NUM
+        name: The current version number
+        command: echo $CIRCLE_BUILD_NUM
 
       - run:
           name: Set version number and branch in env
@@ -49,6 +40,15 @@ jobs:
               echo 'export NEXT_PUBLIC_DOMAIN=dev.clubalmanac.com' >> $BASH_ENV
               source $BASH_ENV
 
+      # run tests!
+      - run: 
+          name: Run tests with coverage
+          command: npm test --coverage
+
+      - run:
+          name: Build production version
+          command: npm run build
+      
       - run:
           name: Deploy application
           command: npx serverless

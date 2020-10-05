@@ -2,4 +2,4 @@ blob-images:
     component: "@sls-next/serverless-component@1.15.0-alpha.4"
     inputs:
         bucketName: blob-images-frontend
-        domain: ${env:DOMAIN}
+        domain: ${env:NEXT_PUBLIC_DOMAIN}

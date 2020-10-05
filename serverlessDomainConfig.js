@@ -1,0 +1,1 @@
+module.exports.domain = () => (['dev', 'clubalmanac.com']);

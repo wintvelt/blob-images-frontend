@@ -33,7 +33,7 @@ const ProfileForm = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
-    const initialValues = { ...props, avatar: { image: props.avatar } };
+    const initialValues = { ...props, avatar: { url: props.photoUrl, photoId: props.photoId } };
 
     useEffect(() => {
         if (user.error) enqueueSnackbar(user.error.message, { variant: 'error' });
@@ -42,8 +42,9 @@ const ProfileForm = (props) => {
     const onSubmit = async (fields) => {
         setIsLoading(true);
         const { name, avatar } = fields;
-        const imageUrl = avatar.image;
-        await saveProfile(name, imageUrl);
+        const { url, photoId } = avatar;
+        enqueueSnackbar('Profiel bijgewerkt');
+        await saveProfile(name, photoId, url);
         setIsLoading(false);
     }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -41,4 +41,4 @@ const FormSmallButtons = ({ buttons, values }) => {
     </div>
 }
 
-export default FormSmallButtons;
+export default memo(FormSmallButtons);

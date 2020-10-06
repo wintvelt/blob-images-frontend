@@ -65,8 +65,8 @@ export default function NavLogin(props) {
     const { user, logout, setPath } = useUser();
     const router = useRouter();
     const isAuthPath = isInAuth(router.pathname);
-    const { name, email, avatar } = user.profile || {};
-    const avatarSrc = makeImageUrl(avatar, 40, 40);
+    const { name, email, photoUrl } = user.profile || {};
+    const avatarSrc = makeImageUrl(photoUrl, 40, 40);
     const [menuAnchor, setMenuAnchor] = useState(null);
     const handleClick = (e) => {
         setMenuAnchor(e.target)
@@ -116,7 +116,7 @@ export default function NavLogin(props) {
                     </Hidden>
                     <Hidden mdUp>
                         <NavDrawer menu={userMenu} pathname={router.pathname}
-                            avatar={avatar} name={name}
+                            avatar={photoUrl} name={name}
                             isOpen={!!menuAnchor} onClose={handleClose} onClick={handleMenuClick}
                             menuLinkActiveClass={classes.menuLinkActive} menuLinkClass={classes.menuLink}
                             iconActiveClass={classes.active} iconInactiveClass={classes.inActive} />

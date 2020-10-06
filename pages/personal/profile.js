@@ -10,6 +10,7 @@ import PrivatePage from '../../src/components-personal/PrivatePage';
 import ProfileForm from '../../src/components-personal/ProfileForm';
 import PasswordForm from '../../src/components-personal/PasswordForm';
 import { useUserValue } from '../../src/data/userData';
+import ProfileDeleteForm from '../../src/components-personal/ProfileDeleteForm';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -56,6 +57,19 @@ const EditProfileMain = () => {
                 <Grid item md={1} />
                 <Grid item md={8} xs={12}>
                     <PasswordForm />
+                </Grid>
+            </Grid>
+            <Grid container className={classes.container}>
+                <Grid item md={3} xs={12} style={gridStyle}>
+                    <Hidden smDown>
+                        <Typography variant='h4' className={classes.sectionTitle} color='textSecondary'>
+                            Account verwijderen
+                        </Typography>
+                    </Hidden>
+                </Grid>
+                <Grid item md={1} />
+                <Grid item md={8} xs={12}>
+                    <ProfileDeleteForm />
                 </Grid>
             </Grid>
         </main >

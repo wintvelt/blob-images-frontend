@@ -94,7 +94,8 @@ const loadUser = async () => {
             id: user.SK,
             name: user.name,
             email: user.email,
-            photoUrl: user.photourl,
+            photoUrl: user.photoUrl,
+            photoId: user.photoId,
             visitDateLast: user.visitDateLast,
             visitDatePrev: user.visitDatePrev,
             cognitoId: authUser.id
@@ -223,11 +224,21 @@ export const useUser = () => {
             setUpdate({ error: false });
         });
     }
-    const saveProfile = async (name, avatar) => {
-        const newProfile = { name, avatar };
+    const saveProfile = async (name, photoId, photoUrl) => {
+        let newProfile = { name };
+        const filename = photoUrl && photoUrl.split('/')[2];
+        if (filename) { newProfile.filename = filename }
+        else if (photoId) { newProfile.photoId = photoId }
+        else { newProfile.photoId = '' }
         errorHandler(async () => {
             await API.put('blob-images', '/user', { body: newProfile });
-            setUpdate({ profile: { ...user.profile, ...newProfile } });
+            setUpdate({ profile: { ...user.profile, name, photoId, photoUrl } });
+        });
+    }
+    const deleteUser = async () => {
+        errorHandler(async () => {
+            await API.del('blob-images', '/user');
+            logout();
         });
     }
     return {
@@ -242,6 +253,7 @@ export const useUser = () => {
         changePassword,
         saveProfile,
         setPath,
+        deleteUser,
     }
 };
 

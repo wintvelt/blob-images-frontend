@@ -14,7 +14,7 @@ const fieldConfig = {
         hidden: true,
     },
     oldPassword: {
-        autoComplete: 'current-password',
+        autoComplete: 'none',
         type: 'password',
         label: 'current password',
         validations: [{

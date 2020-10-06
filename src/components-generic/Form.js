@@ -52,7 +52,7 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
             initialValuesStr.current = newInitialValuesStr
             setFields('MULTI')(initialValues);
         }
-    }, [initialValues])
+    }, [initialValues]);
 
     const onChange = (fieldName) => (e) => {
         setFields(fieldName)(e);
@@ -86,9 +86,9 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
                     showValidation={fields.showValidation} />
             )}
             {Message && <FormMessage>{Message}</FormMessage>}
-            <FormButton type='submit' isLoading={isLoading} onClick={handleSubmit}>
+            {onSubmit && <FormButton type='submit' isLoading={isLoading} onClick={handleSubmit}>
                 {submitText}
-            </FormButton>
+            </FormButton>}
             {onDelete && <FormButton type='delete' isLoading={isLoading} onClick={onDelete}>
                 {deleteText}
             </FormButton>

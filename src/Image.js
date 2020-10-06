@@ -42,7 +42,7 @@ const Image = (props) => {
         <img alt={alt} src={encodeURI(src)} className={className} />
         {photographerLink && <div style={creditStyle}>
             <span style={spanStyle}>
-                image credit: {' '}
+                foto credit: {' '}
             </span>
             <a style={linkStyle}
                 href={href}

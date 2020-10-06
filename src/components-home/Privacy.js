@@ -58,13 +58,13 @@ const featureList = [
         ],
     },
     {
-        imageUrl: '/img/ireland.jpg',
-        photographer: 'Steije Hillewaert',
-        photographerLink: 'steijehillewaert',
-        title: 'Data in Ierland',
+        imageUrl: '/img/german_castle.jpg',
+        photographer: 'Leonard von Bibra',
+        photographerLink: 'leonardvonbibra',
+        title: 'Data in Frankfurt',
         id: 'data',
         descriptions: [
-            `Alle gegevens staan op servers van Amazon Web Services in Ierland. In de EU dus.`,
+            `Alle gegevens staan op servers van Amazon Web Services in Frankfurt. In de EU dus, ook na de Brexit.`,
             `Uitsluitend de beheerder (Wouter dus) heeft toegang tot die servers. Verder niemand.`,
             `Via de website hebben leden - als ze zijn ingelogd - toegang tot hun eigen groepen en albums, 
             en alle foto's die daar zijn gedeeld.`,

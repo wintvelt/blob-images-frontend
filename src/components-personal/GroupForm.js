@@ -12,22 +12,22 @@ const fieldConfig = {
     name: {
         autoComplete: 'group-name',
         type: 'text',
-        label: 'group name',
+        label: 'naam van de groep',
         validations: [{
-            text: 'please enter a name for this group',
+            text: 'geef je groep een naam',
             validate: (val) => (!!val),
         }],
     },
     description: {
         autoComplete: 'group-description',
         type: 'text',
-        label: 'group description',
+        label: 'omschrijving',
     },
     image: {
         autoComplete: 'group-image',
         type: 'image',
         isGroup: true,
-        label: 'group image',
+        label: 'pic van de groep',
     },
 };
 
@@ -54,9 +54,9 @@ const GroupForm = ({ group, isNew }) => {
             const newGroupId = result.SK;
             const message = (isNew) ?
                 (groups && groups.length > 0) ?
-                    'new group created'
-                    : 'congrats! you created your first group.'
-                : 'changes were saved';
+                    'nieuwe groep gesticht'
+                    : 'top! je hebt net je eerste groepp gemaakt'
+                : 'wijzigingen opgeslagen';
             enqueueSnackbar(message, { variant: 'success' });
             if (isNew) {
                 setLoadingPath(
@@ -68,7 +68,7 @@ const GroupForm = ({ group, isNew }) => {
             reloadUserGroups();
         } catch (e) {
             console.log(e.message);
-            enqueueSnackbar('Could not save group', { variant: 'error' });
+            enqueueSnackbar('Er ging iets mis bij het opslaan', { variant: 'error' });
         }
         setIsLoading(false);
     }
@@ -77,10 +77,10 @@ const GroupForm = ({ group, isNew }) => {
     }
     const title = (isNew && userGroupsData.state === 'hasValue') ?
         (groups && groups.length > 0) ?
-            'Add details for your new group'
-            : 'Create your first new group!'
-        : 'Edit group details';
-    const submitText = (isNew) ? 'Save new group' : 'Save changes';
+            'Profiel van je nieuwe groep'
+            : 'Richt je eerste groep op!'
+        : 'Groepsprofiel aanpassen';
+    const submitText = (isNew) ? 'Nieuwe groep opslaan' : 'Wijzigingen opslaan';
     const onDelete = (isNew) ? undefined : handleDelete;
 
     return (
@@ -92,7 +92,7 @@ const GroupForm = ({ group, isNew }) => {
             submitText={submitText}
             onSubmit={onSubmit}
             onDelete={onDelete}
-            deleteText='delete this group'
+            deleteText='verwijder deze groep'
         />
     )
 };

@@ -150,7 +150,7 @@ const ImageField = (props) => {
             <Button size='small' variant='contained' color='primary' ref={menuAnchor}
                 aria-controls="image-pick-menu" aria-haspopup="true" onClick={handleClickMenu('open')}
                 endIcon={<Icon>expand_more</Icon>}>
-                {(url) ? 'Change photo' : 'add photo'}
+                {(url) ? 'Foto wijzigen' : 'Foto toevoegen'}
             </Button>
             <Menu
                 id="image-pick-menu"
@@ -170,20 +170,20 @@ const ImageField = (props) => {
             >
                 {isGroup &&
                     <MenuItem onClick={handleClickMenu('group')} disabled={!hasGroupPhotos}>
-                        Pick from group photos
+                        Kies uit groepsfoto's
                     </MenuItem>
                 }
                 {isAlbum &&
                     <MenuItem onClick={handleClickMenu('album')} disabled={!hasAlbumPhotos}>
-                        Pick from album photos
+                        Kies uit albumfoto's
                     </MenuItem>
                 }
                 <MenuItem onClick={handleClickMenu('myPhotos')} disabled={!hasMyPhotos}>
-                    Pick from my photos
+                    Kies uit mijn foto's
                 </MenuItem>
-                <MenuItem onClick={handleClickMenu('upload')}>Upload new photo</MenuItem>
+                <MenuItem onClick={handleClickMenu('upload')}>Upload nieuwe foto</MenuItem>
                 <MenuItem onClick={handleClickMenu('clear')} disabled={!imageUrl}>
-                    Remove photo
+                    Verwijder foto
                 </MenuItem>
             </Menu>
         </Grid>

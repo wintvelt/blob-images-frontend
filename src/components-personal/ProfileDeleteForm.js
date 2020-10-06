@@ -13,8 +13,19 @@ import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
 import { useSetLoadingPath } from '../data/loadingData';
+import { Auth } from 'aws-amplify';
 
-const fieldConfig = {};
+const fieldConfig = {
+    oldPassword: {
+        autoComplete: 'none',
+        type: 'password',
+        label: 'je wachtwoord',
+        validations: [{
+            text: 'voer je huidige wachtwoord in',
+            validate: (val) => (!!val)
+        }],
+    },
+};
 const initialValues = {};
 
 const flexCenter = { display: 'flex', alignItems: 'center' };
@@ -31,12 +42,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ProfileDeleteForm = (props) => {
-    const { deleteUser } = useUser();
+    const { user, deleteUser } = useUser();
     const [isLoading, setIsLoading] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
     const classes = useStyles();
     const setLoadingPath = useSetLoadingPath();
+
+    const onClickDelete = async (fields) => {
+        try {
+            await Auth.signIn(user.profile.email, fields.oldPassword);
+            setDialogOpen(true);
+        } catch (_) {
+            enqueueSnackbar('dit wachtwoord is niet ok', { variant: 'error' });
+        }
+    }
 
     const onDelete = async (fields) => {
         setIsLoading(true);
@@ -58,7 +78,8 @@ const ProfileDeleteForm = (props) => {
             initialValues={initialValues}
             isLoading={isLoading}
             deleteText='Verwijder je account voorgoed'
-            onDelete={() => setDialogOpen(true)}
+            onDelete={onClickDelete}
+            validateDelete={true}
         />
         <Dialog open={dialogOpen} onClose={onClose} aria-labelledby="dialog-confirm-account-deletion"
             fullWidth maxWidth='md'>
@@ -71,7 +92,7 @@ const ProfileDeleteForm = (props) => {
                     Het verwijderen van je account is onomkeerbaar.
                 </Typography>
                 <Typography variant='body1' gutterBottom>
-                    Al je foto's en gegevens worden verwijderd en vergeten. 
+                    Al je foto's en gegevens worden verwijderd en vergeten.
                     Ook in groepen en albums van anderen.
                 </Typography>
                 <Typography variant='body1' gutterBottom>

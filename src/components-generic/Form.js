@@ -41,7 +41,7 @@ const FormWrapper = ({ noPaper, children }) => {
         </form>
 }
 
-const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit, onDelete,
+const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit, onDelete, validateDelete,
     submitText, deleteText, smallButtons, Message, noPaper }) => {
     const [fields, setFields] = useFields(formFields);
     const initialValuesStr = useRef(initialValues);
@@ -67,6 +67,14 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
         }
     }
 
+    const handleDelete = async (e) => {
+        if (validateDelete && !validateForm(fields)) {
+            setFields('showValidation')(true);
+        } else {
+            onDelete(getValues(fields));
+        }
+    }
+
     return (
         <FormWrapper noPaper={noPaper}>
             {title && <Typography component="h1" variant="h4"
@@ -89,7 +97,7 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
             {onSubmit && <FormButton type='submit' isLoading={isLoading} onClick={handleSubmit}>
                 {submitText}
             </FormButton>}
-            {onDelete && <FormButton type='delete' isLoading={isLoading} onClick={onDelete}>
+            {onDelete && <FormButton type='delete' isLoading={isLoading} onClick={handleDelete}>
                 {deleteText}
             </FormButton>
             }

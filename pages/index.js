@@ -50,7 +50,8 @@ const OpenMessage = () => {
     const user = useUserValue();
     const { profile } = user;
     const { visitDatePrev } = profile;
-    const today = now();
+    const DT = now().slice(0, 10);
+    const today = DT.slice(0, 4) + '-' + DT.slice(4, 6) + '-' + DT.slice(6, 8);
     const title = (visitDatePrev && visitDatePrev < today) ? 'Welkom terug!' : 'Welkom bij clubalmanac!';
     const setLoadingPath = useSetLoadingPath();
     const onClick = () => {

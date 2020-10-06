@@ -96,13 +96,15 @@ const loadUser = async () => {
             email: user.email,
             photoUrl: user.photourl,
             visitDateLast: user.visitDateLast,
-            visitDatePrev: user.visitDatePrev
+            visitDatePrev: user.visitDatePrev,
+            cognitoId: authUser.id
         };
     } catch (error) {
         const name = authUser.attributes['custom:name'];
         const email = authUser.attributes.email;
         return {
             id: userId,
+            cognitoId: authUser.id,
             name,
             email,
         }

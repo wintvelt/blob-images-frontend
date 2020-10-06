@@ -70,8 +70,8 @@ const hasItems = (loadable) => (
 const ImageField = (props) => {
     const { field, onChange } = props;
     const { value, isGroup, isAlbum, isAvatar, label } = field;
-    const { image, owner, album } = value || {};
-    const { name } = owner || {};
+    const { photoId, url, user, album } = value || {};
+    const { name } = user || {};
     const classes = useStyles();
     const myPhotosData = useRecoilValueLoadable(userPhotosState);
     const hasMyPhotos = hasItems(myPhotosData);
@@ -83,7 +83,7 @@ const ImageField = (props) => {
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;
     const imgClass = isAvatar ? classes.avatar : classes.image;
-    const imageUrl = makeImageUrl(image, width, height);
+    const imageUrl = makeImageUrl(url, width, height);
     const [imageMenu, setImageMenu] = useState({});
     const menuAnchor = useRef();
 
@@ -138,7 +138,7 @@ const ImageField = (props) => {
         </Grid>
         <Grid item xs={6} className={classes.item}>
             <div>
-                {(owner) && <>
+                {(user) && <>
                     <Typography variant='caption'>Photo by:</Typography>
                     <Typography variant='body1' gutterBottom>{name}</Typography>
                 </>}
@@ -150,7 +150,7 @@ const ImageField = (props) => {
             <Button size='small' variant='contained' color='primary' ref={menuAnchor}
                 aria-controls="image-pick-menu" aria-haspopup="true" onClick={handleClickMenu('open')}
                 endIcon={<Icon>expand_more</Icon>}>
-                {(image) ? 'Change photo' : 'add photo'}
+                {(url) ? 'Change photo' : 'add photo'}
             </Button>
             <Menu
                 id="image-pick-menu"

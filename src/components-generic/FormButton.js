@@ -39,4 +39,4 @@ const FormButton = ({ type, onClick, isLoading, children }) => {
 
 const MemoFormButton = memo(FormButton, buttonIsEqual);
 
-export default MemoFormButton
+export default FormButton;

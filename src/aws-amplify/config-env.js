@@ -1,6 +1,5 @@
 const branch = process.env.NEXT_PUBLIC_BRANCH || 'development';
 const isMaster = (branch === 'master');
-console.log(process.env.NEXT_PUBLIC_BRANCH, process.env.NEXT_PUBLIC_VERSION);
 
 const makeSwitch = (devValue, defaultValue) => (
     (!isMaster) ? devValue : defaultValue

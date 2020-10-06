@@ -1,4 +1,5 @@
 import React from 'react';
+import { bucket } from '../aws-amplify/config-env';
 import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginFileRename from 'filepond-plugin-file-rename';
@@ -25,7 +26,7 @@ const fileRenameFunction = (file) => {
 };
 
 const server = (photoMetadata) => ({
-    url: 'https://blob-images.s3.eu-central-1.amazonaws.com',
+    url: `https://${bucket()}.s3.eu-central-1.amazonaws.com`,
     process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
         try {
             const result = await Storage.put(file.name, file, {

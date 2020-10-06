@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Storage } from 'aws-amplify';
+import { bucket } from '../aws-amplify/config-env';
 
 // const imageBaseUrl = 'https://d2y9pdc5bc1adh.cloudfront.net/';
 const imageBaseUrl = 'https://img.clubalmanac.com/';
@@ -32,7 +33,7 @@ export const useImage = (url) => {
 export const makeImageUrl = (key, width, height) => {
     if (!key) return '';
     let body = {
-        "bucket": "blob-images",
+        "bucket": bucket(),
         "key": key
     }
     if (width || height) {

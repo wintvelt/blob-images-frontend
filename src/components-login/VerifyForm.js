@@ -66,6 +66,7 @@ const VerifyForm = (props) => {
         const { email } = fields;
         await userData.requestVerify(email);
         enqueueSnackbar('New confirmation code was sent, check your inbox');
+        setIsLoading(false);
     };
 
     const Message = ({ error }) => (

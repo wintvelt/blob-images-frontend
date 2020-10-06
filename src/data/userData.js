@@ -239,6 +239,7 @@ export const useUser = () => {
         errorHandler(async () => {
             await API.del('blob-images', '/user');
             logout();
+            setPath('');
         });
     }
     return {

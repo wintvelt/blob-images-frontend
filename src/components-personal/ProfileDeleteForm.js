@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core';
+import { useSetLoadingPath } from '../data/loadingData';
 
 const fieldConfig = {};
 const initialValues = {};
@@ -35,16 +36,18 @@ const ProfileDeleteForm = (props) => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
     const classes = useStyles();
+    const setLoadingPath = useSetLoadingPath();
 
     const onDelete = async (fields) => {
         setIsLoading(true);
         try {
             await deleteUser();
+            enqueueSnackbar('Je account en al jouw gegevens zijn verwijderd');
+            setLoadingPath('/');
         } catch (_) {
             enqueueSnackbar('Niet gelukt om jou te verwijderen');
+            setIsLoading(false);
         }
-
-        setIsLoading(false);
     }
 
     const onClose = () => setDialogOpen(false);

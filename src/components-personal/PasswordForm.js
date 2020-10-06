@@ -16,14 +16,14 @@ const fieldConfig = {
     oldPassword: {
         autoComplete: 'none',
         type: 'password',
-        label: 'current password',
+        label: 'huidig wachtwoord',
         validations: [{
-            text: 'please enter your current password',
+            text: 'voer je huidige wachtwoord in',
             validate: (val) => (!!val)
         }],
     },
     newPassword: {
-        autoComplete: 'new-password', type: 'password', label: 'new password',
+        autoComplete: 'new-password', type: 'password', label: 'nieuw wachtwoord',
         validations: newPasswordValidations,
     },
 };
@@ -49,7 +49,7 @@ const PasswordForm = (props) => {
         <Form
             formFields={fieldConfig}
             isLoading={isLoading}
-            submitText='Change password'
+            submitText='Wachtwoord veranderen'
             onSubmit={onSubmit}
         />
     )

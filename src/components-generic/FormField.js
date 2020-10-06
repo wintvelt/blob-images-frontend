@@ -27,22 +27,22 @@ const useStyles = makeStyles(theme => ({
 
 export const newPasswordValidations = [
     {
-        text: 'at least 1 capital letter',
+        text: 'minstens 1 hoofdletter',
         validate: (psw) => (psw && psw !== psw.toLowerCase()),
         showAlways: true,
     },
     {
-        text: 'at least 1 lowercase letter',
+        text: 'minstens 1 kleine letter',
         validate: (psw) => (psw && psw !== psw.toUpperCase()),
         showAlways: true,
     },
     {
-        text: 'at least 1 number',
+        text: 'minstens 1 cijfer',
         validate: (psw) => (psw && /\d/.test(psw)),
         showAlways: true,
     },
     {
-        text: 'minimum of 8 characters, to be sure',
+        text: 'minimaal 8 tekens, om zeker te zijn',
         validate: (psw) => (psw && psw.length >= 8),
         showAlways: true,
     },

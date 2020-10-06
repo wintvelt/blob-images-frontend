@@ -37,7 +37,7 @@ const EditProfileMain = () => {
                 <Grid item md={3} xs={12}>
                     <Hidden smDown>
                         <Typography variant='h4' className={classes.sectionTitle} color='textSecondary'>
-                            Profile details
+                            Naam en foto
                         </Typography>
                     </Hidden>
                 </Grid>
@@ -50,7 +50,7 @@ const EditProfileMain = () => {
                 <Grid item md={3} xs={12} style={gridStyle}>
                     <Hidden smDown>
                         <Typography variant='h4' className={classes.sectionTitle} color='textSecondary'>
-                            Change password
+                            Wachtwoord veranderen
                         </Typography>
                     </Hidden>
                 </Grid>

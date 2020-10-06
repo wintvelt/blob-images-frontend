@@ -8,15 +8,15 @@ const fieldConfig = {
     email: {
         autoComplete: 'email',
         type: 'email',
-        label: 'email (cannot be changed)',
+        label: 'email (kan je niet wijzigen)',
         disabled: true,
     },
     name: {
         autoComplete: 'name',
         type: 'text',
-        label: 'name',
+        label: 'naam',
         validations: [{
-            text: 'sharing your name or a name is the least you could do',
+            text: 'je moet echt minstens je naam delen',
             validate: (val) => (!!val),
         }],
     },
@@ -24,7 +24,7 @@ const fieldConfig = {
         autoComplete: 'avatar',
         type: 'image',
         isAvatar: true,
-        label: 'profile picture',
+        label: 'profiel pic',
     },
 };
 
@@ -53,7 +53,7 @@ const ProfileForm = (props) => {
             formFields={fieldConfig}
             initialValues={initialValues}
             isLoading={isLoading}
-            submitText='Save profile'
+            submitText='Profiel opslaan'
             onSubmit={onSubmit}
         />
     )

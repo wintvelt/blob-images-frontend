@@ -43,13 +43,19 @@ const GroupForm = ({ group, isNew }) => {
 
     const onSubmit = async (fields) => {
         setIsLoading(true);
+        let groupUpdate = {
+            name: fields.name,
+            description: fields.description,
+            photoFilename: fields.image.url && fields.image.url.split('/')[2]
+        };
+        if (fields.image.SK) groupUpdate.photoId = fields.image.photoId;
         try {
             const result = (isNew) ?
                 await API.post('blob-images', '/groups', {
-                    body: fields
+                    body: groupUpdate
                 }) :
                 await API.put('blob-images', `/groups/${groupId}`, {
-                    body: fields
+                    body: groupUpdate
                 });
             const newGroupId = result.SK;
             const message = (isNew) ?

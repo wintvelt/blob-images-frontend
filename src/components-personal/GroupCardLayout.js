@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
@@ -10,7 +9,7 @@ import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
-import { makeImageUrl } from '../components-generic/imageProvider';
+import { ClubImage } from '../components-generic/imageProvider';
 import { useSetLoadingPath } from '../data/loadingData';
 
 const useStyles = makeStyles(theme => ({
@@ -55,11 +54,12 @@ const useStyles = makeStyles(theme => ({
 
 const GroupCardContent = (props) => {
     const { name, description, image, isLoading, isInvite } = props;
-    const imageUrl = makeImageUrl(image && image.image, 340, 200);
     const classes = useStyles();
     return <>
-        {(image || isInvite) && <CardMedia className={classes.media}
-            image={imageUrl || '/img/confidential.jpg'}
+        {(image || isInvite) && <ClubImage className={classes.media}
+            src={image?.url || '/img/confidential.jpg'}
+            width={340}
+            height={200}
             title={name ? `${name} group` : 'invite'}
         />}
         <CardContent className={classes.content}>

@@ -9,8 +9,7 @@ import PrivatePage from '../../../../src/components-personal/PrivatePage';
 import GroupCardLayout from '../../../../src/components-personal/GroupCardLayout';
 import GroupForm from '../../../../src/components-personal/GroupForm';
 import BackLinkToGroup from '../../../../src/components-generic/BackLinkToGroup';
-import { useRecoilValueLoadable } from 'recoil';
-import { activeGroupState, hasGroupData } from '../../../../src/data/activeTree-Group';
+import { redirectOnGroupLoadError, useActiveGroup } from '../../../../src/data/activeTree-Group';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -25,9 +24,9 @@ const GroupEditMain = () => {
     const router = useRouter();
     const groupId = router.query?.id;
     const isNew = (groupId === 'new');
-    const groupData = useRecoilValueLoadable(activeGroupState);
-    const hasValue = hasGroupData(groupData);
-    const group = (hasValue && groupData.contents) || {};
+    const groupData = useActiveGroup();
+    const group = groupData.contents || {};
+    redirectOnGroupLoadError(groupData, true);
 
     return (
         <main>
@@ -35,7 +34,7 @@ const GroupEditMain = () => {
             <BackLinkToGroup />
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
-                    <GroupCardLayout {...group} withEdit={false} isLoading={!hasValue} />
+                    <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading} />
                 </Grid>}
                 <Grid item md={(isNew) ? 3 : 1} />
                 <Grid item md={(isNew) ? 6 : 8} xs={12}>

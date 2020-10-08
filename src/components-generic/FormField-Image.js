@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
 
-import { makeImageUrl } from './imageProvider';
+import { ClubImage } from './imageProvider';
 import ImageUpload from './FormField-Image-Upload';
 import PhotoPicker from './FormField-Image-Photos';
 import { userPhotosState } from '../data/userData';
@@ -38,14 +38,13 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-between',
     },
     image: {
-        objectFit: 'scale-down',
-        maxHeight: '100%',
-        maxWidth: '100%',
+        height: '100%',
+        width: '100%',
     },
     avatar: {
         width: '100px',
         height: '100px',
-        objectFit: 'cover',
+        overflow: 'hidden',
         borderRadius: '50px',
     },
     imageLabel: {
@@ -83,7 +82,6 @@ const ImageField = (props) => {
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;
     const imgClass = isAvatar ? classes.avatar : classes.image;
-    const imageUrl = makeImageUrl(url, width, height);
     const [imageMenu, setImageMenu] = useState({});
     const menuAnchor = useRef();
 
@@ -129,10 +127,10 @@ const ImageField = (props) => {
     return <Grid container className={classes.container}>
         <Grid item xs={6} className={classes.itemImage}>
             <legend className={classes.imageLabel}>{label}</legend>
-            {imageUrl &&
-                <img src={imageUrl} alt='group image thumbnail' className={imgClass} />
+            {url &&
+                <ClubImage src={url} alt='group image thumbnail' className={imgClass} width={width} height={width}/>
             }
-            {!imageUrl &&
+            {!url &&
                 <Icon color='disabled' style={largeFont}>image</Icon>
             }
         </Grid>
@@ -182,7 +180,7 @@ const ImageField = (props) => {
                     Kies uit mijn foto's
                 </MenuItem>
                 <MenuItem onClick={handleClickMenu('upload')}>Upload nieuwe foto</MenuItem>
-                <MenuItem onClick={handleClickMenu('clear')} disabled={!imageUrl}>
+                <MenuItem onClick={handleClickMenu('clear')} disabled={!url}>
                     Verwijder foto
                 </MenuItem>
             </Menu>

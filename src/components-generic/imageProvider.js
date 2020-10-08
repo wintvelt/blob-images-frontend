@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { Storage } from 'aws-amplify';
+import { useState } from 'react';
 import { bucket } from '../aws-amplify/config-env';
 
 // const imageBaseUrl = 'https://d2y9pdc5bc1adh.cloudfront.net/';
@@ -8,26 +7,18 @@ export const otoa = (object) => Buffer.from(JSON.stringify(object)).toString('ba
 export const btoa = (b) => Buffer.from(b, 'base64').toString();
 const btoaDebug = (b) => Buffer.from(b.split('/').slice(-1)[0], 'base64').toString();
 
-export const useImage = (url) => {
-    const [safeUrl, setSafeUrl] = useState(null);
+export const ClubImage = ({ src, width, height, onLoad, style = {}, ...rest }) => {
+    const [size, setSize] = useState(10);
+    const url = makeImageUrl(src, size || width, size || height);
 
-    useEffect(() => {
-        const getImage = async () => {
-            const [userId, filename] = url.split('/');
-            try {
-                const result = await Storage.get(filename, {
-                    level: 'protected',
-                    identityId: userId
-                });
-                setSafeUrl(result);
-            } catch (error) {
-                console.log({ error });
-            }
-        }
-        if (url) getImage();
-    }, [url]);
+    const handleLoad = () => {
+        setSize(0);
+        onLoad && onLoad();
+    };
 
-    return safeUrl;
+    return <div {...rest} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <img src={url} onLoad={handleLoad} style={{ ...style, objectFit: 'cover', width: '100%', height: '100%' }} />
+    </div>
 }
 
 export const makeImageUrl = (key, width, height) => {

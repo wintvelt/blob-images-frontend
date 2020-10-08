@@ -37,30 +37,30 @@ const InviteOnlyMessage = () => {
 }
 
 export default function AuthForms({ path, groupName, isPage }) {
-    const groupText = (groupName) ? (' ' + groupName) : '';
+    const groupText = (groupName) ? (' van ' + groupName) : '';
     return (<>
         {(path === '/login') && <LoginForm
-            title={groupText ? 'Login to join' + groupText : 'Login to continue'}
+            title={groupText ? 'Log in om aan lid te worden' + groupText : 'Log in om door te gaan'}
             allowSignup={allowSignup}
         />}
         {(path === '/signup' && (allowSignup || !isPage)) && <SignupForm
-            title={'Sign up to join' + groupText}
-            subtitle={'Complete your registration ' + ((groupName) ? 'to accept this invite' : '')}
+            title={'Schrijf je in om lid te worden' + groupText}
+            subtitle={'Voltooi je registratie' + ((groupName) ? ' om deze uitnodiging te accepeteren' : '')}
         />}
         {(path === '/signup' && (!allowSignup && isPage)) &&
             <InviteOnlyMessage />
         }
         {(path === '/forgotpsw') && <ForgotPswForm
-            title='Forgot password'
-            subtitle='Provide your email to reset your password'
+            title='Wachtwoord vergeten'
+            subtitle='Vul je email in om je wachtwoord opnieuw in te stellen'
             allowSignup={allowSignup}
         />}
         {(path === '/confirmpsw') && <ResetPswForm
-            title='Set your new password'
+            title='Voer een nieuwe wachtwoord in'
         />}
         {(path === '/verifysignup') && <VerifyForm
-            title={'Confirm your account to join' + groupText}
-            subtitle='Check your inbox for the confirmation code'
+            title={'Bevestig je registratie om lid te worden' + groupText}
+            subtitle='Check je email inbox voor de registratiecode'
         />}
     </>
     );

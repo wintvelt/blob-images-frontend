@@ -11,7 +11,7 @@ const fieldConfig = {
     email: {
         autoComplete: 'email', type: 'email', label: 'Your email',
         validations: [{
-            text: 'enter your email address',
+            text: 'voer je email adres in',
             validate: (val) => (
                 val &&
                 val.split('@')[1] && !!val.split('@')[1].split('.')[1]
@@ -19,13 +19,13 @@ const fieldConfig = {
         }],
     },
     password: {
-        autoComplete: 'new-password', type: 'password', label: 'Your new password',
+        autoComplete: 'new-password', type: 'password', label: 'je nieuwe wachtwoord',
         validations: newPasswordValidations,
     },
     confirmation: {
-        autoComplete: 'none', type: 'tel', label: 'verification code',
+        autoComplete: 'none', type: 'tel', label: 'registratiecode',
         validations: [{
-            text: 'check your email for verification code',
+            text: 'check je email voor de registratiecode',
             validate: (val) => (!!val),
         }],
     },
@@ -63,19 +63,19 @@ const ResetPswForm = (props) => {
         </>
     );
 
-    const formSubtitle = subtitle || 'Check the verification code you received by mail, ' +
-        'choose a new password, and you\'re good to go!';
+    const formSubtitle = subtitle || 'Check de registratiecode die je via mail hebt ontvangen, ' +
+        'kies een nieuw wachtwoord, en je bent weer binnen!';
 
     return <Form
-        title={title || 'Set new password'}
+        title={title || 'Nieuw wachtwoord instellen'}
         subtitle={formSubtitle}
         formFields={fieldConfig}
         initialValues={{ email }}
         isLoading={isLoading}
         onSubmit={onSubmit}
-        submitText='Save new password'
+        submitText='nieuw wachtwoord opslaan'
         smallButtons={[
-            { onClick: onForgotPsw, text: 'Send me another code' },
+            { onClick: onForgotPsw, text: 'Stuur me een nieuwe code' },
         ]}
         Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper

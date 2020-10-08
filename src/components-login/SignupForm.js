@@ -80,19 +80,19 @@ const SignupForm = (props) => {
         <>
             {error.message}<br />
             {(error.code === 'UsernameExistsException') && <span>
-                Maybe you need to
+                Misschien moet je voor registratie nog je
                 <Button onClick={onVerify} style={buttonStyle} color='primary'>
-                    Confirm your email
+                    email bevestigen
                  </Button>
                  ?
             </span>}
         </>
     );
-    const formSubtitle = subtitle || 'Enter your info, then invite friends and family, ' +
-        'and share your first photos!';
+    const formSubtitle = subtitle || 'Meld je aan, deel foto\'s in groepen en albums, ' +
+        'en nodig je vrienden en familie uit!';
 
     return <Form
-        title={title || 'Sign up today!'}
+        title={title || 'Inschrijving om lid te worden'}
         subtitle={formSubtitle}
         formFields={fieldConfig}
         initialValues={[{ email: user.profile?.email }]}
@@ -100,7 +100,7 @@ const SignupForm = (props) => {
         onSubmit={onSubmit}
         submitText='Sign up'
         smallButtons={[
-            { onClick: onLogin, text: 'Log in' },
+            { onClick: onLogin, text: 'Al lid? Log in' },
         ]}
         Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper

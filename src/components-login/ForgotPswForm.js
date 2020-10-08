@@ -59,13 +59,13 @@ const ForgotPswForm = (props) => {
     if (allowSignup) smallButtons.push({ onClick: onSignup, text: 'sign up' });
 
     return <Form
-        title={title || 'Forgot password'}
-        subtitle={subtitle || 'Leave your email to reset your password'}
+        title={title || 'Wachtwoord vergeten'}
+        subtitle={subtitle || 'Geef je email om een nieuw wachtwoord in te stellen'}
         formFields={fieldConfig}
         initialValues={{ email: userEmail }}
         isLoading={isLoading}
         onSubmit={onSubmit}
-        submitText='Reset password'
+        submitText='Wachtwoord aanvraag versturen'
         smallButtons={smallButtons}
         Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper

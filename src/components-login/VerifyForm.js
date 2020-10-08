@@ -65,42 +65,42 @@ const VerifyForm = (props) => {
         setIsLoading(true);
         const { email } = fields;
         await userData.requestVerify(email);
-        enqueueSnackbar('New confirmation code was sent, check your inbox');
+        enqueueSnackbar('Nieuwe registratiecode verzonden, check je mail');
         setIsLoading(false);
     };
 
     const Message = ({ error }) => (
         <>
-            Something went wrong. {' '}{error.message}<br />
+            Iets ging mis. {' '}{error.message}<br />
             {(error.code === 'CodeMismatchException') && <span>
-                You could ask for a new code (see below)
+                Je zou een nieuwe code kunnen opvragen (zie hieronder)
             </span>}
             {(error.message && error.message.includes('CONFIRMED')) && <span>
-                This means you can already
+                Je kunt gewoon  
                 <Button onClick={toLogin} style={buttonStyle} color='primary'>
-                    Log in
+                    Inloggen
                  </Button>
-                 to your account
+                 als lid
             </span>}
         </>
     );
-    const formSubtitle = (pathEmail && pathCode && !user.error) ? 'Click "Confirm" to confirm your account'
-        : subtitle || 'Please check your email. If you signed up with this address, ' +
-        'you\'ll receive a new verification code';
+    const formSubtitle = (pathEmail && pathCode && !user.error) ? 'Klik "Bevestigen" om je lidmaatschap te voltooien'
+        : subtitle || 'Check je mailbox. Als je met dit email-adres geregistreerd bent, ' +
+        'dan ontvang je een nieuwe registratiecode';
     const smallButtons = [
-        { onClick: onResend, text: 'Send email with new code' },
-        { onClick: toLogin, text: 'Log in' },
+        { onClick: onResend, text: 'Nieuwe code opvragen' },
+        { onClick: toLogin, text: 'Al lid? Log in' },
     ];
     const initialValues = { email, confirmation: pathCode };
 
     return <Form
-        title={title || 'Confirm your account'}
+        title={title || 'Voltooi je lidmaatschap'}
         subtitle={formSubtitle}
         formFields={fieldConfig}
         initialValues={initialValues}
         isLoading={isLoading}
         onSubmit={onSubmit}
-        submitText='Confirm'
+        submitText='Bevestigen'
         smallButtons={smallButtons}
         Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper

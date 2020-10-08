@@ -10,16 +10,16 @@ const fieldConfig = {
         type: 'email',
         label: 'email',
         validations: [{
-            text: 'please enter your email address',
+            text: 'vul je email adres in',
             validate: (val) => (val && val.split('@')[1] && !!val.split('@')[1].split('.')[1]),
         }],
     },
     password: {
         autoComplete: 'current-password',
         type: 'password',
-        label: 'password',
+        label: 'wachtwoord',
         validations: [{
-            text: 'please enter your password',
+            text: 'je hebt je wachtwoord nodig om binnen te komen',
             validate: (val) => (!!val)
         }],
     },
@@ -65,26 +65,26 @@ const LoginForm = (props) => {
 
     const Message = ({ error }) => (
         <>
-            Hmm, we could not log you in.{' '}
+            Hmm, inloggen is helaas mislukt.{' '}
             {error.message}<br />
             {(error.code === 'UserNotConfirmedException') && <span>
-                You probably need to
+                Waarschijnlijk moet je voor lidmaatschap je
                 <Button onClick={onVerify} style={buttonStyle} color='primary'>
-                    Confirm your email
+                    email bevestigen 
                  </Button>
-                 to complete the signup
+                 om de registratie af te maken
             </span>}
         </>
     );
 
     let smallButtons = [
-        { onClick: onForgotPsw, text: 'forgot password' },
+        { onClick: onForgotPsw, text: 'wachtwoord vergeten' },
     ];
-    if (allowSignup) smallButtons.push({ onClick: onSignup, text: 'sign up' });
+    if (allowSignup) smallButtons.push({ onClick: onSignup, text: 'inschrijven' });
 
     return <Form
-        title={title || 'Welcome back!'}
-        subtitle={subtitle || 'Please log in with your email and password'}
+        title={title || 'Welkom!'}
+        subtitle={subtitle || 'Log in met je email en wachtwoord'}
         formFields={fieldConfig}
         initialValues={[{ email: user.profile?.email }]}
         isLoading={isLoading}

@@ -10,7 +10,7 @@ const GroupsMain = () => {
         <main>
             <Toolbar />
             <Header>
-                Your Groups
+                Waar je lid bent
             </Header>
             <GroupList />
         </main>

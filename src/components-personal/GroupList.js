@@ -15,7 +15,7 @@ const GroupList = () => {
     const groupsList = (hasValue)? groupsData.contents : [1, 2].map(id => ({ id, isLoading: true }));
     const groupsListLength = groupsList?.length;
     const groupAddProps = {
-        text: 'new group',
+        text: 'nieuwe groep',
         path: '/personal/groups/[id]/edit',
         asPath: '/personal/groups/new/edit'
     };

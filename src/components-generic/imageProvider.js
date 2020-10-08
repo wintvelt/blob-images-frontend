@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { bucket } from '../aws-amplify/config-env';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // const imageBaseUrl = 'https://d2y9pdc5bc1adh.cloudfront.net/';
 const imageBaseUrl = 'https://img.clubalmanac.com/';
@@ -8,16 +9,28 @@ export const btoa = (b) => Buffer.from(b, 'base64').toString();
 const btoaDebug = (b) => Buffer.from(b.split('/').slice(-1)[0], 'base64').toString();
 
 export const ClubImage = ({ src, width, height, onLoad, style = {}, ...rest }) => {
-    const [size, setSize] = useState(10);
-    const url = makeImageUrl(src, size || width, size || height);
+    const [size, setSize] = useState('none');
+    const urlSmall = makeImageUrl(src, 10, 10);
+    const urlNormal = makeImageUrl(src, width, height);
 
-    const handleLoad = () => {
-        setSize(0);
-        onLoad && onLoad();
+    const handleLoad = (newSize) => () => {
+        setSize((oldSize => (oldSize === 'normal') ? 'normal' : newSize));
+        if (newSize === 'normal' && onLoad) onLoad();
     };
 
+    const imgStyle = (disp) => ({
+        objectFit: 'cover', width: '100%', height: '100%', 
+        display: (size === disp)? 'block' : 'none'
+    });
+    const iconStyle = (disp) => ({
+        color: 'rgba(0,0,0,0.26)',
+        display: (size === disp)? 'block' : 'none'
+    })
+
     return <div {...rest} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <img src={url} onLoad={handleLoad} style={{ ...style, objectFit: 'cover', width: '100%', height: '100%' }} />
+        <CircularProgress color='inherit' style={iconStyle('none')}/>
+        <img src={urlSmall} onLoad={handleLoad('small')} style={{ ...style, ...imgStyle('small') }} />
+        <img src={urlNormal} onLoad={handleLoad('normal')} style={{ ...style, ...imgStyle('normal') }} />
     </div>
 }
 

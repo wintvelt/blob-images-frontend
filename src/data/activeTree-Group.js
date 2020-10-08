@@ -2,17 +2,18 @@ import { useEffect } from 'react';
 import { API } from 'aws-amplify';
 import { useSnackbar } from 'notistack';
 
-import { atom, selector, useRecoilValue, useRecoilValueLoadable, DefaultValue, useSetRecoilState } from 'recoil';
+import { atom, selector, useRecoilValue, DefaultValue, useSetRecoilState } from 'recoil';
 import { activeGroupIdState } from './activeTreeRoot';
 import { useSetLoadingPath } from './loadingData';
 import { userData } from './userData';
 
+// Active Group
 export const activeGroupData = atom({
     key: 'activeGroupData',
     default: { isLoading: true }
 });
 
-const groupToForm = (group) => ({
+export const groupToForm = (group) => ({
     id: group.SK,
     name: group.name,
     description: group.description,
@@ -46,8 +47,8 @@ export const useActiveGroup = () => {
     const activeGroup = useRecoilValue(activeGroupData);
     const reloadGroup = useReloadActiveGroup();
     useEffect(() => {
-        reloadGroup();
-    }, [activeGroupId]);
+        if (!activeGroup.contents?.id || activeGroup.contents?.id !== activeGroupId) reloadGroup();
+    }, [activeGroupId, activeGroup]);
     return activeGroup;
 };
 
@@ -117,38 +118,8 @@ export const redirectOnGroupLoadError = (groupData, withEdit) => {
     }, [unAuthEdit]);
 };
 
-const activeGroupStateTrigger = atom({
-    key: 'activeGroupStateTrigger',
-    default: 0,
-});
 
-export const activeGroupState = selector({
-    key: 'activeGroup',
-    get: async ({ get }) => {
-        get(activeGroupStateTrigger);
-        const groupId = get(activeGroupIdState);
-        if (!groupId) return undefined;
-        const source = `/groups/${groupId}`;
-        const response = await API.get('blob-images', source);
-        if (response.error) {
-            throw response.error;
-        }
-        return response;
-    },
-    set: ({ set }, newValue) => {
-        if (newValue instanceof DefaultValue) {
-            set(activeGroupStateTrigger, v => v + 1);
-        }
-    }
-});
-
-
-// helper to check for data in Loadable - sometimes state == hasValue, but contents == undefined
-// if groupId not (yet) in recoil datatree
-export const hasGroupData = (loadable) => (
-    (loadable.state === 'hasValue') && loadable.contents
-);
-
+//// MEMBER STUFF ---------------------------------------
 
 const activeGroupMembersTrigger = atom({
     key: 'activeGroupMembersTrigger',

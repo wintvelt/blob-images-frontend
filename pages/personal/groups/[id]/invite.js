@@ -9,8 +9,7 @@ import PrivatePage from '../../../../src/components-personal/PrivatePage';
 import GroupCardLayout from '../../../../src/components-personal/GroupCardLayout';
 import GroupInviteForm from '../../../../src/components-personal/GroupInviteForm';
 import BackLinkToGroup from '../../../../src/components-generic/BackLinkToGroup';
-import { useRecoilValueLoadable } from 'recoil';
-import { activeGroupState, hasGroupData } from '../../../../src/data/activeTree-Group';
+import { useActiveGroup } from '../../../../src/data/activeTree-Group';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -22,8 +21,8 @@ const useStyles = makeStyles(theme => ({
 
 const GroupInviteMain = () => {
     const classes = useStyles();
-    const groupData = useRecoilValueLoadable(activeGroupState);
-    const hasValue = hasGroupData(groupData);
+    const groupData = useActiveGroup();
+    const hasValue = groupData.contents;
     const group = (hasValue)? groupData.contents : {};
 
     return (

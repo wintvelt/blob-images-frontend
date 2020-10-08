@@ -3,8 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 
 import Link from '../components-generic/Link';
-import { useRecoilValueLoadable } from 'recoil';
-import { activeGroupState, hasGroupData } from '../data/activeTree-Group';
+import { useActiveGroupValue } from '../data/activeTree-Group';
 
 const linkStyle = {
     position: 'absolute',
@@ -19,8 +18,8 @@ const linkStyle = {
 const linkStyle2 = { color: 'inherit' };
 
 const BackLinkToGroup = ({ className }) => {
-    const groupData = useRecoilValueLoadable(activeGroupState);
-    const hasValue = hasGroupData(groupData);
+    const groupData = useActiveGroupValue();
+    const hasValue = !!groupData.contents;
     if (!hasValue) return null;
 
     const group = groupData.contents;

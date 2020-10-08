@@ -5,13 +5,14 @@ import CardList from '../components-generic/CardList';
 import { useSetLoadingPath } from '../data/loadingData';
 import { useRecoilValueLoadable } from 'recoil';
 import { userGroups } from '../data/userData';
+import { useUserGroups } from '../data/activeTree-UserGroups';
 
 const paddingStyle = { padding: '24px' };
 
 const GroupList = () => {
     const setLoadingPath = useSetLoadingPath();
-    const groupsData = useRecoilValueLoadable(userGroups);
-    const hasValue = (groupsData.state === 'hasValue');
+    const groupsData = useUserGroups();
+    const hasValue = (groupsData.contents && !groupsData.hasError);
     const groupsList = (hasValue)? groupsData.contents : [1, 2].map(id => ({ id, isLoading: true }));
     const groupsListLength = groupsList?.length;
     const groupAddProps = {
@@ -27,10 +28,9 @@ const GroupList = () => {
     const groupsWithEdit = (!hasValue) ?
         groupsList
         : groupsList.map(item => ({ 
-            ...item.group, 
-            newPicsCount: item.newPicsCount,
+            ...item, 
             withEdit: true, 
-            userIsAdmin: (item.role === 'admin') 
+            userIsAdmin: (item.userRole === 'admin') 
         }));
     return <div style={paddingStyle}>
         <CardList list={groupsWithEdit} component={GroupCardLayout} addProps={groupAddProps}

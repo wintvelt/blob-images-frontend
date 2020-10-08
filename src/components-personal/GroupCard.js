@@ -1,11 +1,11 @@
 import React from 'react';
 import GroupCardLayout from './GroupCardLayout';
-import { useRecoilValueLoadable } from 'recoil';
-import { activeGroupState, hasGroupData } from '../data/activeTree-Group';
+import { useRecoilValue } from 'recoil';
+import { activeGroupData } from '../data/activeTree-Group';
 
 const GroupCard = () => {
-    const groupData = useRecoilValueLoadable(activeGroupState);
-    const hasValue = hasGroupData(groupData);
+    const groupData = useRecoilValue(activeGroupData);
+    const hasValue = !!groupData.contents;
     const group = hasValue? groupData.contents : {};
     return <GroupCardLayout {...group} isLoading={!hasValue} />
 }

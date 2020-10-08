@@ -4,7 +4,6 @@ import Icon from '@material-ui/core/Icon';
 
 import Link from '../components-generic/Link';
 import { useRecoilValueLoadable } from 'recoil';
-import { activeGroupState, hasGroupData } from '../data/activeTree-Group';
 import { activeAlbumState, hasAlbumData } from '../data/activeTree-Album';
 
 const linkStyle = {

@@ -9,9 +9,9 @@ import Link from '../components-generic/Link';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 import { initials } from '../components-generic/helpers';
 import { useUserValue } from '../data/userData';
-import { activeGroupMembers } from '../data/activeTree-Group';
 import { activePathFront } from '../data/activeTreeRoot';
-import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { useRecoilValue } from 'recoil';
+import { useMembersValue } from '../data/activeTree-GroupMembers';
 
 const useStyles = makeStyles(theme => ({
     avatar: {
@@ -40,12 +40,12 @@ export const MemberAvatarGroup = () => {
     const classes = useStyles();
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const maxAvatars = (isLarge) ? 10 : 5;
-    const membersData = useRecoilValueLoadable(activeGroupMembers);
-    const hasValue = (membersData.state === 'hasValue');
+    const membersData = useMembersValue();
+    const hasValue = (!!membersData.contents);
     const members = hasValue ? membersData.contents : [{}, {}, {}];
     return <AvatarGroup max={maxAvatars}>
         {members.map((member, i) => (
-            <AvatarSkeleton key={'' + member.name + i} alt={member.name} src={member.avatar}
+            <AvatarSkeleton key={'' + member.name + i} alt={member.name} src={member.image?.url}
                 className={classes.avatar} isLoading={!hasValue}>
                 {(!member.image) &&
                     <span style={paddingLeft}>{initials(member.name)}</span>
@@ -60,18 +60,17 @@ export const MemberActions = () => {
     const { profile } = currentUser;
     const paths = useRecoilValue(activePathFront);
 
-    const membersData = useRecoilValueLoadable(activeGroupMembers);
-    const hasValue = (membersData.state === 'hasValue');
+    const membersData = useMembersValue();
+    const hasValue = (!!membersData.contents);
     if (!hasValue) return null;
 
     const members = membersData.contents;
     const currentIsAdmin = !!members.find(member => (
-        member.PK.slice(3) === profile.id &&
-        member.role === 'admin' &&
+        member.userId === profile.id &&
+        member.userRole === 'admin' &&
         member.status !== 'invite'
     ));    
     if (!currentIsAdmin) return null;
-
 
     return <AccordionActions>
         <Link href={paths.path + '/invite'}

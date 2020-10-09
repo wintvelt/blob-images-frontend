@@ -12,10 +12,9 @@ import { useMediaQuery, Chip } from '@material-ui/core';
 import { useUserValue } from '../../src/data/userData';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 import { initials } from '../../src/components-generic/helpers';
-import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { activeGroupMembers } from '../data/activeTree-Group';
 import { useSnackbar } from 'notistack';
 import { API } from 'aws-amplify';
+import { useMembersValue, useReloadActiveMembers } from '../data/activeTree-GroupMembers';
 
 const useStyles = makeStyles(theme => ({
     panel: {
@@ -28,6 +27,7 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         display: 'flex',
         alignItems: 'center',
+        backgroundColor: 'rgba(255,255,255,0.1)'
     },
     avatar: {
         width: theme.spacing(5),
@@ -67,7 +67,7 @@ const redStyle = { color: 'red' };
 const leftSpace = { marginLeft: '8px' };
 
 const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isLarge }) => {
-    const isAdmin = (member.role === 'admin');
+    const isAdmin = (member.userRole === 'admin');
     const isInvite = (member.status === 'invite');
     const classes = useStyles();
 
@@ -78,20 +78,25 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isL
     }
 
     return <div className={classes.line}>
-        <AvatarSkeleton alt={member.name} src={member.avatar}
+        <AvatarSkeleton alt={member.name} src={member.image?.url}
             className={classes.avatar} isLoading={isLoading}>
-            {(!member.avatar && initials(member.name))}
+            {(!member.image?.url && initials(member.name))}
         </AvatarSkeleton>
-        {(isInvite) && <Tooltip title='invited' aria-label='invited' className={classes.badgeInvite}>
+        {(isInvite) && <Tooltip title='uitgenodigd' aria-label='invited' className={classes.badgeInvite}>
             <Icon>mail</Icon>
         </Tooltip>}
-        {(!isAdmin) && <Tooltip title='guest access' aria-label='guest access' className={classes.badge}>
+        {(member.isFounder) && <Tooltip title='oprichter' aria-label='founder' className={classes.badgeInvite}>
+            {/* <span>{'👑'}</span> */}
+            <Icon>flare</Icon>
+        </Tooltip>}
+        {(!isAdmin) && <Tooltip title='gast' aria-label='guest access' className={classes.badge}>
             <Icon>visibility</Icon>
         </Tooltip>}
         <Typography className={classes.name}>
             {member.name}
             {isCurrent && <Chip size='small' label='me' component='span' style={leftSpace} />}
             {!isAdmin && <span style={smallFont}>{' (guest)'}</span>}
+            {member.isFounder && <span style={smallFont}>{' (oprichter)'}</span>}
             {!isLarge && <>
                 <br />
                 <span style={smallFont}>{member.createdAt}</span>
@@ -117,30 +122,30 @@ const MemberDetails = () => {
     const classes = useStyles();
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const { enqueueSnackbar } = useSnackbar();
-    const reloadMembers = useResetRecoilState(activeGroupMembers);
+    const reloadMembers = useReloadActiveMembers();
 
     const currentUser = useUserValue();
     const { profile } = currentUser;
 
-    const membersData = useRecoilValueLoadable(activeGroupMembers);
-    const hasValue = (membersData.state === 'hasValue');
+    const membersData = useMembersValue();
+    const hasValue = (!!membersData.contents);
 
     const members = (hasValue) ? membersData.contents : [];
     const currentIsAdmin = !!members.find(member => (
-        member.PK.slice(3) === profile.id &&
-        member.role === 'admin' &&
+        member.userId === profile.id &&
+        member.userRole === 'admin' &&
         member.status !== 'invite'
     ));
 
     const hasOtherAdmin = !!members.find(member => (
-        member.PK.slice(3) !== profile.id &&
-        member.role === 'admin' &&
+        member.userId !== profile.id &&
+        member.userRole === 'admin' &&
         member.status !== 'invite'
     ));
     const [anchor, setAnchor] = useState({ el: null });
 
-    const selectedIsCurrent = anchor.member && (anchor.member.PK.slice(3) === profile.id);
-    const selectedIsAdmin = anchor.member && (anchor.member.role === 'admin');
+    const selectedIsCurrent = anchor.member && (anchor.member.userId === profile.id);
+    const selectedIsAdmin = anchor.member && (anchor.member.userRole === 'admin');
     const selectedIsInvite = anchor.member && (anchor.member.status === 'invite');
     const roleText = (selectedIsAdmin) ? 'Make guest' : 'Make admin';
     const redText = (selectedIsInvite) ? 'Uninvite' : 'Ban';
@@ -153,10 +158,10 @@ const MemberDetails = () => {
     const handleClose = () => setAnchor({ ...anchor, el: null });
 
     const onChangeRole = async () => {
-        const memberId = anchor.member.PK.slice(2);
+        const memberId = anchor.member.userId;
         const memberName = anchor.member.name;
         const newRole = (selectedIsAdmin) ? 'guest' : 'admin';
-        const apiPath = `/groups/${anchor.member.SK}/membership`;
+        const apiPath = `/groups/${anchor.member.groupId}/membership`;
         try {
             await API.put('blob-images', apiPath, { body: { memberId, newRole } });
             enqueueSnackbar(`Status van ${memberName} is nu "${newRole}"`);
@@ -169,9 +174,9 @@ const MemberDetails = () => {
 
     return <AccordionDetails className={classes.panel}>
         {members.map(member => (
-            <MemberLine key={member.PK || 'header'} member={member} onClick={onClick}
+            <MemberLine key={member.userId || 'header'} member={member} onClick={onClick}
                 currentIsAdmin={currentIsAdmin} isLoading={!hasValue}
-                isCurrent={(member.PK.slice(3) === profile.id)}
+                isCurrent={(member.userId === profile.id)}
                 isLarge={isLarge}
             />
         ))}

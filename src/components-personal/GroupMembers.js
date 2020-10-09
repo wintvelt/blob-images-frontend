@@ -30,7 +30,6 @@ const GroupMembers = () => {
     const groupData = useActiveGroupValue();
     const group = groupData.contents;
     const background = useCoverColor(group);
-    console.log(background);
 
     const backgroundStyle = { backgroundColor: background?.lightVibrant };
 

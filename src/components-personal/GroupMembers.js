@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     panel: {
         paddingLeft: theme.spacing(1),
         paddingRight: theme.spacing(1),
-        margin: theme.spacing(2, 0),
+        margin: theme.spacing(0, 0, 2, 0),
     },
     summary: {
         height: '64px',

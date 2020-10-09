@@ -1,14 +1,13 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
-import { makeImageUrl } from '../../src/components-generic/imageProvider';
+import { ClubImage } from '../../src/components-generic/imageProvider';
 
 import Link from '../components-generic/Link';
 import { useActiveGroupValue } from '../data/activeTree-Group';
@@ -45,14 +44,14 @@ export const GroupImage = () => {
     const groupData = useActiveGroupValue();
     const hasValue = !!groupData.contents;
     const image = hasValue && groupData.contents.image;
-    if (hasValue && !groupData.contents) console.log({groupData});
+    if (hasValue && !groupData.contents) console.log({ groupData });
     if (!image) return null;
 
-    const imageUrl = makeImageUrl(image.image, 1440, 384);
-
-    return <CardMedia className={classes.groupMedia}
-        image={imageUrl}
-        title='Group cover image'
+    return <ClubImage className={classes.groupMedia}
+        title='Groepsfoto'
+        src={image?.url}
+        width={1440}
+        height={384}
     />
 };
 
@@ -60,7 +59,7 @@ export const GroupEditButton = () => {
     const classes = useStyles();
     const groupData = useActiveGroupValue();
     const hasValue = !!groupData.contents;
-    const userIsAdmin = hasValue && groupData.contents.userIsAdmin;
+    const userIsAdmin = hasValue && groupData.contents.userRole === 'admin';
     const paths = useRecoilValue(activePathFront);
     if (!userIsAdmin) return null;
     return <Link href={paths.path + '/edit'} as={paths.asPath + '/edit'}>

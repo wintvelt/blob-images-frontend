@@ -22,7 +22,8 @@ export const groupToForm = (group) => ({
         photoId: group.photoId
     },
     userRole: group.userRole,
-    isFounder: group.isFounder
+    isFounder: group.isFounder,
+    newPicsCount: group.newPicsCount
 });
 
 export const useReloadActiveGroup = () => {

@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 const GroupHeader = () => {
     const classes = useStyles();
-    return <Card className={classes.card}>
+    return <Card className={classes.card} square>
         <GroupImage />
         <GroupEditButton />
         <CardContent className={classes.content}>

@@ -25,7 +25,7 @@ const BackLinkToGroup = ({ className }) => {
     const group = groupData.contents;
     const groupPath = '/personal/groups/[id]';
     const groupAs = groupPath.replace('[id]', group.id);
-    const text = group.name || 'group';
+    const text = group.name || 'groep';
     return <Typography variant='body1' component='span' style={linkStyle} className={className} >
         <Icon fontSize='small'>arrow_back</Icon>
         <Link href={groupPath} as={groupAs}

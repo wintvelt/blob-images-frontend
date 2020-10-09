@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { bucket } from '../aws-amplify/config-env';
+import { usePalette } from 'react-palette';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // const imageBaseUrl = 'https://d2y9pdc5bc1adh.cloudfront.net/';
@@ -53,3 +54,10 @@ export const makeImageUrl = (key, width, height) => {
         return key;
     }
 }
+
+export const useCoverColor = (record) => {
+    const url = record?.image?.url;
+    const urlSmall = makeImageUrl(url, 200, 200);
+    const { data } = usePalette(urlSmall);
+    return data;
+};

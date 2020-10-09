@@ -7,6 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import MemberDetails from './GroupMembersLayout-Member';
 import { MemberAvatarGroup, MemberActions } from './GroupMembersLayout';
+import { useCoverColor } from '../components-generic/imageProvider';
+import { useActiveGroupValue } from '../data/activeTree-Group';
 
 const useStyles = makeStyles(theme => ({
     panel: {
@@ -25,8 +27,14 @@ const useStyles = makeStyles(theme => ({
 
 const GroupMembers = () => {
     const classes = useStyles();
+    const groupData = useActiveGroupValue();
+    const group = groupData.contents;
+    const background = useCoverColor(group);
+    console.log(background);
 
-    return <Accordion className={classes.panel}>
+    const backgroundStyle = { backgroundColor: background?.lightVibrant };
+
+    return <Accordion className={classes.panel} style={backgroundStyle}>
         <AccordionSummary
             className={classes.summary}
             expandIcon={<Icon>expand_more</Icon>}

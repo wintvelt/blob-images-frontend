@@ -81,8 +81,13 @@ const saveMember = async (groupId, memberId, newRole) => {
     });
     return result;
 };
+const deleteMember = async (groupId, memberId) => {
+    const apiPath = `/groups/${groupId}/membership/${memberId}`;
+    const result = await API.del('blob-images', apiPath);
+    return result;
+}
 
-export const useSaveMember = () => {
+export const useMemberUpdate = () => {
     const groupId = useRecoilValue(activeGroupIdState);
     const reloadMembers = useReloadActiveMembers();
     const saveMemberFunc = async (memberId, newRole) => {
@@ -93,12 +98,18 @@ export const useSaveMember = () => {
             return { hasError: error };
         }
         return { success: true };
+    };
+    const deleteMemberFunc = async (memberId) => {
+        try {
+            const result = await deleteMember(groupId, memberId);
+            reloadMembers();
+        } catch (error) {
+            return { hasError: error };
+        }
+        return { success: true };
     }
-    return saveMemberFunc;
-}
-
-// }
-// export const deleteGroup = async (groupId) => {
-//     const result = await API.del('blob-images', `/groups/${groupId}`);
-//     return result;
-// };
+    return {
+        save: saveMemberFunc,
+        delete: deleteMemberFunc
+    };
+};

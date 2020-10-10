@@ -25,7 +25,7 @@ const flexGrow = { flexGrow: 1 };
 const DeleteDialog = ({ open, onClose, onDelete, title, lines, abortText, submitText }) => {
     const classes = useStyles();
     return <Dialog open={open} onClose={onClose} aria-labelledby="dialog-confirm-deletion"
-        fullWidth maxWidth='md'>
+        fullWidth maxWidth='sm'>
         <DialogTitle disableTypography id="image-upload-dialog" style={flexCenter}>
             <Typography variant='h6' style={flexGrow}>{title}</Typography>
             <IconButton onClick={onClose}><Icon>close</Icon></IconButton>

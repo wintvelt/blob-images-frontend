@@ -10,7 +10,7 @@ const GroupMain = () => {
     // initial load (only) here
     const groupData = useActiveGroup();
     const groupMembers = useActiveMembers();
-    redirectOnGroupLoadError();
+    redirectOnGroupLoadError(groupData);
     return (
         <main>
             <GroupHeader />

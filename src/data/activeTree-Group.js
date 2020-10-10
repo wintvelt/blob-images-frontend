@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 import { API } from 'aws-amplify';
 import { useSnackbar } from 'notistack';
 
-import { atom, selector, useRecoilValue, DefaultValue, useSetRecoilState } from 'recoil';
+import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { activeGroupIdState } from './activeTreeRoot';
 import { useSetLoadingPath } from './loadingData';
-import { userData } from './userData';
 
 // Active Group
 export const activeGroupData = atom({
@@ -48,8 +47,10 @@ export const useActiveGroup = () => {
     const activeGroup = useRecoilValue(activeGroupData);
     const reloadGroup = useReloadActiveGroup();
     useEffect(() => {
-        if (!activeGroup.contents?.id || activeGroup.contents?.id !== activeGroupId) reloadGroup();
-    }, [activeGroupId, activeGroup]);
+        if (activeGroupId && (!activeGroup.contents?.id || activeGroup.contents?.id !== activeGroupId)) {
+            reloadGroup()
+        };
+    }, [activeGroupId]);
     return activeGroup;
 };
 
@@ -97,10 +98,10 @@ export const deleteGroup = async (groupId) => {
     return result;
 };
 
-export const redirectOnGroupLoadError = (groupData, withEdit) => {
+export const redirectOnGroupLoadError = (groupData, withEdit, isNew) => {
     const { enqueueSnackbar } = useSnackbar();
     const redirect = useSetLoadingPath();
-    const hasError = (groupData?.hasError);
+    const hasError = (groupData?.hasError && !isNew);
     const unAuthEdit = (withEdit && groupData?.contents && groupData.contents.userRole === 'guest');
     useEffect(() => {
         if (hasError) {

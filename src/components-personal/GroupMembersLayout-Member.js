@@ -12,7 +12,9 @@ import { useMediaQuery, Chip } from '@material-ui/core';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 import { initials } from '../../src/components-generic/helpers';
 import { useSnackbar } from 'notistack';
-import { useMembersValue, useSaveMember } from '../data/activeTree-GroupMembers';
+import { useMembersValue, useMemberUpdate } from '../data/activeTree-GroupMembers';
+import DeleteDialog from '../components-generic/DeleteDialog';
+import { useSetLoadingPath } from '../data/loadingData';
 
 const useStyles = makeStyles(theme => ({
     panel: {
@@ -116,16 +118,69 @@ const MemberLine = ({ member, onClick, isLoading, isLarge }) => {
     </div>
 }
 
+const makeDialogItems = (state) => (
+    (state === 'ban') ?
+        [
+            ['Als een lid de groep verlaat, verdwijnen ook hun foto\'s uit de groep',
+                'Dit is definitief en omomkeerbaar',
+                'Je kunt het lid wel weer opnieuw uitnodigen, maar dan moet hij/zij foto\'s weer opnieuw toevoegen'
+            ],
+            'Yes, verban dit lid'
+        ]
+        : (state === 'leave') ?
+            [
+                [
+                    'Als je de groep verlaat, is dat definitief. Je foto\'s verdwijnen dan ook uit de groep',
+                    'Je kunt een ander lid vragen om je opnieuw uit te nodigen',
+                    'Foto\'s moet je dan wel opnieuw toevoegen'
+                ],
+                'Yes, verlaat groep'
+            ]
+            : (state === 'uninvite') ?
+                [
+                    [
+                        'Als je de uitnodiging intrekt, krijgt het aspirant lid hiervan bericht.'
+                    ],
+                    'Yes, trek uitnodiging in'
+                ]
+                : [[], '']
+);
+
 const MemberDetails = () => {
     const classes = useStyles();
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const { enqueueSnackbar } = useSnackbar();
-    const saveMember = useSaveMember();
+    const setLoadingPath = useSetLoadingPath();
+    const memberUpdate = useMemberUpdate();
 
     const membersData = useMembersValue();
     const hasValue = (!!membersData.contents);
 
     const members = (hasValue) ? membersData.contents : [];
+
+    const [dialog, setDialog] = useState('closed');
+    const onOpen = (state) => () => setDialog(state);
+    const onClose = () => {
+        handleClose();
+        setDialog('closed');
+    };
+    const onConfirm = async () => {
+        const memberId = anchorMem.userId;
+        const memberName = anchorMem.name;
+        const delResult = await memberUpdate.delete(memberId);
+        if (delResult.success) {
+            if (anchorMem.isCurrent) {
+                enqueueSnackbar('Je hebt de groep verlaten');
+                setLoadingPath('/personal/groups')
+            } else {
+                enqueueSnackbar(`${memberName} is verwijderd uit de groep`);
+            };
+        } else {
+            enqueueSnackbar(`Niet gelukt om ${memberName} te verwijderen`, { variant: 'error' });
+        }
+        onClose();
+    };
+    const [dialogLines, submitText] = makeDialogItems(dialog);
 
     const [anchor, setAnchor] = useState({ el: null });
     const anchorMem = anchor.member;
@@ -143,7 +198,7 @@ const MemberDetails = () => {
         const memberId = anchorMem.userId;
         const memberName = anchorMem.name;
         const newRole = (anchorMem.userRole === 'admin') ? 'guest' : 'admin';
-        const saveResult = await saveMember(memberId, newRole);
+        const saveResult = await memberUpdate.save(memberId, newRole);
         if (saveResult.success) {
             enqueueSnackbar(`Status van ${memberName} is nu "${newRole}"`);
         } else {
@@ -169,7 +224,7 @@ const MemberDetails = () => {
             disabled={anchorOptions.length === 0}
         >
             {anchorOptions.includes('leave') &&
-                <MenuItem disabled={!hasOtherAdmin}>Groep verlaten</MenuItem>}
+                <MenuItem onClick={onOpen('leave')}>Groep verlaten</MenuItem>}
             {anchorOptions.includes('guestify') &&
                 <MenuItem onClick={onChangeRole}>Maak gast</MenuItem>
             }
@@ -177,10 +232,19 @@ const MemberDetails = () => {
                 <MenuItem onClick={onChangeRole}>Maak admin</MenuItem>
             }
             {anchorOptions.includes('ban') &&
-                <MenuItem style={redStyle}>Verban uit groep</MenuItem>}
+                <MenuItem style={redStyle} onClick={onOpen('ban')}>Verban uit groep</MenuItem>}
             {anchorOptions.includes('uninvite') &&
-                <MenuItem style={redStyle}>Toch niet uitnodigen</MenuItem>}
+                <MenuItem style={redStyle} onClick={onOpen('uninvite')}>Toch niet uitnodigen</MenuItem>}
         </Menu>
+        <DeleteDialog
+            open={dialog !== 'closed'}
+            onClose={onClose}
+            onDelete={onConfirm}
+            title='Weet je het zeker?'
+            lines={dialogLines}
+            abortText='OK toch maar niet'
+            submitText={submitText}
+        />
     </AccordionDetails >
 }
 

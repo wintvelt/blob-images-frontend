@@ -79,7 +79,7 @@ const GroupForm = ({ group, isNew }) => {
     }
     const title = (isNew && userGroupsData.state === 'hasValue') ?
         (groups && groups.length > 0) ?
-            'Profiel van je nieuwe groep'
+            'Nieuwe groep'
             : 'Richt je eerste groep op!'
         : 'Groepsprofiel aanpassen';
     const submitText = (isNew) ? 'Nieuwe groep opslaan' : 'Wijzigingen opslaan';

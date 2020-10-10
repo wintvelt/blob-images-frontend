@@ -26,7 +26,7 @@ const GroupEditMain = () => {
     const isNew = (groupId === 'new');
     const groupData = useActiveGroup();
     const group = groupData.contents || {};
-    redirectOnGroupLoadError(groupData, true);
+    redirectOnGroupLoadError(groupData, true, isNew);
 
     return (
         <main>

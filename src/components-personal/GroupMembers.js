@@ -32,7 +32,7 @@ const GroupMembers = () => {
     const group = groupData.contents;
     const background = useCoverColor(group);
 
-    const backgroundStyle = { backgroundColor: background?.lightVibrant+'A0' };
+    const backgroundStyle = { backgroundColor: background?.lightVibrant + 'A0' };
 
     return <Accordion className={classes.panel} style={backgroundStyle}>
         <AccordionSummary
@@ -41,10 +41,10 @@ const GroupMembers = () => {
             aria-controls="panel1a-content"
             id="panel1a-header"
         >
-            <Typography variant='subtitle1' color='textSecondary' className={classes.panelTitle}>
+            {(!groupData.hasError) && <Typography variant='subtitle1' color='textSecondary' className={classes.panelTitle}>
                 Leden:
-            </Typography>
-            <MemberAvatarGroup />
+            </Typography>}
+            {(!groupData.hasError) && <MemberAvatarGroup />}
         </AccordionSummary>
         <MemberDetails />
         <MemberActions />

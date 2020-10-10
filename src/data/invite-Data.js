@@ -43,6 +43,7 @@ export const useReloadInvite = () => {
             const invite = await API.get('blob-images', `/invites/${inviteId}`);
             setInvite({ contents: inviteToForm(invite) });
         } catch (error) {
+            console.log({error});
             setInvite({ hasError: error });
         }
     }
@@ -50,12 +51,22 @@ export const useReloadInvite = () => {
 }
 
 export const useActiveInvite = (inviteId) => {
-    const activeInvite = useRecoilValue(activeInviteData);
+    const inviteData = useRecoilValue(activeInviteData);
     const reloadInvite = useReloadInvite();
     useEffect(() => {
         if (inviteId) reloadInvite(inviteId);
     }, [inviteId]);
-    return activeInvite;
+    const acceptInvite = () => {
+        return API.post('blob-images', `/invites/${inviteId}`);
+    };
+    const declineInvite = () => {
+        return API.del('blob-images', `/invites/${inviteId}`);
+    };
+    return {
+        inviteData,
+        acceptInvite,
+        declineInvite
+    };
 };
 
 export const useInviteValue = () => {

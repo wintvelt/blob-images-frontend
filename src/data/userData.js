@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { atom, useRecoilState, useRecoilValue, selector, DefaultValue } from 'recoil';
 import { API, Auth } from 'aws-amplify';
+import { useSetLoadingPath } from './loadingData';
 
 const initialUser = {
     profile: null,
@@ -145,10 +146,7 @@ export const useUser = () => {
     }
     const logout = () => {
         Auth.signOut();
-        setUpdate({
-            ...initialUser,
-            isAuthenticating: false,
-        });
+        location && location.reload();
     }
     const signup = async (email, password, name) => {
         try {

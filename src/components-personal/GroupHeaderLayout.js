@@ -73,6 +73,7 @@ export const GroupEditButton = () => {
 export const GroupName = () => {
     const classes = useStyles();
     const groupData = useActiveGroupValue();
+    if (groupData.hasError) return null;
     const hasValue = !!groupData.contents;
     const name = hasValue && groupData.contents.name;
     return <TextSkeleton className={classes.groupText} isLoading={!hasValue}>
@@ -83,6 +84,7 @@ export const GroupName = () => {
 export const GroupDescription = () => {
     const classes = useStyles();
     const groupData = useActiveGroupValue();
+    if (groupData.hasError) return null;
     const hasValue = !!groupData.contents;
     const description = hasValue && groupData.contents.description;
     return <TextSkeleton className={classes.groupText} isLoading={!hasValue}>
@@ -93,6 +95,7 @@ export const GroupDescription = () => {
 export const GroupStats = () => {
     const classes = useStyles();
     const groupData = useActiveGroupValue();
+    if (groupData.hasError) return null;
     const hasValue = !!groupData.contents;
     const stats = hasValue && groupData.contents.stats;
     if (!stats) return null;

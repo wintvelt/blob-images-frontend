@@ -26,7 +26,7 @@ const GroupInviteMain = () => {
     // initial load (only) here
     const groupData = useActiveGroup();
     const groupMembers = useActiveMembers();
-    redirectOnGroupLoadError();
+    redirectOnGroupLoadError(groupData);
 
     const hasValue = groupData.contents;
     const group = (hasValue)? groupData.contents : {};

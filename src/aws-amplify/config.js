@@ -38,8 +38,8 @@ export const amplifyConfig = {
                 region: config.apiGateway.REGION,
             },
             {
-                name: "user",
-                endpoint: 'https://evnukpi4o1.execute-api.eu-central-1.amazonaws.com/dev',
+                name: "invite",
+                endpoint: 'https://pzmvrfc9ml.execute-api.eu-central-1.amazonaws.com/dev',
                 region: config.apiGateway.REGION,
             }
         ]

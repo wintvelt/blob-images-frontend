@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const InvitePage = (props) => {
-    const { inviteData, userData, onAccept, isSaving } = props;
+    const { inviteData, userData, onAccept, onDecline, isSaving } = props;
     const invite = inviteData.contents || {};
     const isLoading = (inviteData.isLoading);
     const group = invite?.group;
@@ -45,8 +45,12 @@ const InvitePage = (props) => {
     useEffect(() => {
         const checkMembership = async () => {
             if (groupId && user && user.isAuthenticated) {
-                const groupData = await API.get('blob-images', `/groups/${groupId}`);
-                setIsAlreadyMember(!!groupData);
+                try {
+                    const groupData = await API.get('blob-images', `/groups/${groupId}`);
+                    setIsAlreadyMember(true);
+                } catch (_) {
+                    setIsAlreadyMember(false);
+                }
             } else {
                 setIsAlreadyMember(false);
             }
@@ -54,10 +58,6 @@ const InvitePage = (props) => {
         checkMembership();
     }, [user.isAuthenticated, groupId]);
 
-
-    const onDecline = async () => {
-        alert('decline');
-    };
     return (
         <main>
             <Toolbar />
@@ -88,7 +88,7 @@ const InvitePage = (props) => {
 const InviteHOC = () => {
     const router = useRouter();
     const inviteId = router.query?.inviteid;
-    const inviteData = useActiveInvite(inviteId);
+    const { inviteData, acceptInvite, declineInvite } = useActiveInvite(inviteId);
     const reloadInvite = useReloadInvite();
     const hasInvite = (!!inviteData.contents);
     const invite = (hasInvite) ? inviteData.contents : {};
@@ -105,12 +105,12 @@ const InviteHOC = () => {
         setIsSaving(true);
         if (user && user.isAuthenticated) {
             try {
-                await API.post('blob-images', `/invites/${inviteId}`);
-                enqueueSnackbar(`Welcome to ${group ? group.name : 'the group'}!`, { variant: 'success' });
-                setLoadingPath('/personal/groups/[id]', `/personal/groups/${group?.id}`);
+                await acceptInvite();
+                enqueueSnackbar(`Welkom als lid van ${group ? group.name : 'deze groep'}!`, { variant: 'success' });
+                setLoadingPath('/personal/groups/[id]', `/personal/groups/${group?.groupId}`);
             } catch (error) {
                 console.log(error);
-                enqueueSnackbar('Oops, could not accept this invite', { variant: 'error' });
+                enqueueSnackbar('Oeps, we konden je niet lid maken', { variant: 'error' });
             }
         } else {
             setIsAccepting(true);
@@ -118,6 +118,19 @@ const InviteHOC = () => {
         }
         setIsSaving(false);
     };
+    const onDecline = async () => {
+        setIsSaving(true);
+        try {
+            await declineInvite();
+            enqueueSnackbar(`Je afwijzing om lid te worden van ${group ? group.name : 'deze groep'} is doorgegeven`);
+            const redirect = (user && user.isAuthenticated)? '/personal/groups' : '/';
+            setLoadingPath(redirect);
+        } catch (error) {
+            console.log(error);
+            enqueueSnackbar('Oeps, je afwijzing komt niet door', { variant: 'error' });
+        }
+        setIsSaving(false);
+    }
 
     useEffect(() => {
         if (isAccepting && !user.path) {
@@ -133,7 +146,8 @@ const InviteHOC = () => {
     }, [user.isAuthenticated, user.path])
 
     return <PublicPage>
-        <InvitePage inviteData={inviteData} userData={userData} onAccept={onAccept} isSaving={isSaving} />
+        <InvitePage inviteData={inviteData} userData={userData}
+            onAccept={onAccept} onDecline={onDecline} isSaving={isSaving} />
     </PublicPage>
 };
 

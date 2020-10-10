@@ -44,7 +44,6 @@ export const useReloadActiveMembers = () => {
             const membersRaw = (activeGroupId) ?
                 await API.get('blob-images', `/groups/${activeGroupId}/members`)
                 : [];
-            console.log(membersRaw);
             const members = membersRaw
                 .sort(memberSort)
                 .map(mem => memberToForm(mem));

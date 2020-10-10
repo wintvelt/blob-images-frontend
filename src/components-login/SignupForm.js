@@ -8,16 +8,16 @@ import { newPasswordValidations } from '../components-generic/FormField';
 
 const fieldConfig = {
     name: {
-        autoComplete: 'name', type: 'text', label: 'Your name',
+        autoComplete: 'name', type: 'text', label: 'Naam',
         validations: [{
-            text: 'fill out your name',
+            text: 'vul je naam in',
             validate: (val) => (!!val),
         }],
     },
     email: {
         autoComplete: 'email', type: 'email', label: 'Your email',
         validations: [{
-            text: 'enter a valid email address',
+            text: 'geef een geldig email adres op',
             validate: (val) => (
                 val &&
                 val.split('@')[1] && !!val.split('@')[1].split('.')[1]
@@ -25,19 +25,19 @@ const fieldConfig = {
         }],
     },
     password: {
-        autoComplete: 'new-password', type: 'password', label: 'Your new password',
+        autoComplete: 'new-password', type: 'password', label: 'Jouw geheime wachtwoord',
         validations: newPasswordValidations,
     },
     optin: {
         type: 'checkbox',
         label: <span>
-            I agree to the{' '}
-            <Link href='#' color='primary'>
-                terms and conditions
+            Ik ga akkoord met de{' '}
+            <Link href='/about' color='primary'>
+                algemene voorwaarden
             </Link>
         </span>,
         validations: [{
-            text: 'to register, you have to agree',
+            text: 'om lid te worden moet je dit ok vinden',
             validate: (val) => (!!val),
         }]
     }

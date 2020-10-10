@@ -203,7 +203,7 @@ const fieldPropsAreEqual = (prevProps, nextProps) => {
     return didNotChange;
 };
 
-const BaseField = (props) => {
+export const BaseField = (props) => {
     // export const Field = (props) => {
     const { field, onChange, showValidation } = props;
     const helperText = validationText(field, showValidation);

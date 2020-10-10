@@ -9,7 +9,8 @@ import PrivatePage from '../../../../src/components-personal/PrivatePage';
 import GroupCardLayout from '../../../../src/components-personal/GroupCardLayout';
 import GroupInviteForm from '../../../../src/components-personal/GroupInviteForm';
 import BackLinkToGroup from '../../../../src/components-generic/BackLinkToGroup';
-import { useActiveGroup } from '../../../../src/data/activeTree-Group';
+import { redirectOnGroupLoadError, useActiveGroup } from '../../../../src/data/activeTree-Group';
+import { useActiveMembers } from '../../../../src/data/activeTree-GroupMembers';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -21,7 +22,12 @@ const useStyles = makeStyles(theme => ({
 
 const GroupInviteMain = () => {
     const classes = useStyles();
+
+    // initial load (only) here
     const groupData = useActiveGroup();
+    const groupMembers = useActiveMembers();
+    redirectOnGroupLoadError();
+
     const hasValue = groupData.contents;
     const group = (hasValue)? groupData.contents : {};
 
@@ -35,7 +41,7 @@ const GroupInviteMain = () => {
                 </Grid>
                 <Grid item md={1} />
                 <Grid item md={8} xs={12}>
-                    <GroupInviteForm title='Invite new members' />
+                    <GroupInviteForm title='Nieuwe leden uitnodigen' />
                 </Grid>
             </Grid>
         </main>

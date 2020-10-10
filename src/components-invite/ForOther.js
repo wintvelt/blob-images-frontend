@@ -23,33 +23,30 @@ const ForOtherCard = ({ onLogout, isLoggedIn, onLogin }) => {
         <Paper className={classes.root}>
             <Typography component="h1" variant="h4"
                 align='center' gutterBottom>
-                You may be invited
+                Mooi dat je een uitnodiging hebt
             </Typography>
             <img src='/img/invite_divider.png' alt='divider' width={64} />
             <Typography paragraph variant='subtitle1' align='center'>
-                But this may not be the invite you are looking for
-            </Typography>
-            <Typography variant='body1' align='center'>
-                The invite we tried to retrieve is addressed to an existing account
+                Maar deze uitnodiging is voor een bestaand lid van clubalmanac
             </Typography>
             {(!isLoggedIn) && <Typography variant='body1' align='center'>
-                You could try to {' '}
+                Je zou kunnen {' '}
                 <Button type='submit' variant='contained' color='secondary' size='small' disableElevation
                     onClick={onLogin}>
-                    Log in
-                </Button>{' '}to check if you are the invited one<br />
+                    inloggen
+                </Button>{' '}om te checken of deze uitnodiging voor jou is<br />
                 <br />
             </Typography>}
             {(isLoggedIn) && <Typography variant='body1' align='center'>
-                But to <strong>a different account</strong> than you are currently logged in to<br />
+                En gericht aan <strong>een ander account</strong> dan waarmee je nu bent ingelogd<br />
                 <br />
-                You could try to {' '}
+                Je zou kunnen {' '}
                 <Button type='submit' variant='contained' color='secondary' size='small' disableElevation
                     onClick={onLogout}>
-                    Log out
-                </Button>{' '}and log back in to a different account<br />
+                    uitloggen
+                </Button>{' '}en daarna met een ander account in te loggen<br />
                 <br />
-                Or contact the person who invited you.
+                Of neem anders contact op met de persoon van wie je deze uitnodiging kreeg
             </Typography>}
             <img src='/img/invite_divider.png' alt='divider' width={64} />
         </Paper>

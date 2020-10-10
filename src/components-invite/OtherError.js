@@ -22,21 +22,24 @@ const OtherErrorCard = ({ invite }) => {
         <Paper className={classes.root}>
             <Typography component="h1" variant="h4" color='error'
                 align='center' gutterBottom>
-                You may be invited
+                Mooi dat je een uitnodiging hebt
             </Typography>
             <img src='/img/invite_divider.png' alt='divider' width={64} />
             <Typography paragraph variant='subtitle1' color='error'>
-                But at this time the invite is unavailable
+                Maar op dit moment kunnen we deze uitnodiging niet terugvinden
             </Typography>
             <Typography variant='body1' align='center' gutterBottom>
-                Possible reasons could be<br />
+                Mogelijke verklaringen hiervoor:<br />
                 <br />
-                    ‣ The invite was accepted or declined before<br />
-                    ‣ The invite has expired (invites are valid for 30 days)<br />
-                    ‣ Our service may be unreachable<br />
-                    ‣ The link is not correct, you could try again from the invite mail<br />
+                ⦾ De uitnodiging is al eerder geaccepteerd of afgewezen<br />
+                <em>niks aan te doen helaas</em><br /><br />
+                ⦾ De uitnodiging is verlopen (uitnodigingen zijn 30 dagen geldig)<br />
+                <em>neem contact op met het lid dat je uitnodigde</em><br /><br />
+                ⦾ Onze services zijn momenteel niet bereikbaar<br />
+                <em>je kunt het later nog eens proberen</em><br /><br />
+                ⦾ De link is niet correct<br />
+                <em>je kunt het opnieuw proberen vanuit de mail met de uitnodiging</em><br />
                 <br />
-                Maybe try again later?
             </Typography>
             <img src='/img/invite_divider.png' alt='divider' width={64} />
         </Paper>

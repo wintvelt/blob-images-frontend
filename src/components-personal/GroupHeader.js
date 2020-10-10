@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
         background: 'linear-gradient(308deg, rgba(88,163,69,1) 14%, rgba(151,164,71,1) 43%, rgba(100,105,167,1) 77%)',
         width: '100%',
         height: '384px',
+        boxShadow: 'none',
     },
     content: {
         position: 'relative',
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 const GroupHeader = () => {
     const classes = useStyles();
-    return <Card className={classes.card} square>
+    return <Card className={classes.card} square elevation={0}>
         <GroupImage />
         <GroupEditButton />
         <CardContent className={classes.content}>

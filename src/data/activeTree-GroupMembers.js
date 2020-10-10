@@ -1,24 +1,25 @@
 import { useEffect } from 'react';
 import { API } from 'aws-amplify';
-import { useSnackbar } from 'notistack';
 
-import { atom, selector, useRecoilValue, DefaultValue, useSetRecoilState } from 'recoil';
+import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { activeGroupIdState } from './activeTreeRoot';
 import { useSetLoadingPath } from './loadingData';
 import { userData } from './userData';
 
 const memberToForm = (member) => ({
-    userId: member.SK,
+    userId: member.PK.slice(2),
     createdAt: member.createdAt,
     name: member.name,
     email: member.email,
     isFounder: member.isFounder,
+    isCurrent: member.isCurrent,
     image: {
         photoId: member.photoId,
         url: member.photoUrl,
     },
     userRole: member.userRole,
     status: member.status,
+    options: member.options,
     visitDateLast: member.visitDateLast
 });
 
@@ -43,6 +44,7 @@ export const useReloadActiveMembers = () => {
             const membersRaw = (activeGroupId) ?
                 await API.get('blob-images', `/groups/${activeGroupId}/members`)
                 : [];
+            console.log(membersRaw);
             const members = membersRaw
                 .sort(memberSort)
                 .map(mem => memberToForm(mem));
@@ -69,39 +71,32 @@ export const useMembersValue = () => {
     return activeMembers;
 };
 
-// const saveGroup = async (groupId, groupFields) => {
-//     let groupUpdate = {
-//         name: groupFields.name,
-//         description: groupFields.description,
-//         photoFilename: groupFields.image.url && groupFields.image.url.split('/')[2]
-//     };
-//     if (groupFields.image.photoId) groupUpdate.photoId = groupFields.image.photoId;
-//     if (!groupUpdate.photoFilename && !groupUpdate.photoId) groupUpdate.photoId = '';
-//     const isNew = !groupId;
-//     const result = (isNew) ?
-//         await API.post('blob-images', '/groups', {
-//             body: groupUpdate
-//         }) :
-//         await API.put('blob-images', `/groups/${groupId}`, {
-//             body: groupUpdate
-//         });
-//     return result;
-// };
+const saveMember = async (groupId, memberId, newRole) => {
+    let memberUpdate = {
+        newRole
+    };
+    const apiPath = `/groups/${groupId}/membership/${memberId}`;
+    const result = await API.put('blob-images', apiPath, {
+        body: memberUpdate
+    });
+    return result;
+};
 
-// export const useSaveGroup = () => {
-//     const setActiveGroup = useSetRecoilState(activeGroupData);
-//     const saveGroupFunc = async (groupId, groupFields) => {
-//         let newGroupId = null;
-//         try {
-//             const result = await saveGroup(groupId, groupFields);
-//             newGroupId = result.SK;
-//             setActiveGroup({ contents: groupToForm(result) });
-//         } catch (error) {
-//             setActiveGroup({ hasError: 'could not save group changes' });
-//         }
-//         return newGroupId;
-//     }
-//     return saveGroupFunc;
+export const useSaveMember = () => {
+    const groupId = useRecoilValue(activeGroupIdState);
+    const reloadMembers = useReloadActiveMembers();
+    const saveMemberFunc = async (memberId, newRole) => {
+        try {
+            const result = await saveMember(groupId, memberId, newRole);
+            reloadMembers();
+        } catch (error) {
+            return { hasError: error };
+        }
+        return { success: true };
+    }
+    return saveMemberFunc;
+}
+
 // }
 // export const deleteGroup = async (groupId) => {
 //     const result = await API.del('blob-images', `/groups/${groupId}`);

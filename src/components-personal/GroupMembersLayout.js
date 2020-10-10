@@ -47,7 +47,7 @@ export const MemberAvatarGroup = () => {
         {members.map((member, i) => (
             <AvatarSkeleton key={'' + member.name + i} alt={member.name} src={member.image?.url}
                 className={classes.avatar} isLoading={!hasValue}>
-                {(!member.image) &&
+                {(!member.image?.url) &&
                     <span style={paddingLeft}>{initials(member.name)}</span>
                 }
             </AvatarSkeleton>

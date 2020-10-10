@@ -32,9 +32,7 @@ const gutterTop = { marginTop: '16px' };
 const InviteForm = ({ invite, isLoading, isSaving, onAccept, onDecline, profile, isAlreadyMember }) => {
     const classes = useStyles();
     const isWaiting = isLoading || isSaving;
-    const { invitation, group } = invite || {};
-    const { from } = invitation || {};
-    const toEmail = invite?.user?.email;
+    const { fromEmail, fromName, toName, toEmail, message, group } = invite || {};
     const isToDifferentEmail = profile && profile.email && profile.email !== toEmail;
 
     const onSubmit = (e) => {
@@ -49,46 +47,46 @@ const InviteForm = ({ invite, isLoading, isSaving, onAccept, onDecline, profile,
 
     const submitButtonContent = isWaiting ? <CircularProgress size='1.5rem' color='secondary' />
         : (isAlreadyMember) ?
-            'Clear invite'
-            : 'Accept invite';
+            'Bevestig lidmaatschap'
+            : 'Accepteer uitnodiging';
     const declineButtonContent = isWaiting ? <CircularProgress size='1.5rem' color='secondary' />
-        : 'Respectfully decline';
+        : 'afwijzen';
 
     return (
         <form name='invite-accept-form' noValidate>
             <Paper className={classes.inviteForm}>
                 <Typography component="h1" variant="h4" color="inherit"
                     align='center' gutterBottom>
-                    You are invited
-                    {isAlreadyMember && ' (again)'}
+                    Je bent gevraagd
+                    {isAlreadyMember && ' (opnieuw)'}
                     !
                     </Typography>
                 {(!isLoading) && <div style={alignCenter}>
                     <TextSkeleton isLoading={isLoading}>
                         <Typography variant='h5' align='center' gutterBottom>
-                            {from && from.name}{' '}
-                            cordially invites
-                            {' '}{invite?.user?.name}<br />
-                            to join "{group && group.name}"
+                            {fromName}{' '}
+                            nodigt
+                            {' '}{toName}<br />
+                            uit om lid te worden van "{group && group.name}"
                         </Typography>
                     </TextSkeleton>
                     <img src='/img/invite_divider.png' alt='divider' width={64} />
                     <Typography variant='body1' align='center' gutterBottom>
-                        {invitation && invitation.message.split('\n').map((line, i) => (
+                        {message.split('\n').map((line, i) => (
                             <React.Fragment key={i}>{line}<br /></React.Fragment>
                         ))}
                     </Typography>
                     <img src='/img/invite_divider.png' alt='divider' width={64} />
                     <em><Typography variant='body1' align='center' gutterBottom style={gutterTop}>
-                        This invite is valid until{' '}{expireDate(invite.createdAt)}
+                        Deze uitnodiging is geldig tot{' '}{expireDate(invite.createdAt)}
                     </Typography></em>
                     {isToDifferentEmail && <Typography variant='body2' align='center' gutterBottom style={gutterTop}>
-                        Originally addressed to{' '}{toEmail} <br />
-                        It would be decent to only accept if this is you
+                        Oorspronkelijk gericht aan{' '}{toEmail} <br />
+                        Het zou wel beleefd zijn om deze alleen te accepteren als jij dit bent
                     </Typography>}
                     {isAlreadyMember && <Typography variant='body2' align='center' gutterBottom>
-                        You are already a member <br />
-                        Click below to confirm, and to clear the invite
+                        Je bent al lid <br />
+                        Klik hieronder om te bevestigen
                     </Typography>}
                 </div>}
                 <Button type='submit' variant='contained' color='secondary' className={classes.button}

@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: theme.spacing(1),
         paddingRight: theme.spacing(1),
         margin: theme.spacing(0, 0, 2, 0),
+        boxShadow: 'none'
     },
     summary: {
         height: '64px',
@@ -31,7 +32,7 @@ const GroupMembers = () => {
     const group = groupData.contents;
     const background = useCoverColor(group);
 
-    const backgroundStyle = { backgroundColor: background?.lightVibrant };
+    const backgroundStyle = { backgroundColor: background?.lightVibrant+'A0' };
 
     return <Accordion className={classes.panel} style={backgroundStyle}>
         <AccordionSummary

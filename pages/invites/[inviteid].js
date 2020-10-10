@@ -15,8 +15,7 @@ import InviteForm from '../../src/components-invite/InviteForm';
 import ForOther from '../../src/components-invite/ForOther';
 import Accepted from '../../src/components-invite/Accepted';
 import OtherError from '../../src/components-invite/OtherError';
-import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { activeInviteState } from '../../src/data/activeTree-invite';
+import { useActiveInvite, useReloadInvite } from '../../src/data/invite-Data';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -28,26 +27,26 @@ const useStyles = makeStyles(theme => ({
 
 const InvitePage = (props) => {
     const { inviteData, userData, onAccept, isSaving } = props;
-    const invite = (inviteData.state === 'hasValue') ? inviteData.contents : {};
-    const isLoading = (inviteData.state === 'loading');
-    const group = invite.group;
-    const groupId = group?.id;
+    const invite = inviteData.contents || {};
+    const isLoading = (inviteData.isLoading);
+    const group = invite?.group;
+    const groupId = group?.groupId;
     const user = userData.user;
     const { profile } = user || {};
 
     const classes = useStyles();
 
     const [isAlreadyMember, setIsAlreadyMember] = useState(false);
-    const notForYou = (inviteData.state === 'hasError' &&
-        inviteData.contents.response?.data?.error === 'invite not for you');
-    const otherError = !notForYou && inviteData.state === 'hasError';
+    const notForYou = (inviteData.hasError &&
+        inviteData.hasError.response?.data?.error === 'invite not for you');
+    const otherError = !notForYou && inviteData.hasError;
     const alreadyAccepted = invite.status && invite.status !== 'invite';
 
     useEffect(() => {
         const checkMembership = async () => {
             if (groupId && user && user.isAuthenticated) {
-                const isMember = await API.get('blob-images', `/groups/${groupId}/membership`);
-                setIsAlreadyMember(isMember);
+                const groupData = await API.get('blob-images', `/groups/${groupId}`);
+                setIsAlreadyMember(!!groupData);
             } else {
                 setIsAlreadyMember(false);
             }
@@ -74,7 +73,7 @@ const InvitePage = (props) => {
                             isLoggedIn={user.isAuthenticated} />
                     }
                     {(alreadyAccepted) && <Accepted invite={invite} />}
-                    {(!(inviteData.state === 'hasError') && !alreadyAccepted) &&
+                    {(!inviteData.hasError && !alreadyAccepted) &&
                         <InviteForm invite={invite} isLoading={isLoading}
                             profile={profile} isAlreadyMember={isAlreadyMember}
                             isSaving={isSaving} onAccept={onAccept} onDecline={onDecline}
@@ -89,9 +88,9 @@ const InvitePage = (props) => {
 const InviteHOC = () => {
     const router = useRouter();
     const inviteId = router.query?.inviteid;
-    const inviteData = useRecoilValueLoadable(activeInviteState(inviteId));
-    const reloadInvite = useResetRecoilState(activeInviteState(inviteId));
-    const hasInvite = (inviteData.state === 'hasValue');
+    const inviteData = useActiveInvite(inviteId);
+    const reloadInvite = useReloadInvite();
+    const hasInvite = (!!inviteData.contents);
     const invite = (hasInvite) ? inviteData.contents : {};
     const group = invite?.group;
     const userData = useUser();
@@ -125,11 +124,11 @@ const InviteHOC = () => {
             if (user.isAuthenticated) {
                 onAccept();
             } else {
-                reloadInvite();
+                if (inviteId) reloadInvite(inviteId);
                 setIsAccepting(false);
             }
         } else if (!user.path) {
-            reloadInvite();
+            if (inviteId) reloadInvite(inviteId);
         }
     }, [user.isAuthenticated, user.path])
 

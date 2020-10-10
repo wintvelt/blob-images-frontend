@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { API } from 'aws-amplify';
 import { useSnackbar } from 'notistack';
 
 import Paper from '@material-ui/core/Paper';
@@ -13,11 +12,12 @@ import Divider from '@material-ui/core/Divider';
 import Hidden from '@material-ui/core/Hidden';
 import { makeStyles } from '@material-ui/core';
 
-import { Field, validateForm } from '../components-generic/FormField';
+import { BaseField, validateForm } from '../components-generic/FormField';
 import FormButton from '../components-generic/FormButton';
-import { useRecoilValueLoadable, useRecoilValue } from 'recoil';
-import { activeGroupMembers } from '../data/activeTree-Group';
+import { useRecoilValue } from 'recoil';
 import { activeGroupIdState } from '../data/activeTreeRoot';
+import { useMembersValue } from '../data/activeTree-GroupMembers';
+import { invitePromise } from '../data/invite-Data';
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -36,9 +36,9 @@ const inviteeFieldConfig = (index, memberEmails) => ({
     name: {
         autoComplete: `invitee-name-${index}`,
         type: 'text',
-        label: 'name',
+        label: 'naam',
         validations: [{
-            text: 'enter a name',
+            text: 'voer een naam in (duh)',
             validate: (val) => (!!val),
         }],
         width: 5,
@@ -49,14 +49,14 @@ const inviteeFieldConfig = (index, memberEmails) => ({
         label: 'email',
         validations: [
             {
-                text: 'enter a valid email address',
+                text: 'voer een geldig email adres in',
                 validate: (val) => (
                     val &&
                     val.split('@')[1] && !!val.split('@')[1].split('.')[1]
                 )
             },
             {
-                text: 'enter an email new to this group',
+                text: 'er is al een groepslid met deze email',
                 validate: (val) => {
                     return !memberEmails.includes(val);
                 }
@@ -67,7 +67,7 @@ const inviteeFieldConfig = (index, memberEmails) => ({
     guestOnly: {
         autoComplete: `guest-only-${index}`,
         type: 'checkbox',
-        label: <span style={smallFont}>guest only</span>,
+        label: <span style={smallFont}>gast-toegang</span>,
         width: 1,
     },
 });
@@ -93,7 +93,7 @@ const InviteeLine = ({ invitee, onChange, onRemove, showValidation, showRemove, 
             return <Grid item md={field.width} key={fieldName}
                 xs={(inviteeFields[fieldName].type === 'checkbox') ? 6 : 12}
                 style={(inviteeFields[fieldName].type === 'checkbox') ? { marginTop: '14px' } : {}}>
-                <Field
+                <BaseField
                     fieldName={fieldName}
                     field={field}
                     onChange={onChange(invitee.idx, fieldName)}
@@ -112,13 +112,13 @@ const InviteeLine = ({ invitee, onChange, onRemove, showValidation, showRemove, 
 };
 
 const GroupInviteForm = ({ title }) => {
-    const classes = useStyles()
+    const classes = useStyles();
     const groupId = useRecoilValue(activeGroupIdState);
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
     const [showValidation, setShowValidation] = useState(false);
-    const membersData = useRecoilValueLoadable(activeGroupMembers);
-    const memberEmails = (membersData.state === 'hasValue' && membersData.contents) ?
+    const membersData = useMembersValue();
+    const memberEmails = (membersData.contents) ?
         membersData.contents.map(member => member.email) : [];
 
     const [invitees, setInvitees] = useState({ 0: initialInvitee(0, memberEmails) });
@@ -171,19 +171,24 @@ const GroupInviteForm = ({ title }) => {
             const cleanInviteCount = Object.keys(cleanInvitees).length;
             // send invites to API
             try {
-                await Promise.all(Object.keys(invitees).map(key => {
-                    const invitee = invitees[key];
+                await Promise.all(Object.keys(cleanInvitees).map(key => {
+                    const invitee = cleanInvitees[key];
                     const role = (invitee.guestOnly) ? 'guest' : 'admin';
-                    return API.post('blob-images', `/groups/${groupId}/invite`, {
-                        body: { toName: invitee.name, toEmail: invitee.email, message, role }
+                    return invitePromise({
+                        groupId,
+                        name: invitee.name,
+                        email: invitee.email,
+                        message,
+                        role
                     });
                 }));
                 enqueueSnackbar(
-                    `Invites sent to ${cleanInviteCount} recipient${(cleanInviteCount !== 1) ? 's' : ''}`,
+                    `Uitnodigingen verstuurd aan ${cleanInviteCount} kandidaat-` +
+                    `${(cleanInviteCount !== 1) ? 'lid' : 'leden'}`,
                     { variant: 'success' }
                 );
             } catch (error) {
-                enqueueSnackbar('Oops, could not send invites', { variant: 'error' })
+                enqueueSnackbar('Oeps, kon de uitnodigingen niet verzenden', { variant: 'error' })
             }
             setInvitees({ 0: initialInvitee(0, memberEmails) });
             setShowValidation(false);
@@ -194,7 +199,7 @@ const GroupInviteForm = ({ title }) => {
         }
         setIsLoading(false);
     }
-    const submitText = 'Send invite';
+    const submitText = 'Verzenden';
 
     return (
         <form name='form' noValidate>
@@ -213,13 +218,13 @@ const GroupInviteForm = ({ title }) => {
                         memberEmails={memberEmails}
                     />
                 ))}
-                <Button color='primary' onClick={onAdd}>Add invitee</Button>
+                <Button color='primary' onClick={onAdd}>Nog iemand uitnodigen</Button>
                 <TextField
                     value={message}
                     onChange={onChangeMessage}
                     style={gutterTop}
                     variant='outlined'
-                    label='your message'
+                    label='goeie tekst door jou'
                     multiline
                     rows={6}
                     rowsMax={12}
@@ -227,7 +232,7 @@ const GroupInviteForm = ({ title }) => {
                 />
                 {showValidation && !message &&
                     <Typography variant='caption' style={labelStyle}>
-                        Add a personal message
+                        Voeg een persoonlijke noot toe
                     </Typography>
                 }
                 <FormButton type='submit' isLoading={isLoading} onClick={onSubmit}>
@@ -238,4 +243,4 @@ const GroupInviteForm = ({ title }) => {
     )
 };
 
-export default GroupInviteForm
+export default GroupInviteForm;

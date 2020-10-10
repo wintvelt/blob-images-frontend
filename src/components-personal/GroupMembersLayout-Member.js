@@ -9,12 +9,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import { useMediaQuery, Chip } from '@material-ui/core';
 
-import { useUserValue } from '../../src/data/userData';
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 import { initials } from '../../src/components-generic/helpers';
 import { useSnackbar } from 'notistack';
-import { API } from 'aws-amplify';
-import { useMembersValue, useReloadActiveMembers } from '../data/activeTree-GroupMembers';
+import { useMembersValue, useSaveMember } from '../data/activeTree-GroupMembers';
 
 const useStyles = makeStyles(theme => ({
     panel: {
@@ -27,7 +25,6 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         display: 'flex',
         alignItems: 'center',
-        backgroundColor: 'rgba(255,255,255,0.1)'
     },
     avatar: {
         width: theme.spacing(5),
@@ -62,11 +59,11 @@ const widthStyle = (width) => ({
 });
 const smallFont = { fontSize: '70%' };
 const widthStyle200Left = { ...widthStyle(200), textAlign: 'left' };
-const widthStyle120 = widthStyle(120);
+const widthStyle160 = widthStyle(160);
 const redStyle = { color: 'red' };
 const leftSpace = { marginLeft: '8px' };
 
-const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isLarge }) => {
+const MemberLine = ({ member, onClick, isLoading, isLarge }) => {
     const isAdmin = (member.userRole === 'admin');
     const isInvite = (member.status === 'invite');
     const classes = useStyles();
@@ -94,8 +91,10 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isL
         </Tooltip>}
         <Typography className={classes.name}>
             {member.name}
-            {isCurrent && <Chip size='small' label='me' component='span' style={leftSpace} />}
-            {!isAdmin && <span style={smallFont}>{' (guest)'}</span>}
+            {member.isCurrent && <Chip size='small' label='me' component='span' style={leftSpace} />}
+            {(!isAdmin || isInvite) && <span style={smallFont}>{
+                (isInvite ? ' (uitgenodigd als ' : ' (') + (isAdmin ? 'admin)' : 'gast)')
+            }</span>}
             {member.isFounder && <span style={smallFont}>{' (oprichter)'}</span>}
             {!isLarge && <>
                 <br />
@@ -105,13 +104,12 @@ const MemberLine = ({ member, currentIsAdmin, isCurrent, onClick, isLoading, isL
         {isLarge && <Typography variant='caption' style={widthStyle200Left}>
             {member.email}
         </Typography>}
-        {isLarge && <Typography variant='caption' style={widthStyle120}>
+        {isLarge && <Typography variant='caption' style={widthStyle160}>
             {(member.status === 'invite' ? 'uitgenodigd ' : 'lid sinds ') + member.createdAt}
         </Typography>}
         <div style={widthStyle(48)}>
-            {(currentIsAdmin || isCurrent) &&
-                <IconButton color='primary' disabled={!currentIsAdmin && !isCurrent}
-                    onClick={handleClick}>
+            {(member.options.length > 0) &&
+                <IconButton color='primary' onClick={handleClick}>
                     <Icon>more_horiz</Icon>
                 </IconButton>}
         </div>
@@ -122,33 +120,17 @@ const MemberDetails = () => {
     const classes = useStyles();
     const isLarge = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const { enqueueSnackbar } = useSnackbar();
-    const reloadMembers = useReloadActiveMembers();
-
-    const currentUser = useUserValue();
-    const { profile } = currentUser;
+    const saveMember = useSaveMember();
 
     const membersData = useMembersValue();
     const hasValue = (!!membersData.contents);
 
     const members = (hasValue) ? membersData.contents : [];
-    const currentIsAdmin = !!members.find(member => (
-        member.userId === profile.id &&
-        member.userRole === 'admin' &&
-        member.status !== 'invite'
-    ));
 
-    const hasOtherAdmin = !!members.find(member => (
-        member.userId !== profile.id &&
-        member.userRole === 'admin' &&
-        member.status !== 'invite'
-    ));
     const [anchor, setAnchor] = useState({ el: null });
+    const anchorMem = anchor.member;
+    const anchorOptions = anchorMem?.options || [];
 
-    const selectedIsCurrent = anchor.member && (anchor.member.userId === profile.id);
-    const selectedIsAdmin = anchor.member && (anchor.member.userRole === 'admin');
-    const selectedIsInvite = anchor.member && (anchor.member.status === 'invite');
-    const roleText = (selectedIsAdmin) ? 'Make guest' : 'Make admin';
-    const redText = (selectedIsInvite) ? 'Uninvite' : 'Ban';
     const open = Boolean(anchor.el);
 
     const onClick = (e, member) => {
@@ -158,15 +140,13 @@ const MemberDetails = () => {
     const handleClose = () => setAnchor({ ...anchor, el: null });
 
     const onChangeRole = async () => {
-        const memberId = anchor.member.userId;
-        const memberName = anchor.member.name;
-        const newRole = (selectedIsAdmin) ? 'guest' : 'admin';
-        const apiPath = `/groups/${anchor.member.groupId}/membership`;
-        try {
-            await API.put('blob-images', apiPath, { body: { memberId, newRole } });
+        const memberId = anchorMem.userId;
+        const memberName = anchorMem.name;
+        const newRole = (anchorMem.userRole === 'admin') ? 'guest' : 'admin';
+        const saveResult = await saveMember(memberId, newRole);
+        if (saveResult.success) {
             enqueueSnackbar(`Status van ${memberName} is nu "${newRole}"`);
-            reloadMembers();
-        } catch (e) {
+        } else {
             enqueueSnackbar(`Niet gelukt om ${memberName} "${newRole}" te maken`, { variant: 'error' });
         }
         handleClose();
@@ -175,9 +155,7 @@ const MemberDetails = () => {
     return <AccordionDetails className={classes.panel}>
         {members.map(member => (
             <MemberLine key={member.userId || 'header'} member={member} onClick={onClick}
-                currentIsAdmin={currentIsAdmin} isLoading={!hasValue}
-                isCurrent={(member.userId === profile.id)}
-                isLarge={isLarge}
+                isLoading={!hasValue} isLarge={isLarge}
             />
         ))}
         <Menu
@@ -188,14 +166,20 @@ const MemberDetails = () => {
             keepMounted
             open={open}
             onClose={handleClose}
+            disabled={anchorOptions.length === 0}
         >
-            {selectedIsCurrent &&
+            {anchorOptions.includes('leave') &&
                 <MenuItem disabled={!hasOtherAdmin}>Groep verlaten</MenuItem>}
-            {!selectedIsCurrent && !selectedIsInvite &&
-                <MenuItem onClick={onChangeRole}>{roleText}</MenuItem>
+            {anchorOptions.includes('guestify') &&
+                <MenuItem onClick={onChangeRole}>Maak gast</MenuItem>
             }
-            {!selectedIsCurrent &&
-                <MenuItem style={redStyle}>{redText}</MenuItem>}
+            {anchorOptions.includes('adminify') &&
+                <MenuItem onClick={onChangeRole}>Maak admin</MenuItem>
+            }
+            {anchorOptions.includes('ban') &&
+                <MenuItem style={redStyle}>Verban uit groep</MenuItem>}
+            {anchorOptions.includes('uninvite') &&
+                <MenuItem style={redStyle}>Toch niet uitnodigen</MenuItem>}
         </Menu>
     </AccordionDetails >
 }

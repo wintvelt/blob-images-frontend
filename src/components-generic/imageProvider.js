@@ -10,9 +10,12 @@ export const btoa = (b) => Buffer.from(b, 'base64').toString();
 const btoaDebug = (b) => Buffer.from(b.split('/').slice(-1)[0], 'base64').toString();
 
 export const ClubImage = ({ src, width, height, onLoad, style = {}, ...rest }) => {
-    const [size, setSize] = useState('none');
-    const urlSmall = makeImageUrl(src, 10, 10);
-    const urlNormal = makeImageUrl(src, width, height);
+    const isLocal = (src && src.slice(0, 1) === '/');
+    const [size, setSize] = useState((isLocal) ? 'normal' : 'none');
+    const urlSmall = (isLocal) ? src : makeImageUrl(src, 10, 10);
+    const urlNormal = (isLocal) ? src : makeImageUrl(src, width, height);
+
+    if (!src) return  null;
 
     const handleLoad = (newSize) => () => {
         setSize((oldSize => (oldSize === 'normal') ? 'normal' : newSize));
@@ -20,17 +23,19 @@ export const ClubImage = ({ src, width, height, onLoad, style = {}, ...rest }) =
     };
 
     const imgStyle = (disp) => ({
-        objectFit: 'cover', width: '100%', height: '100%', 
-        display: (size === disp)? 'block' : 'none'
+        objectFit: 'cover', width: '100%', height: '100%',
+        display: (size === disp) ? 'block' : 'none'
     });
     const iconStyle = (disp) => ({
         color: 'rgba(0,0,0,0.26)',
-        display: (size === disp)? 'block' : 'none'
+        display: (size === disp) ? 'block' : 'none'
     })
 
     return <div {...rest} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <CircularProgress color='inherit' style={iconStyle('none')}/>
-        <img src={urlSmall} onLoad={handleLoad('small')} style={{ ...style, ...imgStyle('small') }} />
+        <CircularProgress color='inherit' style={iconStyle('none')} />
+        {(!isLocal) &&
+            <img src={urlSmall} onLoad={handleLoad('small')} style={{ ...style, ...imgStyle('small') }} />
+        }
         <img src={urlNormal} onLoad={handleLoad('normal')} style={{ ...style, ...imgStyle('normal') }} />
     </div>
 }

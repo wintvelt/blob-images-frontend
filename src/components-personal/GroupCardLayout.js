@@ -56,7 +56,7 @@ const GroupCardContent = (props) => {
     const { name, description, image, isLoading, isInvite } = props;
     const classes = useStyles();
     return <>
-        {(image || isInvite) && <ClubImage className={classes.media}
+        {(image?.url || isInvite) && <ClubImage className={classes.media}
             src={image?.url || '/img/confidential.jpg'}
             width={340}
             height={200}
@@ -102,7 +102,7 @@ const GroupCardLayout = (props) => {
             </CardActionArea>
             : <GroupCardContent {...props} onClick={onClick} />
         }
-        {image && mayEdit && <IconButton size='small' className={classes.imageEdit}
+        {mayEdit && <IconButton size='small' className={classes.imageEdit}
             onClick={onClickEdit}>
             <Icon fontSize='small'>edit</Icon>
         </IconButton>}

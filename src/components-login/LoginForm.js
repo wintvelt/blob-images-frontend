@@ -80,7 +80,7 @@ const LoginForm = (props) => {
     let smallButtons = [
         { onClick: onForgotPsw, text: 'wachtwoord vergeten' },
     ];
-    if (allowSignup) smallButtons.push({ onClick: onSignup, text: 'inschrijven' });
+    if (allowSignup) smallButtons.push({ onClick: onSignup, text: 'account aanmaken' });
 
     return <Form
         title={title || 'Welkom!'}

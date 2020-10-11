@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { makeImageUrl, otoa } from '../components-generic/imageProvider';
-import { ImageSkeleton } from '../components-generic/Skeleton';
+import { ClubImage } from '../components-generic/imageProvider';
 import { useRecoilValueLoadable } from 'recoil';
 import { photoState } from '../data/activeTree-Photo';
 import Rating from '../components-generic/Rating';
@@ -27,8 +26,6 @@ const useStyles = makeStyles(theme => ({
         padding: 0,
     },
     img: {
-        willChange: 'transform',
-        transition: 'transform .5s ease',
         width: '100%',
         height: '100%',
         objectFit: 'cover',
@@ -43,6 +40,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const flexStyle = { display: 'flex' };
+const flexStyle2 = {
+    display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.1)'
+};
+const bigIcon = { fontSize: '40px' };
 const fullSize = { width: '100%', height: '100%' };
 const fitContent = {
     height: 'fit-content',
@@ -64,29 +66,21 @@ const MenuButton = ({ className, onClick, disabled }) => (
     </IconButton>
 )
 
-const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onClickMenu, noOwner,
+const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClickMenu, noOwner,
     menuIsOpen }) => {
     const classes = useStyles();
-    const Key = { PK: photoParams.PK, SK: photoParams.SK };
-    const key = otoa(Key);
-    const source = photoParams.PK && `/photos/${key}`;
+    const source = `/photos/${photoId}`;
     const photoData = useRecoilValueLoadable(photoState(source));
     const photo = (photoData.state === 'hasValue' && photoData.contents) ? photoData.contents : {};
-    const { url, owner, album, isNew, rating, createdAt, PK } = photo;
-    const id = PK?.slice(2);
-    const { name, avatar } = owner || {};
+    const { url, user, rating, createdAt } = photo;
+    const { name, photoUrl } = user || {};
     const isLoading = (!url);
-    const [imgSize, setImgSize] = useState(10);
-    useEffect(() => {
-        if (imgSize === 10 && !!url) setImgSize(400)
-    }, [url]);
-    const imageUrl = makeImageUrl(url, imgSize);
 
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
     const handleClick = (e) => {
         e.preventDefault();
         if (!isLoading) {
-            onClick && onClick({ id, url, image: url, owner, key });
+            onClick && onClick({ photoId, url });
         }
     }
     const handleMenuClick = (e) => {
@@ -97,13 +91,16 @@ const Photo = ({ photo: photoParams, isSmall, onSelect, isSelected, onClick, onC
     const handleSelect = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        onSelect && onSelect(id);
+        onSelect && onSelect(photoId);
     }
     return <div onClick={handleClick} style={fullSize}>
-        <ImageSkeleton src={imageUrl} alt='photo' className={classes.img} isLoading={isLoading} />
+        {(isLoading) && <div style={flexStyle2}>
+            <Icon className={'pulse-icon'} style={bigIcon}>image</Icon>
+        </div>}
+        {(url) && <ClubImage src={url} alt='photo' className={classes.img} />}
         <GridListTileBar
             style={fitContent}
-            title={(name) ? `by ${name}` : ''}
+            title={(name && !noOwner) ? `by ${name}` : ''}
             subtitle={<>
                 {createdAt}<br />
                 <Rating value={rating} />

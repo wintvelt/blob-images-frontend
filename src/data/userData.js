@@ -52,27 +52,14 @@ export const userAlbums = selector({
     },
 });
 
-const userPhotosStateTrigger = atom({
-    key: 'userPhotosStateTrigger',
-    default: 0
-})
-
-export const userPhotosState = selector({
-    key: 'userPhotosState',
-    get: async ({ get }) => {
-        get(userData);
-        get(userPhotosStateTrigger);
-        const response = await API.get('blob-images', '/photos');
-        if (response.error) {
-            throw response.error;
-        }
-        return response;
-    },
-    set: ({ set }, newValue) => {
-        if (newValue instanceof DefaultValue) {
-            set(userPhotosStateTrigger, v => v + 1);
-        }
-    }
+const userToForm = (user) => ({
+    id: user.SK,
+    name: user.name,
+    email: user.email,
+    photoUrl: user.photoUrl,
+    photoId: user.photoId,
+    visitDateLast: user.visitDateLast,
+    visitDatePrev: user.visitDatePrev,
 });
 
 const authPaths = ['/login', '/signup', '/forgotpsw', '/verifysignup', '/confirmpsw'];
@@ -92,13 +79,7 @@ const loadUser = async () => {
     try {
         const user = await API.get('blob-images', `/user`);
         return {
-            id: user.SK,
-            name: user.name,
-            email: user.email,
-            photoUrl: user.photoUrl,
-            photoId: user.photoId,
-            visitDateLast: user.visitDateLast,
-            visitDatePrev: user.visitDatePrev,
+            ...userToForm(user),
             cognitoId: authUser.id
         };
     } catch (error) {
@@ -229,8 +210,8 @@ export const useUser = () => {
         else if (photoId) { newProfile.photoId = photoId }
         else { newProfile.photoId = '' }
         errorHandler(async () => {
-            await API.put('blob-images', '/user', { body: newProfile });
-            setUpdate({ profile: { ...user.profile, name, photoId, photoUrl } });
+            const newUser = await API.put('blob-images', '/user', { body: newProfile });
+            setUpdate({ profile: { ...user.profile, ...userToForm(newUser) } });
         });
     }
     const deleteUser = async () => {

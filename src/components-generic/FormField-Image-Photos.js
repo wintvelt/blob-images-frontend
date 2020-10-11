@@ -9,28 +9,28 @@ import Typography from '@material-ui/core/Typography';
 
 import PhotoList from '../components-personal/PhotoList';
 import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { userPhotosState } from '../data/userData';
 import { activeAlbumPhotos } from '../data/activeTree-Album';
+import { useReloadPhotoIds, useUserPhotoIdsValue } from '../data/userPhotosData';
 
 const flexCenter = { display: 'flex', alignItems: 'center' };
 const flexGrow = { flexGrow: 1 };
 
-const MyPhotoList = (props) => {
-    const photoData = useRecoilValueLoadable(userPhotosState);
-    const reloadPhotos = useResetRecoilState(userPhotosState);
+const MyPhotoList = ({onChange}) => {
+    const photoData = useUserPhotoIdsValue();
+    const reloadPhotos = useReloadPhotoIds();
     return <PhotoList photoData={photoData} reloadPhotos={reloadPhotos} noOwner
-        onClick={props.onChange} empty='Oh, it seems there are no photos yet..' />
+        onClick={onChange} empty='Oh, it seems there are no photos yet..' />
 };
 const AlbumPhotoList = (props) => {
-    const photoData = useRecoilValueLoadable(activeAlbumPhotos);
-    const reloadPhotos = useResetRecoilState(activeAlbumPhotos);
-    return <PhotoList photoData={photoData} reloadPhotos={reloadPhotos}
+    // const photoData = useRecoilValueLoadable(activeAlbumPhotos);
+    // const reloadPhotos = useResetRecoilState(activeAlbumPhotos);
+    return <PhotoList photoData={{ isLoading: true }} reloadPhotos={() => { }} noOwner
         onClick={props.onChange} empty='Oh, it seems there are no photos yet..' />
 };
 const GroupPhotoList = (props) => {
-    const photoData = useRecoilValueLoadable(userPhotosState);
-    const reloadPhotos = useResetRecoilState(userPhotosState);
-    return <PhotoList photoData={photoData} reloadPhotos={reloadPhotos}
+    // const photoData = useRecoilValueLoadable(userPhotosState);
+    // const reloadPhotos = useResetRecoilState(userPhotosState);
+    return <PhotoList photoData={{ isLoading: true }} reloadPhotos={() => { }} noOwner
         onClick={props.onChange} empty='Oh, it seems there are no photos yet..' />
 }
 

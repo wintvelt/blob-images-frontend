@@ -14,17 +14,17 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
     const albumData = album;
     const albumPath = `/groups/${albumData?.PK?.slice(2)}/albums/${albumData?.SK}`;
 
-    const currentPhotoId = anchor.photo?.PK?.slice(2);
+    const currentPhotoId = anchor.photo?.PK.slice(2);
     const { user, saveProfile } = useUser();
-    const userIsOwner = (user.profile && anchor.photo && user.profile.id === anchor.photo.SK.slice(1));
+    const userIsOwner = (user.profile && currentPhotoId && user.profile.id === anchor.photo.SK);
     const { enqueueSnackbar } = useSnackbar();
     const onSetProfilePic = async () => {
         const name = user.profile.name;
         try {
-            saveProfile(name, anchor.photo.url);
-            enqueueSnackbar('profile picture set', { variant: 'success' });
+            saveProfile(name, currentPhotoId);
+            enqueueSnackbar('profielfoto gewijzigd', { variant: 'success' });
         } catch (error) {
-            enqueueSnackbar('could not set profile picture', { variant: 'error' });
+            enqueueSnackbar('niet gelukt om profielfoto aan te passen', { variant: 'error' });
         }
         handleClose();
     };
@@ -37,23 +37,23 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
                     imageUrl: anchor.photo.url
                 }
             });
-            enqueueSnackbar('new album cover set', { variant: 'success' });
+            enqueueSnackbar('album foto ingesteld', { variant: 'success' });
             handleClose();
             reloadAlbum && reloadAlbum();
         } catch (error) {
             console.log(error);
-            enqueueSnackbar('could not set album cover', { variant: 'error' });
+            enqueueSnackbar('niet gelukt om albumcover aan te passen', { variant: 'error' });
         }
     }
     const onDelete = async () => {
         try {
             const path = `/photos/${currentPhotoId}`;
             await API.del('blob-images', path);
-            enqueueSnackbar('photo deleted', { variant: 'success' });
+            enqueueSnackbar('Foto verwijderd', { variant: 'success' });
             reloadPhotos && reloadPhotos();
         } catch (error) {
             console.log(error);
-            enqueueSnackbar('could not delete picture', { variant: 'error' });
+            enqueueSnackbar('Kon foto niet verwijderen', { variant: 'error' });
         }
         handleClose();
     };
@@ -93,15 +93,15 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
             open={Boolean(anchor.el)}
             onClose={handleClose}
         >
-            {album && (!isAlbum) && <MenuItem onClick={onSetAlbumCover}>Set as album cover</MenuItem>}
-            {!isAlbum && <MenuItem onClick={onSetProfilePic}>Set as profile picture</MenuItem>}
+            {album && (!isAlbum) && <MenuItem onClick={onSetAlbumCover}>Maak albumcover</MenuItem>}
+            {!isAlbum && <MenuItem onClick={onSetProfilePic}>Maak dit mijn profielfoto</MenuItem>}
             {album && userIsOwner && (!isAlbum || publications.includes(album.id)) &&
-                <MenuItem onClick={onRemoveFromAlbum}>Remove from album</MenuItem>
+                <MenuItem onClick={onRemoveFromAlbum}>Verwijder uit album</MenuItem>
             }
             {album && userIsOwner && (isAlbum && !publications.includes(album.id)) &&
-                <MenuItem onClick={onAddToAlbum}>Add to album</MenuItem>
+                <MenuItem onClick={onAddToAlbum}>Aan album toevoegen</MenuItem>
             }
-            {userIsOwner && (!isAlbum) && <MenuItem onClick={onDelete} style={redStyle}>Delete</MenuItem>}
+            {userIsOwner && (!isAlbum) && <MenuItem onClick={onDelete} style={redStyle}>Foto verwijderen</MenuItem>}
             {/* <MenuItem>
                 <ListItemIcon><Icon fontSize='small'>thumb_up</Icon></ListItemIcon>
                 Vote up

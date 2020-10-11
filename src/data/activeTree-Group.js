@@ -85,9 +85,9 @@ export const useSaveGroup = () => {
         try {
             const result = await saveGroup(groupId, groupFields);
             newGroupId = result.SK;
-            setActiveGroup({ contents: groupToForm(result)});
+            setActiveGroup({ contents: groupToForm(result) });
         } catch (error) {
-            setActiveGroup({ hasError: 'could not save group changes'});
+            setActiveGroup({ hasError: 'could not save group changes' });
         }
         return newGroupId;
     }

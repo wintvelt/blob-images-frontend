@@ -4,25 +4,25 @@ import Header from '../../src/components-personal/Header';
 import { Toolbar } from '@material-ui/core';
 
 import PhotoList from '../../src/components-personal/PhotoList';
-import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { userPhotosState } from '../../src/data/userData';
 import { useSetLoadingPath } from '../../src/data/loadingData';
+import { useReloadPhotoIds, useUserPhotoIds } from '../../src/data/userPhotosData';
 
 const PhotosMain = () => {
-    const photoData = useRecoilValueLoadable(userPhotosState);
-    const reloadPhotos = useResetRecoilState(userPhotosState);
+    const photoData = useUserPhotoIds();
+    const reloadPhotos = useReloadPhotoIds();
     const setLoadingPath = useSetLoadingPath();
 
-    const onPhotoClick = (photo) => {
-        const photoPath = '/personal/photos/[photoid]';
-        setLoadingPath(photoPath, photoPath.replace('[photoid]', photo.key));
+    const onPhotoClick = (photoId) => {
+        alert(`${photoId} clicked`);
+        // const photoPath = '/personal/photos/[photoid]';
+        // setLoadingPath(photoPath, photoPath.replace('[photoid]', photoId));
     };
 
     return (
         <main>
             <Toolbar />
             <Header>
-                Your Photos
+                Jouw foto's
             </Header>
             <PhotoList
                 photoData={photoData}
@@ -31,7 +31,7 @@ const PhotosMain = () => {
                 noOwner
                 menu={true}
                 select={false}
-                empty='hmm no photos yet'
+                empty="Je hebt nog geen foto's gedeeld zo te zien"
             />
         </main>
     )

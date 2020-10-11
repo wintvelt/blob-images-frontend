@@ -5,7 +5,10 @@ html {
 .pulse {
     width: 100%;
     height: 100%;
-    animation: pulse 500ms alternate infinite;
+    animation: pulse 800ms alternate infinite;
+}
+.pulse-icon {
+    animation: pulse2 800ms alternate infinite;
 }
 
 @keyframes pulse {
@@ -15,6 +18,14 @@ html {
     }
     100% {
         background-color: #504e52;
+        color: #504e52;
+    }
+}
+@keyframes pulse2 {
+    0% {
+        color: #E2DFE6;
+    }
+    100% {
         color: #504e52;
     }
 }

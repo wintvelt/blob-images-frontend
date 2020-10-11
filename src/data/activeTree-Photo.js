@@ -1,6 +1,5 @@
 import { selectorFamily, atomFamily, DefaultValue } from 'recoil';
 import { API } from 'aws-amplify';
-import { userData } from './userData';
 
 const photoStateTrigger = atomFamily({
     key: 'photoStateTrigger',
@@ -10,7 +9,6 @@ const photoStateTrigger = atomFamily({
 export const photoState = selectorFamily({
     key: 'photo',
     get: (source) => async ({ get }) => {
-        get(userData);
         get(photoStateTrigger(source));
         if (!source) return undefined;
         const response = await API.get('blob-images', source);
@@ -25,6 +23,16 @@ export const photoState = selectorFamily({
         }
     }
 });
+
+export const photoUpdate = () => {
+    const del = (photoId) => {
+        const apiPath = `/photos/${photoId}`;
+        return API.put('blob/images', apiPath);
+    };
+    return {
+        del
+    };
+};
 
 const pubStateTrigger = atomFamily({
     key: 'pubStateTrigger',

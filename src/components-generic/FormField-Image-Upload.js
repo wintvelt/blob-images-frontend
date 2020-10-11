@@ -6,14 +6,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import Upload from './Upload';
-import { useUserValue, userPhotosState } from '../data/userData';
-import { useResetRecoilState } from 'recoil';
+import { useUserValue } from '../data/userData';
 
 export default function UploadDialog({ open, handleClose, onChange }) {
     const pond = useRef(null);
     const user = useUserValue();
     const { profile } = user;
-    const reloadPhotos = useResetRecoilState(userPhotosState);
+    // const reloadPhotos = useResetRecoilState(userPhotosState);
     const [file, setFile] = useState('');
     const onSave = async () => {
         await pond.current.processFiles();
@@ -21,7 +20,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
             const newImage = {
                 url: 'protected/'+ profile.cognitoId + '/' + file
             };
-            reloadPhotos();
+            // reloadPhotos();
             onChange(newImage);
         } else {
             handleClose();
@@ -35,16 +34,16 @@ export default function UploadDialog({ open, handleClose, onChange }) {
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="image-upload-dialog"
             fullWidth maxWidth='md'>
-            <DialogTitle id="image-upload-dialog">Add a new photo</DialogTitle>
+            <DialogTitle id="image-upload-dialog">Upload een foto</DialogTitle>
             <DialogContent>
                 <Upload pond={pond} onAddFile={onAddFile} allowImagePreview={true}/>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>
-                    Cancel
+                    Afbreken
                 </Button>
                 <Button onClick={onSave} variant='contained' color='primary' disabled={!file}>
-                    Upload
+                    Uploaden
                 </Button>
             </DialogActions>
         </Dialog>

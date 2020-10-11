@@ -10,9 +10,9 @@ import { makeStyles } from '@material-ui/core';
 import { ClubImage } from './imageProvider';
 import ImageUpload from './FormField-Image-Upload';
 import PhotoPicker from './FormField-Image-Photos';
-import { userPhotosState } from '../data/userData';
 import { useRecoilValueLoadable } from 'recoil';
 import { activeGroupPhotos, activeAlbumPhotos } from '../data/activeTree-Album';
+import { useUserPhotoIdsValue } from '../data/userPhotosData';
 
 
 const useStyles = makeStyles(theme => ({
@@ -72,8 +72,8 @@ const ImageField = (props) => {
     const { photoId, url, user, album } = value || {};
     const { name } = user || {};
     const classes = useStyles();
-    const myPhotosData = useRecoilValueLoadable(userPhotosState);
-    const hasMyPhotos = hasItems(myPhotosData);
+    const myPhotosData = useUserPhotoIdsValue();
+    const hasMyPhotos = (myPhotosData.contents && myPhotosData.contents.length > 0);
     const groupPhotosData = useRecoilValueLoadable(activeGroupPhotos);
     const hasGroupPhotos = hasItems(groupPhotosData);
     const albumPhotosData = useRecoilValueLoadable(activeAlbumPhotos);

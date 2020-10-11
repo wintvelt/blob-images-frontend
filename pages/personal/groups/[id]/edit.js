@@ -10,6 +10,7 @@ import GroupCardLayout from '../../../../src/components-personal/GroupCardLayout
 import GroupForm from '../../../../src/components-personal/GroupForm';
 import BackLinkToGroup from '../../../../src/components-generic/BackLinkToGroup';
 import { redirectOnGroupLoadError, useActiveGroup } from '../../../../src/data/activeTree-Group';
+import { useUserPhotoIds } from '../../../../src/data/userPhotosData';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -26,7 +27,11 @@ const GroupEditMain = () => {
     const isNew = (groupId === 'new');
     const groupData = useActiveGroup();
     const group = groupData.contents || {};
+    
     redirectOnGroupLoadError(groupData, true, isNew);
+
+    // for image handler
+    const userPhotoIds = useUserPhotoIds();
 
     return (
         <main>

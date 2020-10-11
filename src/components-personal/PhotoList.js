@@ -38,24 +38,25 @@ const Empty = ({ message }) => {
     </div>
 }
 
-const initialPhotos = [1, 2, 3].map(id => ({ id, isLoading: true }));
+const initialPhotos = [1, 2, 3, 4, 5, 6];
 
 const PhotoList = (props) => {
-    const { photoData, empty, menu, select, album, reloadAlbum, reloadGroup, reloadPhotos } = props;
+    const { photoData, empty, menu, select, album, onClick,
+        reloadAlbum, reloadGroup, reloadPhotos } = props;
     const [photos, setPhotos] = useState(initialPhotos);
     useEffect(() => {
-        if (photoData.state === 'hasValue' && photoData.contents) {
+        if (photoData.contents) {
             setPhotos(photoData.contents);
         }
     }, [photoData]);
     const [anchor, setAnchor] = useState({ el: null });
     const [selected, setSelected] = useState([]);
 
-    const handleClick = (e, photo) => {
+    const handleMenuClick = (e, photo) => {
         setAnchor({ el: e.currentTarget, photo });
     };
 
-    const handleClose = () => {
+    const handleMenuClose = () => {
         setAnchor({ el: null });
     };
 
@@ -76,14 +77,13 @@ const PhotoList = (props) => {
         {/* <pre style={fullWidth}>{JSON.stringify(selected, null, 2)}</pre>
         <pre style={fullWidth}>{JSON.stringify(photos, null, 2)}</pre> */}
         <GridList cellHeight={cellHeight} cols={cols} className={classes.gridList}>
-            {photos.map(photo => {
-                const photoId = photo.id || photo.comp.slice(11);
+            {photos.map(photoId => {
                 return <GridListTile key={photoId} className={classes.tile}>
                     <Photo
-                        photo={photo}
+                        photoId={(typeof photoId === 'string')? photoId : ''}
                         isSmall={(!isLarge && !isMedium)}
                         {...props}
-                        onClickMenu={menu && handleClick}
+                        onClickMenu={menu && handleMenuClick}
                         onSelect={select && onSelect}
                         isSelected={selected.includes(photoId)}
                         menuIsOpen={!!anchor.el}
@@ -93,7 +93,7 @@ const PhotoList = (props) => {
         </GridList>
         {menu && <PhotoMenu
             anchor={anchor}
-            handleClose={handleClose}
+            handleClose={handleMenuClose}
             album={album}
             reloadAlbum={reloadAlbum}
             reloadPhotos={reloadPhotos}

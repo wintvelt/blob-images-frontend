@@ -12,10 +12,10 @@ const PhotosMain = () => {
     const reloadPhotos = useReloadPhotoIds();
     const setLoadingPath = useSetLoadingPath();
 
-    const onPhotoClick = (photoId) => {
-        alert(`${photoId} clicked`);
-        // const photoPath = '/personal/photos/[photoid]';
-        // setLoadingPath(photoPath, photoPath.replace('[photoid]', photoId));
+    const onPhotoClick = (item) => {
+        const photoId = item.photoId;
+        const photoPath = '/personal/photos/[photoid]';
+        setLoadingPath(photoPath, photoPath.replace('[photoid]', photoId));
     };
 
     return (

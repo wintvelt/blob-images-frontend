@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { API } from 'aws-amplify';
 
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
-import { activeGroupData, groupToForm } from './activeTree-Group';
+import { groupToForm } from './activeTree-Group';
 
-// Active Group
+// user groups
 export const userGroupsData = atom({
     key: 'userGroupsData',
     default: { isLoading: true }
@@ -25,11 +25,10 @@ export const useReloadUserGroups = () => {
 }
 
 export const useUserGroups = () => {
-    const activeGroup = useRecoilValue(activeGroupData);
     const userGroups = useRecoilValue(userGroupsData);
     const reloadUserGroups = useReloadUserGroups();
     useEffect(() => {
         reloadUserGroups();
-    }, [activeGroup]);
+    }, []);
     return userGroups;
 };

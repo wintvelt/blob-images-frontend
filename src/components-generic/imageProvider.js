@@ -15,11 +15,15 @@ const imgStyle = (disp, size) => ({
     willChange: 'transform',
     transition: 'transform .5s ease',
 });
+const linkStyle = (disp, size) => ({
+    width: '100%', height: '100%',
+    display: (size === disp) ? 'block' : 'none',
+});
 
 const iconStyle = (disp, size) => ({
     color: 'rgba(0,0,0,0.26)',
     backgroundColor: 'rgba(0,0,0,0.1)',
-    height: '100%', 
+    height: '100%',
     alignItems: 'center', justifyContent: 'center',
     display: (size === disp) ? 'flex' : 'none'
 });
@@ -30,7 +34,7 @@ const ImagePropsAreEqual = (prevProps, nextProps) => (
     (prevProps.style === nextProps.style)
 );
 
-const BaseClubImage = ({ src, width, height, onLoad, style = {}, ...rest }) => {
+const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, ...rest }) => {
     const isLocal = (src && src.slice(0, 1) === '/');
     const [size, setSize] = useState((isLocal) ? 'normal' : 'none');
     const urlSmall = (isLocal) ? src : makeImageUrl(src, 10, 10);
@@ -38,9 +42,9 @@ const BaseClubImage = ({ src, width, height, onLoad, style = {}, ...rest }) => {
 
     if (!src) return null;
 
-    const handleLoad = (newSize) => () => {
+    const handleLoad = (newSize) => (event) => {
         setSize((oldSize => (oldSize === 'normal') ? 'normal' : newSize));
-        if (newSize === 'normal' && onLoad) onLoad();
+        if (newSize === 'normal' && onLoad) onLoad(event);
     };
 
     return <div {...rest} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -51,7 +55,10 @@ const BaseClubImage = ({ src, width, height, onLoad, style = {}, ...rest }) => {
             <img src={urlSmall} onLoad={handleLoad('small')} style={{ ...style, ...imgStyle('small', size) }}
             />
         }
-        <img src={urlNormal} onLoad={handleLoad('normal')} style={{ ...style, ...imgStyle('normal', size) }} />
+        {(withLink) && <a href={urlNormal} target='_blank' rel='noopener noreferrer' style={linkStyle('normal', size)}>
+            <img src={urlNormal} onLoad={handleLoad('normal')} style={{ ...style, ...imgStyle('normal', size) }} />
+        </a>}
+        {(!withLink) && < img src={urlNormal} onLoad={handleLoad('normal')} style={{ ...style, ...imgStyle('normal', size) }} />}
     </div>
 }
 

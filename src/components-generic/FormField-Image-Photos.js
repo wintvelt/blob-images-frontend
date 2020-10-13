@@ -36,10 +36,10 @@ const GroupPhotoList = (props) => {
 
 export default function PhotoPickDialog({ type, open, handleClose, onChange }) {
     const title = (type === 'album') ?
-        'Pick from album photos'
+        'Kies 1 van je albumfoto\'s'
         : (type === 'group') ?
-            'Pick from group photos'
-            : 'Pick from my own photos';
+            'Kies 1 van je groepsfoto\'s'
+            : 'Kies 1 van je eigen foto\'s';
     return (
         <Dialog open={open} onClose={handleClose} aria-labelledby="pick-photos-dialog"
             fullWidth maxWidth='lg'>

@@ -9,8 +9,9 @@ import PrivatePage from '../../../../../../src/components-personal/PrivatePage';
 import AlbumCardLayout from '../../../../../../src/components-personal/AlbumCardLayout';
 import AlbumForm from '../../../../../../src/components-personal/AlbumForm';
 import BackLinkToAlbum from '../../../../../../src/components-generic/BackLinkToAlbum';
-import { useRecoilValueLoadable } from 'recoil';
-import { activeAlbumState, hasAlbumData } from '../../../../../../src/data/activeTree-Album';
+import { useActiveAlbum } from '../../../../../../src/data/activeTree-Album';
+import { useActiveGroup } from '../../../../../../src/data/activeTree-Group';
+import { useUserPhotoIds } from '../../../../../../src/data/userPhotosData';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -25,9 +26,14 @@ const AlbumEditMain = () => {
     const router = useRouter();
     const albumId = router.query && router.query.albumid;
     const isNew = (albumId === 'new');
-    const albumData = useRecoilValueLoadable(activeAlbumState);
-    const hasValue = hasAlbumData(albumData);
-    const album = (hasValue)? albumData.contents : {};
+    const albumData = useActiveAlbum();
+    const hasValue = !!albumData.contents;
+    const album = (hasValue) ? albumData.contents : {};
+    const groupData = useActiveGroup();
+    const group = groupData.contents;
+    const userIsAdmin = (group?.userRole === 'admin');
+
+    const userPhotoIds = useUserPhotoIds();
 
     return (
         <main>
@@ -35,7 +41,8 @@ const AlbumEditMain = () => {
             {album && <BackLinkToAlbum />}
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
-                    <AlbumCardLayout {...album} withEdit={false} isLoading={!hasValue} />
+                    <AlbumCardLayout {...album} withEdit={false} isLoading={albumData.isLoading}
+                        userIsAdmin={userIsAdmin} />
                 </Grid>}
                 <Grid item md={(isNew) ? 3 : 1} />
                 <Grid item md={(isNew) ? 6 : 8} xs={12}>

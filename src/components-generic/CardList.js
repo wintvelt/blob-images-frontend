@@ -8,7 +8,7 @@ const CardList = ({ list, component, addProps, isLoading, onSelect, width, spaci
     const Component = component;
     return <Grid container spacing={spacing || 0}>
         {list.map(item => {
-            return <Grid key={item.id} item md={width || 3} xs={12}>
+            return <Grid key={item.id || item.albumId} item md={width || 3} xs={12}>
                 <Component {...item} />
             </Grid>
         })}

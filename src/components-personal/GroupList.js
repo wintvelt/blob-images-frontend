@@ -34,7 +34,7 @@ const GroupList = () => {
         }));
     return <div style={paddingStyle}>
         <CardList list={groupsWithEdit} component={GroupCardLayout} addProps={groupAddProps}
-            width={3} spacing={2} isLoading={!hasValue} />
+            width={3} spacing={2} isLoading={groupsData.isLoading} />
     </div>
 }
 

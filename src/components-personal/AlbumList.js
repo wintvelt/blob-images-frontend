@@ -2,29 +2,29 @@ import React from 'react';
 
 import AlbumCardLayout from './AlbumCardLayout';
 import CardList from '../components-generic/CardList';
-import { useRecoilValueLoadable, useRecoilValue } from 'recoil';
-import { hasAlbumData, activeGroupAlbums } from '../data/activeTree-Album';
-import { activeGroupIdState } from '../data/activeTreeRoot';
+import { useActiveGroupAlbumsValue } from '../data/activeTree-GroupAlbums';
+import { useActiveGroupValue } from '../data/activeTree-Group';
 
 const paddingStyle = { padding: '8px' };
 
 const AlbumList = () => {
-    const groupId = useRecoilValue(activeGroupIdState);
-    const albumsData = useRecoilValueLoadable(activeGroupAlbums);
-    const hasValue = hasAlbumData(albumsData);
-    const albumsList = (hasValue) ? albumsData.contents : [1, 2].map(id => ({ id, isLoading: true }));
+    const groupData = useActiveGroupValue();
+    const userIsAdmin = (groupData.contents?.userRole === 'admin');
+    const albumsData = useActiveGroupAlbumsValue();
+    const hasValue = !!albumsData.contents;
+    const albumsList = (hasValue) ? albumsData.contents : [1, 2].map(albumId => ({ albumId, isLoading: true }));
     const albumAddProps = {
-        text: 'new album',
+        text: 'nieuw album',
         path: '/personal/groups/[id]/albums/[albumid]/edit',
-        asPath: `/personal/groups/${groupId}/albums/new/edit`
+        asPath: `/personal/groups/${groupData.contents?.id}/albums/new/edit`
     };
     const albumsWithEdit = (!hasValue) ?
         albumsList
-        : albumsList.map(item => ({ ...item, groupId, withEdit: true }));
+        : albumsList.map(item => ({ ...item, userIsAdmin, withEdit: true }));
 
     return <div style={paddingStyle}>
         <CardList list={albumsWithEdit} component={AlbumCardLayout} addProps={albumAddProps}
-            width={3} spacing={2} isLoading={!hasValue} />
+            width={3} spacing={2} isLoading={albumsData.isLoading} />
     </div>
 }
 

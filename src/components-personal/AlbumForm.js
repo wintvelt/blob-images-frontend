@@ -5,17 +5,18 @@ import { useSnackbar } from 'notistack';
 import Form from '../components-generic/Form';
 import { useSetLoadingPath } from '../data/loadingData';
 import { useRecoilValueLoadable, useResetRecoilState, useRecoilValue } from 'recoil';
-import { activeGroupAlbums, activeAlbumState } from '../data/activeTree-Album';
+import { activeGroupAlbums, activeAlbumState, useActiveAlbumValue, useReloadActiveAlbum, useSaveAlbum } from '../data/activeTree-Album';
 import { activeGroupIdState, activeAlbumIdState } from '../data/activeTreeRoot';
 import { useRouter } from 'next/router';
+import { useActiveGroupAlbumsValue } from '../data/activeTree-GroupAlbums';
 
 const fieldConfig = {
     name: {
         autoComplete: 'album-name',
         type: 'text',
-        label: 'album name',
+        label: 'albumtitel',
         validations: [{
-            text: 'please enter a name for your album',
+            text: 'voer een titel voor dit album in',
             validate: (val) => (!!val),
         }],
     },
@@ -23,40 +24,35 @@ const fieldConfig = {
         autoComplete: 'album-image',
         type: 'image',
         isAlbum: true,
-        label: 'album image',
+        label: 'albumcover',
     },
 };
 
 const AlbumForm = ({ album }) => {
     const groupId = useRecoilValue(activeGroupIdState);
     const albumId = useRecoilValue(activeAlbumIdState);
-    const isNew = (!albumId);
     const router = useRouter();
+    const isNew = (router.query.albumid === 'new');
+    const albumIdToSave = (isNew)? 'new': albumId;
     const isNewGroupFlow = router.query && router.query.new;
     const setLoadingPath = useSetLoadingPath();
-    const baseUrl = `/groups/${groupId}/albums`;
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
-    const albumsData = useRecoilValueLoadable(activeGroupAlbums);
-    const albums = (albumsData === 'hasValue' && albumsData.contents) ? albumsData.contents : [];
-    const reloadActiveAlbum = useResetRecoilState(activeAlbumState);
+    const albumsData = useActiveGroupAlbumsValue();
+    const albums = albumsData.contents || [];
+    const reloadActiveAlbum = useReloadActiveAlbum();
+    const saveAlbum = useSaveAlbum();
 
     const onSubmit = async (fields) => {
         setIsLoading(true);
         try {
-            const result = (isNew) ?
-                await API.post('blob-images', baseUrl, {
-                    body: fields
-                }) :
-                await API.put('blob-images', `${baseUrl}/${albumId}`, {
-                    body: fields
-                });
-            const newAlbumId = result.SK;
+            const newAlbumId = await saveAlbum(albumIdToSave, fields);
+            if (!newAlbumId) throw new Error('could not save album');
             const message = (isNew) ?
                 (albums.length > 0) ?
-                    'new album created'
-                    : 'congrats! you created your first album in this group.'
-                : 'changes were saved';
+                    'Nieuw album opgeslagen'
+                    : 'Bravo! Je hebt je eerste album in deze groep gemaakt'
+                : 'Wijzigingen opgeslagen';
             enqueueSnackbar(message, { variant: 'success' });
             reloadActiveAlbum();
             if (isNew) {
@@ -66,8 +62,8 @@ const AlbumForm = ({ album }) => {
                         `/personal/groups/${groupId}/invite`)
                 } else {
                     setLoadingPath(
-                        '/personal/groups/[id]/albums/[albumid]/edit',
-                        `/personal/groups/${groupId}/albums/${newAlbumId}/edit`)
+                        '/personal/groups/[id]/albums/[albumid]',
+                        `/personal/groups/${groupId}/albums/${newAlbumId}`)
                 }
             } else {
                 // reloadData();
@@ -75,7 +71,7 @@ const AlbumForm = ({ album }) => {
             // albums.reloadData();
         } catch (e) {
             console.log(e.message);
-            enqueueSnackbar('Could not save album', { variant: 'error' });
+            enqueueSnackbar('Kon album niet opslaan', { variant: 'error' });
         }
         setIsLoading(false);
     }
@@ -84,10 +80,10 @@ const AlbumForm = ({ album }) => {
     }
     const title = (isNew) ?
         (albums.data && albums.data.length > 0) ?
-            'Add details for your new album'
-            : 'Create the first album in this group'
-        : 'Edit album details';
-    const submitText = (isNew) ? 'Save new album' : 'Save changes';
+            'Nieuw album'
+            : 'Maak je eerste album in deze groep'
+        : 'Album bewerken';
+    const submitText = (isNew) ? 'Nieuw album opslaan' : 'Wijzigingen opslaan';
     const onDelete = (isNew) ? undefined : handleDelete;
 
     return (
@@ -99,7 +95,7 @@ const AlbumForm = ({ album }) => {
             submitText={submitText}
             onSubmit={onSubmit}
             onDelete={onDelete}
-            deleteText='delete this album'
+            deleteText='Album verwijderen'
         />
     )
 };

@@ -74,9 +74,11 @@ const ImageField = (props) => {
     const classes = useStyles();
     const myPhotosData = useUserPhotoIdsValue();
     const hasMyPhotos = (myPhotosData.contents && myPhotosData.contents.length > 0);
-    const groupPhotosData = useRecoilValueLoadable(activeGroupPhotos);
+    // const groupPhotosData = useRecoilValueLoadable(activeGroupPhotos);
+    const groupPhotosData = { isLoading: true };
     const hasGroupPhotos = hasItems(groupPhotosData);
-    const albumPhotosData = useRecoilValueLoadable(activeAlbumPhotos);
+    // const albumPhotosData = useRecoilValueLoadable(activeAlbumPhotos);
+    const albumPhotosData = { isLoading: true };
     const hasAlbumPhotos = hasItems(albumPhotosData);
 
     const width = isAvatar ? 100 : 540;
@@ -128,7 +130,7 @@ const ImageField = (props) => {
         <Grid item xs={6} className={classes.itemImage}>
             <legend className={classes.imageLabel}>{label}</legend>
             {url &&
-                <ClubImage src={url} alt='group image thumbnail' className={imgClass} width={width} height={width}/>
+                <ClubImage src={url} alt='group image thumbnail' className={imgClass} width={width} height={width} />
             }
             {!url &&
                 <Icon color='disabled' style={largeFont}>image</Icon>

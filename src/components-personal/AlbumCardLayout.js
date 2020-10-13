@@ -10,7 +10,7 @@ import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
-import { makeImageUrl } from '../components-generic/imageProvider';
+import { ClubImage } from '../components-generic/imageProvider';
 import { useSetLoadingPath } from '../data/loadingData';
 
 const useStyles = makeStyles(theme => ({
@@ -49,12 +49,11 @@ const flexEndStyle = { display: 'flex', justifyContent: 'flex-end' };
 
 const AlbumCardContent = (props) => {
     const { name, image, stats, newPicsCount, isLoading } = props;
-    const imageUrl = makeImageUrl(image && image.image, 340, 200);
     const classes = useStyles();
     return <>
-        {(image) ?
-            <CardMedia className={classes.image}
-                image={imageUrl}
+        {(image?.url) ?
+            <ClubImage className={classes.image}
+                src={image.url} width={340} height={200}
             />
             : <div className={classes.image} />
         }
@@ -76,7 +75,7 @@ const AlbumCardContent = (props) => {
 }
 
 const AlbumCardLayout = (props) => {
-    const { groupId, id, userIsAdmin, withEdit } = props;
+    const { groupId, albumId, userIsAdmin, withEdit } = props;
     const mayEdit = (userIsAdmin && withEdit);
     const classes = useStyles();
     const setLoadingPath = useSetLoadingPath();
@@ -85,13 +84,13 @@ const AlbumCardLayout = (props) => {
 
     const onClick = (e) => {
         e.preventDefault();
-        setLoadingPath(detailUrl, detailUrl.replace('[id]', groupId).replace('[albumid]', id));
+        setLoadingPath(detailUrl, detailUrl.replace('[id]', groupId).replace('[albumid]', albumId));
     }
 
     const onClickEdit = (e) => {
         e.preventDefault();
         const editUrl = detailUrl + '/edit';
-        setLoadingPath(editUrl, editUrl.replace('[id]', groupId).replace('[albumid]', id));
+        setLoadingPath(editUrl, editUrl.replace('[id]', groupId).replace('[albumid]', albumId));
     }
 
     return <Card className={classes.card}>

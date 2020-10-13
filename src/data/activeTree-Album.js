@@ -1,115 +1,117 @@
 import { useEffect } from 'react';
 import { API } from 'aws-amplify';
-import { useSnackbar } from 'notistack';
 
-import { atom, selector, useRecoilValueLoadable, DefaultValue } from 'recoil';
-import { activeGroupIdState, activeAlbumIdState } from './activeTreeRoot';
-import { useSetLoadingPath } from './loadingData';
+import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
+import { activeAlbumIdState, activeGroupIdState } from './activeTreeRoot';
 
-const activeAlbumStateTrigger = atom({
-    key: 'activeAlbumStateTrigger',
-    default: 0,
+// active album
+export const activeAlbumData = atom({
+    key: 'activeAlbumData',
+    default: { isLoading: true }
 });
 
-export const activeAlbumState = selector({
-    key: 'activeAlbum',
-    get: async ({ get }) => {
-        get(activeAlbumStateTrigger);
-        const groupId = get(activeGroupIdState);
-        const albumId = get(activeAlbumIdState);
-        if (!groupId || !albumId) return undefined;
-        const source = `/groups/${groupId}/albums/${albumId}`;
-        const response = await API.get('blob-images', source);
-        if (response.error) {
-            throw response.error;
-        }
-        return response;
+
+export const albumToForm = (album) => ({
+    groupId: album.PK.slice(2),
+    albumId: album.SK,
+    name: album.name,
+    image: {
+        url: album.photo?.url,
+        photoId: album.photoId
     },
-    set: ({ set }, newValue) => {
-        if (newValue instanceof DefaultValue) {
-            set(activeAlbumStateTrigger, v => v + 1);
+    group: album.group,
+    newPicsCount: album.newPicsCount
+});
+
+export const useReloadActiveAlbum = () => {
+    const activeGroupId = useRecoilValue(activeGroupIdState);
+    const activeAlbumId = useRecoilValue(activeAlbumIdState);
+    const setActiveAlbum = useSetRecoilState(activeAlbumData);
+    const loadData = async () => {
+        console.log(`loading active album ${activeAlbumId}`);
+        try {
+            const album = (activeAlbumId) ?
+                await API.get('blob-images', `/groups/${activeGroupId}/albums/${activeAlbumId}`)
+                : {};
+            setActiveAlbum({ contents: albumToForm(album) });
+        } catch (error) {
+            setActiveAlbum({ hasError: error });
         }
     }
-});
+    return loadData;
+}
 
-export const activeGroupAlbums = selector({
-    key: 'activeGroupAlbums',
-    get: async ({ get }) => {
-        get(activeAlbumStateTrigger);
-        const groupId = get(activeGroupIdState);
-        if (!groupId) return [];
-        const source = `/groups/${groupId}/albums`;
-        const response = await API.get('blob-images', source);
-        if (response.error) {
-            throw response.error;
-        }
-        return response;
-    }
-});
-
-const activeAlbumPhotosTrigger = atom({
-    key: 'activeAlbumPhotosTrigger',
-    default: 0
-});
-
-export const activeAlbumPhotos = selector({
-    key: 'activeAlbumPhotos',
-    get: async ({ get }) => {
-        get(activeAlbumPhotosTrigger);
-        get(activeAlbumStateTrigger);
-        const activeAlbum = await get(activeAlbumState);
-        if (!activeAlbum) return undefined;
-        const groupId = activeAlbum.PK?.slice(2);
-        const albumId = activeAlbum.SK;
-        const source = `/groups/${groupId}/albums/${albumId}/photos`;
-        const response = await API.get('blob-images', source);
-        if (response.error) {
-            throw response.error;
-        }
-        return response;
-    },
-    set: ({ set }, newValue) => {
-        if (newValue instanceof DefaultValue) {
-            set(activeAlbumPhotosTrigger, v => v + 1);
-        }
-    }
-});
-
-export const activeGroupPhotos = selector({
-    key: 'activeGroupPhotos',
-    get: async ({ get }) => {
-        const groupId = get(activeGroupIdState);
-        get(activeAlbumPhotosTrigger);
-        if (!groupId) return [];
-        const source = `/groups/${groupId}/photos`;
-        const response = await API.get('blob-images', source);
-        if (response.error) {
-            throw response.error;
-        }
-        return response;
-    },
-});
-
-// helper to check for data in Loadable - sometimes state == hasValue, but contents == undefined
-// if groupId not (yet) in recoil datatree
-export const hasAlbumData = (loadable) => (
-    (loadable.state === 'hasValue') && loadable.contents
-);
-
-export const redirectOnAlbumLoadError = () => {
-    const { enqueueSnackbar } = useSnackbar();
-    const redirect = useSetLoadingPath();
-    const groupData = useRecoilValueLoadable(activeGroupState);
-    const hasGroupError = (groupData.state === 'hasError');
-    const albumData = useRecoilValueLoadable(activeAlbumState);
-    const hasAlbumError = (albumData.state === 'hasError');
+export const useActiveAlbum = () => {
+    const activeAlbumId = useRecoilValue(activeAlbumIdState);
+    const activeAlbum = useRecoilValue(activeAlbumData);
+    const reloadAlbum = useReloadActiveAlbum();
     useEffect(() => {
-        if (hasGroupError) {
-            enqueueSnackbar('Could not load group, please try again', { variant: 'error' });
-            redirect('/personal/groups');
-        } else if (groupData.state === 'hasValue' && hasAlbumError) {
-            enqueueSnackbar('Could not load album, please try again', { variant: 'error' });
-            redirect(`/personal/groups/${group.id}`);
-        }
-    }, [hasGroupError, hasAlbumError]);
+        if (activeAlbumId && (!activeAlbum.contents?.id || activeAlbum.contents?.id !== activeAlbumId)) {
+            reloadAlbum();
+        };
+    }, [activeAlbumId]);
+    return activeAlbum;
 };
+
+export const useActiveAlbumValue = () => {
+    const activeAlbum = useRecoilValue(activeAlbumData);
+    return activeAlbum;
+};
+
+const saveAlbum = async (groupId, albumId, albumFields) => {
+    let albumUpdate = {
+        name: albumFields.name,
+        photoFilename: albumFields.image?.url && albumFields.image.url.split('/')[2]
+    };
+    if (albumFields.image?.photoId) albumUpdate.photoId = albumFields.image.photoId;
+    if (!albumUpdate.photoFilename && !albumUpdate.photoId) albumUpdate.photoId = '';
+    const isNew = !albumId || albumId === 'new';
+    const result = (isNew) ?
+        await API.post('blob-images', `/groups/${groupId}/albums`, {
+            body: albumUpdate
+        }) :
+        await API.put('blob-images', `/groups/${groupId}/albums/${albumId}`, {
+            body: albumUpdate
+        });
+    return result;
+};
+
+export const useSaveAlbum = () => {
+    const setActiveAlbum = useSetRecoilState(activeAlbumData);
+    const groupId = useRecoilValue(activeGroupIdState);
+    const saveAlbumFunc = async (albumId, albumFields) => {
+        let newAlbumId = null;
+        try {
+            const result = await saveAlbum(groupId, albumId, albumFields);
+            newAlbumId = result.SK;
+            setActiveAlbum({ contents: albumToForm(result) });
+        } catch (error) {
+            setActiveAlbum({ hasError: 'could not save album changes' });
+            console.log(error);
+        }
+        return newAlbumId;
+    }
+    return saveAlbumFunc;
+}
+export const deleteAlbum = async (groupId, albumId) => {
+    const result = await API.del('blob-images', `/groups/${groupId}/albums/${albumId}`);
+    return result;
+};
+
+// export const redirectOnAlbumLoadError = () => {
+//     const { enqueueSnackbar } = useSnackbar();
+//     const redirect = useSetLoadingPath();
+//     const groupData = useRecoilValueLoadable(activeGroupState);
+//     const hasGroupError = (groupData.state === 'hasError');
+//     const albumData = useRecoilValueLoadable(activeAlbumState);
+//     const hasAlbumError = (albumData.state === 'hasError');
+//     useEffect(() => {
+//         if (hasGroupError) {
+//             enqueueSnackbar('Could not load group, please try again', { variant: 'error' });
+//             redirect('/personal/groups');
+//         } else if (groupData.state === 'hasValue' && hasAlbumError) {
+//             enqueueSnackbar('Could not load album, please try again', { variant: 'error' });
+//             redirect(`/personal/groups/${group.id}`);
+//         }
+//     }, [hasGroupError, hasAlbumError]);
+// };

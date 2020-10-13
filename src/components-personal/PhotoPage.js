@@ -12,15 +12,15 @@ import { downloadFile } from '../helpers/download';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeImageUrl } from '../components-generic/imageProvider';
+import { ClubImage } from '../components-generic/imageProvider';
 import { makeStyles, Icon, Button, Chip } from '@material-ui/core';
 
-import { ImageSkeleton } from '../components-generic/Skeleton';
 import Rating from '../components-generic/Rating';
 import PhotoRating from '../components-personal/PhotoRating';
 import PhotoPubs from '../components-personal/PhotoPubs';
 import BackLinkToAlbum from '../components-generic/BackLinkToAlbum';
 import { activeAlbumPhotos } from '../data/activeTree-Album';
+import { useUserAlbums } from '../data/activeTree-UserAlbums';
 
 const useStyles = makeStyles(theme => ({
     photo: {
@@ -45,13 +45,19 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const flexStyle2 = {
+    display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.1)'
+};
+const bigIcon = { fontSize: '80px' };
+
 const PhotoMain = () => {
+    const userAlbumsData = useUserAlbums();
+
     const router = useRouter();
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
     const setLoadingPath = useSetLoadingPath();
-    const reloadPhotos = useResetRecoilState(userPhotosState);
-    const reloadAlbumPhotos = useResetRecoilState(activeAlbumPhotos);
     const hasAlbum = !!router.query.albumid;
 
     const photoId = router.query?.photoid || 'nophotoId';
@@ -61,12 +67,12 @@ const PhotoMain = () => {
     const { profile } = currentUser;
     const basePhotoData = useRecoilValueLoadable(photoState(source));
     // to prevent redisplay of photo when reloaded
+    const [photoData, setPhotoData] = useState(basePhotoData);
     useEffect(() => {
         if (basePhotoData.state !== 'loading' && photoData.state === 'loading') {
             setPhotoData(basePhotoData);
         }
     }, [basePhotoData])
-    const [photoData, setPhotoData] = useState(basePhotoData);
     const isLoading = (photoData.state === 'loading');
     const photo = (photoData.state === 'hasValue') && photoData.contents;
     const [userRating, setUserRating] = useState({ initial: 0, current: 0 });
@@ -98,8 +104,6 @@ const PhotoMain = () => {
             const path = `/photos/${photo?.PK?.slice(2)}`;
             await API.del('blob-images', path);
             enqueueSnackbar('Foto verwijderd', { variant: 'success' });
-            reloadPhotos();
-            hasAlbum && reloadAlbumPhotos();
             const [newPath, newAs] = (hasAlbum) ?
                 [
                     '/personal/groups/[id]/albums/[albumid]',
@@ -113,18 +117,13 @@ const PhotoMain = () => {
             enqueueSnackbar('Kon je kiekje niet verwijderen', { variant: 'error' });
         }
     };
-    const currentIsOwner = photo && photo.SK?.slice(1) === profile.id;
+    const currentIsOwner = photo && photo.SK === profile.id;
     const photoUrlRaw = photo?.url;
-    const [blur, setBlur] = useState(10);
-    const [imageSize, setImageSize] = useState('');
-    const photoUrl = (photo) ? makeImageUrl(photoUrlRaw, blur) : '/img/foto_not_found.jpg';
+    const photoUrl = (photo) ? photoUrlRaw : '/img/foto_not_found.jpg';
 
+    const [imageSize, setImageSize] = useState('');
     const onImageLoad = ({ target }) => {
-        if (blur) {
-            setBlur(undefined);
-        } else {
-            setImageSize(`${target.naturalWidth} x ${target.naturalHeight}`);
-        }
+        setImageSize(`${target.naturalWidth} x ${target.naturalHeight}`);
     };
 
     const photoFilename = photo.url?.split('/').slice(-1)[0];
@@ -138,12 +137,15 @@ const PhotoMain = () => {
             <Grid container>
                 <Grid item md={8} xs={12} className={classes.photo}>
                     <BackLinkToAlbum />
-                    <ImageSkeleton src={photoUrl} className={classes.image} isLoading={isLoading}
-                        onLoad={onImageLoad} withLink alt='image' />
+                    {(isLoading) && <div style={flexStyle2}>
+                        <Icon className={'pulse-icon'} style={bigIcon}>image</Icon>
+                    </div>}
+                    {(photoUrl && !isLoading) && <
+                        ClubImage src={photoUrl} className={classes.image} onLoad={onImageLoad} withLink alt='foto' />}
                 </Grid>
                 <Grid item md={4} xs={12} className={classes.caption}>
                     <Typography variant='h5' gutterBottom>
-                        door {photo.owner?.name || '-'}{'\u00A0'}
+                        door {photo.user?.name || '-'}{'\u00A0'}
                         {currentIsOwner && <Chip size='small' label='me' />}
                     </Typography>
                     <Typography variant='body1' gutterBottom>toegevoegd op {photo.createdAt || '-'}</Typography>
@@ -168,7 +170,8 @@ const PhotoMain = () => {
                             </Button>
                         }
                     </div>
-                    <PhotoPubs photo={photo} currentIsOwner={currentIsOwner} />
+                    {/* <PhotoPubs photo={photo} currentIsOwner={currentIsOwner} /> */}
+                    <pre>{JSON.stringify(userAlbumsData.contents || {}, null, 2)}</pre>
                 </Grid>
             </Grid>
             {/* <pre>{JSON.stringify(photoData, null, 2)}</pre>

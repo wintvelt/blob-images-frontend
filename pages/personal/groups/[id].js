@@ -4,12 +4,14 @@ import GroupMembers from '../../../src/components-personal/GroupMembers';
 import AlbumList from '../../../src/components-personal/AlbumList';
 import PrivatePage from '../../../src/components-personal/PrivatePage';
 import { redirectOnGroupLoadError, useActiveGroup } from '../../../src/data/activeTree-Group';
+import { useActiveGroupAlbums } from '../../../src/data/activeTree-GroupAlbums';
 import { useActiveMembers } from '../../../src/data/activeTree-GroupMembers';
 
 const GroupMain = () => { 
     // initial load (only) here
     const groupData = useActiveGroup();
     const groupMembers = useActiveMembers();
+    const groupAlbums = useActiveGroupAlbums();
     redirectOnGroupLoadError(groupData);
     return (
         <main>

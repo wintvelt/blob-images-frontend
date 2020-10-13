@@ -7,7 +7,6 @@ import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { photoState } from '../data/activeTree-Photo';
 import { useUserValue } from '../data/userData';
 import { useSetLoadingPath } from '../data/loadingData';
-import { userPhotosState } from '../data/userData';
 import { downloadFile } from '../helpers/download';
 
 import Grid from '@material-ui/core/Grid';
@@ -17,9 +16,8 @@ import { makeStyles, Icon, Button, Chip } from '@material-ui/core';
 
 import Rating from '../components-generic/Rating';
 import PhotoRating from '../components-personal/PhotoRating';
-import PhotoPubs from '../components-personal/PhotoPubs';
+// import PhotoPubs from '../components-personal/PhotoPubs';
 import BackLinkToAlbum from '../components-generic/BackLinkToAlbum';
-import { activeAlbumPhotos } from '../data/activeTree-Album';
 import { useUserAlbums } from '../data/activeTree-UserAlbums';
 
 const useStyles = makeStyles(theme => ({

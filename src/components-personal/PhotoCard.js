@@ -69,8 +69,7 @@ const MenuButton = ({ className, onClick, disabled }) => (
 const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClickMenu, noOwner,
     menuIsOpen }) => {
     const classes = useStyles();
-    const source = `/photos/${photoId}`;
-    const photoData = useRecoilValueLoadable(photoState(source));
+    const photoData = useRecoilValueLoadable(photoState(photoId));
     const photo = (photoData.state === 'hasValue' && photoData.contents) ? photoData.contents : {};
     const { url, user, rating, createdAt } = photo;
     const { name, photoUrl } = user || {};

@@ -9,18 +9,18 @@ const photoStateTrigger = atomFamily({
 });
 export const photoState = selectorFamily({
     key: 'photo',
-    get: (source) => async ({ get }) => {
-        get(photoStateTrigger(source));
-        if (!source) return undefined;
-        const response = await API.get('blob-images', source);
+    get: (photoId) => async ({ get }) => {
+        get(photoStateTrigger(photoId || 'dummy'));
+        if (!photoId) return undefined;
+        const response = await API.get('blob-images', `/photos/${photoId}`);
         if (response.error) {
             throw response.error;
         }
         return response.photo || response;
     },
-    set: (source) => ({ set }, newValue) => {
+    set: (photoId) => ({ set }, newValue) => {
         if (newValue instanceof DefaultValue) {
-            set(photoStateTrigger(source), v => v + 1);
+            set(photoStateTrigger(source || 'dummy'), v => v + 1);
         }
     }
 });

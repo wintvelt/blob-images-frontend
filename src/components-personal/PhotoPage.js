@@ -59,10 +59,10 @@ const PhotoMain = () => {
 
     const photoId = router.query?.photoid || 'nophotoId';
     const source = `/photos/${photoId}`;
-    const reloadActivePhoto = useResetRecoilState(photoState(source));
+    const reloadActivePhoto = useResetRecoilState(photoState(photoId));
     const currentUser = useUserValue();
     const { profile } = currentUser;
-    const basePhotoData = useRecoilValueLoadable(photoState(source));
+    const basePhotoData = useRecoilValueLoadable(photoState(photoId));
     // to prevent redisplay of photo when reloaded
     const [photoData, setPhotoData] = useState(basePhotoData);
     useEffect(() => {

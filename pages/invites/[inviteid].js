@@ -44,7 +44,7 @@ const InvitePage = (props) => {
 
     useEffect(() => {
         const checkMembership = async () => {
-            if (groupId && user && user.isAuthenticated) {
+            if (user && user.isAuthenticated) {
                 try {
                     const groupData = await API.get('blob-images', `/groups/${groupId}`);
                     setIsAlreadyMember(true);
@@ -55,7 +55,7 @@ const InvitePage = (props) => {
                 setIsAlreadyMember(false);
             }
         };
-        checkMembership();
+        if (groupId) checkMembership();
     }, [user.isAuthenticated, groupId]);
 
     return (
@@ -123,7 +123,7 @@ const InviteHOC = () => {
         try {
             await declineInvite();
             enqueueSnackbar(`Je afwijzing om lid te worden van ${group ? group.name : 'deze groep'} is doorgegeven`);
-            const redirect = (user && user.isAuthenticated)? '/personal/groups' : '/';
+            const redirect = (user && user.isAuthenticated) ? '/personal/groups' : '/';
             setLoadingPath(redirect);
         } catch (error) {
             console.log(error);

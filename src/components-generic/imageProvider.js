@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { bucket } from '../aws-amplify/config-env';
 import { usePalette } from 'react-palette';
 import Icon from '@material-ui/core/Icon';
@@ -34,7 +34,20 @@ const ImagePropsAreEqual = (prevProps, nextProps) => (
     (prevProps.style === nextProps.style)
 );
 
+export const useIsMounted = () => {
+    const isMounted = useRef(true)
+  
+    useEffect(() => {
+      return () => {
+        isMounted.current = false;
+      };
+    }, []);
+  
+    return isMounted; // returning "isMounted.current" wouldn't work because we would return unmutable primitive
+  }
+
 const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, ...rest }) => {
+    const isMounted = useIsMounted();
     const isLocal = (src && src.slice(0, 1) === '/');
     const [size, setSize] = useState((isLocal) ? 'normal' : 'none');
     const urlSmall = (isLocal) ? src : makeImageUrl(src, 10, 10);
@@ -43,8 +56,10 @@ const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, ...re
     if (!src) return null;
 
     const handleLoad = (newSize) => (event) => {
-        setSize((oldSize => (oldSize === 'normal') ? 'normal' : newSize));
-        if (newSize === 'normal' && onLoad) onLoad(event);
+        if (isMounted.current) {
+            setSize((oldSize => (oldSize === 'normal') ? 'normal' : newSize));
+            if (newSize === 'normal' && onLoad) onLoad(event);
+        }
     };
 
     return <div {...rest} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

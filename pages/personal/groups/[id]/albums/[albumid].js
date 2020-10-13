@@ -34,14 +34,14 @@ const AlbumMain = () => {
     const onProcessFile = async (err, file) => {
         setTimeout(async () => {
             pond.current.removeFile(file.id);
-            reloadPhotos();
+            reloadPhotos(groupId, albumId);
         }, 2000)
     }
     const onPhotoClick = (photo) => {
         const photoPath = '/personal/groups/[id]/albums/[albumid]/photos/[photoid]';
         setLoadingPath(
             photoPath,
-            photoPath.replace('[photoid]', photo.key).replace('[id]', groupId).replace('[albumid]', albumId));
+            photoPath.replace('[photoid]', photo.photoId).replace('[id]', groupId).replace('[albumid]', albumId));
     };
 
     return (

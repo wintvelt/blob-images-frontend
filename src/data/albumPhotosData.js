@@ -15,10 +15,8 @@ const albumPhotoToForm = (albumPhoto) => ({
 });
 
 export const useReloadAlbumPhotoIds = () => {
-    const groupId = useRecoilValue(activeGroupIdState);
-    const albumId = useRecoilValue(activeAlbumIdState);
     const setAlbumPhotoIds = useSetRecoilState(albumPhotoIdsData);
-    const loadData = async () => {
+    const loadData = async (groupId, albumId) => {
         if (albumId && groupId) {
             console.log(`loading photos for album ${albumId}`);
             try {
@@ -34,11 +32,13 @@ export const useReloadAlbumPhotoIds = () => {
 };
 
 export const useAlbumPhotoIds = () => {
+    const groupId = useRecoilValue(activeGroupIdState);
+    const albumId = useRecoilValue(activeAlbumIdState);
     const albumPhotoIds = useRecoilValue(albumPhotoIdsData);
     const reloadPhotoIds = useReloadAlbumPhotoIds();
     useEffect(() => {
-        reloadPhotoIds();
-    }, []);
+        if (groupId && albumId) reloadPhotoIds(groupId, albumId);
+    }, [groupId, albumId]);
     return albumPhotoIds;
 };
 

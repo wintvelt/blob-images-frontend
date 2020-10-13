@@ -67,7 +67,7 @@ export const usePubs = (photoId) => {
     const pubs = useRecoilValue(pubState);
     const reloadPubs = useReloadPubs();
     useEffect(() => {
-        reloadPubs(photoId);
+        if (photoId) reloadPubs(photoId);
     }, [photoId]);
     return pubs;
 };

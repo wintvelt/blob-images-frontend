@@ -45,9 +45,11 @@ const PhotoList = (props) => {
         reloadAlbum, reloadGroup, reloadPhotos } = props;
     const [photos, setPhotos] = useState(initialPhotos);
     useEffect(() => {
-        if (photoData.contents) {
+        let isMounted = true;
+        if (photoData.contents && isMounted) {
             setPhotos(photoData.contents);
         }
+        return () => {isMounted = false};
     }, [photoData]);
     const [anchor, setAnchor] = useState({ el: null });
     const [selected, setSelected] = useState([]);
@@ -80,7 +82,7 @@ const PhotoList = (props) => {
             {photos.map(photoId => {
                 return <GridListTile key={photoId} className={classes.tile}>
                     <Photo
-                        photoId={(typeof photoId === 'string')? photoId : ''}
+                        photoId={(typeof photoId === 'string') ? photoId : ''}
                         isSmall={(!isLarge && !isMedium)}
                         {...props}
                         onClickMenu={menu && handleMenuClick}

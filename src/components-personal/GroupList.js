@@ -25,6 +25,7 @@ const GroupList = () => {
             setLoadingPath(groupAddProps.path, groupAddProps.asPath);
         }
     }, [groupsListLength]);
+    
     const groupsWithEdit = (!hasValue) ?
         groupsList
         : groupsList.map(item => ({ 

@@ -16,6 +16,8 @@ const linkStyle = {
     width: 'fit-content',
     marginBottom: '24px',
     zIndex: 1,
+    backgroundColor: '#ffffff40',
+    paddingRight: '8px',
 };
 const linkStyle2 = { color: 'inherit' };
 

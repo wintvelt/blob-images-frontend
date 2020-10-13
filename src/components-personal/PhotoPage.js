@@ -11,12 +11,12 @@ import { downloadFile } from '../helpers/download';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { ClubImage } from '../components-generic/imageProvider';
+import { ClubImage, makeImageUrl } from '../components-generic/imageProvider';
 import { makeStyles, Icon, Button, Chip } from '@material-ui/core';
 
 import Rating from '../components-generic/Rating';
 import PhotoRating from '../components-personal/PhotoRating';
-// import PhotoPubs from '../components-personal/PhotoPubs';
+import PhotoPubs from '../components-personal/PhotoPubs';
 import BackLinkToAlbum from '../components-generic/BackLinkToAlbum';
 import { useUserAlbums } from '../data/activeTree-UserAlbums';
 
@@ -51,7 +51,6 @@ const bigIcon = { fontSize: '80px' };
 
 const PhotoMain = () => {
     const userAlbumsData = useUserAlbums();
-
     const router = useRouter();
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
@@ -67,7 +66,7 @@ const PhotoMain = () => {
     // to prevent redisplay of photo when reloaded
     const [photoData, setPhotoData] = useState(basePhotoData);
     useEffect(() => {
-        if (basePhotoData.state !== 'loading' && photoData.state === 'loading') {
+        if (photoId && basePhotoData.state !== 'loading' && photoData.state === 'loading') {
             setPhotoData(basePhotoData);
         }
     }, [basePhotoData])
@@ -83,15 +82,17 @@ const PhotoMain = () => {
             } catch (_) {
             }
         };
-        getRating();
+        if (photoId) {
+            getRating();
+        }
     }, [photoId]);
     const onChangeRating = (clickedRating) => {
         const setRating = async () => {
             const ratingUpdate = (userRating.current === clickedRating) ? -clickedRating : clickedRating;
             setUserRating({ ...userRating, current: userRating.current + ratingUpdate });
-            await API.put('blob-images', source + '/rating', { body: { ratingUpdate } });
+            await API.post('blob-images', source + '/rating', { body: { ratingUpdate } });
             enqueueSnackbar(`Je ${(ratingUpdate > 0) ? '+1' : '-1'} inbreng over deze foto is verwerkt`);
-            reloadActivePhoto();
+            setTimeout(reloadActivePhoto, 1000);
         };
         setRating();
     };
@@ -127,7 +128,7 @@ const PhotoMain = () => {
     const photoFilename = photo.url?.split('/').slice(-1)[0];
 
     const onDownload = () => {
-        downloadFile(photoUrl, photoFilename);
+        downloadFile(makeImageUrl(photoUrl), photoFilename);
     }
 
     return (
@@ -138,8 +139,8 @@ const PhotoMain = () => {
                     {(isLoading) && <div style={flexStyle2}>
                         <Icon className={'pulse-icon'} style={bigIcon}>image</Icon>
                     </div>}
-                    {(photoUrl && !isLoading) && <
-                        ClubImage src={photoUrl} className={classes.image} onLoad={onImageLoad} withLink alt='foto' />}
+                    {(photoUrl && !isLoading) &&
+                        <ClubImage src={photoUrl} className={classes.image} onLoad={onImageLoad} withLink alt='foto' />}
                 </Grid>
                 <Grid item md={4} xs={12} className={classes.caption}>
                     <Typography variant='h5' gutterBottom>
@@ -168,8 +169,8 @@ const PhotoMain = () => {
                             </Button>
                         }
                     </div>
-                    {/* <PhotoPubs photo={photo} currentIsOwner={currentIsOwner} /> */}
-                    <pre>{JSON.stringify(userAlbumsData.contents || {}, null, 2)}</pre>
+                    <PhotoPubs photo={photo} currentIsOwner={currentIsOwner} />
+                    {/* <pre>{JSON.stringify(userAlbumsData.contents || {}, null, 2)}</pre> */}
                 </Grid>
             </Grid>
             {/* <pre>{JSON.stringify(photoData, null, 2)}</pre>

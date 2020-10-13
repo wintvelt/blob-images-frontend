@@ -4,13 +4,11 @@ import {
     makeStyles, ListItemSecondaryAction, Icon, IconButton
 }
     from '@material-ui/core';
-import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { userAlbums } from '../data/userData';
-import { publicationState } from '../data/activeTree-Photo';
+import { usePubs, useReloadPubs } from '../data/activeTree-Photo';
 import { makeImageUrl } from '../components-generic/imageProvider';
 import { useSetLoadingPath } from '../data/loadingData';
 import PhotoMenu from './PhotoListMenu';
-import { activeAlbumPhotos } from '../data/activeTree-Album';
+import { useReloadUserAlbums, useUserAlbumsValue } from '../data/activeTree-UserAlbums';
 
 const useStyles = makeStyles(theme => ({
     list: {
@@ -34,20 +32,23 @@ const useStyles = makeStyles(theme => ({
 const PhotoPubs = ({ photo, currentIsOwner }) => {
     const classes = useStyles();
     const setLoadingPath = useSetLoadingPath();
-    const albumsData = useRecoilValueLoadable(userAlbums);
-    const albums = (albumsData.state === 'hasValue') ? albumsData.contents : [];
-    const photoId = photo?.PK?.slice(2);
-    const source = `/publications/${photoId}`;
-    const pubData = useRecoilValueLoadable(publicationState(source));
-    const pubs = (pubData.state === 'hasValue') ? pubData.contents : [];
-    const pubAlbumIds = pubs.map(pub => pub.PK.split('#')[1]);
-    const reloadPubs = useResetRecoilState(publicationState(source));
-    const reloadAlbum = useResetRecoilState(activeAlbumPhotos);
+    const albumsData = useUserAlbumsValue();
+    const albums = albumsData.contents || [];
+    const photoId = photo.PK?.slice(2);
 
-    const sortedAlbums = albums
-        .map(album => ({ ...album, isPublished: pubAlbumIds.includes(album.id) }))
-        .sort((a, b) => (a.isPublished) ? (b.isPublished) ? 0 : -1 : 1)
-        .filter(album => (currentIsOwner || album.isPublished));
+    const pubData = usePubs(photoId);
+    const pubs = pubData.contents || [];
+    const pubAlbumIds = pubs.map(pub => pub.albumId);
+    const reloadPubs = useReloadPubs(photoId);
+    const reloadAlbums = useReloadUserAlbums();
+
+    const albumsWithPub = albums
+        .filter(album => pubAlbumIds.includes(album.albumId));
+    const albumsWithoutPub = (currentIsOwner) ?
+        albums.filter(album => !pubAlbumIds.includes(album.albumId))
+        : [];
+    const hasPubs = (albumsWithPub.length > 0);
+    const hasWithoutPubs = (albumsWithoutPub.length > 0);
 
     const [anchor, setAnchor] = useState({ el: null });
 
@@ -59,16 +60,15 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
         setAnchor({ el: null });
     };
 
-    if (sortedAlbums.length === 0) return null;
+    if (!hasPubs && !hasWithoutPubs) return null;
 
     return <>
-        <List dense className={classes.list} subheader={
-            <ListSubheader className={classes.noPadList}>Publicaties in albums van mijn groepen</ListSubheader>
+        {(hasPubs) && <List dense className={classes.list} subheader={
+            <ListSubheader className={classes.noPadList}>Albums waar deze foto in zit</ListSubheader>
         }>
-            {sortedAlbums.map(album => {
-                const { id, name, groupName, image } = album;
-                const groupId = album.PK.slice(2);
-                const albumUrl = `/personal/groups/${groupId}/albums/${id}`;
+            {albumsWithPub.map(album => {
+                const { albumId, groupId, name, groupName, image } = album;
+                const albumUrl = `/personal/groups/${groupId}/albums/${albumId}`;
                 const onAlbumClick = () => {
                     setLoadingPath('/personal/groups/[id]/albums/[albumid]', albumUrl);
                 }
@@ -76,7 +76,7 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
                 const onClick = (e) => {
                     handleClick(e, album);
                 }
-                return <ListItem button key={id} className={classes.noPadList} onClick={onAlbumClick}>
+                return <ListItem button key={albumId} className={classes.noPadList} onClick={onAlbumClick}>
                     <ListItemIcon><img src={imageUrl} className={classes.albumImg} /></ListItemIcon>
                     <ListItemText primary={name} secondary={groupName} />
                     <ListItemSecondaryAction className={classes.actions}>
@@ -87,7 +87,32 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
                     </ListItemSecondaryAction>
                 </ListItem>
             })}
-        </List>
+        </List>}
+        {(hasWithoutPubs) && <List dense className={classes.list} subheader={
+            <ListSubheader className={classes.noPadList}>Andere albums</ListSubheader>
+        }>
+            {albumsWithoutPub.map(album => {
+                const { albumId, groupId, name, groupName, image } = album;
+                const albumUrl = `/personal/groups/${groupId}/albums/${albumId}`;
+                const onAlbumClick = () => {
+                    setLoadingPath('/personal/groups/[id]/albums/[albumid]', albumUrl);
+                }
+                const imageUrl = makeImageUrl(image?.url, 40);
+                const onClick = (e) => {
+                    handleClick(e, album);
+                }
+                return <ListItem button key={albumId} className={classes.noPadList} onClick={onAlbumClick}>
+                    <ListItemIcon><img src={imageUrl} className={classes.albumImg} /></ListItemIcon>
+                    <ListItemText primary={name} secondary={groupName} />
+                    <ListItemSecondaryAction className={classes.actions}>
+                        {album.isPublished && <Icon>done</Icon>}
+                        {currentIsOwner && <IconButton onClick={onClick} disabled={!!anchor.el} color='primary'>
+                            <Icon>more_horiz</Icon>
+                        </IconButton>}
+                    </ListItemSecondaryAction>
+                </ListItem>
+            })}
+        </List>}
         {currentIsOwner && <PhotoMenu
             anchor={{ ...anchor, photo }}
             handleClose={handleClose}
@@ -95,7 +120,7 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
             isAlbum
             publications={pubAlbumIds}
             reloadPubs={reloadPubs}
-            reloadAlbum={reloadAlbum}
+            reloadAlbum={reloadAlbums}
         />}
     </>
 }

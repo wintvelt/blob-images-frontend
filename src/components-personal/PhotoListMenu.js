@@ -11,8 +11,8 @@ const redStyle = { color: 'red' };
 
 const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
     isAlbum, publications, reloadPubs }) => {
-    const albumData = album;
-    const albumPath = `/groups/${albumData?.PK?.slice(2)}/albums/${albumData?.SK}`;
+    const albumData = (isAlbum) ? anchor.album : album;
+    const albumPath = `/groups/${albumData?.groupId}/albums/${albumData?.albumId}`;
 
     const currentPhotoId = anchor.photo?.PK.slice(2);
     const { user, saveProfile } = useUser();
@@ -32,9 +32,7 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
         try {
             await API.put('blob-images', albumPath, {
                 body: {
-                    name: albumData.name,
-                    image: { image: anchor.photo.url, owner: anchor.photo.owner, id: currentPhotoId },
-                    imageUrl: anchor.photo.url
+                    photoId: currentPhotoId,
                 }
             });
             enqueueSnackbar('album foto ingesteld', { variant: 'success' });
@@ -63,7 +61,7 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
             await API.post('blob-images', path, { body: { photoId: currentPhotoId } });
             enqueueSnackbar('foto aan album toegevoegd', { variant: 'success' });
             reloadAlbum && reloadAlbum();
-            reloadPubs && reloadPubs();
+            reloadPubs && reloadPubs(currentPhotoId);
         } catch (error) {
             console.log(error);
             enqueueSnackbar('kon foto niet toevoegen', { variant: 'error' });
@@ -75,7 +73,7 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
             const path = `${albumPath}/photos/${currentPhotoId}`;
             await API.del('blob-images', path);
             enqueueSnackbar('foto uit album verwijderd', { variant: 'success' });
-            reloadPubs && reloadPubs();
+            reloadPubs && reloadPubs(currentPhotoId);
             reloadAlbum && reloadAlbum();
         } catch (error) {
             console.log(error);
@@ -93,13 +91,13 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
             open={Boolean(anchor.el)}
             onClose={handleClose}
         >
-            {album && (!isAlbum) && <MenuItem onClick={onSetAlbumCover}>Maak albumcover</MenuItem>}
+            {album && <MenuItem onClick={onSetAlbumCover}>Foto als albumcover instellen</MenuItem>}
             {!isAlbum && <MenuItem onClick={onSetProfilePic}>Maak dit mijn profielfoto</MenuItem>}
-            {album && userIsOwner && (!isAlbum || publications.includes(album.id)) &&
-                <MenuItem onClick={onRemoveFromAlbum}>Verwijder uit album</MenuItem>
+            {album && userIsOwner && (!isAlbum || publications.includes(album.albumId)) &&
+                <MenuItem onClick={onRemoveFromAlbum}>Foto uit album verwijderen</MenuItem>
             }
-            {album && userIsOwner && (isAlbum && !publications.includes(album.id)) &&
-                <MenuItem onClick={onAddToAlbum}>Aan album toevoegen</MenuItem>
+            {album && userIsOwner && (isAlbum && !publications.includes(album.albumId)) &&
+                <MenuItem onClick={onAddToAlbum}>Foto aan album toevoegen</MenuItem>
             }
             {userIsOwner && (!isAlbum) && <MenuItem onClick={onDelete} style={redStyle}>Foto verwijderen</MenuItem>}
             {/* <MenuItem>

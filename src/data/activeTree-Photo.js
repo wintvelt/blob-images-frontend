@@ -1,11 +1,12 @@
-import { selectorFamily, atomFamily, DefaultValue } from 'recoil';
+import { selectorFamily, atom, atomFamily, useRecoilValue, useSetRecoilState, DefaultValue } from 'recoil';
 import { API } from 'aws-amplify';
+import { albumToForm } from './activeTree-Album';
+import { useEffect } from 'react';
 
 const photoStateTrigger = atomFamily({
     key: 'photoStateTrigger',
     default: 0
 });
-
 export const photoState = selectorFamily({
     key: 'photo',
     get: (source) => async ({ get }) => {
@@ -33,26 +34,45 @@ export const photoUpdate = () => {
         del
     };
 };
+// PUBLICATIONS
+const pubToForm = (pub) => ({
+    groupId: pub.PK.split('#')[0].slice(2),
+    albumId: pub.PK.split('#')[1],
+    photoId: pub.SK,
+    photoUrl: pub.photo.url
+});
 
-const pubStateTrigger = atomFamily({
-    key: 'pubStateTrigger',
-    default: 0
-})
+const pubState = atom({
+    key: 'pubState',
+    default: { isLoading: true }
+});
 
-export const publicationState = selectorFamily({
-    key: 'publications',
-    get: (source) => async ({ get }) => {
-        get(pubStateTrigger(source));
-        if (!source) return undefined;
-        const response = await API.get('blob-images', source);
-        if (response.error) {
-            throw response.error;
-        }
-        return response;
-    },
-    set: (source) => ({ set }, newValue) => {
-        if (newValue instanceof DefaultValue) {
-            set(pubStateTrigger(source), v => v + 1);
+export const useReloadPubs = () => {
+    const setPubs = useSetRecoilState(pubState);
+    const loadData = async (photoId) => {
+        console.log(`loading publications for photo ${photoId}`);
+        if (photoId) {
+            try {
+                const pubs = await API.get('blob-images', `/photos/${photoId}/publications`);
+                setPubs({ contents: pubs.map(album => pubToForm(album)) });
+            } catch (error) {
+                setPubs({ hasError: error });
+            }
         }
     }
-});
+    return loadData;
+}
+
+export const usePubs = (photoId) => {
+    const pubs = useRecoilValue(pubState);
+    const reloadPubs = useReloadPubs();
+    useEffect(() => {
+        reloadPubs(photoId);
+    }, [photoId]);
+    return pubs;
+};
+
+export const usePubsValue = () => {
+    const pubs = useRecoilValue(pubState);
+    return pubs;
+}

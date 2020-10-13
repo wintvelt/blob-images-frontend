@@ -32,3 +32,8 @@ export const useUserAlbums = () => {
     }, []);
     return userAlbums;
 };
+
+export const useUserAlbumsValue = () => {
+    const userAlbums = useRecoilValue(userAlbumsData);
+    return userAlbums;
+}

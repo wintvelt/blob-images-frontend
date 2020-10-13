@@ -8,18 +8,26 @@ export const albumPhotoIdsData = atom({
     default: { isLoading: true },
 });
 
+const albumPhotoToForm = (albumPhoto) => ({
+    groupId: albumPhoto.PK.split('#')[0].slice(2),
+    albumId: albumPhoto.PK.split('#')[1],
+    photoId: albumPhoto.SK
+});
+
 export const useReloadAlbumPhotoIds = () => {
     const groupId = useRecoilValue(activeGroupIdState);
     const albumId = useRecoilValue(activeAlbumIdState);
     const setAlbumPhotoIds = useSetRecoilState(albumPhotoIdsData);
     const loadData = async () => {
-        console.log(`loading photos for album ${albumId}`);
-        try {
-            const photoIds = await API.get('blob-images', `/groups/${groupId}/albums/${albumId}/photos`);
-            setAlbumPhotoIds({ contents: photoIds });
-        } catch (error) {
-            console.log({error});
-            setAlbumPhotoIds({ hasError: error });
+        if (albumId && groupId) {
+            console.log(`loading photos for album ${albumId}`);
+            try {
+                const photoIds = await API.get('blob-images', `/groups/${groupId}/albums/${albumId}/photos`);
+                setAlbumPhotoIds({ contents: photoIds.map(item => item.SK) });
+            } catch (error) {
+                console.log({ error });
+                setAlbumPhotoIds({ hasError: error });
+            }
         }
     }
     return loadData;

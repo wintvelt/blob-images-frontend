@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
-import { API, Auth } from 'aws-amplify';
-import { useSetLoadingPath } from './loadingData';
+import { API } from 'aws-amplify';
 
 export const userPhotoIdsData = atom({
     key: 'userPhotoIdsData',

@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import CardMedia from '@material-ui/core/CardMedia';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { TextSkeleton } from '../../src/components-generic/Skeleton';
-import { makeImageUrl } from '../../src/components-generic/imageProvider';
+import { ClubImage } from '../../src/components-generic/imageProvider';
 
 import Link from '../components-generic/Link';
-import { useRecoilValueLoadable, useRecoilValue } from 'recoil';
-import { activeAlbumState, hasAlbumData } from '../data/activeTree-Album';
+import { useRecoilValue } from 'recoil';
+import { useActiveAlbumValue } from '../data/activeTree-Album';
 import { activePathFront } from '../data/activeTreeRoot';
 
 export const useAlbumHeaderStyles = makeStyles(theme => ({
@@ -37,38 +36,33 @@ export const useAlbumHeaderStyles = makeStyles(theme => ({
 
 export const AlbumImage = () => {
     const classes = useAlbumHeaderStyles();
-    const albumData = useRecoilValueLoadable(activeAlbumState);
-    const hasValue = hasAlbumData(albumData);
-    const imgUrl = hasValue && albumData.contents.image?.image;
-    const [imgSize, setImgSize] = useState(10);
-    useEffect(() => {
-        if (imgSize === 10 && !!imgUrl) setImgSize(1440)
-    }, [imgUrl]);
-
-    const imageUrl = makeImageUrl(imgUrl, imgSize, 320);
+    const albumData = useActiveAlbumValue();
+    const hasImage = !!albumData.contents?.image?.url;
+    const album = albumData.contents || {};
 
     return <>
-        {hasValue && <CardMedia className={classes.groupMedia}
-            image={imageUrl}
+        {hasImage && <ClubImage className={classes.groupMedia}
+            src={album.image?.url}
+            width={1440}
+            height={320}
             title='Album cover image'
         />}
-        {!hasValue && <div className={classes.groupMedia} />}
+        {!hasImage && <div className={classes.groupMedia} />}
     </>
 }
 
 export const AlbumName = () => {
-    const albumData = useRecoilValueLoadable(activeAlbumState);
-    const hasValue = hasAlbumData(albumData);
+    const albumData = useActiveAlbumValue();
+    const hasValue = !!albumData.contents;
     const name = hasValue && albumData.contents.name;
-    return <TextSkeleton isLoading={!hasValue}>
+    return <TextSkeleton isLoading={albumData.isLoading}>
         {name}
     </TextSkeleton>
 };
 
 export const AlbumStats = () => {
-    const classes = useAlbumHeaderStyles();
-    const albumData = useRecoilValueLoadable(activeAlbumState);
-    const hasValue = hasAlbumData(albumData);
+    const albumData = useActiveAlbumValue();
+    const hasValue = !!albumData.contents;
     const stats = hasValue && albumData.contents.stats;
     if (!stats) return null;
     return <Typography variant="caption" color="inherit" component="p">
@@ -89,8 +83,8 @@ const linkStyle = {
 };
 export const AlbumEditButton = () => {
     const classes = useAlbumHeaderStyles();
-    const albumData = useRecoilValueLoadable(activeAlbumState);
-    const hasValue = hasAlbumData(albumData);
+    const albumData = useActiveAlbumValue();
+    const hasValue = !!albumData.contents;
     const userIsAdmin = hasValue && albumData.contents.userIsAdmin;
     const paths = useRecoilValue(activePathFront);
     if (!userIsAdmin) return null;

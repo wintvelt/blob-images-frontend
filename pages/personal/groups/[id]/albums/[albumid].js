@@ -4,22 +4,24 @@ import AlbumHeader from '../../../../../src/components-personal/AlbumHeader';
 import PhotoList from '../../../../../src/components-personal/PhotoList';
 import PrivatePage from '../../../../../src/components-personal/PrivatePage';
 import Upload from '../../../../../src/components-generic/Upload';
-import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { activeAlbumState, hasAlbumData, activeAlbumPhotos } from '../../../../../src/data/activeTree-Album';
+import { useActiveAlbum, useReloadActiveAlbum } from '../../../../../src/data/activeTree-Album';
+import { useAlbumPhotoIds, useReloadAlbumPhotoIds } from '../../../../../src/data/albumPhotosData';
 import { useSetLoadingPath } from '../../../../../src/data/loadingData';
+import { useActiveGroup } from '../../../../../src/data/activeTree-Group';
 
 const AlbumMain = () => {
-    const activeAlbumData = useRecoilValueLoadable(activeAlbumState);
-    const hasValue = hasAlbumData(activeAlbumData);
+    const activeGroupData = useActiveGroup();
+    const activeAlbumData = useActiveAlbum();
+    const hasValue = !!activeAlbumData.contents;
     const activeAlbum = hasValue ? activeAlbumData.contents : {};
-    const albumPhotosData = useRecoilValueLoadable(activeAlbumPhotos);
-    const groupId = activeAlbum.PK?.slice(2);
-    const albumId = activeAlbum.SK;
+    const albumPhotosData = useAlbumPhotoIds();
+    const groupId = activeAlbum.groupId;
+    const albumId = activeAlbum.albumId;
     const userIsAdmin = activeAlbum.userIsAdmin;
     const photoMetaData = { groupId, albumId };
     const pond = useRef();
-    const reloadPhotos = useResetRecoilState(activeAlbumPhotos);
-    const reloadAlbum = useResetRecoilState(activeAlbumState);
+    const reloadPhotos = useReloadAlbumPhotoIds();
+    const reloadAlbum = useReloadActiveAlbum();
     const [files, setFiles] = useState([]);
     const setLoadingPath = useSetLoadingPath();
 

@@ -20,6 +20,7 @@ export const albumToForm = (album) => ({
         photoId: album.photoId
     },
     group: album.group,
+    userIsAdmin: album.userIsAdmin,
     newPicsCount: album.newPicsCount
 });
 

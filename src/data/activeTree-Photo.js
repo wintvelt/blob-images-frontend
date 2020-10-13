@@ -20,7 +20,7 @@ export const photoState = selectorFamily({
     },
     set: (photoId) => ({ set }, newValue) => {
         if (newValue instanceof DefaultValue) {
-            set(photoStateTrigger(source || 'dummy'), v => v + 1);
+            set(photoStateTrigger(photoId || 'dummy'), v => v + 1);
         }
     }
 });

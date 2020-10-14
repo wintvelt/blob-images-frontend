@@ -18,7 +18,7 @@ const AlbumMain = () => {
     const groupId = activeAlbum.groupId;
     const albumId = activeAlbum.albumId;
     const userIsAdmin = activeAlbum.userIsAdmin;
-    const photoMetaData = { action: 'albumphoto', groupId, albumId };
+    const photoMetaData = { action: 'albumphoto', groupid: groupId, albumid: albumId };
     const pond = useRef();
     const reloadPhotos = useReloadAlbumPhotoIds();
     const reloadAlbum = useReloadActiveAlbum();

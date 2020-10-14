@@ -48,12 +48,14 @@ const useStyles = makeStyles(theme => ({
 const flexEndStyle = { display: 'flex', justifyContent: 'flex-end' };
 
 const AlbumCardContent = (props) => {
-    const { name, image, stats, newPicsCount, isLoading } = props;
+    const { name, image, stats, newPicsCount, isLoading, isMedium} = props;
     const classes = useStyles();
     return <>
         {(image?.url) ?
             <ClubImage className={classes.image}
-                src={image.url} width={340} height={200}
+                src={image.url}
+                width={(isMedium) ? 1020 : 340}
+                height={(isMedium) ? 600 : 200}    
             />
             : <div className={classes.image} />
         }

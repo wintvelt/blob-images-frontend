@@ -4,10 +4,12 @@ import AlbumCardLayout from './AlbumCardLayout';
 import CardList from '../components-generic/CardList';
 import { useActiveGroupAlbumsValue } from '../data/activeTree-GroupAlbums';
 import { useActiveGroupValue } from '../data/activeTree-Group';
+import { useMediaQuery } from '@material-ui/core';
 
 const paddingStyle = { padding: '8px' };
 
 const AlbumList = () => {
+    const isMedium = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const groupData = useActiveGroupValue();
     const userIsAdmin = (groupData.contents?.userRole === 'admin');
     const albumsData = useActiveGroupAlbumsValue();
@@ -24,7 +26,7 @@ const AlbumList = () => {
 
     return <div style={paddingStyle}>
         <CardList list={albumsWithEdit} component={AlbumCardLayout} addProps={albumAddProps}
-            width={3} spacing={2} isLoading={albumsData.isLoading} />
+            width={3} spacing={2} isLoading={albumsData.isLoading} isMedium={isMedium}/>
     </div>
 }
 

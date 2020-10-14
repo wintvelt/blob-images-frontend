@@ -53,13 +53,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const GroupCardContent = (props) => {
-    const { name, description, image, isLoading, isInvite } = props;
+    const { name, description, image, isLoading, isInvite, isMedium } = props;
     const classes = useStyles();
     return <>
         {(image?.url || isInvite) && <ClubImage className={classes.media}
             src={image?.url || '/img/confidential.jpg'}
-            width={340}
-            height={200}
+            width={(isMedium) ? 1020 : 340}
+            height={(isMedium) ? 600 : 200}
             title={name ? `${name} group` : 'invite'}
         />}
         <CardContent className={classes.content}>
@@ -76,7 +76,7 @@ const GroupCardContent = (props) => {
 const fullHeight = { height: '100%' };
 
 const GroupCardLayout = (props) => {
-    const { id, userIsAdmin, image, newPicsCount, withEdit } = props;
+    const { id, userIsAdmin, image, newPicsCount, withEdit, isMedium } = props;
     const mayEdit = (userIsAdmin && withEdit);
     const classes = useStyles();
     const setLoadingPath = useSetLoadingPath();

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, useMediaQuery } from '@material-ui/core';
 
 import PrivatePage from '../../../../../../src/components-personal/PrivatePage';
 import AlbumCardLayout from '../../../../../../src/components-personal/AlbumCardLayout';
@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 const AlbumEditMain = () => {
     const classes = useStyles();
     const router = useRouter();
+    const isMedium = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const albumId = router.query && router.query.albumid;
     const isNew = (albumId === 'new');
     const albumData = useActiveAlbum();
@@ -42,7 +43,7 @@ const AlbumEditMain = () => {
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
                     <AlbumCardLayout {...album} withEdit={false} isLoading={albumData.isLoading}
-                        userIsAdmin={userIsAdmin} />
+                        userIsAdmin={userIsAdmin} isMedium={isMedium} />
                 </Grid>}
                 <Grid item md={(isNew) ? 3 : 1} />
                 <Grid item md={(isNew) ? 6 : 8} xs={12}>

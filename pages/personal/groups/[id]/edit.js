@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import Toolbar from '@material-ui/core/Toolbar';
 import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, useMediaQuery } from '@material-ui/core';
 
 import PrivatePage from '../../../../src/components-personal/PrivatePage';
 import GroupCardLayout from '../../../../src/components-personal/GroupCardLayout';
@@ -21,13 +21,14 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const GroupEditMain = () => {
+    const isMedium = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const classes = useStyles();
     const router = useRouter();
     const groupId = router.query?.id;
     const isNew = (groupId === 'new');
     const groupData = useActiveGroup();
     const group = groupData.contents || {};
-    
+
     redirectOnGroupLoadError(groupData, true, isNew);
 
     // for image handler
@@ -39,11 +40,11 @@ const GroupEditMain = () => {
             <BackLinkToGroup />
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
-                    <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading} />
+                    <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading} isMedium={isMedium} />
                 </Grid>}
                 <Grid item md={(isNew) ? 3 : 1} />
                 <Grid item md={(isNew) ? 6 : 8} xs={12}>
-                    <GroupForm group={group} isNew={isNew}/>
+                    <GroupForm group={group} isNew={isNew} />
                 </Grid>
                 {(isNew) && <Grid item md={3} />}
             </Grid>

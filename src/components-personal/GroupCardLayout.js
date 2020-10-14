@@ -58,8 +58,8 @@ const GroupCardContent = (props) => {
     return <>
         {(image?.url || isInvite) && <ClubImage className={classes.media}
             src={image?.url || '/img/confidential.jpg'}
-            width={(isMedium) ? 1020 : 340}
-            height={(isMedium) ? 600 : 200}
+            width={(isMedium) ? 340 : 1020}
+            height={(isMedium) ? 200 : 600}
             title={name ? `${name} group` : 'invite'}
         />}
         <CardContent className={classes.content}>

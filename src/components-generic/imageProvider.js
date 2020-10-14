@@ -31,7 +31,9 @@ const bigIconStyle = { fontSize: '40px' };
 
 const ImagePropsAreEqual = (prevProps, nextProps) => (
     (prevProps.src === nextProps.src) &&
-    (prevProps.style === nextProps.style)
+    (prevProps.style === nextProps.style) &&
+    (prevProps.width === nextProps.width) &&
+    (prevProps.height === nextProps.height)
 );
 
 export const useIsMounted = () => {

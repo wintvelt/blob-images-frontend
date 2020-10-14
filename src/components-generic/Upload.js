@@ -67,7 +67,7 @@ const Upload = ({ pond,
     photoMetadata
 }) => {
 
-    const label = 'Sleep foto\'s hierheen <span class="filepond--label-action"> Open bestand </span>';
+    const label = 'Sleep foto\'s hierheen of <span class="filepond--label-action"> Open bestand </span>';
     return <>
         <FilePond allowMultiple={allowMultiple} server={server(photoMetadata)} instantUpload={instantUpload}
             ref={pond}

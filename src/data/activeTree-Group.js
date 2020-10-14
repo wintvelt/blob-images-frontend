@@ -47,8 +47,8 @@ export const useActiveGroup = () => {
     const activeGroup = useRecoilValue(activeGroupData);
     const reloadGroup = useReloadActiveGroup();
     useEffect(() => {
-        if (activeGroupId && (!activeGroup.contents?.id || activeGroup.contents?.id !== activeGroupId)) {
-            reloadGroup()
+        if (!activeGroup.contents?.id || activeGroup.contents?.id !== activeGroupId) {
+            reloadGroup();
         };
     }, [activeGroupId]);
     return activeGroup;

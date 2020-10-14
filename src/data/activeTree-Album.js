@@ -47,7 +47,7 @@ export const useActiveAlbum = () => {
     const activeAlbum = useRecoilValue(activeAlbumData);
     const reloadAlbum = useReloadActiveAlbum();
     useEffect(() => {
-        if (activeAlbumId && (!activeAlbum.contents?.id || activeAlbum.contents?.id !== activeAlbumId)) {
+        if (!activeAlbum.contents?.id || activeAlbum.contents?.id !== activeAlbumId) {
             reloadAlbum();
         };
     }, [activeAlbumId]);

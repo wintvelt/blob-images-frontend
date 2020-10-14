@@ -67,7 +67,7 @@ const Upload = ({ pond,
     photoMetadata
 }) => {
 
-    const label = 'Drag & Drop photos or <span class="filepond--label-action"> Browse </span>';
+    const label = 'Sleep foto\'s hierheen <span class="filepond--label-action"> Open bestand </span>';
     return <>
         <FilePond allowMultiple={allowMultiple} server={server(photoMetadata)} instantUpload={instantUpload}
             ref={pond}

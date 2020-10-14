@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { ClubImage } from '../components-generic/imageProvider';
 import { useRecoilValueLoadable } from 'recoil';
-import { photoState } from '../data/activeTree-Photo';
+import { photoState, usePhoto, usePhotoValue } from '../data/activeTree-Photo';
 import Rating from '../components-generic/Rating';
 
 const useStyles = makeStyles(theme => ({
@@ -69,8 +69,8 @@ const MenuButton = ({ className, onClick, disabled }) => (
 const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClickMenu, noOwner,
     menuIsOpen }) => {
     const classes = useStyles();
-    const photoData = useRecoilValueLoadable(photoState(photoId));
-    const photo = (photoData.state === 'hasValue' && photoData.contents) ? photoData.contents : {};
+    const photoData = usePhoto(photoId);
+    const photo = photoData.contents || {};
     const { url, user, rating, createdAt } = photo;
     const { name, photoUrl } = user || {};
     const isLoading = (!url);

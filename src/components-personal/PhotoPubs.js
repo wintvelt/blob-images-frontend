@@ -34,7 +34,7 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
     const setLoadingPath = useSetLoadingPath();
     const albumsData = useUserAlbumsValue();
     const albums = albumsData.contents || [];
-    const photoId = photo.PK?.slice(2);
+    const photoId = photo?.PK?.slice(2);
 
     const pubData = usePubs(photoId);
     const pubs = pubData.contents || [];

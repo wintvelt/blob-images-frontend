@@ -49,7 +49,6 @@ const flexEndStyle = { display: 'flex', justifyContent: 'flex-end' };
 
 const AlbumCardContent = (props) => {
     const { name, image, stats, newPicsCount, isLoading, isMedium } = props;
-    console.log({isMedium});
     const classes = useStyles();
     return <>
         {(image?.url) ?

@@ -79,7 +79,7 @@ const AlbumForm = ({ album }) => {
         alert('deleted');
     }
     const title = (isNew) ?
-        (albums.data && albums.data.length > 0) ?
+        (albums.length > 0) ?
             'Nieuw album'
             : 'Maak je eerste album in deze groep'
         : 'Album bewerken';

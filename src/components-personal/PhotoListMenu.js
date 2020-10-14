@@ -6,11 +6,16 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { useSnackbar } from 'notistack';
 
 import { useUser } from '../data/userData';
+import { useRouter } from 'next/router';
+import { useSetLoadingPath } from '../data/loadingData';
 
 const redStyle = { color: 'red' };
 
 const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
     isAlbum, publications, reloadPubs }) => {
+    const router = useRouter();
+    const routerAlbumId = router.query?.albumid;
+    const setLoadingPath = useSetLoadingPath();
     const albumData = (isAlbum) ? anchor.album : album;
     const albumPath = `/groups/${albumData?.groupId}/albums/${albumData?.albumId}`;
 
@@ -72,9 +77,14 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
         try {
             const path = `${albumPath}/photos/${currentPhotoId}`;
             await API.del('blob-images', path);
-            enqueueSnackbar('foto uit album verwijderd', { variant: 'success' });
-            reloadPubs && reloadPubs(currentPhotoId);
             reloadAlbum && reloadAlbum();
+            if (isAlbum && routerAlbumId === albumData?.albumId) {
+                enqueueSnackbar('foto is uit album verwijderd, we gaan terug naar albumpagina');
+                setLoadingPath('/personal/groups/[id]/albums/[albumid', '/personal' + albumPath);
+            } else {
+                reloadPubs && reloadPubs(currentPhotoId);
+                enqueueSnackbar('foto uit album verwijderd');
+            }
         } catch (error) {
             console.log(error);
             enqueueSnackbar('foto uit album schrappen is mislukt', { variant: 'error' });
@@ -91,13 +101,13 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
             open={Boolean(anchor.el)}
             onClose={handleClose}
         >
-            {album && <MenuItem onClick={onSetAlbumCover}>Foto als albumcover instellen</MenuItem>}
             {!isAlbum && <MenuItem onClick={onSetProfilePic}>Maak dit mijn profielfoto</MenuItem>}
-            {album && userIsOwner && (!isAlbum || publications.includes(album.albumId)) &&
-                <MenuItem onClick={onRemoveFromAlbum}>Foto uit album verwijderen</MenuItem>
-            }
             {album && userIsOwner && (isAlbum && !publications.includes(album.albumId)) &&
                 <MenuItem onClick={onAddToAlbum}>Foto aan album toevoegen</MenuItem>
+            }
+            {album && <MenuItem onClick={onSetAlbumCover}>Foto als albumcover instellen</MenuItem>}
+            {album && userIsOwner && (!isAlbum || publications.includes(album.albumId)) &&
+                <MenuItem onClick={onRemoveFromAlbum}>Foto uit album verwijderen</MenuItem>
             }
             {userIsOwner && (!isAlbum) && <MenuItem onClick={onDelete} style={redStyle}>Foto verwijderen</MenuItem>}
             {/* <MenuItem>

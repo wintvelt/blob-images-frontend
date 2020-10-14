@@ -1,39 +1,44 @@
 import { selectorFamily, atom, atomFamily, useRecoilValue, useSetRecoilState, DefaultValue } from 'recoil';
 import { API } from 'aws-amplify';
-import { albumToForm } from './activeTree-Album';
 import { useEffect } from 'react';
 
-const photoStateTrigger = atomFamily({
-    key: 'photoStateTrigger',
-    default: 0
-});
-export const photoState = selectorFamily({
-    key: 'photo',
-    get: (photoId) => async ({ get }) => {
-        get(photoStateTrigger(photoId || 'dummy'));
-        if (!photoId) return undefined;
-        const response = await API.get('blob-images', `/photos/${photoId}`);
-        if (response.error) {
-            throw response.error;
-        }
-        return response.photo || response;
-    },
-    set: (photoId) => ({ set }, newValue) => {
-        if (newValue instanceof DefaultValue) {
-            set(photoStateTrigger(photoId || 'dummy'), v => v + 1);
-        }
-    }
+// -- NEW
+export const photoData = atomFamily({
+    key: `photoData`,
+    default: { isLoading: true },
 });
 
-export const photoUpdate = () => {
-    const del = (photoId) => {
-        const apiPath = `/photos/${photoId}`;
-        return API.put('blob/images', apiPath);
-    };
-    return {
-        del
-    };
+export const useReloadPhoto = (id) => {
+    const setPhoto = useSetRecoilState(photoData(id));
+    const loadData = async () => {
+        if (id) {
+            console.log(`loading photo ${id}`);
+            try {
+                const photo = await API.get('blob-images', `/photos/${id}`);
+                setPhoto({ contents: photo });
+            } catch (error) {
+                console.log({ error });
+                setPhoto({ hasError: error });
+            }
+        }
+    }
+    return loadData;
 };
+
+export const usePhoto = (id) => {
+    const photo = useRecoilValue(photoData(id));
+    const reloadPhoto = useReloadPhoto(id);
+    useEffect(() => {
+        if (id) reloadPhoto();
+    }, []);
+    return photo;
+};
+
+export const usePhotoValue = (id) => {
+    const photo = useRecoilValue(photoData(id));
+    return photo;
+};
+
 // PUBLICATIONS
 const pubToForm = (pub) => ({
     groupId: pub.PK.split('#')[0].slice(2),

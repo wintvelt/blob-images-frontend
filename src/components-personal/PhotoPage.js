@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
 import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { photoState } from '../data/activeTree-Photo';
+import { photoState, usePhoto, useReloadPhoto } from '../data/activeTree-Photo';
 import { useUserValue } from '../data/userData';
 import { useSetLoadingPath } from '../data/loadingData';
 import { downloadFile } from '../helpers/download';
@@ -19,6 +19,7 @@ import PhotoRating from '../components-personal/PhotoRating';
 import PhotoPubs from '../components-personal/PhotoPubs';
 import BackLinkToAlbum from '../components-generic/BackLinkToAlbum';
 import { useUserAlbums } from '../data/activeTree-UserAlbums';
+import { useActiveAlbum } from '../data/activeTree-Album';
 
 const useStyles = makeStyles(theme => ({
     photo: {
@@ -51,6 +52,7 @@ const bigIcon = { fontSize: '80px' };
 
 const PhotoMain = () => {
     const userAlbumsData = useUserAlbums();
+    const activeAlbum = useActiveAlbum();
     const router = useRouter();
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
@@ -59,19 +61,12 @@ const PhotoMain = () => {
 
     const photoId = router.query?.photoid || 'nophotoId';
     const source = `/photos/${photoId}`;
-    const reloadActivePhoto = useResetRecoilState(photoState(photoId));
     const currentUser = useUserValue();
     const { profile } = currentUser;
-    const basePhotoData = useRecoilValueLoadable(photoState(photoId));
-    // to prevent redisplay of photo when reloaded
-    const [photoData, setPhotoData] = useState(basePhotoData);
-    useEffect(() => {
-        if (photoId && basePhotoData.state !== 'loading' && photoData.state === 'loading') {
-            setPhotoData(basePhotoData);
-        }
-    }, [basePhotoData])
-    const isLoading = (photoData.state === 'loading');
-    const photo = (photoData.state === 'hasValue') && photoData.contents;
+    const photoData = usePhoto(photoId);
+    const reloadActivePhoto = useReloadPhoto(photoId);
+    const isLoading = (photoData.isLoading);
+    const photo = photoData.contents;
     const [userRating, setUserRating] = useState({ initial: 0, current: 0 });
     useEffect(() => {
         const getRating = async () => {
@@ -92,11 +87,11 @@ const PhotoMain = () => {
             setUserRating({ ...userRating, current: userRating.current + ratingUpdate });
             await API.post('blob-images', source + '/rating', { body: { ratingUpdate } });
             enqueueSnackbar(`Je ${(ratingUpdate > 0) ? '+1' : '-1'} inbreng over deze foto is verwerkt`);
-            setTimeout(reloadActivePhoto, 1000);
+            setTimeout(reloadActivePhoto, 2000);
         };
         setRating();
     };
-    const photoRating = (photo.rating || 0) - userRating.initial + userRating.current;
+    const photoRating = (photo?.rating || 0) - userRating.initial + userRating.current;
 
     const onDelete = async () => {
         try {
@@ -125,7 +120,7 @@ const PhotoMain = () => {
         setImageSize(`${target.naturalWidth} x ${target.naturalHeight}`);
     };
 
-    const photoFilename = photo.url?.split('/').slice(-1)[0];
+    const photoFilename = photo?.url?.split('/').slice(-1)[0];
 
     const onDownload = () => {
         downloadFile(makeImageUrl(photoUrl), photoFilename);
@@ -144,10 +139,10 @@ const PhotoMain = () => {
                 </Grid>
                 <Grid item md={4} xs={12} className={classes.caption}>
                     <Typography variant='h5' gutterBottom>
-                        door {photo.user?.name || '-'}{'\u00A0'}
+                        door {photo?.user?.name || '-'}{'\u00A0'}
                         {currentIsOwner && <Chip size='small' label='me' />}
                     </Typography>
-                    <Typography variant='body1' gutterBottom>toegevoegd op {photo.createdAt || '-'}</Typography>
+                    <Typography variant='body1' gutterBottom>toegevoegd op {photo?.createdAt || '-'}</Typography>
                     <Typography variant='body1' gutterBottom>pixelgrootte {imageSize || '-'}</Typography>
                     <div className={classes.flexLine}>
                         <Typography variant='body1'>rating</Typography>{'\u00A0'}

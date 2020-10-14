@@ -12,7 +12,6 @@ const paddingStyle = { padding: '24px' };
 
 const GroupList = () => {
     const setLoadingPath = useSetLoadingPath();
-    const isMedium = useMediaQuery(theme => theme.breakpoints.up('sm'));
     const groupsData = useUserGroups();
     const hasValue = (groupsData.contents && !groupsData.hasError);
     const groupsList = (hasValue) ? groupsData.contents : [1, 2].map(id => ({ id, isLoading: true }));
@@ -37,7 +36,7 @@ const GroupList = () => {
         }));
     return <div style={paddingStyle}>
         <CardList list={groupsWithEdit} component={GroupCardLayout} addProps={groupAddProps}
-            width={3} spacing={2} isLoading={groupsData.isLoading} isMedium={isMedium} />
+            width={3} spacing={2} isLoading={groupsData.isLoading} isMedium={false}/>
     </div>
 }
 

@@ -22,6 +22,7 @@ export const albumToForm = (album) => ({
     group: album.group,
     groupName: album.groupName,
     userIsAdmin: album.userIsAdmin,
+    newPics: album.newPics,
     newPicsCount: album.newPicsCount
 });
 

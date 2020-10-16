@@ -44,6 +44,7 @@ const PhotoList = (props) => {
     const { photoData, empty, menu, select, album, onClick,
         reloadAlbum, reloadGroup, deletePhoto } = props;
     const [photos, setPhotos] = useState(initialPhotos);
+    const newPics = album?.newPics || [];
     useEffect(() => {
         let isMounted = true;
         if (photoData.contents && isMounted) {
@@ -89,6 +90,7 @@ const PhotoList = (props) => {
                         onSelect={select && onSelect}
                         isSelected={selected.includes(photoId)}
                         menuIsOpen={!!anchor.el}
+                        isNew={newPics.includes(photoId)}
                     />
                 </GridListTile>
             })}

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
+import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { API } from 'aws-amplify';
 
 export const userPhotoIdsData = atom({
@@ -15,7 +15,7 @@ export const useReloadPhotoIds = () => {
             const photoIds = await API.get('blob-images', `/photos`);
             setUserPhotoIds({ contents: photoIds });
         } catch (error) {
-            console.log({error});
+            console.log({ error });
             setUserPhotoIds({ hasError: error });
         }
     }
@@ -34,4 +34,14 @@ export const useUserPhotoIds = () => {
 export const useUserPhotoIdsValue = () => {
     const photoIdsData = useRecoilValue(userPhotoIdsData);
     return photoIdsData;
+};
+
+export const useDeleteUserPhoto = () => {
+    const [photoIdsData, setPhotoIdsData] = useRecoilState(userPhotoIdsData);
+    const deletePhotoId = (photoId) => {
+        const idList = photoIdsData.contents;
+        if (!idList) return;
+        setPhotoIdsData({ contents: idList.filter(id => (id !== photoId)) });
+    }
+    return deletePhotoId;
 };

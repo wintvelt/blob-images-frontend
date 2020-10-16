@@ -5,11 +5,11 @@ import { Toolbar } from '@material-ui/core';
 
 import PhotoList from '../../src/components-personal/PhotoList';
 import { useSetLoadingPath } from '../../src/data/loadingData';
-import { useReloadPhotoIds, useUserPhotoIds } from '../../src/data/userPhotosData';
+import { useDeleteUserPhoto, useUserPhotoIds } from '../../src/data/userPhotosData';
 
 const PhotosMain = () => {
     const photoData = useUserPhotoIds();
-    const reloadPhotos = useReloadPhotoIds();
+    const deletePhoto = useDeleteUserPhoto();
     const setLoadingPath = useSetLoadingPath();
 
     const onPhotoClick = (item) => {
@@ -26,7 +26,7 @@ const PhotosMain = () => {
             </Header>
             <PhotoList
                 photoData={photoData}
-                reloadPhotos={reloadPhotos}
+                deletePhoto={deletePhoto}
                 onClick={onPhotoClick}
                 noOwner
                 menu={true}

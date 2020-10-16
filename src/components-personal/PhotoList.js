@@ -42,7 +42,7 @@ const initialPhotos = [1, 2, 3, 4, 5, 6];
 
 const PhotoList = (props) => {
     const { photoData, empty, menu, select, album, onClick,
-        reloadAlbum, reloadGroup, reloadPhotos } = props;
+        reloadAlbum, reloadGroup, deletePhoto } = props;
     const [photos, setPhotos] = useState(initialPhotos);
     useEffect(() => {
         let isMounted = true;
@@ -98,7 +98,7 @@ const PhotoList = (props) => {
             handleClose={handleMenuClose}
             album={album}
             reloadAlbum={reloadAlbum}
-            reloadPhotos={reloadPhotos}
+            deletePhoto={deletePhoto}
             reloadGroup={reloadGroup}
         />}
         {empty && (photos.length === 0) && <Empty message={empty} />}

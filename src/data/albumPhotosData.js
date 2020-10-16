@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
+import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { API } from 'aws-amplify';
 import { activeAlbumIdState, activeGroupIdState } from './activeTreeRoot';
 
@@ -45,4 +45,14 @@ export const useAlbumPhotoIds = () => {
 export const useAlbumPhotoIdsValue = () => {
     const photoIdsData = useRecoilValue(albumPhotoIdsData);
     return photoIdsData;
+};
+
+export const useDeleteAlbumPhoto = () => {
+    const [photoIdsData, setPhotoIdsData] = useRecoilState(albumPhotoIdsData);
+    const deletePhotoId = (photoId) => {
+        const idList = photoIdsData.contents;
+        if (!idList) return;
+        setPhotoIdsData({ contents: idList.filter(id => (id !== photoId)) });
+    };
+    return deletePhotoId;
 };

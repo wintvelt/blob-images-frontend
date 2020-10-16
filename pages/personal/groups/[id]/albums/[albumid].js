@@ -5,9 +5,11 @@ import PhotoList from '../../../../../src/components-personal/PhotoList';
 import PrivatePage from '../../../../../src/components-personal/PrivatePage';
 import Upload from '../../../../../src/components-generic/Upload';
 import { useActiveAlbum, useReloadActiveAlbum } from '../../../../../src/data/activeTree-Album';
-import { useAlbumPhotoIds, useReloadAlbumPhotoIds } from '../../../../../src/data/albumPhotosData';
+import { useAlbumPhotoIds, useDeleteAlbumPhoto, useReloadAlbumPhotoIds } from '../../../../../src/data/albumPhotosData';
 import { useSetLoadingPath } from '../../../../../src/data/loadingData';
 import { useActiveGroup } from '../../../../../src/data/activeTree-Group';
+
+const wait = (lambda) => () => setTimeout(lambda(), 2000);
 
 const AlbumMain = () => {
     const activeGroupData = useActiveGroup();
@@ -20,8 +22,9 @@ const AlbumMain = () => {
     const userIsAdmin = activeAlbum.userIsAdmin;
     const photoMetaData = { action: 'albumphoto', groupid: groupId, albumid: albumId };
     const pond = useRef();
-    const reloadPhotos = useReloadAlbumPhotoIds();
+    const deletePhoto = useDeleteAlbumPhoto();
     const reloadAlbum = useReloadActiveAlbum();
+    const reloadPhotos = useReloadAlbumPhotoIds();
     const [files, setFiles] = useState([]);
     const setLoadingPath = useSetLoadingPath();
 
@@ -53,7 +56,7 @@ const AlbumMain = () => {
                 onClick={onPhotoClick}
                 album={activeAlbum}
                 photoData={albumPhotosData}
-                reloadPhotos={reloadPhotos}
+                deletePhoto={deletePhoto}
                 reloadAlbum={reloadAlbum}
             />
             {userIsAdmin && <Upload pond={pond} allowMultiple={true} allowImagePreview={true} instantUpload={true}

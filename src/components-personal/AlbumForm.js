@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { API } from 'aws-amplify';
 import { useSnackbar } from 'notistack';
 
 import Form from '../components-generic/Form';
 import { useSetLoadingPath } from '../data/loadingData';
-import { useRecoilValueLoadable, useResetRecoilState, useRecoilValue } from 'recoil';
-import { activeGroupAlbums, activeAlbumState, useActiveAlbumValue, useReloadActiveAlbum, useSaveAlbum } from '../data/activeTree-Album';
+import { useRecoilValue } from 'recoil';
+import { deleteAlbum, useReloadActiveAlbum, useSaveAlbum } from '../data/activeTree-Album';
 import { activeGroupIdState, activeAlbumIdState } from '../data/activeTreeRoot';
 import { useRouter } from 'next/router';
 import { useActiveGroupAlbumsValue } from '../data/activeTree-GroupAlbums';
+import DeleteDialog from '../components-generic/DeleteDialog';
+
 
 const fieldConfig = {
     name: {
@@ -33,7 +34,7 @@ const AlbumForm = ({ album }) => {
     const albumId = useRecoilValue(activeAlbumIdState);
     const router = useRouter();
     const isNew = (router.query.albumid === 'new');
-    const albumIdToSave = (isNew)? 'new': albumId;
+    const albumIdToSave = (isNew) ? 'new' : albumId;
     const isNewGroupFlow = router.query && router.query.new;
     const setLoadingPath = useSetLoadingPath();
     const { enqueueSnackbar } = useSnackbar();
@@ -42,6 +43,7 @@ const AlbumForm = ({ album }) => {
     const albums = albumsData.contents || [];
     const reloadActiveAlbum = useReloadActiveAlbum();
     const saveAlbum = useSaveAlbum();
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     const onSubmit = async (fields) => {
         setIsLoading(true);
@@ -75,8 +77,21 @@ const AlbumForm = ({ album }) => {
         }
         setIsLoading(false);
     }
-    const handleDelete = (e) => {
-        alert('deleted');
+    const handleDelete = async (e) => {
+        try {
+            await deleteAlbum(groupId, albumId);
+            enqueueSnackbar('album verwijderd, we gaan terug naar de groepspagina');
+            setLoadingPath('/personal/groups/[id]', `/personal/groups/${groupId}`);
+        } catch (error) {
+            console.log(error);
+            enqueueSnackbar('het is niet gelukt dit album te verwijderen, sorry', { variant: 'error' });
+        };
+    }
+    const onOpenDialog = () => {
+        setDialogOpen(true);
+    }
+    const onCloseDialog = () => {
+        setDialogOpen(false);
     }
     const title = (isNew) ?
         (albums.length > 0) ?
@@ -84,9 +99,9 @@ const AlbumForm = ({ album }) => {
             : 'Maak je eerste album in deze groep'
         : 'Album bewerken';
     const submitText = (isNew) ? 'Nieuw album opslaan' : 'Wijzigingen opslaan';
-    const onDelete = (isNew) ? undefined : handleDelete;
+    const onDelete = (isNew) ? undefined : onOpenDialog;
 
-    return (
+    return <>
         <Form
             title={title}
             formFields={fieldConfig}
@@ -97,7 +112,18 @@ const AlbumForm = ({ album }) => {
             onDelete={onDelete}
             deleteText='Album verwijderen'
         />
-    )
+        <DeleteDialog open={dialogOpen} onClose={onCloseDialog} onDelete={handleDelete}
+            title='Wil je dit album echt verwijderen?'
+            lines={[
+                'Leden hebben dan geen toegang meer tot foto\'s van anderen uit dit album',
+                'De foto\'s zijn dan alleen nog beschikbaar voor wie ze had toegevoegd',
+                'Dus ff checken of je het zeker weet'
+            ]}
+            abortText='OK, laat album bestaan'
+            submitText='Zeker weten - verwijder dit album'
+        />
+
+    </>
 };
 
 export default AlbumForm;

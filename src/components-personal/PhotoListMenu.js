@@ -11,7 +11,7 @@ import { useSetLoadingPath } from '../data/loadingData';
 
 const redStyle = { color: 'red' };
 
-const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
+const PhotoMenu = ({ anchor, album, handleClose, deletePhoto, reloadAlbum,
     isAlbum, publications, reloadPubs }) => {
     const router = useRouter();
     const routerAlbumId = router.query?.albumid;
@@ -53,7 +53,7 @@ const PhotoMenu = ({ anchor, album, handleClose, reloadPhotos, reloadAlbum,
             const path = `/photos/${currentPhotoId}`;
             await API.del('blob-images', path);
             enqueueSnackbar('Foto verwijderd', { variant: 'success' });
-            reloadPhotos && reloadPhotos();
+            deletePhoto && deletePhoto(currentPhotoId);
         } catch (error) {
             console.log(error);
             enqueueSnackbar('Kon foto niet verwijderen', { variant: 'error' });

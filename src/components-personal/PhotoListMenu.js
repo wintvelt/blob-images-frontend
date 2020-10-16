@@ -78,18 +78,22 @@ const PhotoMenu = ({ anchor, album, handleClose, deletePhoto, reloadAlbum,
             const path = `${albumPath}/photos/${currentPhotoId}`;
             await API.del('blob-images', path);
             reloadAlbum && reloadAlbum();
+            handleClose();
             if (isAlbum && routerAlbumId === albumData?.albumId) {
                 enqueueSnackbar('foto is uit album verwijderd, we gaan terug naar albumpagina');
                 setLoadingPath('/personal/groups/[id]/albums/[albumid', '/personal' + albumPath);
             } else {
                 reloadPubs && reloadPubs(currentPhotoId);
+                if (deletePhoto && routerAlbumId && routerAlbumId === albumData?.albumId) {
+                    deletePhoto(currentPhotoId)
+                };
                 enqueueSnackbar('foto uit album verwijderd');
             }
         } catch (error) {
             console.log(error);
             enqueueSnackbar('foto uit album schrappen is mislukt', { variant: 'error' });
+            handleClose();
         }
-        handleClose();
     };
     return (
         <Menu

@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 
-import Button from '@material-ui/core/Button';
-
 import { useUser } from '../data/userData';
 import Form from '../components-generic/Form';
 
 const fieldConfig = {
     email: {
-        autoComplete: 'email', type: 'email', label: 'Your email',
+        autoComplete: 'email', type: 'email', label: 'Je email',
         validations: [{
-            text: 'enter a valid email address',
+            text: 'voer je email adres in',
             validate: (val) => (
                 val &&
                 val.split('@')[1] && !!val.split('@')[1].split('.')[1]
@@ -48,7 +46,7 @@ const ForgotPswForm = (props) => {
 
     const Message = (error) => (
         <>
-            Something went wrong. {' '}
+            Oeps er ging iets mis. {' '}
             {error.message}
         </>
     );

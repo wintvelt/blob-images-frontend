@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import Button from '@material-ui/core/Button';
-
 import { useUser } from '../data/userData';
 import Form from '../components-generic/Form';
 import { newPasswordValidations } from '../components-generic/FormField';
 
 const fieldConfig = {
     email: {
-        autoComplete: 'email', type: 'email', label: 'Your email',
+        autoComplete: 'email', type: 'email', label: 'email',
         validations: [{
             text: 'voer je email adres in',
             validate: (val) => (
@@ -23,9 +21,9 @@ const fieldConfig = {
         validations: newPasswordValidations,
     },
     confirmation: {
-        autoComplete: 'none', type: 'tel', label: 'registratiecode',
+        autoComplete: 'none', type: 'tel', label: 'verificatiecode',
         validations: [{
-            text: 'check je email voor de registratiecode',
+            text: 'check je email voor de verificatiecode',
             validate: (val) => (!!val),
         }],
     },

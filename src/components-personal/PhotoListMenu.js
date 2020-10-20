@@ -11,7 +11,7 @@ import { useSetLoadingPath } from '../data/loadingData';
 
 const redStyle = { color: 'red' };
 
-const PhotoMenu = ({ anchor, album, handleClose, deletePhoto, reloadAlbum,
+const PhotoMenu = ({ anchor, album, userIsAdmin, handleClose, deletePhoto, reloadAlbum,
     isAlbum, publications, reloadPubs }) => {
     const router = useRouter();
     const routerAlbumId = router.query?.albumid;
@@ -109,7 +109,9 @@ const PhotoMenu = ({ anchor, album, handleClose, deletePhoto, reloadAlbum,
             {album && userIsOwner && (isAlbum && !publications.includes(album.albumId)) &&
                 <MenuItem onClick={onAddToAlbum}>Foto aan album toevoegen</MenuItem>
             }
-            {album && <MenuItem onClick={onSetAlbumCover}>Foto als albumcover instellen</MenuItem>}
+            {album && userIsAdmin &&
+                <MenuItem onClick={onSetAlbumCover}>Foto als albumcover instellen</MenuItem>
+            }
             {album && userIsOwner && (!isAlbum || publications.includes(album.albumId)) &&
                 <MenuItem onClick={onRemoveFromAlbum}>Foto uit album verwijderen</MenuItem>
             }

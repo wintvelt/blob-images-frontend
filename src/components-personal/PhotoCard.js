@@ -8,6 +8,7 @@ import { ClubImage } from '../components-generic/imageProvider';
 import { useRecoilValueLoadable } from 'recoil';
 import { photoState, usePhoto, usePhotoValue } from '../data/activeTree-Photo';
 import Rating from '../components-generic/Rating';
+import { useUserValue } from '../data/userData';
 
 const useStyles = makeStyles(theme => ({
     icon: {
@@ -67,13 +68,16 @@ const MenuButton = ({ className, onClick, disabled }) => (
 )
 
 const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClickMenu, noOwner,
-    menuIsOpen }) => {
+    userIsAdmin, menuIsOpen }) => {
     const classes = useStyles();
+    const userData = useUserValue();
+    const currentUser = userData.profile;
     const photoData = usePhoto(photoId);
     const photo = photoData.contents || {};
     const { url, user, rating, createdAt } = photo;
     const { name, photoUrl } = user || {};
     const isLoading = (!url);
+    const userIsOwner = (user && user.SK === currentUser?.id);
 
     const icon = (isSelected) ? 'check_box_outline' : 'check_box_outline_blank';
     const handleClick = (e) => {
@@ -86,7 +90,8 @@ const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClick
         e.preventDefault();
         e.stopPropagation();
         return onClickMenu(e, photo);
-    }
+    };
+    const hasMenu = onClickMenu && (userIsAdmin || userIsOwner);
     const handleSelect = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -108,7 +113,7 @@ const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClick
                 icon={icon} onSelect={handleSelect} disabled={menuIsOpen} />}
         />
         {isNew && <img src='/img/new.png' className={classes.new} />}
-        {(onClickMenu) && <MenuButton className={classes.menuIcon}
+        {(hasMenu) && <MenuButton className={classes.menuIcon}
             onClick={handleMenuClick} disabled={menuIsOpen} />}
     </div>
 }

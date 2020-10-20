@@ -51,8 +51,8 @@ const AlbumMain = () => {
         <main>
             <AlbumHeader />
             <PhotoList
-                menu={userIsAdmin}
                 select={false}
+                userIsAdmin={userIsAdmin}
                 onClick={onPhotoClick}
                 album={activeAlbum}
                 photoData={albumPhotosData}

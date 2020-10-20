@@ -41,7 +41,7 @@ const Empty = ({ message }) => {
 const initialPhotos = [1, 2, 3, 4, 5, 6];
 
 const PhotoList = (props) => {
-    const { photoData, empty, menu, select, album, onClick,
+    const { photoData, empty, select, album, userIsAdmin, onClick,
         reloadAlbum, reloadGroup, deletePhoto } = props;
     const [photos, setPhotos] = useState(initialPhotos);
     const newPics = album?.newPics || [];
@@ -50,7 +50,7 @@ const PhotoList = (props) => {
         if (photoData.contents && isMounted) {
             setPhotos(photoData.contents);
         }
-        return () => {isMounted = false};
+        return () => { isMounted = false };
     }, [photoData]);
     const [anchor, setAnchor] = useState({ el: null });
     const [selected, setSelected] = useState([]);
@@ -86,7 +86,7 @@ const PhotoList = (props) => {
                         photoId={(typeof photoId === 'string') ? photoId : ''}
                         isSmall={(!isLarge && !isMedium)}
                         {...props}
-                        onClickMenu={menu && handleMenuClick}
+                        onClickMenu={handleMenuClick}
                         onSelect={select && onSelect}
                         isSelected={selected.includes(photoId)}
                         menuIsOpen={!!anchor.el}
@@ -95,14 +95,15 @@ const PhotoList = (props) => {
                 </GridListTile>
             })}
         </GridList>
-        {menu && <PhotoMenu
+        <PhotoMenu
             anchor={anchor}
             handleClose={handleMenuClose}
             album={album}
+            userIsAdmin={userIsAdmin}
             reloadAlbum={reloadAlbum}
             deletePhoto={deletePhoto}
             reloadGroup={reloadGroup}
-        />}
+        />
         {empty && (photos.length === 0) && <Empty message={empty} />}
     </div>
 };

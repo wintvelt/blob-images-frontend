@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { API } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -64,9 +64,9 @@ const PhotoMain = () => {
     const currentUser = useUserValue();
     const { profile } = currentUser;
     const photoData = usePhoto(photoId);
+    const photo = useMemo(() => (photoData.contents), []);
     const reloadActivePhoto = useReloadPhoto(photoId);
     const isLoading = (photoData.isLoading);
-    const photo = photoData.contents;
     const [userRating, setUserRating] = useState({ initial: 0, current: 0 });
     useEffect(() => {
         const getRating = async () => {
@@ -84,7 +84,7 @@ const PhotoMain = () => {
     const onChangeRating = (clickedRating) => {
         const setRating = async () => {
             const ratingUpdate = (userRating.current === clickedRating) ? -clickedRating : clickedRating;
-            setUserRating({ ...userRating, current: userRating.current + ratingUpdate });
+            setUserRating(old => ({ ...old, current: old.current + ratingUpdate }));
             await API.post('blob-images', source + '/rating', { body: { ratingUpdate } });
             enqueueSnackbar(`Je ${(ratingUpdate > 0) ? '+1' : '-1'} inbreng over deze foto is verwerkt`);
             setTimeout(reloadActivePhoto, 2000);

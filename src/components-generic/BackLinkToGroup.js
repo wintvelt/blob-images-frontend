@@ -19,7 +19,7 @@ const linkStyle2 = { color: 'inherit' };
 
 const BackLinkToGroup = ({ className }) => {
     const groupData = useActiveGroupValue();
-    const hasValue = !!groupData.contents;
+    const hasValue = !!groupData.contents?.id;
     if (!hasValue) return null;
 
     const group = groupData.contents;

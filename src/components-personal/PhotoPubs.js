@@ -45,7 +45,7 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
     const albumsWithPub = albums
         .filter(album => pubAlbumIds.includes(album.albumId));
     const albumsWithoutPub = (currentIsOwner) ?
-        albums.filter(album => !pubAlbumIds.includes(album.albumId))
+        albums.filter(album => album.userIsAdmin && !pubAlbumIds.includes(album.albumId))
         : [];
     const hasPubs = (albumsWithPub.length > 0);
     const hasWithoutPubs = (albumsWithoutPub.length > 0);

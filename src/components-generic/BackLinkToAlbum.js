@@ -24,7 +24,7 @@ const linkStyle2 = { color: 'inherit' };
 const BackLinkToAlbum = ({ className }) => {
     const albumData = useActiveAlbumValue();
     const album = albumData.contents;
-    if (!album?.id) return null;
+    if (!album?.albumId) return null;
 
     const groupPath = '/personal/groups/[id]';
     const groupAs = groupPath.replace('[id]', album.groupId);

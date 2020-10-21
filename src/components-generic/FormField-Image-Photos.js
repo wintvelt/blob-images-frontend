@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -8,8 +7,6 @@ import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 
 import PhotoList from '../components-personal/PhotoList';
-import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { activeAlbumPhotos } from '../data/activeTree-Album';
 import { useReloadPhotoIds, useUserPhotoIdsValue } from '../data/userPhotosData';
 
 const flexCenter = { display: 'flex', alignItems: 'center' };
@@ -18,19 +15,19 @@ const flexGrow = { flexGrow: 1 };
 const MyPhotoList = ({onChange}) => {
     const photoData = useUserPhotoIdsValue();
     const reloadPhotos = useReloadPhotoIds();
-    return <PhotoList photoData={photoData} reloadPhotos={reloadPhotos} noOwner
+    return <PhotoList photoData={photoData} reloadPhotos={reloadPhotos} noOwner noMenu
         onClick={onChange} empty='Oh, it seems there are no photos yet..' />
 };
 const AlbumPhotoList = (props) => {
     // const photoData = useRecoilValueLoadable(activeAlbumPhotos);
     // const reloadPhotos = useResetRecoilState(activeAlbumPhotos);
-    return <PhotoList photoData={{ isLoading: true }} reloadPhotos={() => { }} noOwner
+    return <PhotoList photoData={{ isLoading: true }} reloadPhotos={() => { }} noOwner noMenu
         onClick={props.onChange} empty='Oh, it seems there are no photos yet..' />
 };
 const GroupPhotoList = (props) => {
     // const photoData = useRecoilValueLoadable(userPhotosState);
     // const reloadPhotos = useResetRecoilState(userPhotosState);
-    return <PhotoList photoData={{ isLoading: true }} reloadPhotos={() => { }} noOwner
+    return <PhotoList photoData={{ isLoading: true }} reloadPhotos={() => { }} noOwner noMenu
         onClick={props.onChange} empty='Oh, it seems there are no photos yet..' />
 }
 

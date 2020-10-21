@@ -41,7 +41,7 @@ const Empty = ({ message }) => {
 const initialPhotos = [1, 2, 3, 4, 5, 6];
 
 const PhotoList = (props) => {
-    const { photoData, empty, select, album, userIsAdmin, onClick,
+    const { photoData, empty, select, album, userIsAdmin, onClick, noMenu,
         reloadAlbum, reloadGroup, deletePhoto } = props;
     const [photos, setPhotos] = useState(initialPhotos);
     const newPics = album?.newPics || [];
@@ -86,7 +86,7 @@ const PhotoList = (props) => {
                         photoId={(typeof photoId === 'string') ? photoId : ''}
                         isSmall={(!isLarge && !isMedium)}
                         {...props}
-                        onClickMenu={handleMenuClick}
+                        onClickMenu={!noMenu && handleMenuClick}
                         onSelect={select && onSelect}
                         isSelected={selected.includes(photoId)}
                         menuIsOpen={!!anchor.el}

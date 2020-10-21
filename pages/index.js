@@ -35,11 +35,11 @@ const ClosedMesssage = () => (
                 Alleen op uitnodiging
             </Typography>
             <Typography variant='body1' gutterBottom>
-                Voorlopig is Clubalmanac alleen beschikbaar op uitnodiging.
+                Clubalmanac alleen beschikbaar op uitnodiging
             </Typography>
             <Typography variant='body1' gutterBottom>
                 Ben je getipt om je aan te melden?
-                Vraag dan of hij of zij je vanuit Clubalmanac uitnodigt.
+                Vraag dan of dat lid je vanuit clubalmanac uitnodigt.
                 Je ontvangt dan een persoonlijke mail waarmee je lid kunt worden.
             </Typography>
         </div>

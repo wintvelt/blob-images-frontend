@@ -183,8 +183,9 @@ const GroupInviteForm = ({ title }) => {
                     });
                 }));
                 enqueueSnackbar(
-                    `Uitnodigingen verstuurd aan ${cleanInviteCount} kandidaat-` +
-                    `${(cleanInviteCount !== 1) ? 'lid' : 'leden'}`,
+                    `Uitnodiging${(cleanInviteCount !== '1') ? '' : 'en'} `+
+                    `verstuurd aan ${cleanInviteCount} kandidaat-` +
+                    `c`,
                     { variant: 'success' }
                 );
             } catch (error) {

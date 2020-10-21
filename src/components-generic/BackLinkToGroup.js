@@ -13,6 +13,7 @@ const linkStyle = {
     alignItems: 'center',
     width: 'fit-content',
     marginBottom: '24px',
+    backgroundColor: '#ffffff40',
     zIndex: 1,
 };
 const linkStyle2 = { color: 'inherit' };

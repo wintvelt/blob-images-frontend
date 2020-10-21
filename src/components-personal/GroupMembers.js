@@ -32,7 +32,7 @@ const GroupMembers = () => {
     const group = groupData.contents;
     const background = useCoverColor(group);
 
-    const backgroundStyle = { backgroundColor: background?.lightVibrant + 'A0' };
+    const backgroundStyle = { backgroundColor: background?.lightMuted + 'A0' };
 
     return <Accordion className={classes.panel} style={backgroundStyle}>
         <AccordionSummary

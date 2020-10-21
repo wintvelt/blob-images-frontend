@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
@@ -17,15 +16,15 @@ const useStyles = makeStyles(theme => ({
     card: {
         position: 'relative',
         // backgroundColor: theme.palette.background.paper,
-        height: '200px',
+        // height: '370px',
     },
     image: {
         background: 'linear-gradient(308deg, rgba(70,52,78,1) 14%, rgba(90,85,96,1) 43%, rgba(157,141,143,1) 77%)',
-        height: '120px',
+        height: '200px',
         backgroundSize: 'cover',
     },
     actionArea: {
-        height: 'inherit'
+        // height: '500px'
     },
     content: {
         color: theme.palette.text.secondary,
@@ -54,8 +53,8 @@ const AlbumCardContent = (props) => {
         {(image?.url) ?
             <ClubImage className={classes.image}
                 src={image.url}
-                width={(isMedium) ? 340 : 1020}
-                height={(isMedium) ? 200 : 600}
+                width={(isMedium) ? 300 : 600}
+                height={(isMedium) ? 250 : 500}
             />
             : <div className={classes.image} />
         }

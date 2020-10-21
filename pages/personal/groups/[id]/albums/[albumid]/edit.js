@@ -43,7 +43,7 @@ const AlbumEditMain = () => {
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
                     <AlbumCardLayout {...album} withEdit={false} isLoading={albumData.isLoading}
-                        userIsAdmin={userIsAdmin} isMedium={isMedium} />
+                        userIsAdmin={userIsAdmin} isMedium={isMedium} hideNew={true} />
                 </Grid>}
                 <Grid item md={(isNew) ? 3 : 1} />
                 <Grid item md={(isNew) ? 6 : 8} xs={12}>

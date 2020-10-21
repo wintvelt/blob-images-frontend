@@ -70,10 +70,7 @@ export const useMembersValue = () => {
     return activeMembers;
 };
 
-const saveMember = async (groupId, memberId, newRole) => {
-    let memberUpdate = {
-        newRole
-    };
+const saveMember = async (groupId, memberId, memberUpdate) => {
     const apiPath = `/groups/${groupId}/membership/${memberId}`;
     const result = await API.put('blob-images', apiPath, {
         body: memberUpdate
@@ -89,9 +86,9 @@ const deleteMember = async (groupId, memberId) => {
 export const useMemberUpdate = () => {
     const groupId = useRecoilValue(activeGroupIdState);
     const reloadMembers = useReloadActiveMembers();
-    const saveMemberFunc = async (memberId, newRole) => {
+    const saveMemberFunc = async (memberId, memberUpdate) => {
         try {
-            const result = await saveMember(groupId, memberId, newRole);
+            const result = await saveMember(groupId, memberId, memberUpdate);
             reloadMembers();
         } catch (error) {
             return { hasError: error };

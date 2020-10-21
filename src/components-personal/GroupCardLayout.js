@@ -76,7 +76,7 @@ const GroupCardContent = (props) => {
 const fullHeight = { height: '100%' };
 
 const GroupCardLayout = (props) => {
-    const { id, userIsAdmin, image, newPicsCount, withEdit, isMedium } = props;
+    const { id, userIsAdmin, image, newPicsCount, withEdit, isMedium, hideNew } = props;
     const mayEdit = (userIsAdmin && withEdit);
     const classes = useStyles();
     const setLoadingPath = useSetLoadingPath();
@@ -95,7 +95,9 @@ const GroupCardLayout = (props) => {
     }
 
     return <Card className={classes.card}>
-        {(newPicsCount > 0) && <Chip color='secondary' label={newPicsCount} className={classes.chip} />}
+        {(newPicsCount > 0) && !hideNew &&
+            <Chip color='secondary' label={newPicsCount} className={classes.chip} />
+        }
         {(withEdit) ?
             <CardActionArea style={fullHeight} onClick={onClick}>
                 <GroupCardContent {...props} />

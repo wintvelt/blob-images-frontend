@@ -40,7 +40,8 @@ const GroupEditMain = () => {
             <BackLinkToGroup />
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
-                    <GroupCardLayout {...group} withEdit={false} isLoading={groupData.isLoading} isMedium={isMedium} />
+                    <GroupCardLayout {...group} withEdit={false} hideNew={true}
+                        isLoading={groupData.isLoading} isMedium={isMedium} />
                 </Grid>}
                 <Grid item md={(isNew) ? 3 : 1} />
                 <Grid item md={(isNew) ? 6 : 8} xs={12}>

@@ -7,7 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import { useMediaQuery, Chip } from '@material-ui/core';
+import { useMediaQuery, Chip, Link } from '@material-ui/core';
 
 import { AvatarSkeleton } from '../../src/components-generic/Skeleton';
 import { initials } from '../../src/components-generic/helpers';
@@ -104,7 +104,8 @@ const MemberLine = ({ member, onClick, isLoading, isLarge }) => {
             </>}
         </Typography>
         {isLarge && <Typography variant='caption' style={widthStyle200Left}>
-            {member.email}
+            {!member.isCurrent && <Link href={`mailto: ${member.name} <${member.email}>`}>{member.email}</Link>}
+            {member.isCurrent && member.email}
         </Typography>}
         {isLarge && <Typography variant='caption' style={widthStyle160}>
             {(member.status === 'invite' ? 'uitgenodigd ' : 'lid sinds ') + member.createdAt}
@@ -118,17 +119,19 @@ const MemberLine = ({ member, onClick, isLoading, isLarge }) => {
     </div>
 }
 
-const makeDialogItems = (state) => (
-    (state === 'ban') ?
-        [
-            ['Als een lid de groep verlaat, verdwijnen ook hun foto\'s uit de groep',
-                'Dit is definitief en omomkeerbaar',
-                'Je kunt het lid wel weer opnieuw uitnodigen, maar dan moet hij/zij foto\'s weer opnieuw toevoegen'
-            ],
-            'Yes, verban dit lid'
-        ]
-        : (state === 'leave') ?
-            [
+const makeDialogItems = (state) => {
+    switch (state) {
+        case 'ban': {
+            return [
+                ['Als je een lid uit de groep verwijdert, verdwijnen ook hun foto\'s uit de groep',
+                    'Dit is definitief en omomkeerbaar',
+                    'Je kunt het lid wel weer opnieuw uitnodigen, maar dan moet hij/zij foto\'s weer opnieuw toevoegen'
+                ],
+                'Yes, verban dit lid'
+            ];
+        }
+        case 'leave': {
+            return [
                 [
                     'Als je de groep verlaat, is dat definitief. Je foto\'s verdwijnen dan ook uit de groep',
                     'Je kunt een ander lid vragen om je opnieuw uit te nodigen',
@@ -136,15 +139,30 @@ const makeDialogItems = (state) => (
                 ],
                 'Yes, verlaat groep'
             ]
-            : (state === 'uninvite') ?
+        }
+        case 'uninvite': {
+            return [
                 [
-                    [
-                        'Als je de uitnodiging intrekt, krijgt het aspirant lid hiervan bericht.'
-                    ],
-                    'Yes, trek uitnodiging in'
-                ]
-                : [[], '']
-);
+                    'Als je de uitnodiging intrekt, krijgt het aspirantlid hiervan bericht.'
+                ],
+                'Yes, trek uitnodiging in'
+            ]
+        }
+        case 'founderify': {
+            return [
+                [
+                    'Als je een ander lid oprichter maakt, dan krijgt deze geluksvogel ook admin rechten.',
+                    'En het recht om de groep op te heffen en verwijderen van clubalmanac.',
+                    'Jouw eigen status als oprichter vervalt dan.'
+                ],
+                'Yes, maak oprichter'
+            ]
+        }
+
+        default:
+            return [[], ''];
+    }
+};
 
 const MemberDetails = () => {
     const classes = useStyles();
@@ -164,7 +182,19 @@ const MemberDetails = () => {
         handleClose();
         setDialog('closed');
     };
-    const onConfirm = async () => {
+    const onMakeFounder = async () => {
+        const memberId = anchorMem.userId;
+        const memberName = anchorMem.name;
+        const saveResult = await memberUpdate.save(memberId, { makeFounder: true });
+        if (saveResult.success) {
+            enqueueSnackbar(`Status van ${memberName} is nu "✨ oprichter ✨"`);
+        } else {
+            enqueueSnackbar(`Niet gelukt om ${memberName} oprichter te maken`, { variant: 'error' });
+        }
+        onClose();
+    };
+
+    const onDelete = async () => {
         const memberId = anchorMem.userId;
         const memberName = anchorMem.name;
         const delResult = await memberUpdate.delete(memberId);
@@ -180,6 +210,14 @@ const MemberDetails = () => {
         }
         onClose();
     };
+    const onConfirm = async () => {
+        if (dialog === 'founderify') {
+            onMakeFounder();
+        } else {
+            onDelete();
+        }
+    };
+
     const [dialogLines, submitText] = makeDialogItems(dialog);
 
     const [anchor, setAnchor] = useState({ el: null });
@@ -198,7 +236,7 @@ const MemberDetails = () => {
         const memberId = anchorMem.userId;
         const memberName = anchorMem.name;
         const newRole = (anchorMem.userRole === 'admin') ? 'guest' : 'admin';
-        const saveResult = await memberUpdate.save(memberId, newRole);
+        const saveResult = await memberUpdate.save(memberId, { newRole });
         if (saveResult.success) {
             enqueueSnackbar(`Status van ${memberName} is nu "${newRole}"`);
         } else {
@@ -230,6 +268,9 @@ const MemberDetails = () => {
             }
             {anchorOptions.includes('adminify') &&
                 <MenuItem onClick={onChangeRole}>Maak admin</MenuItem>
+            }
+            {anchorOptions.includes('founderify') &&
+                <MenuItem onClick={onOpen('founderify')}>Benoem als oprichter</MenuItem>
             }
             {anchorOptions.includes('ban') &&
                 <MenuItem style={redStyle} onClick={onOpen('ban')}>Verban uit groep</MenuItem>}

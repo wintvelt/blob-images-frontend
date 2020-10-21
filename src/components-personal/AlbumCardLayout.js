@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 const flexEndStyle = { display: 'flex', justifyContent: 'flex-end' };
 
 const AlbumCardContent = (props) => {
-    const { name, image, stats, newPicsCount, isLoading, isMedium } = props;
+    const { name, image, stats, newPicsCount, isLoading, isMedium, hideNew } = props;
     const classes = useStyles();
     return <>
         {(image?.url) ?
@@ -60,7 +60,9 @@ const AlbumCardContent = (props) => {
             : <div className={classes.image} />
         }
         <CardContent className={classes.content}>
-            {(newPicsCount > 0) && <Chip color='secondary' label={newPicsCount} className={classes.chip} />}
+            {(newPicsCount > 0) && !hideNew &&
+                <Chip color='secondary' label={newPicsCount} className={classes.chip} />
+            }
             <Typography gutterBottom variant='h6' component='h5'>
                 <TextSkeleton className={classes.text} isLoading={isLoading}>{name}</TextSkeleton>
             </Typography>

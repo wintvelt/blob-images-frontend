@@ -9,6 +9,7 @@ import { useSetLoadingPath } from '../data/loadingData';
 const useStyles = makeStyles(theme => ({
     newCard: {
         height: '100%',
+        minHeight: '200px',
         background: 'none',
         borderWidth: '2px',
         borderStyle: 'dashed',

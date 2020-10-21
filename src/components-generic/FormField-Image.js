@@ -168,11 +168,11 @@ const ImageField = (props) => {
                 open={!!(imageMenu.isOpen)}
                 onClose={handleClickMenu('close')}
             >
-                {isGroup &&
+                {/* {isGroup &&
                     <MenuItem onClick={handleClickMenu('group')} disabled={!hasGroupPhotos}>
                         Kies uit groepsfoto's
                     </MenuItem>
-                }
+                } */}
                 {isAlbum &&
                     <MenuItem onClick={handleClickMenu('album')} disabled={!hasAlbumPhotos}>
                         Kies uit albumfoto's

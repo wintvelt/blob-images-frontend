@@ -5,8 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { ClubImage } from '../components-generic/imageProvider';
-import { useRecoilValueLoadable } from 'recoil';
-import { photoState, usePhoto, usePhotoValue } from '../data/activeTree-Photo';
+import { usePhoto } from '../data/activeTree-Photo';
 import Rating from '../components-generic/Rating';
 import { useUserValue } from '../data/userData';
 
@@ -101,7 +100,7 @@ const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClick
         {(isLoading) && <div style={flexStyle2}>
             <Icon className={'pulse-icon'} style={bigIcon}>image</Icon>
         </div>}
-        {(url) && <ClubImage src={url} alt='photo' className={classes.img} />}
+        {(url) && <ClubImage src={url} alt='photo' className={classes.img} width={400}/>}
         <GridListTileBar
             style={fitContent}
             title={(name && !noOwner) ? `by ${name}` : ''}

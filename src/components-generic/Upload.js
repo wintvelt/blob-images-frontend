@@ -11,6 +11,7 @@ import { API } from "aws-amplify";
 import { now } from './helpers';
 import { errorLog } from '../helpers/errorLog';
 import { useSnackbar } from 'notistack';
+import { useUserValue } from '../data/userData';
 
 registerPlugin(
     FilePondPluginImageExifOrientation,
@@ -92,6 +93,9 @@ const Upload = ({ pond,
     photoMetadata
 }) => {
     const { enqueueSnackbar } = useSnackbar();
+    const user = useUserValue();
+    const { profile } = user;
+    if (!profile?.mayUpload) return null;
 
     const label = 'Sleep foto\'s hierheen of <span class="filepond--label-action"> Open bestand </span>';
     return <>

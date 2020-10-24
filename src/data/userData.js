@@ -59,6 +59,7 @@ const userToForm = (user) => ({
     photoUrl: user.photoUrl,
     photoId: user.photoId,
     photoCount: user.photoCount,
+    mayUpload: user.mayUpload,
     visitDateLast: user.visitDateLast,
     visitDatePrev: user.visitDatePrev,
     createdAt: user.createdAt

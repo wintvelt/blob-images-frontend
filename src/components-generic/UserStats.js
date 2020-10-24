@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const StatLine = ({ label, value, withMax, maxPhotos }) => {
+const StatLine = ({ label, value, withMax, mayUpload }) => {
     return <Grid container spacing={2}>
         <Grid item xs={6} md={4}>
             <Typography variant='body2' align='right' color='textSecondary'>{label}</Typography>
@@ -26,7 +26,7 @@ const StatLine = ({ label, value, withMax, maxPhotos }) => {
         <Grid item xs={6} md={8}>
             <Typography variant='body2'>
                 {value}{' '}
-                {withMax && value > maxPhotos && <span style={{ fontSize: '80%' }}>(max bereikt)</span>}
+                {withMax && !mayUpload && <span style={{ fontSize: '80%' }}>(max bereikt)</span>}
             </Typography>
         </Grid>
     </Grid>
@@ -49,7 +49,7 @@ const UserStats = () => {
             {statConfig.map(it => <StatLine
                 key={it.key}
                 label={it.label} value={profile[it.key]} withMax={it.withMax}
-                maxPhotos={3} />
+                mayUpload={profile.mayUpload} />
             )}
         </Paper>
     )

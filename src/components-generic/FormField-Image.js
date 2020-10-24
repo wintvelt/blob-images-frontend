@@ -13,6 +13,7 @@ import PhotoPicker from './FormField-Image-Photos';
 import { useRecoilValueLoadable } from 'recoil';
 import { activeGroupPhotos, activeAlbumPhotos } from '../data/activeTree-Album';
 import { useUserPhotoIdsValue } from '../data/userPhotosData';
+import { useUserValue } from '../data/userData';
 
 
 const useStyles = makeStyles(theme => ({
@@ -80,6 +81,10 @@ const ImageField = (props) => {
     // const albumPhotosData = useRecoilValueLoadable(activeAlbumPhotos);
     const albumPhotosData = { isLoading: true };
     const hasAlbumPhotos = hasItems(albumPhotosData);
+
+    const activeUser = useUserValue();
+    const { profile } = activeUser;
+    const userMayUpload = profile?.mayUpload;
 
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;
@@ -181,7 +186,7 @@ const ImageField = (props) => {
                 <MenuItem onClick={handleClickMenu('myPhotos')} disabled={!hasMyPhotos}>
                     Kies uit mijn foto's
                 </MenuItem>
-                <MenuItem onClick={handleClickMenu('upload')}>Upload nieuwe foto</MenuItem>
+                {userMayUpload && <MenuItem onClick={handleClickMenu('upload')}>Upload nieuwe foto</MenuItem>}
                 <MenuItem onClick={handleClickMenu('clear')} disabled={!url}>
                     Verwijder foto
                 </MenuItem>

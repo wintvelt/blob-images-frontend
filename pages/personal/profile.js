@@ -12,6 +12,7 @@ import PasswordForm from '../../src/components-personal/PasswordForm';
 import { useUserValue } from '../../src/data/userData';
 import ProfileDeleteForm from '../../src/components-personal/ProfileDeleteForm';
 import UserStats from '../../src/components-generic/UserStats';
+import { useUserPhotoIds } from '../../src/data/userPhotosData';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -29,6 +30,7 @@ const gridStyle = { minHeight: '32px' };
 const EditProfileMain = () => {
     const classes = useStyles();
     const user = useUserValue();
+    const userPhotos = useUserPhotoIds();
     const { profile } = user;
 
     return (

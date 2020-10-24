@@ -9,6 +9,8 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
 import { API } from "aws-amplify";
 import { now } from './helpers';
+import { errorLog } from '../helpers/errorLog';
+import { useSnackbar } from 'notistack';
 
 registerPlugin(
     FilePondPluginImageExifOrientation,
@@ -25,7 +27,7 @@ const fileRenameFunction = (file) => {
     return `${now()}-${cleanFilename}`;
 };
 
-const server = (photoMetadata) => ({
+const server = (photoMetadata, enqueueSnackbar) => ({
     url: `https://${bucket()}.s3.eu-central-1.amazonaws.com`,
     process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
         try {
@@ -45,6 +47,7 @@ const server = (photoMetadata) => ({
             });
             console.log({ result });
             load(file.name);
+
             // const result = await Storage.put(file.name, file, {
             //     level: 'protected',
             //     contentType: file.type,
@@ -56,7 +59,12 @@ const server = (photoMetadata) => ({
             // console.log({result});
             // load(result.key);
         } catch (err) {
-            console.log({ err });
+            errorLog(err);
+            const errMsg = err.response?.data?.error;
+            if (errMsg && errMsg.includes('maximum user photos')) {
+                const maxNum = errMsg.slice(23).split(' ')[0];
+                enqueueSnackbar(`Je hebt helaas het maximum van ${maxNum} foto\'s bereikt`);
+            }
             error(err);
         }
         return {
@@ -83,10 +91,12 @@ const Upload = ({ pond,
     allowMultiple, allowImagePreview, instantUpload,
     photoMetadata
 }) => {
+    const { enqueueSnackbar } = useSnackbar();
 
     const label = 'Sleep foto\'s hierheen of <span class="filepond--label-action"> Open bestand </span>';
     return <>
-        <FilePond allowMultiple={allowMultiple} server={server(photoMetadata)} instantUpload={instantUpload}
+        <FilePond allowMultiple={allowMultiple} server={server(photoMetadata, enqueueSnackbar)}
+            instantUpload={instantUpload}
             ref={pond}
             onaddfile={onAddFile} onremovefile={onRemoveFile} onprocessfile={onProcessFile}
             allowRevert={false}

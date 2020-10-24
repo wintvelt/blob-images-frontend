@@ -58,6 +58,7 @@ const userToForm = (user) => ({
     email: user.email,
     photoUrl: user.photoUrl,
     photoId: user.photoId,
+    photoCount: user.photoCount,
     visitDateLast: user.visitDateLast,
     visitDatePrev: user.visitDatePrev,
 });

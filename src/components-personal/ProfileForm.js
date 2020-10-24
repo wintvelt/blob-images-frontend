@@ -5,12 +5,6 @@ import Form from '../components-generic/Form';
 import { useUser } from '../../src/data/userData';
 
 const fieldConfig = {
-    email: {
-        autoComplete: 'email',
-        type: 'email',
-        label: 'email (kan je niet wijzigen)',
-        disabled: true,
-    },
     name: {
         autoComplete: 'name',
         type: 'text',

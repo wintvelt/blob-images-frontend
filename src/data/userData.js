@@ -61,6 +61,7 @@ const userToForm = (user) => ({
     photoCount: user.photoCount,
     visitDateLast: user.visitDateLast,
     visitDatePrev: user.visitDatePrev,
+    createdAt: user.createdAt
 });
 
 const authPaths = ['/login', '/signup', '/forgotpsw', '/verifysignup', '/confirmpsw'];

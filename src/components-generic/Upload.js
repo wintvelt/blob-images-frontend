@@ -7,7 +7,7 @@ import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orien
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
-import { Storage } from "aws-amplify";
+import { API } from "aws-amplify";
 import { now } from './helpers';
 
 registerPlugin(
@@ -29,15 +29,32 @@ const server = (photoMetadata) => ({
     url: `https://${bucket()}.s3.eu-central-1.amazonaws.com`,
     process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
         try {
-            const result = await Storage.put(file.name, file, {
-                level: 'protected',
-                contentType: file.type,
-                metadata: photoMetadata,
-                progressCallback(info) {
-                    progress(true, info.loaded, info.total);
+            const headers = photoMetadata;
+            const url = await API.post('blob-images', '/user/uploadurl', {
+                body: {
+                    filename: file.name,
+                    headers
                 },
             });
-            load(result.key);
+            console.log(url);
+
+            const result = await fetch(url, {
+                method: 'PUT',
+                body: file,
+                headers,
+            });
+            console.log({ result });
+            load(file.name);
+            // const result = await Storage.put(file.name, file, {
+            //     level: 'protected',
+            //     contentType: file.type,
+            //     metadata: photoMetadata,
+            //     progressCallback(info) {
+            //         progress(true, info.loaded, info.total);
+            //     },
+            // });
+            // console.log({result});
+            // load(result.key);
         } catch (err) {
             console.log({ err });
             error(err);

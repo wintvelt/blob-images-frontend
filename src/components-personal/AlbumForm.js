@@ -9,6 +9,7 @@ import { activeGroupIdState, activeAlbumIdState } from '../data/activeTreeRoot';
 import { useRouter } from 'next/router';
 import { useActiveGroupAlbumsValue } from '../data/activeTree-GroupAlbums';
 import DeleteDialog from '../components-generic/DeleteDialog';
+import { errorLog } from '../helpers/errorLog';
 
 
 const fieldConfig = {
@@ -72,7 +73,7 @@ const AlbumForm = ({ album }) => {
             };
             // albums.reloadData();
         } catch (e) {
-            console.log(e.message);
+            errorLog(e);
             enqueueSnackbar('Kon album niet opslaan', { variant: 'error' });
         }
         setIsLoading(false);
@@ -83,7 +84,7 @@ const AlbumForm = ({ album }) => {
             enqueueSnackbar('album verwijderd, we gaan terug naar de groepspagina');
             setLoadingPath('/personal/groups/[id]', `/personal/groups/${groupId}`);
         } catch (error) {
-            console.log(error);
+            errorLog(error);
             enqueueSnackbar('het is niet gelukt dit album te verwijderen, sorry', { variant: 'error' });
         };
     }

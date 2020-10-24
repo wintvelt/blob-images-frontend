@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { atom, useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
 import { API } from 'aws-amplify';
 import { activeAlbumIdState, activeGroupIdState } from './activeTreeRoot';
+import { errorLog } from '../helpers/errorLog';
 
 export const albumPhotoIdsData = atom({
     key: 'albumPhotoIdsData',
@@ -23,7 +24,7 @@ export const useReloadAlbumPhotoIds = () => {
                 const photoIds = await API.get('blob-images', `/groups/${groupId}/albums/${albumId}/photos`);
                 setAlbumPhotoIds({ contents: photoIds.map(item => item.SK) });
             } catch (error) {
-                console.log({ error });
+                errorLog(error);
                 setAlbumPhotoIds({ hasError: error });
             }
         }

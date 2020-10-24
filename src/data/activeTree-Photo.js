@@ -1,6 +1,7 @@
 import { selectorFamily, atom, atomFamily, useRecoilValue, useSetRecoilState, DefaultValue } from 'recoil';
 import { API } from 'aws-amplify';
 import { useEffect } from 'react';
+import { errorLog } from '../helpers/errorLog';
 
 // -- NEW
 export const photoData = atomFamily({
@@ -17,7 +18,7 @@ export const useReloadPhoto = (id) => {
                 const photo = await API.get('blob-images', `/photos/${id}`);
                 setPhoto({ contents: photo });
             } catch (error) {
-                console.log({ error });
+                errorLog(error);
                 setPhoto({ hasError: error });
             }
         }

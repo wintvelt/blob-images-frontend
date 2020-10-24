@@ -44,7 +44,7 @@ export const GroupImage = () => {
     const groupData = useActiveGroupValue();
     const hasValue = !!groupData.contents;
     const image = hasValue && groupData.contents.image;
-    if (hasValue && !groupData.contents) console.log({ groupData });
+    // if (hasValue && !groupData.contents) console.log({ groupData });
     if (!image) return null;
 
     return <ClubImage className={classes.groupMedia}

@@ -8,6 +8,7 @@ import { useSnackbar } from 'notistack';
 import { useUser } from '../data/userData';
 import { useRouter } from 'next/router';
 import { useSetLoadingPath } from '../data/loadingData';
+import { errorLog } from '../helpers/errorLog';
 
 const redStyle = { color: 'red' };
 
@@ -44,7 +45,7 @@ const PhotoMenu = ({ anchor, album, userIsAdmin, handleClose, deletePhoto, reloa
             handleClose();
             reloadAlbum && reloadAlbum();
         } catch (error) {
-            console.log(error);
+            errorLog(error);
             enqueueSnackbar('niet gelukt om albumcover aan te passen', { variant: 'error' });
         }
     }
@@ -55,7 +56,7 @@ const PhotoMenu = ({ anchor, album, userIsAdmin, handleClose, deletePhoto, reloa
             enqueueSnackbar('Foto verwijderd', { variant: 'success' });
             deletePhoto && deletePhoto(currentPhotoId);
         } catch (error) {
-            console.log(error);
+            errorLog(error);
             enqueueSnackbar('Kon foto niet verwijderen', { variant: 'error' });
         }
         handleClose();
@@ -68,7 +69,7 @@ const PhotoMenu = ({ anchor, album, userIsAdmin, handleClose, deletePhoto, reloa
             reloadAlbum && reloadAlbum();
             reloadPubs && reloadPubs(currentPhotoId);
         } catch (error) {
-            console.log(error);
+            errorLog(error);
             enqueueSnackbar('kon foto niet toevoegen', { variant: 'error' });
         }
         handleClose();
@@ -90,7 +91,7 @@ const PhotoMenu = ({ anchor, album, userIsAdmin, handleClose, deletePhoto, reloa
                 enqueueSnackbar('foto uit album verwijderd');
             }
         } catch (error) {
-            console.log(error);
+            errorLog(error);
             enqueueSnackbar('foto uit album schrappen is mislukt', { variant: 'error' });
             handleClose();
         }

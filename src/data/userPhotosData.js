@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { API } from 'aws-amplify';
+import { errorLog } from '../helpers/errorLog';
 
 export const userPhotoIdsData = atom({
     key: 'userPhotoIdsData',
@@ -15,7 +16,7 @@ export const useReloadPhotoIds = () => {
             const photoIds = await API.get('blob-images', `/photos`);
             setUserPhotoIds({ contents: photoIds });
         } catch (error) {
-            console.log({ error });
+            errorLog(error);
             setUserPhotoIds({ hasError: error });
         }
     }

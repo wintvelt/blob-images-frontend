@@ -16,6 +16,7 @@ import ForOther from '../../src/components-invite/ForOther';
 import Accepted from '../../src/components-invite/Accepted';
 import OtherError from '../../src/components-invite/OtherError';
 import { useActiveInvite, useReloadInvite } from '../../src/data/invite-Data';
+import { errorLog } from '../../src/helpers/errorLog';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -109,7 +110,7 @@ const InviteHOC = () => {
                 enqueueSnackbar(`Welkom als lid van ${group ? group.name : 'deze groep'}!`, { variant: 'success' });
                 setLoadingPath('/personal/groups/[id]', `/personal/groups/${group?.groupId}`);
             } catch (error) {
-                console.log(error);
+                errorLog(error);
                 enqueueSnackbar('Oeps, we konden je niet lid maken', { variant: 'error' });
             }
         } else {
@@ -126,7 +127,7 @@ const InviteHOC = () => {
             const redirect = (user && user.isAuthenticated) ? '/personal/groups' : '/';
             setLoadingPath(redirect);
         } catch (error) {
-            console.log(error);
+            errorLog(error);
             enqueueSnackbar('Oeps, je afwijzing komt niet door', { variant: 'error' });
         }
         setIsSaving(false);

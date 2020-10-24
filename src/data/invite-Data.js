@@ -1,6 +1,7 @@
 import { API } from "aws-amplify";
 import { useEffect } from "react";
 import { atom, useRecoilValue, useSetRecoilState } from "recoil";
+import { errorLog } from '../helpers/errorLog';
 
 export const invitePromise = ({ groupId, name, email, message, role }) => {
     return API.post('blob-images', `/groups/${groupId}/invite`, {
@@ -43,7 +44,7 @@ export const useReloadInvite = () => {
             const invite = await API.get('blob-images', `/invites/${inviteId}`);
             setInvite({ contents: inviteToForm(invite) });
         } catch (error) {
-            console.log({error});
+            errorLog(error);
             setInvite({ hasError: error });
         }
     }

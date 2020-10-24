@@ -21,6 +21,8 @@ import BackLinkToAlbum from '../components-generic/BackLinkToAlbum';
 import { useUserAlbums } from '../data/activeTree-UserAlbums';
 import { useActiveAlbum } from '../data/activeTree-Album';
 
+import { errorLog } from '../helpers/errorLog';
+
 const useStyles = makeStyles(theme => ({
     photo: {
         height: '640px',
@@ -107,7 +109,7 @@ const PhotoMain = () => {
 
             setLoadingPath(newPath, newAs);
         } catch (error) {
-            console.log(error);
+            errorLog(error);
             enqueueSnackbar('Kon je kiekje niet verwijderen', { variant: 'error' });
         }
     };

@@ -7,6 +7,7 @@ import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { userGroups } from '../data/userData';
 import { deleteGroup, useSaveGroup } from '../data/activeTree-Group';
 import DeleteDialog from '../components-generic/DeleteDialog';
+import { errorLog } from '../helpers/errorLog';
 
 const fieldConfig = {
     name: {
@@ -61,7 +62,7 @@ const GroupForm = ({ group, isNew }) => {
             };
             reloadUserGroups();
         } catch (e) {
-            console.log(e.message);
+            errorLog(e);
             enqueueSnackbar('Er ging iets mis bij het opslaan', { variant: 'error' });
         }
         setIsLoading(false);
@@ -73,7 +74,7 @@ const GroupForm = ({ group, isNew }) => {
             enqueueSnackbar(`"${group.name}" is definitief verwijderd. Oud-leden zijn op de hoogte gebracht.`);
             setLoadingPath('/personal/groups');
         } catch (error) {
-            console.log(error);
+            errorLog(error);
             enqueueSnackbar('Er ging iets mis bij het verwijderen van de groep', { variant: 'error' });
         }
     }

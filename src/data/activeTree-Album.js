@@ -3,6 +3,7 @@ import { API } from 'aws-amplify';
 
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { activeAlbumIdState, activeGroupIdState } from './activeTreeRoot';
+import { errorLog } from '../helpers/errorLog';
 
 // active album
 export const activeAlbumData = atom({
@@ -89,8 +90,8 @@ export const useSaveAlbum = () => {
             newAlbumId = result.SK;
             setActiveAlbum({ contents: albumToForm(result) });
         } catch (error) {
+            errorLog(error);
             setActiveAlbum({ hasError: 'could not save album changes' });
-            console.log(error);
         }
         return newAlbumId;
     }

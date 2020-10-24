@@ -39,14 +39,11 @@ const server = (photoMetadata, enqueueSnackbar) => ({
                     headers
                 },
             });
-            console.log(url);
-
             const result = await fetch(url, {
                 method: 'PUT',
                 body: file,
                 headers,
             });
-            console.log({ result });
             load(file.name);
 
             // const result = await Storage.put(file.name, file, {
@@ -81,7 +78,7 @@ const server = (photoMetadata, enqueueSnackbar) => ({
             // });
             load('deleted');
         } catch (err) {
-            console.log({ err });
+            errorLog(err);
             error(err);
         }
     },

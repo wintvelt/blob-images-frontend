@@ -21,7 +21,7 @@ const buttonIsEqual = (prevProps, nextProps) => (
     (prevProps.isLoading === nextProps.isLoading)
 );
 
-const FormButton = ({ type, onClick, isLoading, children }) => {
+const FormButton = ({ type, onClick, isLoading, children, disabled }) => {
     const classes = useStyles();
     const buttonContent = isLoading ? <CircularProgress size='1.5rem' color='secondary' />
         : children;
@@ -30,7 +30,7 @@ const FormButton = ({ type, onClick, isLoading, children }) => {
         : ['submit', 'contained', classes.submit, 'secondary'];
     return (
         <Button type={buttonType} variant={variant} className={className} color={color}
-            disabled={isLoading}
+            disabled={isLoading || disabled}
             onClick={onClick}>
             {buttonContent}
         </Button>

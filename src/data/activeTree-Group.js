@@ -22,7 +22,10 @@ export const groupToForm = (group) => ({
     },
     userRole: group.userRole,
     isFounder: group.isFounder,
-    newPicsCount: group.newPicsCount
+    newPicsCount: group.newPicsCount,
+    memberCount: group.memberCount,
+    maxMembers: group.maxMembers,
+    mayInvite: group.mayInvite
 });
 
 export const useReloadActiveGroup = () => {

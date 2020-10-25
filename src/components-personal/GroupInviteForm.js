@@ -18,6 +18,8 @@ import { useRecoilValue } from 'recoil';
 import { activeGroupIdState } from '../data/activeTreeRoot';
 import { useMembersValue } from '../data/activeTree-GroupMembers';
 import { invitePromise } from '../data/invite-Data';
+import { useActiveGroup, useReloadActiveGroup } from '../data/activeTree-Group';
+import { errorLog } from '../helpers/errorLog';
 
 const useStyles = makeStyles(theme => ({
     form: {
@@ -114,6 +116,10 @@ const InviteeLine = ({ invitee, onChange, onRemove, showValidation, showRemove, 
 const GroupInviteForm = ({ title }) => {
     const classes = useStyles();
     const groupId = useRecoilValue(activeGroupIdState);
+    const groupData = useActiveGroup();
+    const memberCount = groupData.contents?.memberCount || 0;
+    const maxMembers = groupData.contents?.maxMembers || 0;
+    const reloadGroup = useReloadActiveGroup();
     const { enqueueSnackbar } = useSnackbar();
     const [isLoading, setIsLoading] = useState(false);
     const [showValidation, setShowValidation] = useState(false);
@@ -123,6 +129,8 @@ const GroupInviteForm = ({ title }) => {
 
     const [invitees, setInvitees] = useState({ 0: initialInvitee(0, memberEmails) });
     const inviteeCount = Object.keys(invitees).length;
+    const mayAddInvite = ((memberCount + inviteeCount) < maxMembers);
+    const overMax = ((memberCount + inviteeCount) > maxMembers);
     const [message, setMessage] = useState('');
 
     const onChange = (idx, fieldName) => (e) => {
@@ -183,17 +191,19 @@ const GroupInviteForm = ({ title }) => {
                     });
                 }));
                 enqueueSnackbar(
-                    `Uitnodiging${(cleanInviteCount !== '1') ? '' : 'en'} `+
+                    `Uitnodiging${(cleanInviteCount !== '1') ? '' : 'en'} ` +
                     `verstuurd aan ${cleanInviteCount} kandidaat-` +
                     `${(cleanInviteCount !== '1') ? 'lid' : 'leden'}`,
                     { variant: 'success' }
                 );
             } catch (error) {
+                errorLog(error);
                 enqueueSnackbar('Oeps, kon de uitnodigingen niet verzenden', { variant: 'error' })
             }
             setInvitees({ 0: initialInvitee(0, memberEmails) });
             setShowValidation(false);
             setMessage('');
+            reloadGroup();
         } else {
             setInvitees(cleanInvitees);
             setShowValidation(true);
@@ -201,6 +211,9 @@ const GroupInviteForm = ({ title }) => {
         setIsLoading(false);
     }
     const submitText = 'Verzenden';
+    const addText = (overMax) ? `(Uitnodigen gaat niet, de groep heeft al max van ${maxMembers} leden`
+        : (mayAddInvite) ? 'Nog iemand uitnodigen'
+            : `(met deze uitnodiging${(inviteeCount > 1) ? 'en' : ''} bereik je het maximum van ${maxMembers} leden)`;
 
     return (
         <form name='form' noValidate>
@@ -219,7 +232,9 @@ const GroupInviteForm = ({ title }) => {
                         memberEmails={memberEmails}
                     />
                 ))}
-                <Button color='primary' onClick={onAdd}>Nog iemand uitnodigen</Button>
+                <Button color='primary' onClick={onAdd} disabled={!mayAddInvite}>
+                    {addText}
+                </Button>
                 <TextField
                     value={message}
                     onChange={onChangeMessage}
@@ -236,7 +251,7 @@ const GroupInviteForm = ({ title }) => {
                         Voeg een persoonlijke noot toe
                     </Typography>
                 }
-                <FormButton type='submit' isLoading={isLoading} onClick={onSubmit}>
+                <FormButton type='submit' isLoading={isLoading} onClick={onSubmit} disabled={overMax}>
                     {submitText}
                 </FormButton>
             </Paper>

@@ -12,6 +12,7 @@ import { useUserValue } from '../data/userData';
 import { activePathFront } from '../data/activeTreeRoot';
 import { useRecoilValue } from 'recoil';
 import { useMembersValue } from '../data/activeTree-GroupMembers';
+import { useActiveGroupValue } from '../data/activeTree-Group';
 
 const useStyles = makeStyles(theme => ({
     avatar: {
@@ -60,6 +61,10 @@ export const MemberActions = () => {
     const { profile } = currentUser;
     const paths = useRecoilValue(activePathFront);
 
+    const groupData = useActiveGroupValue();
+    const mayInvite = groupData.contents?.mayInvite;
+    console.log(groupData.contents);
+
     const membersData = useMembersValue();
     const hasValue = (!!membersData.contents);
     if (!hasValue) return null;
@@ -71,6 +76,10 @@ export const MemberActions = () => {
         member.status !== 'invite'
     ));    
     if (!currentIsAdmin) return null;
+
+    if (!mayInvite) return <AccordionActions>
+        <Button color='primary' disabled>groep is vol</Button>
+    </AccordionActions>
 
     return <AccordionActions>
         <Link href={paths.path + '/invite'}

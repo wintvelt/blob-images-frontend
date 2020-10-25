@@ -63,7 +63,6 @@ export const MemberActions = () => {
 
     const groupData = useActiveGroupValue();
     const mayInvite = groupData.contents?.mayInvite;
-    console.log(groupData.contents);
 
     const membersData = useMembersValue();
     const hasValue = (!!membersData.contents);

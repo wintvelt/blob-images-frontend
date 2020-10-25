@@ -16,6 +16,7 @@ import LoadingBar from '../src/LoadingBar';
 import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import '../src/styles.css';
+import ErrorBoundary from '../src/components-generic/ErrorBoundary';
 
 Amplify.configure(amplifyConfig);
 
@@ -34,7 +35,7 @@ export default function MyApp(props) {
             "-//W3C//DTD XHTML 1.0 Strict//EN",
             "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
         );
-        if(document?.doctype) {
+        if (document?.doctype) {
             document.replaceChild(newDoctype, document.doctype);
         } else {
             document && document.insertBefore(newDoctype, document.childNodes[0]);
@@ -47,15 +48,17 @@ export default function MyApp(props) {
                 <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
             </Head>
             <ThemeProvider theme={theme}>
-                <SnackbarProvider maxSnack={3}>
-                    <RecoilRoot>
-                        <CssBaseline />
-                        <Nav />
-                        <Component {...pageProps} />
-                        <Footer />
-                        <LoadingBar />
-                    </RecoilRoot>
-                </SnackbarProvider>
+                <ErrorBoundary>
+                    <SnackbarProvider maxSnack={3}>
+                        <RecoilRoot>
+                            <CssBaseline />
+                            <Nav />
+                            <Component {...pageProps} />
+                            <Footer />
+                            <LoadingBar />
+                        </RecoilRoot>
+                    </SnackbarProvider>
+                </ErrorBoundary>
             </ThemeProvider>
         </React.Fragment >
     );

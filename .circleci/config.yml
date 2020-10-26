@@ -43,5 +43,9 @@ jobs:
           command: npm run build
       
       - run:
+          name: Create registry as workaround for serverless bug
+          command: mkdir -p /home/circleci/.serverless/components/registry/npm/@sls-next/serverless-component@1.17.0
+
+      - run:
           name: Deploy application
           command: npx serverless

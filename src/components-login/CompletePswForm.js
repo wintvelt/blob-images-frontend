@@ -16,6 +16,13 @@ const fieldConfig = {
             )
         }],
     },
+    name: {
+        autoComplete: 'name', type: 'text', label: 'Naam',
+        validations: [{
+            text: 'vul je naam ook in',
+            validate: (val) => (!!val),
+        }],
+    },
     tmpPassword: {
         autoComplete: 'temp-password', type: 'password', label: 'je tijdelijke wachtwoord',
         validations: [{
@@ -46,14 +53,9 @@ const CompletePswForm = (props) => {
     };
 
     const onSubmit = (fields) => handler(async () => {
-        const { email, tmpPassword, password } = fields;
-        await userData.completePassword(email, tmpPassword, password);
+        const { email, name, tmpPassword, password } = fields;
+        await userData.completePassword(email, name, tmpPassword, password);
     });
-
-    const onForgotPsw = (fields) => {
-        setIsLoading(true);
-        userData.setPath('/forgotpsw');
-    };
 
     const Message = ({ error }) => (
         <>
@@ -62,16 +64,16 @@ const CompletePswForm = (props) => {
     );
 
     const formSubtitle = subtitle || 'Voer het tijdelijke wachtwoord in (via mail gestuurd), ' +
-        'kies een nieuw wachtwoord, en je bent binnen!';
+        'met je naam en een nieuw wachtwoord, en je bent binnen!';
 
     return <Form
-        title={title || 'Nieuw wachtwoord instellen'}
+        title={title || 'Account aanmaken'}
         subtitle={formSubtitle}
         formFields={fieldConfig}
         initialValues={{ email }}
         isLoading={isLoading}
         onSubmit={onSubmit}
-        submitText='nieuw wachtwoord opslaan'
+        submitText='Maak me lid'
         Message={(user.error) ? <Message error={user.error} /> : null}
         noPaper
     />

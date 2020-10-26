@@ -206,17 +206,22 @@ export const useUser = () => {
             });
         });
     }
-    const completePassword = async (email, tmpPassword, password) => {
+    const completePassword = async (email, name, tmpPassword, password) => {
         errorHandler(async () => {
             const cognitoUser = await Auth.signIn(email, tmpPassword);
             if (cognitoUser.challengeName === 'NEW_PASSWORD_REQUIRED') {
-                const profile = cognitoUser.challengeParam?.userAttributes || {};
-                await Auth.completeNewPassword(
+                const authUser = await Auth.completeNewPassword(
                     cognitoUser,
-                    password
+                    password,
+                    { 'custom:name': name }
                 );
+                const newProfile = { name, email };
+                await Promise.all([
+                    Auth.updateUserAttributes(authUser, { 'custom:name': name }),
+                    API.put('blob-images', '/user', { body: { name } })
+                ]);
                 setUpdate({
-                    profile,
+                    profile: newProfile,
                     isAuthenticated: true,
                     isAuthenticating: false,
                     path: ''

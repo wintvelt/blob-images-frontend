@@ -21,6 +21,7 @@ const PrivatePage = (props) => {
     useEffect(() => {
         if (!user.isAuthenticated && !user.isAuthenticating) setPath('/login');
     }, [user.isAuthenticating, user.isAuthenticated]);
+    console.log({user});
     return (!user.isAuthenticated) ?
         <main>
             <Hero url='/img/delay.jpg'>

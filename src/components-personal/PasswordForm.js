@@ -35,7 +35,9 @@ const PasswordForm = (props) => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        if (user.error) enqueueSnackbar(user.error.message, { variant: 'error' });
+        if (user.error) {
+            enqueueSnackbar(user.error.message || user.error, { variant: 'error' })
+        };
     }, [user.error]);
 
     const onSubmit = async (fields) => {

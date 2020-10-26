@@ -10,6 +10,7 @@ import SignupForm from './SignupForm';
 import VerifyForm from './VerifyForm';
 import ForgotPswForm from './ForgotPswForm';
 import ResetPswForm from './ResetPswForm';
+import CompletePswForm from './CompletePswForm';
 
 const allowSignup = true; // for beta purposes
 
@@ -56,7 +57,10 @@ export default function AuthForms({ path, groupName, isPage }) {
             allowSignup={allowSignup}
         />}
         {(path === '/confirmpsw') && <ResetPswForm
-            title='Voer een nieuwe wachtwoord in'
+            title='Voer een nieuw wachtwoord in'
+        />}
+        {(path === '/completepsw') && <CompletePswForm
+            title='Maak een nieuw wachtwoord'
         />}
         {(path === '/verifysignup') && <VerifyForm
             title={'Bevestig je registratie om lid te worden' + groupText}

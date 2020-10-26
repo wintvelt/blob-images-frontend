@@ -65,7 +65,7 @@ const userToForm = (user) => ({
     createdAt: user.createdAt
 });
 
-const authPaths = ['/login', '/signup', '/forgotpsw', '/verifysignup', '/confirmpsw'];
+const authPaths = ['/login', '/signup', '/forgotpsw', '/verifysignup', '/confirmpsw', '/completepsw'];
 export const isInAuth = (path) => authPaths.includes(path);
 
 const updateUser = (newItems = {}) => (oldUser) => ({
@@ -107,18 +107,29 @@ export const useUser = () => {
             setUpdate({ error });
         }
     };
-    const setPath = (path) => setUpdate({ path });
+    const setPath = (path) => {
+        setUpdate({ path })
+    };
 
     const login = async (username, password) => {
         try {
-            await Auth.signIn(username, password);
-            const user = await loadUser();
-            setUpdate({
-                profile: user,
-                isAuthenticated: true,
-                isAuthenticating: false,
-                path: '',
-            });
+            const loginResult = await Auth.signIn(username, password);
+            if (loginResult.challengeName === 'NEW_PASSWORD_REQUIRED') {
+                setUpdate({
+                    profile: { email: username },
+                    isAuthenticated: false,
+                    isAuthenticating: false,
+                    path: '/completepsw'
+                });
+            } else {
+                const user = await loadUser();
+                setUpdate({
+                    profile: user,
+                    isAuthenticated: true,
+                    isAuthenticating: false,
+                    path: '',
+                });
+            }
         } catch (error) {
             setUpdate({
                 profile: { email: username },
@@ -195,6 +206,24 @@ export const useUser = () => {
             });
         });
     }
+    const completePassword = async (email, tmpPassword, password) => {
+        errorHandler(async () => {
+            const cognitoUser = await Auth.signIn(email, tmpPassword);
+            if (cognitoUser.challengeName === 'NEW_PASSWORD_REQUIRED') {
+                const profile = cognitoUser.challengeParam?.userAttributes || {};
+                await Auth.completeNewPassword(
+                    cognitoUser,
+                    password
+                );
+                setUpdate({
+                    profile,
+                    isAuthenticated: true,
+                    isAuthenticating: false,
+                    path: ''
+                });
+            }
+        });
+    }
     const changePassword = async (oldPassword, newPassword) => {
         errorHandler(async () => {
             const authUser = await Auth.currentAuthenticatedUser();
@@ -234,6 +263,7 @@ export const useUser = () => {
         forgotPassword,
         confirmPassword,
         changePassword,
+        completePassword,
         saveProfile,
         setPath,
         deleteUser,

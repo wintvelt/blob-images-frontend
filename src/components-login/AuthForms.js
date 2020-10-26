@@ -12,7 +12,7 @@ import ForgotPswForm from './ForgotPswForm';
 import ResetPswForm from './ResetPswForm';
 import CompletePswForm from './CompletePswForm';
 
-const allowSignup = true; // for beta purposes
+const allowSignup = false; // for beta purposes
 
 const useStyles = makeStyles(theme => ({
     paper: {

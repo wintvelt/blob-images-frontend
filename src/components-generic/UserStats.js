@@ -26,7 +26,7 @@ const StatLine = ({ label, value, withMax, mayUpload }) => {
         <Grid item xs={6} md={8}>
             <Typography variant='body2'>
                 {value}{' '}
-                {value && withMax && !mayUpload && <span style={{ fontSize: '80%' }}>(max bereikt)</span>}
+                {value !== undefined && withMax && !mayUpload && <span style={{ fontSize: '80%' }}>(max bereikt)</span>}
             </Typography>
         </Grid>
     </Grid>

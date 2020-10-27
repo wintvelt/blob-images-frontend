@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useUser } from '../data/userData';
 import Form from '../components-generic/Form';
 import { newPasswordValidations } from '../components-generic/FormField';
+import Link from '@material-ui/core/Link';
 
 const fieldConfig = {
     email: {
@@ -34,6 +35,19 @@ const fieldConfig = {
         autoComplete: 'new-password', type: 'password', label: 'je nieuwe wachtwoord',
         validations: newPasswordValidations,
     },
+    optin: {
+        type: 'checkbox',
+        label: <span>
+            Ik ga akkoord met de{' '}
+            <Link href='/about' color='primary'>
+                algemene voorwaarden
+            </Link>
+        </span>,
+        validations: [{
+            text: 'om lid te worden moet je dit ok vinden',
+            validate: (val) => (!!val),
+        }]
+    }
 };
 
 const CompletePswForm = (props) => {

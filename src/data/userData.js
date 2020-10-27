@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { atom, useRecoilState, useRecoilValue, selector, DefaultValue } from 'recoil';
 import { API, Auth } from 'aws-amplify';
-import { useSetLoadingPath } from './loadingData';
 
 const initialUser = {
     profile: null,
@@ -72,6 +71,7 @@ const updateUser = (newItems = {}) => (oldUser) => ({
     ...oldUser,
     error: false,
     ...newItems,
+    redirect: !!newItems.redirect
 });
 
 // load user from session, get additional details from DB
@@ -141,7 +141,13 @@ export const useUser = () => {
     }
     const logout = () => {
         Auth.signOut();
-        location && location.reload();
+        setUpdate({
+            profile: { },
+            isAuthenticated: false,
+            isAuthenticating: false,
+            path: '',
+            redirect: true
+        });
     }
     const signup = async (email, password, name) => {
         try {
@@ -215,13 +221,13 @@ export const useUser = () => {
                     password,
                     { 'custom:name': name }
                 );
-                const newProfile = { name, email };
                 await Promise.all([
                     Auth.updateUserAttributes(authUser, { 'custom:name': name }),
                     API.put('blob-images', '/user', { body: { name } })
                 ]);
+                const user = await loadUser();
                 setUpdate({
-                    profile: newProfile,
+                    profile: user,
                     isAuthenticated: true,
                     isAuthenticating: false,
                     path: ''

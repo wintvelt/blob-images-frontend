@@ -7,6 +7,7 @@ import Hero from '../components-home/Hero';
 import AuthDialog from '../components-login/AuthDialog';
 import { useUser } from '../data/userData';
 import useActiveRoot from '../data/activeTreeRoot';
+import { useSetLoadingPath } from '../data/loadingData';
 
 const divStyle = {
     height: '300px',
@@ -17,9 +18,16 @@ const divStyle = {
 
 const PrivatePage = (props) => {
     const { user, setPath } = useUser();
+    const setLoadingPath = useSetLoadingPath();
     useActiveRoot();
     useEffect(() => {
-        if (!user.isAuthenticated && !user.isAuthenticating) setPath('/login');
+        if (!user.isAuthenticated && !user.isAuthenticating) {
+            if (user.redirect) {
+                setLoadingPath('/');
+            } else {
+                setPath('/login');
+            }
+        };
     }, [user.isAuthenticating, user.isAuthenticated]);
     return (!user.isAuthenticated) ?
         <main>

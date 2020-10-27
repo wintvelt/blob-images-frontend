@@ -31,7 +31,7 @@ const InviteOnlyMessage = () => {
         <Typography variant='h5' gutterBottom>Alleen voor leden</Typography>
         <Icon fontSize='large' color='primary'>drafts</Icon>
         <Typography variant='h5' gutterBottom>Uitsluitend op uitnodiging</Typography>
-        <Typography variant='p'>
+        <Typography variant='body1'>
             Sorry zeg, deze website is momenteel alleen voor leden, en alleen op uitnodiging.
         </Typography>
     </Paper>

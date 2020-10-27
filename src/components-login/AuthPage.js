@@ -7,6 +7,7 @@ import Hero from '../components-home/Hero';
 import AuthForms from './AuthForms';
 import { useUserValue } from '../data/userData';
 import { useSetLoadingPath } from '../data/loadingData';
+import { useSnackbar } from 'notistack';
 
 const AuthPage = () => {
     const router = useRouter();
@@ -15,6 +16,7 @@ const AuthPage = () => {
     const userPath = user.path;
     const firstRender = useRef(true);
     const setLoadingPath = useSetLoadingPath();
+    const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
         // console.log({ userPath, routerPath })
@@ -28,6 +30,13 @@ const AuthPage = () => {
             setLoadingPath(userPath || '/');
         }
     }, [userPath]);
+    
+    useEffect(() => {
+        if (user.isAuthenticated) {
+            enqueueSnackbar('Je bent al ingelogd, dus gaan we terug naar je groepen');
+            setLoadingPath('/personal/groups');
+        }
+    }, [user.isAuthenticated]);
 
     return (
         <main>
@@ -35,7 +44,7 @@ const AuthPage = () => {
                 url='/img/cover.jpg'
             >
                 <Paper>
-                    <AuthForms path={routerPath} isPage={true}/>
+                    <AuthForms path={routerPath} isPage={true} />
                 </Paper>
             </Hero>
         </main >

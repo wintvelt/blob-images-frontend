@@ -44,12 +44,12 @@ const ForgotPswForm = (props) => {
         userData.setPath('/signup');
     };
 
-    const Message = (error) => (
-        <>
-            Oeps er ging iets mis. {' '}
-            {error.message}
+    const Message = (error) => {
+        console.log('error: ', error.message);
+        return <>
+            Oeps er ging iets mis.
         </>
-    );
+    };
 
     let smallButtons = [
         { onClick: onLogin, text: 'Log in' },

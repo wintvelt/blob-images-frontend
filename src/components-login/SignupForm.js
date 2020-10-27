@@ -5,6 +5,7 @@ import { useUser } from '../data/userData';
 import Form from '../components-generic/Form';
 import Link from '../components-generic/Link';
 import { newPasswordValidations } from '../components-generic/FormField';
+import { errorLog } from '../helpers/errorLog';
 
 const fieldConfig = {
     name: {
@@ -76,9 +77,10 @@ const SignupForm = (props) => {
         userData.setPath('/verifysignup');
     };
 
-    const Message = ({ error }) => (
-        <>
-            {error.message}<br />
+    const Message = ({ error }) => {
+        errorLog(error);
+        return <>
+            Hmm, er ging hier iets mis<br />
             {(error.code === 'UsernameExistsException') && <span>
                 Misschien moet je voor registratie nog je
                 <Button onClick={onVerify} style={buttonStyle} color='primary'>
@@ -87,7 +89,7 @@ const SignupForm = (props) => {
                  ?
             </span>}
         </>
-    );
+    };
     const formSubtitle = subtitle || 'Meld je aan, deel foto\'s in groepen en albums, ' +
         'en nodig je vrienden en familie uit!';
 

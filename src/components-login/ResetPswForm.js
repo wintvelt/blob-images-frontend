@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useUser } from '../data/userData';
 import Form from '../components-generic/Form';
 import { newPasswordValidations } from '../components-generic/FormField';
+import { errorLog } from '../helpers/errorLog';
 
 const fieldConfig = {
     email: {
@@ -55,11 +56,12 @@ const ResetPswForm = (props) => {
         userData.setPath('/forgotpsw');
     };
 
-    const Message = ({ error }) => (
-        <>
-            Something went wrong.{' '}{error.message}
+    const Message = ({ error }) => {
+        errorLog(error);
+        return <>
+            Hmm, helaas ging er iets mis. Later nog eens proberen?
         </>
-    );
+    };
 
     const formSubtitle = subtitle || 'Check de registratiecode die je via mail hebt ontvangen, ' +
         'kies een nieuw wachtwoord, en je bent weer binnen!';

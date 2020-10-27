@@ -63,10 +63,10 @@ const LoginForm = (props) => {
         userData.setPath('/signup');
     };
 
-    const Message = ({ error }) => (
-        <>
-            Hmm, inloggen is helaas mislukt.{' '}
-            {error.message}<br />
+    const Message = ({ error }) => {
+        console.log('login error was:', error.message);
+        return <>
+            Hmm, inloggen is helaas mislukt.{' '}<br />
             {(error.code === 'UserNotConfirmedException') && <span>
                 Waarschijnlijk moet je voor lidmaatschap je
                 <Button onClick={onVerify} style={buttonStyle} color='primary'>
@@ -75,7 +75,7 @@ const LoginForm = (props) => {
                  om de registratie af te maken
             </span>}
         </>
-    );
+    };
 
     let smallButtons = [
         { onClick: onForgotPsw, text: 'wachtwoord vergeten' },

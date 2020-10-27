@@ -5,6 +5,7 @@ import { useUser } from '../data/userData';
 import Form from '../components-generic/Form';
 import { newPasswordValidations } from '../components-generic/FormField';
 import Link from '@material-ui/core/Link';
+import { errorLog } from '../helpers/errorLog';
 
 const fieldConfig = {
     email: {
@@ -71,11 +72,12 @@ const CompletePswForm = (props) => {
         await userData.completePassword(email, name, tmpPassword, password);
     });
 
-    const Message = ({ error }) => (
-        <>
-            Something went wrong.{' '}{error.message}
+    const Message = ({ error }) => {
+        errorLog(error);
+        return <>
+            Hmm, dat ging mis. Misschien later nog eens proberen?
         </>
-    );
+    };
 
     const formSubtitle = subtitle || 'Voer het tijdelijke wachtwoord in (via mail gestuurd), ' +
         'met je naam en een nieuw wachtwoord, en je bent binnen!';

@@ -9,6 +9,7 @@ import PrivatePage from '../../../../../../src/components-personal/PrivatePage';
 import AlbumCardLayout from '../../../../../../src/components-personal/AlbumCardLayout';
 import AlbumForm from '../../../../../../src/components-personal/AlbumForm';
 import BackLinkToAlbum from '../../../../../../src/components-generic/BackLinkToAlbum';
+import BackLinkToGroup from '../../../../../../src/components-generic/BackLinkToGroup';
 import { useActiveAlbum } from '../../../../../../src/data/activeTree-Album';
 import { useActiveGroup } from '../../../../../../src/data/activeTree-Group';
 import { useUserPhotoIds } from '../../../../../../src/data/userPhotosData';
@@ -35,11 +36,11 @@ const AlbumEditMain = () => {
     const userIsAdmin = (group?.userRole === 'admin');
 
     const userPhotoIds = useUserPhotoIds();
-
     return (
         <main>
             <Toolbar />
-            {album && <BackLinkToAlbum />}
+            {(hasValue) && <BackLinkToAlbum />}
+            {(!hasValue && !!group) && <BackLinkToGroup />}
             <Grid container className={classes.container}>
                 {(!isNew) && <Grid item md={3} xs={12}>
                     <AlbumCardLayout {...album} withEdit={false} isLoading={albumData.isLoading}

@@ -23,14 +23,39 @@ const useStyles = makeStyles(theme => ({
         left: 0,
         background: 'linear-gradient(355deg, rgba(155,120,111,.8) 10%, rgba(90,85,96,1) 90%)',
     },
+    credit: {
+        position: 'absolute',
+        height: '16px',
+        right: theme.spacing(1),
+        bottom: theme.spacing(1),
+        color: '#ffffffc0',
+    },
+    link: {
+        textDecorationDolor: 'inherit',
+        color: 'inherit'
+    }
 }));
+
+// 
 
 const hiddenStyle = { display: 'none' };
 const gutterBottom = { marginBottom: '32px' };
 const relativeStyle = { position: 'relative' };
 
+const Credit = ({ name, nameLink, link }) => {
+    const classes = useStyles();
+    return <div className={classes.credit}>
+        <span>
+            Photo door{' '}
+            <a className={classes.link} href={nameLink} target='_blank' rel='noopener noreferrer'>{name}</a>
+            {' '}op{' '}
+            <a className={classes.link} href={link} target='_blank' rel='noopener noreferrer'>Unsplash</a>
+        </span>
+    </div>
+}
+
 const Hero = (props) => {
-    const { url, children } = props;
+    const { url, children, credit } = props;
     const safeUrl = encodeURI(url);
     const classes = useStyles();
     const background = url && { backgroundImage: `url(${safeUrl})` };
@@ -47,6 +72,7 @@ const Hero = (props) => {
                 />
             }
             <div className={classes.overlay} />
+            {credit && <Credit {...credit} />}
             <Toolbar style={gutterBottom} />
             <Grid container alignItems='center' justify='center' spacing={1}
                 style={relativeStyle}>

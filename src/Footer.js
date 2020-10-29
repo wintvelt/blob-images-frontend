@@ -7,6 +7,8 @@ import Divider from '@material-ui/core/Divider';
 
 const dividerStyle = { backgroundColor: 'darkgrey' };
 
+const preventDefault = e => e.preventDefault;
+
 function Copyright(props) {
     return (
         <Container maxWidth='sm'>
@@ -16,7 +18,10 @@ function Copyright(props) {
                 {new Date().getFullYear()}
                 {' | '}
                 <Link href='/about#privacy' className={props.className}>Privacy statement</Link>{' | '}
-                <Link href='/about#cookies' className={props.className}>Cookies</Link>
+                <Link href='/about#cookies' className={props.className}>Cookies</Link>{' | '}
+                <Link onClick={preventDefault} href='/termsandconditions' target='_blank' rel='noopener noreferrer' className={props.className}>
+                    Algemene voorwaarden
+                </Link>
             </Typography>
         </Container>
     );

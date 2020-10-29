@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import { useUser } from '../data/userData';
 import Form from '../components-generic/Form';
 import { newPasswordValidations } from '../components-generic/FormField';
-import Link from '@material-ui/core/Link';
 import { errorLog } from '../helpers/errorLog';
+import TermsLink from './TermsLink';
 
 const fieldConfig = {
     email: {
@@ -40,9 +40,7 @@ const fieldConfig = {
         type: 'checkbox',
         label: <span>
             Ik ga akkoord met de{' '}
-            <Link href='/about' color='primary'>
-                algemene voorwaarden
-            </Link>
+            <TermsLink/>
         </span>,
         validations: [{
             text: 'om lid te worden moet je dit ok vinden',

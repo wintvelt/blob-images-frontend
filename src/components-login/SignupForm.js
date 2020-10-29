@@ -3,9 +3,9 @@ import Button from '@material-ui/core/Button';
 
 import { useUser } from '../data/userData';
 import Form from '../components-generic/Form';
-import Link from '../components-generic/Link';
 import { newPasswordValidations } from '../components-generic/FormField';
 import { errorLog } from '../helpers/errorLog';
+import TermsLink from './TermsLink';
 
 const fieldConfig = {
     name: {
@@ -32,10 +32,7 @@ const fieldConfig = {
     optin: {
         type: 'checkbox',
         label: <span>
-            Ik ga akkoord met de{' '}
-            <Link href='/about' color='primary'>
-                algemene voorwaarden
-            </Link>
+            Ik ga akkoord met de{' '}<TermsLink />
         </span>,
         validations: [{
             text: 'om lid te worden moet je dit ok vinden',
@@ -59,7 +56,7 @@ const SignupForm = (props) => {
 
     useEffect(() => {
         if (user.error) setIsLoading(false);
-    },[user.error]);
+    }, [user.error]);
 
     const onSubmit = async (fields) => {
         setIsLoading(true);

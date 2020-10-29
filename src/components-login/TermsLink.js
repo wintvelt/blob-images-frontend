@@ -1,3 +1,5 @@
+import Link from '@material-ui/core/Link';
+
 const preventDefault = e => e.preventDefault();
 
 const TermsLink = () => {

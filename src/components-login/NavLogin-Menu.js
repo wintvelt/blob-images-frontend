@@ -31,17 +31,19 @@ const NavMenu = ({ menu, onClick, onClose, isOpen, anchor, menuLinkClass, menuLi
                 <MenuItem key={i}
                     onClick={onClick(menuItem.action)} >
                     {(menuItem.href) ?
-                        <Link href={menuItem.href} className={
-                            (pathname === menuItem.href) ?
+                        <Link href={menuItem.href}
+                            className={(pathname === menuItem.href) ?
                                 menuLinkActiveClass
                                 : menuLinkClass
-                        }>
+                            }
+                            style={(menuItem.isRed) ? { color: 'red' } : {}}>
                             <ListItemIcon>
-                                <Icon fontSize="small" className={
-                                    (pathname === menuItem.href) ?
+                                <Icon fontSize="small"
+                                    className={(pathname === menuItem.href) ?
                                         iconActiveClass
                                         : iconInactiveClass
-                                }>
+                                    }
+                                    style={(menuItem.isRed) ? { color: 'red' } : {}}>
                                     {menuItem.icon}
                                 </Icon>
                             </ListItemIcon>
@@ -54,11 +56,13 @@ const NavMenu = ({ menu, onClick, onClose, isOpen, anchor, menuLinkClass, menuLi
                                 menuLinkActiveClass
                                 : menuLinkClass}>
                             <ListItemIcon>
-                                <Icon fontSize="small" className={
-                                    (pathname === menuItem.href) ?
+                                <Icon fontSize="small"
+                                    className={(pathname === menuItem.href) ?
                                         iconActiveClass
                                         : iconInactiveClass
-                                }>{menuItem.icon}</Icon>
+                                    }
+                                    style={(menuItem.isRed) ? { color: 'red' } : {}}>
+                                    {menuItem.icon}</Icon>
                             </ListItemIcon>
                             <ListItemText primary={menuItem.text}
                                 style={paddingRight} />

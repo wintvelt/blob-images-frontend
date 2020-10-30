@@ -44,7 +44,8 @@ export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClic
                 {(menuItem.href) ?
                     <Link href={menuItem.href} className={menuLinkClass}>
                         <ListItemIcon>
-                            <Icon fontSize="small" className={iconInactiveClass}>
+                            <Icon fontSize="small" className={iconInactiveClass}
+                                style={(menuItem.isRed) ? { color: 'red' } : {}}>
                                 {menuItem.icon}
                             </Icon>
                         </ListItemIcon>
@@ -54,11 +55,14 @@ export default function SwipeableTemporaryDrawer({ menu, isOpen, onClose, onClic
                     :
                     <>
                         <ListItemIcon>
-                            <Icon fontSize="small" className={
-                                (pathname === menuItem.href) ?
+                            <Icon fontSize="small"
+                                className={(pathname === menuItem.href) ?
                                     iconActiveClass
                                     : iconInactiveClass
-                            }>{menuItem.icon}</Icon>
+                                }
+                                style={(menuItem.isRed) ? { color: 'red' } : {}}>
+                                {menuItem.icon}
+                            </Icon>
                         </ListItemIcon>
                         <ListItemText primary={menuItem.text}
                             style={paddingRight} />

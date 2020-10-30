@@ -71,7 +71,7 @@ const termsList = [
             `Maar dat is geen garantie. Het kan zijn dat de website een keer uit de lucht is, of soms niet goed werkt. ` +
             'We doen ons best, maar dan kan je geen rechten aan ontlenen.',
             `En clubalmanac houdt wel het recht om`,
-            `‣ Een maandelijks bedrag voor het lidmaatschap te gaan vragen. Clubalmanac maakt kosten. Die kunnen omhoog gaan. En alleen de zon blijft altijd gratis.` +
+            `‣ Een maandelijks bedrag voor het lidmaatschap te gaan vragen. Clubalmanac maakt kosten. Die kunnen omhoog gaan. En alleen de zon blijft altijd gratis. ` +
             'Als het lidmaatschap betaald wordt, dan krijg je wel een redelijke termijn om te beslissen, en je kunt uiteraard altijd zonder verplichtingen opzeggen.',
             `‣ De werking van de site te veranderen. Het kan in het ergste geval gebeuren dat we kappen. Ook dan krijg je wel een redelijke termijn om je hierop voor te bereiden.`,
             `‣ Als je misdraagt kan je verbannen worden van clubalmanac. Bijvoorbeeld als je je niet aan de afspraken op deze pagina houdt, of als ` +

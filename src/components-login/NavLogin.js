@@ -20,7 +20,7 @@ const userMenu = [
     // { icon: 'mail_outline', text: 'Invitations' },
     { icon: 'photo_library', text: "Mijn foto's", href: '/personal/photos' },
     { icon: 'settings', text: 'Instellingen', href: '/personal/profile' },
-    { icon: 'exit_to_app', text: 'Logout', action: 'logout' },
+    { icon: 'exit_to_app', text: 'Uitloggen', isRed: true, action: 'logout' },
 ];
 
 const useStyles = makeStyles((theme) => ({

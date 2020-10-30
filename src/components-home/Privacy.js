@@ -51,9 +51,11 @@ const featureList = [
             `✅ groepen en albums - die je kunt maken om foto's te delen`,
             `✅ foto's - die je deelt met anderen`,
             `Al deze gegevens zijn uitsluitend zichtbaar voor jou en voor andere leden in de 
-            betreffende groep(en). En voor de beheerder van deze website (Wouter dus)`,
+betreffende groep(en). En voor de beheerder van deze website (Wouter dus)`,
             `Daarbuiten zijn deze gegevens voor helemaal niemand zichtbaar, en worden met niemand 
-            gedeeld. En zo heurt het ook.`,
+gedeeld. En zo heurt het ook.`,
+            `Lidmaatschap is in principe voor het leven, maar als je toch opzegt, 
+worden al je gegevens netjes verwijderd.`,
             `Daarnaast zijn er nog diverse mores, maar die zijn uiteraard nergens beschreven.`
         ],
     },

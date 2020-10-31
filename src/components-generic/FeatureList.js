@@ -66,6 +66,12 @@ const statusText = (status) => (
             : 'ingediend'
 );
 
+const statusEmoji = (status) => (
+    (status === 'in progress') ? '🚧 '
+        : (status === 'completed') ? '✅ '
+            : '📥 '
+);
+
 const Feature = ({ data }) => {
     const classes = useStyles();
     const featuresAPI = useFeaturesAPI();
@@ -104,6 +110,7 @@ const Feature = ({ data }) => {
         </ListItemAvatar>
         <ListItemText
             primary={<>
+                {statusEmoji(data.status)}
                 {data.title}
                 <Typography
                     component="span"

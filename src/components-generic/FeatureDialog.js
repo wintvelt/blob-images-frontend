@@ -12,6 +12,7 @@ const FeatureDialog = ({ open, onClose }) => {
             <FeatureForm
                 title={'Jouw wens'}
                 subtitle={'voor een nieuwe toeter of bel op clubalmanac'}
+                onClose={onClose}
             />
             <IconButton onClick={onClose} style={rightStyle}><Icon>close</Icon></IconButton>
     </Dialog>

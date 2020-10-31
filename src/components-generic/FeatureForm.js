@@ -30,6 +30,7 @@ const FeatureForm = (props) => {
         const result = await featuresAPI.add({title, description});
         console.log(result);
         setIsLoading(false);
+        props.onClose && props.onClose();
     };
 
     const Message = ({ error }) => {

@@ -57,7 +57,7 @@ export const useFeaturesAPI = () => {
             const newFeature = await API.post('blob-images', '/features', {
                 body: { title, description }
             });
-            setFeatures({ contents: [...featureList, newFeature] });
+            setFeatures({ contents: [...featureList, { ...newFeature, options: ['edit'] }] });
             return { success: true };
         } catch (error) {
             errorLog(error);

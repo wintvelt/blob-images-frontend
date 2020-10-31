@@ -78,7 +78,6 @@ const SignupForm = (props) => {
     };
 
     const Message = ({ error }) => {
-        errorLog(error);
         return <>
             Hmm, er ging hier iets mis<br />
             {(error.code === 'UsernameExistsException') && <span>

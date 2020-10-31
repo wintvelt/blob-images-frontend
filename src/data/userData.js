@@ -142,19 +142,20 @@ export const useUser = () => {
     const logout = () => {
         Auth.signOut();
         setUpdate({
-            profile: { },
+            profile: {},
             isAuthenticated: false,
             isAuthenticating: false,
             path: '',
             redirect: true
         });
     }
-    const signup = async (email, password, name) => {
+    const signup = async (email, password, name, inviteId) => {
         try {
             await Auth.signUp({
                 username: email,
                 password,
                 attributes: { 'custom:name': name },
+                validationData: [{ Name: 'inviteId', Value: inviteId }],
             });
             setUpdate({
                 profile: { name, email, password },
@@ -163,6 +164,7 @@ export const useUser = () => {
                 path: '/verifysignup',
             });
         } catch (error) {
+            console.log({ error });
             setUpdate({
                 isAuthenticated: false,
                 isAuthenticating: false,

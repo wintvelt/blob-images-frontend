@@ -6,6 +6,7 @@ import Form from '../components-generic/Form';
 import { newPasswordValidations } from '../components-generic/FormField';
 import { errorLog } from '../helpers/errorLog';
 import TermsLink from './TermsLink';
+import { useRouter } from 'next/router';
 
 const fieldConfig = {
     name: {
@@ -52,6 +53,8 @@ const SignupForm = (props) => {
     const { title, subtitle } = props;
     const userData = useUser();
     const { user } = userData;
+    const router = useRouter();
+    const inviteId = router.query?.inviteid;
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -61,7 +64,7 @@ const SignupForm = (props) => {
     const onSubmit = async (fields) => {
         setIsLoading(true);
         const { name, email, password } = fields;
-        await userData.signup(email, password, name);
+        await userData.signup(email, password, name, inviteId);
     };
 
     const onLogin = () => {

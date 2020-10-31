@@ -2,11 +2,13 @@ import {
     List, ListItem, ListItemAvatar, ListItemText, Typography, Icon,
     makeStyles,
     ListItemSecondaryAction,
-    IconButton
+    IconButton,
+    Hidden
 } from "@material-ui/core";
 
 import { useFeaturesAPI, useFeaturesValue } from '../data/featuresData';
 import { AvatarSkeleton } from "../components-generic/Skeleton";
+import { initials } from './helpers';
 
 const useStyles = makeStyles((theme) => ({
     list: {
@@ -18,7 +20,15 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
     },
     actions: {
+        right: theme.spacing(1),
         display: 'flex',
+        [theme.breakpoints.down('sm')]: {
+            flexDirection: 'column',
+            top: theme.spacing(7),
+        },
+        [theme.breakpoints.up('sm')]: {
+            top: theme.spacing(4),
+        },
         alignItems: 'center'
     },
     inline: {
@@ -30,7 +40,10 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: theme.spacing(1),
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
+    },
+    response: {
+        width: '100%', fontStyle: 'italic'
     }
 }));
 
@@ -46,25 +59,48 @@ const iconFrom = (status) => (
     (status === 'in progress') ? 'flight_takeoff'
         : (status === 'completed') ? 'flight_land'
             : 'timer'
-)
+);
+const statusText = (status) => (
+    (status === 'in progress') ? 'vertrokken'
+        : (status === 'completed') ? 'geland'
+            : 'ingediend'
+);
 
 const Feature = ({ data }) => {
     const classes = useStyles();
     const featuresAPI = useFeaturesAPI();
     const user = data.user;
+    const descriptionLines = (data.description) ?
+        data.description.split('\n') : [];
 
     const onVote = (SK) => async () => {
         await featuresAPI.upvote({ SK });
+    };
+    const Descriptions = ({ lines }) => {
+        return <>
+            {` - `}
+            {lines.map((line, i) => <React.Fragment key={i}>
+                {line}
+                {(i + 1 < lines.length) && <br />}
+            </React.Fragment>)}
+        </>
     }
 
     return <ListItem alignItems="flex-start" className={classes.item}>
+        <Hidden smDown>
+            <ListItemAvatar>
+                <Votes count={data.votes} />
+            </ListItemAvatar>
+        </Hidden>
         <ListItemAvatar>
-            <Votes count={data.votes} />
-        </ListItemAvatar>
-        <ListItemAvatar>
-            <AvatarSkeleton alt={user.name} src={user.photoUrl}>
-                {(!user.photoUrl && initials(user.name))}
-            </AvatarSkeleton>
+            <div>
+                <AvatarSkeleton alt={user.name} src={user.photoUrl}>
+                    {(!user.photoUrl && initials(user.name))}
+                </AvatarSkeleton>
+                <Hidden smUp>
+                    <Votes count={data.votes} />
+                </Hidden>
+            </div>
         </ListItemAvatar>
         <ListItemText
             primary={<>
@@ -88,12 +124,19 @@ const Feature = ({ data }) => {
                     >
                         {user.name}
                     </Typography>
-                    {(data.description) ? ` - ${data.description}` : ''}
+                    {(data.description) && <Descriptions lines={descriptionLines} />}
+                    <br />
+                    {data.comment && <><br />
+                        <Typography component='span' variant='body2' className={classes.response}>
+                            {data.comment}
+                        </Typography></>
+                    }
                 </React.Fragment>
             }
         />
         <ListItemSecondaryAction className={classes.actions}>
-            <Icon fontSize='large'>{iconFrom(data.status)}</Icon>
+            <Hidden smDown>{statusText(data.status)}{'\u00A0'}</Hidden>
+            <Icon>{iconFrom(data.status)}</Icon>
             <IconButton color='primary'
                 onClick={onVote(data.SK)}
                 disabled={!data.options.includes('vote')}>

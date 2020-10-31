@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
@@ -12,7 +12,7 @@ import { useUser, useUserValue } from '../src/data/userData';
 import { useSetLoadingPath } from '../src/data/loadingData';
 import Benefits from '../src/components-home/Benefits';
 import FeatureDialog from '../src/components-generic/FeatureDialog';
-import { useFeatures } from '../src/data/featuresData';
+import { useFeatures, useReloadFeatures } from '../src/data/featuresData';
 import FeatureList from '../src/components-generic/FeatureList';
 
 const credit = {
@@ -73,9 +73,15 @@ const OpenMessage = ({onClick}) => {
 const FeatsMain = () => {
     const user = useUserValue();
     const features = useFeatures();
+    const reloadFeatures = useReloadFeatures();
     const [dialogOpen, setDialogOpen] = useState(false);
     const hasLoaded = !user.isAuthenticating;
     const isLoggedIn = user.isAuthenticated;
+
+    useEffect(() => {
+        reloadFeatures();
+    }, 
+    [user.isAuthenticated]);
 
     const onClick = () => setDialogOpen(true);
     const onClose = () => setDialogOpen(false);

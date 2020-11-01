@@ -2,6 +2,4 @@ blob-images:
     component: "@sls-next/serverless-component@1.17.0"
     inputs:
         bucketName: blob-images-frontend
-        cloudfront:
-            defaults:
-                comment: "${env.NEXT_PUBLIC_BRANCH, dev}-branch"
+        comment: "${env.NEXT_PUBLIC_BRANCH, dev}-branch"

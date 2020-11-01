@@ -3,7 +3,7 @@ blob-images:
     inputs:
         build:
             env:
-                stage: ${env:NEXT_PUBLIC_BRANCH}-branch
+                stage: ${env:NEXT_PUBLIC_BRANCH}
         bucketName: blob-images-frontend
         cloudfront:
             comment: ${env.stage}

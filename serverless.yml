@@ -1,9 +1,6 @@
-vars:
-    stage: ${env:NEXT_PUBLIC_BRANCH}
-
 blob-images:
     component: "@sls-next/serverless-component@1.17.0"
     inputs:
         bucketName: blob-images-frontend
         cloudfront:
-            comment: "${vars.stage}-branch"
+            comment: "${env.NEXT_PUBLIC_BRANCH, dev}-branch"

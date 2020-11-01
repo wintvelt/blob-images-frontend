@@ -1,4 +1,4 @@
-const branch = process.env.NEXT_PUBLIC_BRANCH || 'development';
+const branch = process.env.NEXT_PUBLIC_BRANCH || 'dev';
 const isMaster = (branch === 'master');
 
 const makeSwitch = (devValue, defaultValue) => (

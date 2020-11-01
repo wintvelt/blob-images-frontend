@@ -3,4 +3,5 @@ blob-images:
     inputs:
         bucketName: blob-images-frontend
         cloudfront:
-            comment: "${env.NEXT_PUBLIC_BRANCH, dev}-branch"
+            defaults:
+                comment: "${env.NEXT_PUBLIC_BRANCH, dev}-branch"

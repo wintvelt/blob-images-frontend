@@ -24,6 +24,7 @@ const iconStyle = (disp, size) => ({
     color: 'rgba(0,0,0,0.26)',
     backgroundColor: 'rgba(0,0,0,0.1)',
     height: '100%',
+    width: '100%',
     alignItems: 'center', justifyContent: 'center',
     display: (size === disp) ? 'flex' : 'none'
 });

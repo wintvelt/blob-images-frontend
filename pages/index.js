@@ -16,6 +16,7 @@ import { now } from '../src/components-generic/helpers';
 const styles = {
     paper: {
         padding: '24px',
+        minHeight: '256px',
         display: 'flex',
         alignItems: 'flex-start',
         marginBottom: '16px'

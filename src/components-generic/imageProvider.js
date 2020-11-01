@@ -96,7 +96,7 @@ export const makeImageUrl = (key, width, height) => {
         if (height) resize.height = height;
         body.edits = { resize };
     }
-    const isRemote = (key.slice(0, 10) === 'protected/');
+    const isRemote = (key.slice(0, 10) === 'protected/' || key.slice(0, 7) === 'public/');
     if (isRemote) {
         return imageBaseUrl + otoa(body);
     } else {

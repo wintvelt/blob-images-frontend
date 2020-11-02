@@ -3,5 +3,5 @@ blob-images:
     inputs:
         bucketName: blob-images-frontend
         cloudfront:
-            distributionId: ${env.CLOUDFRONT_ID}
             comment: ${env.NEXT_PUBLIC_BRANCH}
+            # distributionId: ${env.CLOUDFRONT_ID}

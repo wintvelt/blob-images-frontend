@@ -93,12 +93,10 @@ export const useFields = (initialFields) => {
         if (fieldName === 'MULTI') {
             const newValues = e;
             let fieldUpdates = {};
-            Object.keys(newValues).forEach(key => {
-                if (fields[key]) {
-                    fieldUpdates[key] = {
-                        ...fields[key],
-                        value: newValues[key]
-                    }
+            Object.keys(fields).forEach(key => {
+                fieldUpdates[key] = {
+                    ...fields[key],
+                    value: newValues[key]
                 }
             });
             setFields(oldFields => ({

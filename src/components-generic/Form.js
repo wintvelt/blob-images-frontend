@@ -49,7 +49,7 @@ const Form = ({ title, subtitle, formFields, initialValues, isLoading, onSubmit,
     useEffect(() => {
         const newInitialValuesStr = JSON.stringify(initialValues);
         if (initialValuesStr.current !== newInitialValuesStr) {
-            initialValuesStr.current = newInitialValuesStr
+            initialValuesStr.current = newInitialValuesStr;
             setFields('MULTI')(initialValues);
         }
     }, [initialValues]);

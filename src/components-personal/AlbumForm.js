@@ -30,7 +30,7 @@ const fieldConfig = {
     },
 };
 
-const AlbumForm = ({ album }) => {
+const AlbumForm = ({ album, isFounder }) => {
     const groupId = useRecoilValue(activeGroupIdState);
     const albumId = useRecoilValue(activeAlbumIdState);
     const router = useRouter();
@@ -100,7 +100,7 @@ const AlbumForm = ({ album }) => {
             : 'Maak je eerste album in deze groep'
         : 'Album bewerken';
     const submitText = (isNew) ? 'Nieuw album opslaan' : 'Wijzigingen opslaan';
-    const onDelete = (isNew) ? undefined : onOpenDialog;
+    const onDelete = (isNew || !isFounder) ? undefined : onOpenDialog;
 
     return <>
         <Form

@@ -154,7 +154,7 @@ export const useUser = () => {
             await Auth.signUp({
                 username: email,
                 password,
-                attributes: { 'custom:name': name },
+                attributes: { 'custom:name': name, 'custom:inviteId': inviteId },
                 validationData: [{ Name: 'inviteId', Value: inviteId }],
             });
             setUpdate({

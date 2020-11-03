@@ -33,6 +33,7 @@ const AlbumEditMain = () => {
     const album = (hasValue) ? albumData.contents : {};
     const groupData = useActiveGroup();
     const group = groupData.contents;
+    const isFounder = group?.isFounder;
     const userIsAdmin = (group?.userRole === 'admin');
 
     const userPhotoIds = useUserPhotoIds();
@@ -48,7 +49,7 @@ const AlbumEditMain = () => {
                 </Grid>}
                 <Grid item md={(isNew) ? 3 : 1} />
                 <Grid item md={(isNew) ? 6 : 8} xs={12}>
-                    <AlbumForm album={album} />
+                    <AlbumForm album={album} isFounder={isFounder} />
                 </Grid>
                 {(isNew) && <Grid item md={3} />}
             </Grid>

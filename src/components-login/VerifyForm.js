@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import { useUser } from '../data/userData';
 import Form from '../components-generic/Form';
 import { errorLog } from '../helpers/errorLog';
+import { useActiveInvite } from '../data/invite-Data';
+import { useSetLoadingPath } from '../data/loadingData';
 
 const fieldConfig = {
     email: {
@@ -38,6 +40,7 @@ const buttonStyle = {
 const VerifyForm = (props) => {
     const { title, subtitle } = props;
     const { enqueueSnackbar } = useSnackbar();
+    const setLoadingPath = useSetLoadingPath();
     const userData = useUser();
     const { user } = userData;
     const router = useRouter();
@@ -45,6 +48,11 @@ const VerifyForm = (props) => {
     const userEmail = user.profile?.email;
     const email = pathEmail || userEmail;
     const pathCode = router.query?.code;
+    const pathInviteId = router.query?.inviteid;
+    const { inviteData, acceptInvite } = useActiveInvite(pathInviteId);
+    const invite = inviteData?.contents;
+    const group = invite?.group;
+    console.log({ invite, group });
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -55,6 +63,16 @@ const VerifyForm = (props) => {
         setIsLoading(true);
         const { email, confirmation } = fields;
         await userData.confirmSignup(email, confirmation);
+        if (pathInviteId && invite) {
+            try {
+                await acceptInvite();
+                enqueueSnackbar(`Welkom als lid van ${group ? group.name : 'deze groep'}!`, { variant: 'success' });
+                setLoadingPath('/personal/groups/[id]', `/personal/groups/${group?.groupId}`);
+            } catch (error) {
+                errorLog(error);
+                enqueueSnackbar('Oeps, we konden je niet lid maken groep', { variant: 'error' });
+            }
+        }
     };
 
     const toLogin = () => {
@@ -71,14 +89,13 @@ const VerifyForm = (props) => {
     };
 
     const Message = ({ error }) => {
-        errorLog(error);
         return <>
             Iets ging mis.<br />
             {(error.code === 'CodeMismatchException') && <span>
                 Je zou een nieuwe code kunnen opvragen (zie hieronder)
             </span>}
             {(error.message && error.message.includes('CONFIRMED')) && <span>
-                Je kunt gewoon  
+                Je kunt gewoon
                 <Button onClick={toLogin} style={buttonStyle} color='primary'>
                     Inloggen
                  </Button>

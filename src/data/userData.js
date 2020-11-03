@@ -71,7 +71,7 @@ const updateUser = (newItems = {}) => (oldUser) => ({
     ...oldUser,
     error: false,
     ...newItems,
-    redirect: !!newItems.redirect
+    redirect: !!newItems.redirect // to redirect after logout
 });
 
 // load user from session, get additional details from DB
@@ -122,9 +122,9 @@ export const useUser = () => {
                     path: '/completepsw'
                 });
             } else {
-                const user = await loadUser();
+                const loadedUser = await loadUser();
                 setUpdate({
-                    profile: user,
+                    profile: loadedUser,
                     isAuthenticated: true,
                     isAuthenticating: false,
                     path: '',

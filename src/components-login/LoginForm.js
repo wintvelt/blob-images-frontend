@@ -64,7 +64,6 @@ const LoginForm = (props) => {
     };
 
     const Message = ({ error }) => {
-        console.log('login error was:', error.message);
         return <>
             Hmm, inloggen is helaas mislukt.{' '}<br />
             {(error.code === 'UserNotConfirmedException') && <span>

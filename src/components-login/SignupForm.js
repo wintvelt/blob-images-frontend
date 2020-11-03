@@ -17,7 +17,7 @@ const fieldConfig = {
         }],
     },
     email: {
-        autoComplete: 'email', type: 'email', label: 'Your email',
+        autoComplete: 'email', type: 'email', label: 'Je email',
         validations: [{
             text: 'geef een geldig email adres op',
             validate: (val) => (
@@ -99,7 +99,7 @@ const SignupForm = (props) => {
         initialValues={[{ email: user.profile?.email }]}
         isLoading={isLoading}
         onSubmit={onSubmit}
-        submitText='Sign up'
+        submitText='Verstuur'
         smallButtons={[
             { onClick: onLogin, text: 'Al lid? Log in' },
         ]}

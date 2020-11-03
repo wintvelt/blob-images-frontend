@@ -17,6 +17,7 @@ import Accepted from '../../src/components-invite/Accepted';
 import OtherError from '../../src/components-invite/OtherError';
 import { useActiveInvite, useReloadInvite } from '../../src/data/invite-Data';
 import { errorLog } from '../../src/helpers/errorLog';
+import { btoa } from '../../src/components-generic/imageProvider';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -28,8 +29,8 @@ const useStyles = makeStyles(theme => ({
 
 const InvitePage = (props) => {
     const { inviteData, userData, onAccept, onDecline, isSaving } = props;
-    const invite = inviteData.contents || {};
     const isLoading = (inviteData.isLoading);
+    const invite = inviteData.contents || {};
     const group = invite?.group;
     const groupId = group?.groupId;
     const user = userData.user;
@@ -89,11 +90,17 @@ const InvitePage = (props) => {
 const InviteHOC = () => {
     const router = useRouter();
     const inviteId = router.query?.inviteid;
+    let groupId;
+    try {
+        const inviteObj = JSON.parse(btoa(inviteId));
+        groupId = inviteObj?.SK;
+    } catch (_) {
+        // do nothing
+    }
+    const autoAccept = router.query?.autoaccept;
     const { inviteData, acceptInvite, declineInvite } = useActiveInvite(inviteId);
+    const group = inviteData.contents?.group;
     const reloadInvite = useReloadInvite();
-    const hasInvite = (!!inviteData.contents);
-    const invite = (hasInvite) ? inviteData.contents : {};
-    const group = invite?.group;
     const userData = useUser();
     const { user, setPath } = userData;
     const { enqueueSnackbar } = useSnackbar();
@@ -108,7 +115,7 @@ const InviteHOC = () => {
             try {
                 await acceptInvite();
                 enqueueSnackbar(`Welkom als lid van ${group ? group.name : 'deze groep'}!`, { variant: 'success' });
-                setLoadingPath('/personal/groups/[id]', `/personal/groups/${group?.groupId}`);
+                setLoadingPath('/personal/groups/[id]', `/personal/groups/${groupId}`);
             } catch (error) {
                 errorLog(error);
                 enqueueSnackbar('Oeps, we konden je niet lid maken', { variant: 'error' });
@@ -119,6 +126,7 @@ const InviteHOC = () => {
         }
         setIsSaving(false);
     };
+
     const onDecline = async () => {
         setIsSaving(true);
         try {
@@ -134,17 +142,21 @@ const InviteHOC = () => {
     }
 
     useEffect(() => {
-        if (isAccepting && !user.path) {
+        if ((isAccepting || autoAccept) && !user.path) {
             if (user.isAuthenticated) {
                 onAccept();
             } else {
-                if (inviteId) reloadInvite(inviteId);
+                if (inviteId) {
+                    reloadInvite(inviteId);
+                };
                 setIsAccepting(false);
             }
         } else if (!user.path) {
-            if (inviteId) reloadInvite(inviteId);
+            if (inviteId) {
+                reloadInvite(inviteId);
+            };
         }
-    }, [user.isAuthenticated, user.path])
+    }, [user.isAuthenticated, user.path, autoAccept])
 
     return <PublicPage>
         <InvitePage inviteData={inviteData} userData={userData}

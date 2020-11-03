@@ -39,7 +39,6 @@ export const inviteToForm = (invite) => ({
 export const useReloadInvite = () => {
     const setInvite = useSetRecoilState(activeInviteData);
     const loadData = async (inviteId) => {
-        console.log(`loading invite`);
         try {
             const invite = await API.get('blob-images', `/invites/${inviteId}`);
             setInvite({ contents: inviteToForm(invite) });

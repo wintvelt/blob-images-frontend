@@ -8,6 +8,8 @@ const initialUser = {
     isAuthenticated: false,
     path: '',
     error: false,
+    redirect: false,
+    inviteToAccept: null
 };
 
 export const userData = atom({
@@ -61,7 +63,8 @@ const userToForm = (user) => ({
     mayUpload: user.mayUpload,
     visitDateLast: user.visitDateLast,
     visitDatePrev: user.visitDatePrev,
-    createdAt: user.createdAt
+    createdAt: user.createdAt,
+    inviteToAccept: user.inviteToAccept
 });
 
 const authPaths = ['/login', '/signup', '/forgotpsw', '/verifysignup', '/confirmpsw', '/completepsw'];

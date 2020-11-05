@@ -66,7 +66,7 @@ const PhotoMain = () => {
     const currentUser = useUserValue();
     const { profile } = currentUser;
     const photoData = usePhoto(photoId);
-    const photo = useMemo(() => (photoData.contents), []);
+    const photo = useMemo(() => (photoData.contents), [photoData.contents?.PK]);
     const reloadActivePhoto = useReloadPhoto(photoId);
     const isLoading = (photoData.isLoading);
     const [userRating, setUserRating] = useState({ initial: 0, current: 0 });
@@ -137,7 +137,8 @@ const PhotoMain = () => {
                         <Icon className={'pulse-icon'} style={bigIcon}>image</Icon>
                     </div>}
                     {(photoUrl && !isLoading) &&
-                        <ClubImage src={photoUrl} className={classes.image} onLoad={onImageLoad} withLink alt='foto' />}
+                        <ClubImage src={photoUrl} className={classes.image} contain={true}
+                            onLoad={onImageLoad} withLink alt='foto' />}
                 </Grid>
                 <Grid item md={4} xs={12} className={classes.caption}>
                     <Typography variant='h5' gutterBottom>

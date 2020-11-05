@@ -77,7 +77,10 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
                     handleClick(e, album);
                 }
                 return <ListItem button key={albumId} className={classes.noPadList} onClick={onAlbumClick}>
-                    <ListItemIcon><img src={imageUrl} className={classes.albumImg} /></ListItemIcon>
+                    <ListItemIcon>
+                        {imageUrl && <img src={imageUrl} className={classes.albumImg} />}
+                        {!imageUrl && <Icon>image</Icon>}
+                    </ListItemIcon>
                     <ListItemText primary={name} secondary={groupName} />
                     <ListItemSecondaryAction className={classes.actions}>
                         {album.isPublished && <Icon>done</Icon>}
@@ -102,7 +105,10 @@ const PhotoPubs = ({ photo, currentIsOwner }) => {
                     handleClick(e, album);
                 }
                 return <ListItem button key={albumId} className={classes.noPadList} onClick={onAlbumClick}>
-                    <ListItemIcon><img src={imageUrl} className={classes.albumImg} /></ListItemIcon>
+                    <ListItemIcon>
+                        {imageUrl && <img src={imageUrl} className={classes.albumImg} />}
+                        {!imageUrl && <Icon>image</Icon>}
+                    </ListItemIcon>
                     <ListItemText primary={name} secondary={groupName} />
                     <ListItemSecondaryAction className={classes.actions}>
                         {album.isPublished && <Icon>done</Icon>}

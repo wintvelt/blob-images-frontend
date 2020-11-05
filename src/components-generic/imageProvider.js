@@ -10,7 +10,7 @@ export const btoa = (b) => Buffer.from(b, 'base64').toString();
 const btoaDebug = (b) => Buffer.from(b.split('/').slice(-1)[0], 'base64').toString();
 
 const imgStyle = (disp, size, contain = false) => ({
-    objectFit: (contain)? 'contain': 'cover',
+    objectFit: (contain) ? 'contain' : 'cover',
     width: '100%', height: '100%',
     display: (size === disp) ? 'block' : 'none',
     willChange: 'transform',
@@ -56,6 +56,7 @@ const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, conta
     const [size, setSize] = useState((isLocal) ? 'normal' : 'none');
     const urlSmall = (isLocal) ? src : makeImageUrl(src, 10, 10);
     const urlNormal = (isLocal) ? src : makeImageUrl(src, width, height);
+    const backgroundColor = useCoverColorDirect(urlNormal);
 
     if (!src) return null;
 
@@ -64,6 +65,12 @@ const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, conta
             setSize((oldSize => (oldSize === 'normal') ? 'normal' : newSize));
             if (newSize === 'normal' && onLoad) onLoad(event);
         }
+    };
+
+    const normalStyle = { 
+        ...style, 
+        ...imgStyle('normal', size, contain),
+        backgroundColor: backgroundColor?.lightVibrant + 'A0'
     };
 
     return <div {...rest} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -76,10 +83,10 @@ const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, conta
         }
         {(withLink) && <a href={urlNormal} target='_blank' rel='noopener noreferrer' style={linkStyle('normal', size)}>
             <img src={urlNormal} onLoad={handleLoad('normal')}
-                style={{ ...style, ...imgStyle('normal', size, contain) }} />
+                style={normalStyle} />
         </a>}
         {(!withLink) && < img src={urlNormal} onLoad={handleLoad('normal')}
-            style={{ ...style, ...imgStyle('normal', size, contain) }} />}
+            style={normalStyle} />}
     </div>
 }
 
@@ -108,9 +115,13 @@ export const makeImageUrl = (key, width, height) => {
     }
 }
 
-export const useCoverColor = (record) => {
-    const url = record?.image?.url;
-    const urlSmall = makeImageUrl(url, 200, 200);
+export const useCoverColorDirect = (madeUrl) => {
+    const { data } = usePalette(madeUrl);
+    return data;
+};
+
+export const useCoverColor = (url) => {
+    const urlSmall = makeImageUrl(url, 200, 100);
     const { data } = usePalette(urlSmall);
     return data;
 };

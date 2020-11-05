@@ -30,7 +30,7 @@ const GroupMembers = () => {
     const classes = useStyles();
     const groupData = useActiveGroupValue();
     const group = groupData.contents;
-    const background = useCoverColor(group);
+    const background = useCoverColor(group?.image?.url);
 
     const backgroundStyle = { backgroundColor: background?.lightMuted + 'A0' };
 

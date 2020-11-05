@@ -9,8 +9,9 @@ export const otoa = (object) => Buffer.from(JSON.stringify(object)).toString('ba
 export const btoa = (b) => Buffer.from(b, 'base64').toString();
 const btoaDebug = (b) => Buffer.from(b.split('/').slice(-1)[0], 'base64').toString();
 
-const imgStyle = (disp, size) => ({
-    objectFit: 'cover', width: '100%', height: '100%',
+const imgStyle = (disp, size, contain = false) => ({
+    objectFit: (contain)? 'contain': 'cover',
+    width: '100%', height: '100%',
     display: (size === disp) ? 'block' : 'none',
     willChange: 'transform',
     transition: 'transform .5s ease',
@@ -39,17 +40,17 @@ const ImagePropsAreEqual = (prevProps, nextProps) => (
 
 export const useIsMounted = () => {
     const isMounted = useRef(true)
-  
-    useEffect(() => {
-      return () => {
-        isMounted.current = false;
-      };
-    }, []);
-  
-    return isMounted; // returning "isMounted.current" wouldn't work because we would return unmutable primitive
-  }
 
-const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, ...rest }) => {
+    useEffect(() => {
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
+
+    return isMounted; // returning "isMounted.current" wouldn't work because we would return unmutable primitive
+}
+
+const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, contain, ...rest }) => {
     const isMounted = useIsMounted();
     const isLocal = (src && src.slice(0, 1) === '/');
     const [size, setSize] = useState((isLocal) ? 'normal' : 'none');
@@ -74,9 +75,11 @@ const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, ...re
             />
         }
         {(withLink) && <a href={urlNormal} target='_blank' rel='noopener noreferrer' style={linkStyle('normal', size)}>
-            <img src={urlNormal} onLoad={handleLoad('normal')} style={{ ...style, ...imgStyle('normal', size) }} />
+            <img src={urlNormal} onLoad={handleLoad('normal')}
+                style={{ ...style, ...imgStyle('normal', size, contain) }} />
         </a>}
-        {(!withLink) && < img src={urlNormal} onLoad={handleLoad('normal')} style={{ ...style, ...imgStyle('normal', size) }} />}
+        {(!withLink) && < img src={urlNormal} onLoad={handleLoad('normal')}
+            style={{ ...style, ...imgStyle('normal', size, contain) }} />}
     </div>
 }
 

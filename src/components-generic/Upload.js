@@ -104,6 +104,7 @@ const Upload = ({ pond,
             labelIdle={label}
             fileRenameFunction={fileRenameFunction}
             allowImagePreview={allowImagePreview}
+            imageTransformOutputStripImageHead={false}
             acceptedFileTypes={['image/*']}
         />
     </>

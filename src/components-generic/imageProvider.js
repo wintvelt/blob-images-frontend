@@ -67,26 +67,26 @@ const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, conta
         }
     };
 
-    const normalStyle = { 
+    const normalStyle = (state) => ({ 
         ...style, 
-        ...imgStyle('normal', size, contain),
+        ...imgStyle(state, size, contain),
         backgroundColor: backgroundColor?.lightVibrant + 'A0'
-    };
+    });
 
     return <div {...rest} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={iconStyle('none', size)}>
             <Icon className={'pulse-icon'} style={bigIconStyle}>image</Icon>
         </div>
         {(!isLocal) &&
-            <img src={urlSmall} onLoad={handleLoad('small')} style={{ ...style, ...imgStyle('small', size) }}
+            <img src={urlSmall} onLoad={handleLoad('small')} style={normalStyle('small')}
             />
         }
         {(withLink) && <a href={urlNormal} target='_blank' rel='noopener noreferrer' style={linkStyle('normal', size)}>
             <img src={urlNormal} onLoad={handleLoad('normal')}
-                style={normalStyle} />
+                style={normalStyle('normal')} />
         </a>}
         {(!withLink) && < img src={urlNormal} onLoad={handleLoad('normal')}
-            style={normalStyle} />}
+            style={normalStyle('normal')} />}
     </div>
 }
 

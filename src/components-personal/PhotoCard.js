@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         top: 0,
         left: 0,
-        width: '50%',
+        width: '30%',
         transform: 'none!important'
     }
 }));
@@ -111,7 +111,7 @@ const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClick
             actionIcon={(onSelect) && <SelectButton iconClass={classes.icon}
                 icon={icon} onSelect={handleSelect} disabled={menuIsOpen} />}
         />
-        {isNew && <img src='/img/new.png' className={classes.new} />}
+        {!isNew && <img src='/img/new.png' className={classes.new} />}
         {(hasMenu) && <MenuButton className={classes.menuIcon}
             onClick={handleMenuClick} disabled={menuIsOpen} />}
     </div>

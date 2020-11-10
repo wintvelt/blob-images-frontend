@@ -22,6 +22,7 @@ import { useUserAlbums } from '../data/activeTree-UserAlbums';
 import { useActiveAlbum } from '../data/activeTree-Album';
 
 import { errorLog } from '../helpers/errorLog';
+import BrowseButtons from '../components-generic/BrowseButtons';
 
 const useStyles = makeStyles(theme => ({
     photo: {
@@ -140,6 +141,7 @@ const PhotoMain = () => {
                     {(photoUrl && !isLoading) &&
                         <ClubImage src={photoUrl} className={classes.image} contain={true}
                             onLoad={onImageLoad} withLink alt='foto' />}
+                    <BrowseButtons photoId={photoId} />
                 </Grid>
                 <Grid item md={4} xs={12} className={classes.caption}>
                     <Typography variant='h5' gutterBottom>

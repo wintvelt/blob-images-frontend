@@ -100,7 +100,7 @@ const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClick
         {(isLoading) && <div style={flexStyle2}>
             <Icon className={'pulse-icon'} style={bigIcon}>image</Icon>
         </div>}
-        {(url) && <ClubImage src={url} alt='photo' className={classes.img} width={400}/>}
+        {(url) && <ClubImage src={url} alt='photo' className={classes.img} width={400} />}
         <GridListTileBar
             style={fitContent}
             title={(name && !noOwner) ? `by ${name}` : ''}

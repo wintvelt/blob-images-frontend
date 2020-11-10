@@ -3,8 +3,7 @@ import { API } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
-import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { photoState, usePhoto, useReloadPhoto } from '../data/activeTree-Photo';
+import { usePhoto, useReloadPhoto } from '../data/activeTree-Photo';
 import { useUserValue } from '../data/userData';
 import { useSetLoadingPath } from '../data/loadingData';
 import { downloadFile } from '../helpers/download';
@@ -28,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     photo: {
         minHeight: '240px',
         backgroundColor: '#9d8d8f30',
+        position: 'relative',
     },
     image: {
         width: '100%',

@@ -6,25 +6,27 @@ import { useAlbumPhotoIds } from '../data/albumPhotosData';
 import { useUserPhotoIds } from '../data/userPhotosData';
 import { useRouter } from 'next/router';
 import { useActiveAlbum } from '../data/activeTree-Album';
+import { useMediaQuery } from '@material-ui/core';
 
-const linkStyle = {
+const linkStyle = (isBig) => ({
     position: 'absolute',
-    top: '120px',
+    top: (isBig)? '240px': '120px',
     left: '16px',
-    color: '#ffffffa0',
+    color: '#ffffff',
     zIndex: 1,
     backgroundColor: '#00000040',
     borderRadius: '4px',
     padding: '8px 2px 2px 12px',
-};
-const linkStyle2 = {
-    ...linkStyle,
+});
+const linkStyle2 = (isBig) => ({
+    ...linkStyle(isBig),
     left: undefined,
     right: '16px',
     padding: '8px 8px 2px 8px',
-};
+});
 
 const BrowseButtons = ({ photoId }) => {
+    const matches = useMediaQuery('(min-width:600px)');
     const albumData = useActiveAlbum();
     const album = albumData.contents;
     const albumPhotoData = useAlbumPhotoIds();
@@ -51,12 +53,12 @@ const BrowseButtons = ({ photoId }) => {
 
     return <>
         {prevId && <Link href={photoPath} as={prevAs}
-            style={linkStyle}
+            style={linkStyle(matches)}
         >
             <Icon>arrow_back_ios</Icon>
         </Link>}
         {nextId && <Link href={photoPath} as={nextAs}
-            style={linkStyle2}
+            style={linkStyle2(matches)}
         >
             <Icon>arrow_forward_ios</Icon>
         </Link>}

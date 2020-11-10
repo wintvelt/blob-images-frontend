@@ -7,7 +7,7 @@ import { useActiveAlbumValue } from '../data/activeTree-Album';
 
 const linkStyle = {
     position: 'absolute',
-    top: '64px',
+    // top: '64px',
     left: '24px',
     color: 'inherit',
     display: 'flex',

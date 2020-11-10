@@ -31,7 +31,7 @@ export const usePhoto = (id) => {
     const reloadPhoto = useReloadPhoto(id);
     useEffect(() => {
         if (id) reloadPhoto();
-    }, []);
+    }, [id]);
     return photo;
 };
 

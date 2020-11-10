@@ -3,8 +3,7 @@ import { API } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 
-import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
-import { photoState, usePhoto, useReloadPhoto } from '../data/activeTree-Photo';
+import { usePhoto, useReloadPhoto } from '../data/activeTree-Photo';
 import { useUserValue } from '../data/userData';
 import { useSetLoadingPath } from '../data/loadingData';
 import { downloadFile } from '../helpers/download';
@@ -22,11 +21,13 @@ import { useUserAlbums } from '../data/activeTree-UserAlbums';
 import { useActiveAlbum } from '../data/activeTree-Album';
 
 import { errorLog } from '../helpers/errorLog';
+import BrowseButtons from '../components-generic/BrowseButtons';
 
 const useStyles = makeStyles(theme => ({
     photo: {
         minHeight: '240px',
         backgroundColor: '#9d8d8f30',
+        position: 'relative',
     },
     image: {
         width: '100%',
@@ -140,6 +141,7 @@ const PhotoMain = () => {
                     {(photoUrl && !isLoading) &&
                         <ClubImage src={photoUrl} className={classes.image} contain={true}
                             onLoad={onImageLoad} withLink alt='foto' />}
+                    <BrowseButtons photoId={photoId} />
                 </Grid>
                 <Grid item md={4} xs={12} className={classes.caption}>
                     <Typography variant='h5' gutterBottom>

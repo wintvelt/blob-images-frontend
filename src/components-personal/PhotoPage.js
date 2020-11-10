@@ -25,13 +25,13 @@ import { errorLog } from '../helpers/errorLog';
 
 const useStyles = makeStyles(theme => ({
     photo: {
-        height: '640px',
+        minHeight: '240px',
         backgroundColor: '#9d8d8f30',
     },
     image: {
         width: '100%',
         objectFit: 'contain',
-        height: '640px',
+        minHeight: '240px',
     },
     caption: {
         padding: theme.spacing(2),
@@ -116,6 +116,7 @@ const PhotoMain = () => {
     const currentIsOwner = photo && photo.SK === profile.id;
     const photoUrlRaw = photo?.url;
     const photoUrl = (photo) ? photoUrlRaw : '/img/foto_not_found.jpg';
+    const { exifAddress, exifDate } = photo || {};
 
     const [imageSize, setImageSize] = useState('');
     const onImageLoad = ({ target }) => {
@@ -145,12 +146,42 @@ const PhotoMain = () => {
                         door {photo?.user?.name || '-'}{'\u00A0'}
                         {currentIsOwner && <Chip size='small' label='me' />}
                     </Typography>
-                    <Typography variant='body1' gutterBottom>toegevoegd op {photo?.createdAt || '-'}</Typography>
+                    <Typography variant='body1' component='div' gutterBottom>
+                        <table className='phototable'><tbody>
+                            <tr>
+                                <td>🗓</td>
+                                <td>{photo?.createdAt || '-'}</td>
+                            </tr>
+                            {exifDate && <tr>
+                                <td>📷</td>
+                                <td>{exifDate}</td>
+                            </tr>}
+                            {exifAddress && <tr>
+                                <td>📍</td>
+                                <td>{exifAddress}</td>
+                            </tr>}
+                            <tr>
+                                <td>📐</td>
+                                <td>{imageSize || '-'}</td>
+                            </tr>
+                            <tr>
+                                <td>👍</td>
+                                <td><Rating value={photoRating} dark /></td>
+                            </tr>
+                        </tbody></table>
+                    </Typography>
+                    {/* <Typography variant='body1' gutterBottom> {photo?.createdAt || '-'}</Typography>
                     <Typography variant='body1' gutterBottom>pixelgrootte {imageSize || '-'}</Typography>
-                    <div className={classes.flexLine}>
+                    {(exifDate) && <Typography variant='body1' gutterBottom>
+                        foto gemaakt op {exifDate}
+                    </Typography>}
+                    {(exifAddress) && <Typography variant='body1' gutterBottom>
+                        📍 {exifAddress}
+                    </Typography>} */}
+                    {/* <div className={classes.flexLine}>
                         <Typography variant='body1'>rating</Typography>{'\u00A0'}
                         <Rating value={photoRating} dark />
-                    </div>
+                    </div> */}
                     <div className={classes.flexLine}>
                         <PhotoRating userRating={userRating.current} onChange={onChangeRating} disabled={!photo} />
                     </div>

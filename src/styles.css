@@ -37,3 +37,6 @@ html {
 main {
     overflow-x: hidden;
 }
+.phototable tr > * + * {
+    padding-left: 1em;
+}

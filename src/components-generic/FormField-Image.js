@@ -10,8 +10,6 @@ import { makeStyles } from '@material-ui/core';
 import { ClubImage } from './imageProvider';
 import ImageUpload from './FormField-Image-Upload';
 import PhotoPicker from './FormField-Image-Photos';
-import { useRecoilValueLoadable } from 'recoil';
-import { activeGroupPhotos, activeAlbumPhotos } from '../data/activeTree-Album';
 import { useUserPhotoIdsValue } from '../data/userPhotosData';
 import { useUserValue } from '../data/userData';
 
@@ -62,6 +60,7 @@ const useStyles = makeStyles(theme => ({
 const setValue = (value) => ({ target: { value } });
 
 const largeFont = { fontSize: '40px' };
+const avatarStyle = { borderRadius: '50px' };
 
 const hasItems = (loadable) => (
     loadable.state === 'hasValue' && loadable.contents && loadable.contents.length > 0
@@ -135,7 +134,9 @@ const ImageField = (props) => {
         <Grid item xs={6} className={classes.itemImage}>
             <legend className={classes.imageLabel}>{label}</legend>
             {url &&
-                <ClubImage src={url} alt='group image thumbnail' className={imgClass} width={width} height={width} />
+                <ClubImage src={url} alt='group image thumbnail'
+                    className={imgClass} style={(isAvatar) ? avatarStyle : undefined}
+                    width={width} height={width} />
             }
             {!url &&
                 <Icon color='disabled' style={largeFont}>image</Icon>

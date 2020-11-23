@@ -111,7 +111,7 @@ const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClick
             actionIcon={(onSelect) && <SelectButton iconClass={classes.icon}
                 icon={icon} onSelect={handleSelect} disabled={menuIsOpen} />}
         />
-        {!isNew && <img src='/img/new.png' className={classes.new} />}
+        {isNew && <img src='/img/new.png' className={classes.new} />}
         {(hasMenu) && <MenuButton className={classes.menuIcon}
             onClick={handleMenuClick} disabled={menuIsOpen} />}
     </div>

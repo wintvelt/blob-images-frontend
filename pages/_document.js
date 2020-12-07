@@ -54,7 +54,7 @@ console.log('did run google script');
                 style={bodyStyle}
             >
                 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M6L83BM"
-                    height="0" width="0" style="display:none;visibility:hidden"></iframe>
+                    height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}></iframe>
                 </noscript>
                 <Main />
                 <NextScript />

@@ -37,18 +37,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 { /* <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" /> */}
                 <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap"
                     rel="stylesheet" />
-                <script async src={`https://www.googletagmanager.com/gtag/js?id=${GTAG}`}></script>
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GTAG}');
-console.log('did run google script');
-`,
-                    }}
-                />
             </Head>
             <body
                 style={bodyStyle}

@@ -4,4 +4,4 @@ blob-images:
         bucketName: blob-images-frontend
         cloudfront:
             comment: ${env.NEXT_PUBLIC_BRANCH}
-            distributionId: ${env.CLOUDFRONT_ID}
+            # distributionId: ${env.CLOUDFRONT_ID}

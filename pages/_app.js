@@ -44,7 +44,11 @@ export default function MyApp(props) {
     return (
         <React.Fragment>
             <Head>
-                <title>clubalmanac</title>
+                <title>clubalmanac - foto's delen met vrienden en familie</title>
+                <meta name="description" content="simpel herinneringen van je club bewaren en delen" />
+                <meta property="og:title" content="clubalmanac - deel plaatjes met vrienden" />
+                <meta property="og:url" content="https://clubalmanac.com" />
+                <meta property="og:image" content="/img/clubalmanac.jpg" />
                 <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
             </Head>
             <ThemeProvider theme={theme}>

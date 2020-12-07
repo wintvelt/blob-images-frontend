@@ -49,7 +49,7 @@ export default function MyApp(props) {
                 <meta property="og:title" content="clubalmanac - deel plaatjes met vrienden" />
                 <meta property="og:description" content="simpel herinneringen van je club bewaren en delen" />
                 <meta property="og:url" content="https://dev.clubalmanac.com" />
-                <meta property="og:image" content="/clubalmanac.jpg" />
+                <meta property="og:image" content="https://blob-images-frontend.s3.amazonaws.com/public/clubalmanac.jpg" />
                 <meta property="og:locale" content="nl_NL" />
                 <meta property="og:type" content="website" />
                 <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />

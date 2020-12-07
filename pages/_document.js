@@ -23,6 +23,17 @@ export default class MyDocument extends Document {
                 { /* <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" /> */}
                 <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap"
                     rel="stylesheet" />
+                <script async src="https://www.googletagmanager.com/gtag/js?id=G-YPW7KWZHQ8"></script>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: `
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-YPW7KWZHQ8');
+`,
+                    }}
+                />
             </Head>
             <body
                 style={bodyStyle}

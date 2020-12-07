@@ -10,6 +10,8 @@ const bodyStyle = {
     // backgroundColor: 'white'
 };
 
+const GTAG = process.env.GOOGLE_TAG;
+
 export default class MyDocument extends Document {
     render() {
         return (<Html xmlns="http://www.w3.org/1999/xhtml" lang="en" >
@@ -23,14 +25,14 @@ export default class MyDocument extends Document {
                 { /* <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" /> */}
                 <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap"
                     rel="stylesheet" />
-                <script async src="https://www.googletagmanager.com/gtag/js?id=G-YPW7KWZHQ8"></script>
+                <script async src={`https://www.googletagmanager.com/gtag/js?id=${GTAG}`}></script>
                 <script
                     dangerouslySetInnerHTML={{
                         __html: `
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'G-YPW7KWZHQ8');
+gtag('config', '${GTAG}');
 console.log('did run google script');
 `,
                     }}

@@ -36,6 +36,7 @@
     "chai": "^4.2.0",
     "mocha": "^7.2.0"
   },
+  "type": "commonjs",
   "exports": {
     ".": "./index.js",
     "./jsx-dev-runtime": "./jsx-dev-runtime.js",

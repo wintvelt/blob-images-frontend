@@ -24,10 +24,10 @@
     "filepond-plugin-image-preview": "^4.6.4",
     "filepond-plugin-image-transform": "^3.7.4",
     "moment": "^2.29.1",
-    "next": "^9.5.5",
+    "next": "^11.1.0",
     "notistack": "^0.9.17",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-filepond": "^7.1.0",
     "react-palette": "^1.0.2",
     "recoil": "0.0.13"
@@ -35,5 +35,11 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^7.2.0"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./jsx-dev-runtime": "./jsx-dev-runtime.js",
+    "./jsx-runtime": "./jsx-runtime.js",
+    "./": "./"
   }
 }

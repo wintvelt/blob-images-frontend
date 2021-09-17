@@ -26,7 +26,7 @@ const FeatureBlock = ({ featureList }) => {
     return (
         <Grid container
             direction="row"
-            justify="center"
+            justifyContent="center"
             alignItems="stretch"
             style={gridStyle}
         >

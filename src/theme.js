@@ -1,8 +1,8 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import { lime, cyan } from '@material-ui/core/colors';
 
 // Create a theme instance.
-const theme = createMuiTheme({
+const theme = createTheme({
     palette: {
         // type: 'light',
         primary: { main: cyan[700] },

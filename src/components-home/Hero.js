@@ -74,7 +74,7 @@ const Hero = (props) => {
             <div className={classes.overlay} />
             {credit && <Credit {...credit} />}
             <Toolbar style={gutterBottom} />
-            <Grid container alignItems='center' justify='center' spacing={1}
+            <Grid container alignItems='center' justifyContent='center' spacing={1}
                 style={relativeStyle}>
                 {children}
             </Grid>

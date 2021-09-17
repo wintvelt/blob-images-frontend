@@ -83,7 +83,7 @@ export default function HideAppBar(props) {
         <HideOnScroll {...props}>
             <AppBar className={classes.nav} elevation={0}>
                 <Toolbar>
-                    <Grid container spacing={1} alignItems='center' justify='center'>
+                    <Grid container spacing={1} alignItems='center' justifyContent='center'>
                         <Grid item md={3} xs={6}>
                             <Link href='/'>
                                 <img src='/img/logo_fresh.png' height='40px' className={classes.homeLink} />

@@ -33,6 +33,7 @@ const bigIconStyle = { fontSize: '40px' };
 
 const ImagePropsAreEqual = (prevProps, nextProps) => (
     (prevProps.src === nextProps.src) &&
+    (prevProps.fullsizeSrc === nextProps.fullsizeSrc) &&
     (prevProps.style === nextProps.style) &&
     (prevProps.width === nextProps.width) &&
     (prevProps.height === nextProps.height)
@@ -50,12 +51,14 @@ export const useIsMounted = () => {
     return isMounted; // returning "isMounted.current" wouldn't work because we would return unmutable primitive
 }
 
-const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, contain, ...rest }) => {
+const BaseClubImage = ({ src, fullsizeSrc, width, height, onLoad, style = {}, withLink, contain, ...rest }) => {
     const isMounted = useIsMounted();
     const isLocal = (src && src.slice(0, 1) === '/');
     const [size, setSize] = useState((isLocal) ? 'normal' : 'none');
     const urlSmall = (isLocal) ? src : makeImageUrl(src, 10, 10);
-    const urlNormal = (isLocal) ? src : makeImageUrl(src, width, height);
+    const urlNormal = (isLocal) ? src :
+        (!width && !height && signedUrl) ? fullsizeSrc :
+            makeImageUrl(src, width, height);
     const backgroundColor = useCoverColorDirect(urlNormal);
 
     if (!src) return null;
@@ -67,8 +70,8 @@ const BaseClubImage = ({ src, width, height, onLoad, style = {}, withLink, conta
         }
     };
 
-    const normalStyle = (state) => ({ 
-        ...style, 
+    const normalStyle = (state) => ({
+        ...style,
         ...imgStyle(state, size, contain),
         backgroundColor: backgroundColor?.lightVibrant + 'A0'
     });

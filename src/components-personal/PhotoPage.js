@@ -68,6 +68,7 @@ const PhotoMain = () => {
     const { profile } = currentUser;
     const photoData = usePhoto(photoId);
     const photo = useMemo(() => (photoData.contents), [photoData.contents?.PK]);
+    console.log(photo);
     const reloadActivePhoto = useReloadPhoto(photoId);
     const isLoading = (photoData.isLoading);
     const [userRating, setUserRating] = useState({ initial: 0, current: 0 });
@@ -139,7 +140,8 @@ const PhotoMain = () => {
                         <Icon className={'pulse-icon'} style={bigIcon}>image</Icon>
                     </div>}
                     {(photoUrl && !isLoading) &&
-                        <ClubImage src={photoUrl} className={classes.image} contain={true}
+                        <ClubImage src={photoUrl} fullsizeSrc={photo.signedUrl}
+                            className={classes.image} contain={true}
                             onLoad={onImageLoad} withLink alt='foto' />}
                     <BrowseButtons photoId={photoId} />
                 </Grid>

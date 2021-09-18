@@ -17,9 +17,11 @@ import { resetLoadingPath } from './data/loadingData';
 const gridStyle = { display: 'flex', justifyContent: 'flex-end' };
 const gridStyle2 = { display: 'flex', justifyContent: 'center' };
 
+const isDevelopmentBranch = (process.env.NEXT_PUBLIC_BRANCH !== 'master');
+
 const useStyles = makeStyles((theme) => ({
     nav: {
-        backgroundColor: 'rgba(90,85,96,.5)',
+        backgroundColor: (isDevelopmentBranch)? 'rgb(255,69,0)':'rgba(90,85,96,.5)',
         color: 'white',
         zIndex: theme.zIndex.drawer + 1,
     },
@@ -79,6 +81,8 @@ export default function HideAppBar(props) {
     useInitialUser();
     resetLoadingPath();
 
+    const branch = process.env.NEXT_PUBLIC_BRANCH || process.env.NODE_ENV || 'local';
+
     return (
         <HideOnScroll {...props}>
             <AppBar className={classes.nav} elevation={0}>
@@ -90,7 +94,11 @@ export default function HideAppBar(props) {
                             </Link>
                             <Hidden smDown><img src='/img/name.png' height='40px' /></Hidden>
                         </Grid>
-                        <Grid item xs />
+                        <Grid item xs>
+                            { isDevelopmentBranch && 
+                                branch.toUpperCase() + ' versie'
+                            }
+                        </Grid>
                         {/* {[
                             { text: 'Features', href: '/#features' },
                             { text: 'Pricing', href: '/#pricing' },

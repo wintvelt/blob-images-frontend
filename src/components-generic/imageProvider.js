@@ -57,7 +57,7 @@ const BaseClubImage = ({ src, fullsizeSrc, width, height, onLoad, style = {}, wi
     const [size, setSize] = useState((isLocal) ? 'normal' : 'none');
     const urlSmall = (isLocal) ? src : makeImageUrl(src, 10, 10);
     const urlNormal = (isLocal) ? src :
-        (!width && !height && signedUrl) ? fullsizeSrc :
+        (!width && !height && fullsizeSrc) ? fullsizeSrc :
             makeImageUrl(src, width, height);
     const backgroundColor = useCoverColorDirect(urlNormal);
 

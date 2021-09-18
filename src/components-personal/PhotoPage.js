@@ -68,7 +68,6 @@ const PhotoMain = () => {
     const { profile } = currentUser;
     const photoData = usePhoto(photoId);
     const photo = useMemo(() => (photoData.contents), [photoData.contents?.PK]);
-    console.log(photo);
     const reloadActivePhoto = useReloadPhoto(photoId);
     const isLoading = (photoData.isLoading);
     const [userRating, setUserRating] = useState({ initial: 0, current: 0 });
@@ -116,7 +115,7 @@ const PhotoMain = () => {
         }
     };
     const currentIsOwner = photo && photo.SK === profile.id;
-    const photoUrlRaw = photo?.url;
+    const photoUrlRaw = photo?.signedUrl;
     const photoUrl = (photo) ? photoUrlRaw : '/img/foto_not_found.jpg';
     const { exifAddress, exifDate } = photo || {};
 

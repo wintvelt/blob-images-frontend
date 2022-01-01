@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+import ImageList from '@material-ui/core/ImageList';
+import ImageListItem from '@material-ui/core/ImageListItem';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-around',
         overflow: 'hidden',
     },
-    gridList: {
+    imageList: {
         width: '100%',
     },
     tile: {
@@ -79,9 +79,9 @@ const PhotoList = (props) => {
     return <div className={classes.container}>
         {/* <pre style={fullWidth}>{JSON.stringify(selected, null, 2)}</pre>
         <pre style={fullWidth}>{JSON.stringify(photos, null, 2)}</pre> */}
-        <GridList cellHeight={cellHeight} cols={cols} className={classes.gridList}>
+        <ImageList rowHeight={cellHeight} cols={cols} className={classes.imageList}>
             {photos.map(photoId => {
-                return <GridListTile key={photoId} className={classes.tile}>
+                return <ImageListItem key={photoId} className={classes.tile}>
                     <Photo
                         photoId={(typeof photoId === 'string') ? photoId : ''}
                         isSmall={(!isLarge && !isMedium)}
@@ -92,9 +92,9 @@ const PhotoList = (props) => {
                         menuIsOpen={!!anchor.el}
                         isNew={newPics.includes(photoId)}
                     />
-                </GridListTile>
+                </ImageListItem>
             })}
-        </GridList>
+        </ImageList>
         <PhotoMenu
             anchor={anchor}
             handleClose={handleMenuClose}

@@ -82,14 +82,18 @@ const BaseClubImage = ({ src, fullsizeSrc, width, height, onLoad, style = {}, wi
         </div>
         {(!isLocal) &&
             <img src={urlSmall} onLoad={handleLoad('small')} style={normalStyle('small')}
-            />
+                crossOrigin="anonymous" />
         }
         {(withLink) && <a href={urlNormal} target='_blank' rel='noopener noreferrer' style={linkStyle('normal', size)}>
             <img src={urlNormal} onLoad={handleLoad('normal')}
-                style={normalStyle('normal')} />
+                style={normalStyle('normal')}
+                crossOrigin="anonymous" />
         </a>}
-        {(!withLink) && < img src={urlNormal} onLoad={handleLoad('normal')}
-            style={normalStyle('normal')} />}
+        {(!withLink) &&
+            < img src={urlNormal} onLoad={handleLoad('normal')}
+                style={normalStyle('normal')}
+                crossOrigin="anonymous" />
+        }
     </div>
 }
 

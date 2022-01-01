@@ -1,6 +1,10 @@
 export async function downloadFile(url, filename) {
     // get data
-    let blob = await fetch(url).then(r => r.blob());
+    let blob = await fetch(url, {
+        headers: {
+            'Cache-Control': 'no-cache'
+        }
+    }).then(r => r.blob());
 
     // Create an invisible A element
     const a = document.createElement("a");

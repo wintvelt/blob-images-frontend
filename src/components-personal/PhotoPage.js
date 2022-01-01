@@ -141,7 +141,8 @@ const PhotoMain = () => {
                     {(photoUrl && !isLoading) &&
                         <ClubImage src={photoUrl} fullsizeSrc={photo.signedUrl}
                             className={classes.image} contain={true}
-                            onLoad={onImageLoad} withLink alt='foto' />}
+                            onLoad={onImageLoad} withLink alt='foto' />
+                    }
                     <BrowseButtons photoId={photoId} />
                 </Grid>
                 <Grid item md={4} xs={12} className={classes.caption}>

@@ -259,7 +259,14 @@ export const useUser = () => {
         else { newProfile.photoId = '' }
         errorHandler(async () => {
             const newUser = await API.put('blob-images', '/user', { body: newProfile });
-            setUpdate({ profile: { ...user.profile, ...userToForm(newUser) } });
+            setUpdate({
+                profile: {
+                    ...user.profile,
+                    name: newUser.name,
+                    photoId: newUser.photoId,
+                    photoUrl: newUser.photoUrl
+                }
+            });
         });
     }
     const deleteUser = async () => {

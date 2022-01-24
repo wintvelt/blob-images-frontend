@@ -28,7 +28,7 @@ const theme = createTheme({
         // },
     },
     overrides: {
-        MuiGridListTileBar: {
+        MuiImageListItemBar: {
             subtitle: {
                 lineHeight: '1.2rem'
             }

@@ -1,5 +1,5 @@
 import React from 'react';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
+import ImageListItemBar from '@material-ui/core/ImageListItemBar';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
@@ -101,7 +101,7 @@ const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClick
             <Icon className={'pulse-icon'} style={bigIcon}>image</Icon>
         </div>}
         {(url) && <ClubImage src={url} alt='photo' className={classes.img} width={400} />}
-        <GridListTileBar
+        <ImageListItemBar
             style={fitContent}
             title={(name && !noOwner) ? `by ${name}` : ''}
             subtitle={<>

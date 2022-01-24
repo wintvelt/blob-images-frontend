@@ -1,7 +1,7 @@
 blob-images:
-    component: "@sls-next/serverless-component@1.18.0-alpha.27"
+    component: "@sls-next/serverless-component@3.6.0"
     inputs:
         bucketName: ${env.NEXT_PUBLIC_BUCKET}
         cloudfront:
             comment: ${env.NEXT_PUBLIC_BRANCH}
-            # distributionId: ${env.CLOUDFRONT_ID}
+            distributionId: ${env.CLOUDFRONT_ID}

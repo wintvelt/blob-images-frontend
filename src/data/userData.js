@@ -254,8 +254,8 @@ export const useUser = () => {
     const saveProfile = async (name, photoId, photoUrl) => {
         let newProfile = { name };
         const filename = photoUrl && photoUrl.split('/')[2];
-        if (filename) { newProfile.filename = filename }
-        else if (photoId) { newProfile.photoId = photoId }
+        if (photoId) { newProfile.photoId = photoId }
+        else if (filename) { newProfile.filename = filename }
         else { newProfile.photoId = '' }
         errorHandler(async () => {
             const newUser = await API.put('blob-images', '/user', { body: newProfile });

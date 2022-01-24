@@ -18,7 +18,7 @@ export default function UploadDialog({ open, handleClose, onChange }) {
         await pond.current.processFiles();
         if (file) {
             const newImage = {
-                url: 'protected/'+ profile.cognitoId + '/' + file
+                url: 'protected/'+ profile.id.slice(1) + '/' + file
             };
             // reloadPhotos();
             onChange(newImage);

@@ -5,3 +5,4 @@ blob-images:
         cloudfront:
             comment: ${env.NEXT_PUBLIC_BRANCH}
             # distributionId: ${env.CLOUDFRONT_ID}
+            distributionId: ERQ3ZNEILVY87

@@ -59,7 +59,8 @@ const AlbumMain = () => {
                 deletePhoto={deletePhoto}
                 reloadAlbum={reloadAlbum}
             />
-            {userIsAdmin && <Upload pond={pond} allowMultiple={true} allowImagePreview={true} instantUpload={true}
+            {false && userIsAdmin && <Upload pond={pond} allowMultiple={true} allowImagePreview={true}
+                instantUpload={true}
                 onAddFile={onAddFile} onRemoveFile={onRemoveFile}
                 onProcessFile={onProcessFile}
                 photoMetadata={photoMetaData}

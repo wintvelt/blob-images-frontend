@@ -13,6 +13,7 @@ import Link from './components-generic/Link';
 import NavLogin from './components-login/NavLogin';
 import { useInitialUser } from './data/userData';
 import { resetLoadingPath } from './data/loadingData';
+import Announcement from './NavAlert';
 
 const gridStyle = { display: 'flex', justifyContent: 'flex-end' };
 const gridStyle2 = { display: 'flex', justifyContent: 'center' };
@@ -21,7 +22,7 @@ const isDevelopmentBranch = (process.env.NEXT_PUBLIC_BRANCH !== 'master');
 
 const useStyles = makeStyles((theme) => ({
     nav: {
-        backgroundColor: (isDevelopmentBranch)? 'rgb(255,69,0)':'rgba(90,85,96,.5)',
+        backgroundColor: (isDevelopmentBranch) ? 'rgb(255,69,0)' : 'rgba(90,85,96,.5)',
         color: 'white',
         zIndex: theme.zIndex.drawer + 1,
     },
@@ -87,6 +88,7 @@ export default function HideAppBar(props) {
         <HideOnScroll {...props}>
             <AppBar className={classes.nav} elevation={0}>
                 <Toolbar>
+                    <Announcement />
                     <Grid container spacing={1} alignItems='center' justifyContent='center'>
                         <Grid item md={3} xs={6}>
                             <Link href='/'>
@@ -95,7 +97,7 @@ export default function HideAppBar(props) {
                             <Hidden smDown><img src='/img/name.png' height='40px' /></Hidden>
                         </Grid>
                         <Grid item xs>
-                            { isDevelopmentBranch && 
+                            {isDevelopmentBranch &&
                                 branch.toUpperCase() + ' versie'
                             }
                         </Grid>

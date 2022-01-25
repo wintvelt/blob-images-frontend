@@ -3,7 +3,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 import { useState } from 'react';
 
 const message = {
-    title: "Foto uploads tijdelijk ff niet mogelijk",
+    title: "",
     content: "We doen aan de achterkant wat onderhoud. "
         + "Waarschijnlijk kan je later vanavond alweer los gaan."
 }

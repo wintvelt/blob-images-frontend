@@ -5,7 +5,7 @@ import { useState } from 'react';
 const message = {
     title: "Foto uploads tijdelijk ff niet mogelijk",
     content: "We doen aan de achterkant wat onderhoud. "
-        + "Waarschijnlijk kan je vanaf 4 uur vanmiddag alweer los gaan."
+        + "Waarschijnlijk kan je later vanavond alweer los gaan."
 }
 
 const alertStyle = {

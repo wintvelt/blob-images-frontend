@@ -9,19 +9,17 @@ const dividerStyle = { backgroundColor: 'darkgrey' };
 
 const preventDefault = e => e.preventDefault;
 
-function Copyright(props) {
+function SmallPrint(props) {
     return (
         <Container maxWidth='sm'>
             <Divider variant='middle' style={dividerStyle} />
             <Typography variant="body2" align="center" className={props.className} gutterBottom>
-                {'© '}Clubalmanac{' '}
-                {new Date().getFullYear()}
-                {' | '}
                 <Link href='/about#privacy' className={props.className}>Privacy statement</Link>{' | '}
                 <Link href='/about#cookies' className={props.className}>Cookies</Link>{' | '}
                 <Link onClick={preventDefault} href='/termsandconditions' target='_blank' rel='noopener noreferrer' className={props.className}>
                     Algemene voorwaarden
-                </Link>
+                </Link>{' | '}
+                <Link href='/newfeatures' className={props.className}>Binnenkort</Link>
             </Typography>
         </Container>
     );
@@ -47,11 +45,13 @@ export default function Footer() {
             <Typography variant="subtitle1" align='center' className={classes.white} gutterBottom>
                 <Link href='/about' className={classes.white}>Over ons</Link>{' | '}
                 <Link href='/about#support' className={classes.white}>Ondersteuning</Link>{' | '}
-                <Link href='/about' className={classes.white}>Contact</Link>{' | '}
-                <Link href='/newfeatures' className={classes.white}>In ontwikkeling</Link>
+                <Link href='/about' className={classes.white}>Contact</Link>
             </Typography>
-            <Copyright className={classes.white} />
+            <SmallPrint className={classes.white} />
             <Typography variant="body2" align='center' className={classes.white} gutterBottom>
+                {'© '}Clubalmanac{' '}
+                {new Date().getFullYear()}
+                {' | '}
                 Versie {process.env.NEXT_PUBLIC_VERSION || '(local new)'}
             </Typography>
         </footer>

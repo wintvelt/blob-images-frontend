@@ -83,7 +83,7 @@ const ImageField = (props) => {
 
     const activeUser = useUserValue();
     const { profile } = activeUser;
-    const userMayUpload = profile?.mayUpload;
+    const userMayUpload = profile?.mayUpload && false;
 
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;
@@ -179,11 +179,11 @@ const ImageField = (props) => {
                         Kies uit groepsfoto's
                     </MenuItem>
                 } */}
-                {isAlbum &&
+                {/* {isAlbum &&
                     <MenuItem onClick={handleClickMenu('album')} disabled={!hasAlbumPhotos}>
                         Kies uit albumfoto's
                     </MenuItem>
-                }
+                } */}
                 <MenuItem onClick={handleClickMenu('myPhotos')} disabled={!hasMyPhotos}>
                     Kies uit mijn foto's
                 </MenuItem>

@@ -27,7 +27,7 @@
     "filepond-plugin-image-preview": "^4.6.10",
     "filepond-plugin-image-transform": "^3.8.7",
     "moment": "^2.29.1",
-    "next": "^12.0.7",
+    "next": "^12.0.9",
     "notistack": "^2.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

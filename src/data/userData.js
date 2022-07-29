@@ -154,12 +154,15 @@ export const useUser = () => {
     }
     const signup = async (email, password, name, inviteId) => {
         try {
-            await Auth.signUp({
+            const dump = {
                 username: email,
                 password,
                 attributes: { 'custom:name': name, 'custom:inviteId': inviteId },
-                validationData: [{ Name: 'inviteId', Value: inviteId }],
-            });
+                // validationData: [{ Name: 'inviteId', Value: inviteId }],
+                validationData: { inviteId },
+            }
+            console.log({dump})
+            await Auth.signUp(dump);
             setUpdate({
                 profile: { name, email, password },
                 isAuthenticated: false,

@@ -83,7 +83,7 @@ const ImageField = (props) => {
 
     const activeUser = useUserValue();
     const { profile } = activeUser;
-    const userMayUpload = profile?.mayUpload && false;
+    const userMayUpload = profile?.mayUpload;
 
     const width = isAvatar ? 100 : 540;
     const height = isAvatar ? 100 : 144;

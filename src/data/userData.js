@@ -161,7 +161,7 @@ export const useUser = () => {
                 // validationData: [{ Name: 'inviteId', Value: inviteId }],
                 validationData: { inviteId },
             }
-            console.log({dump})
+            // console.log({dump})
             await Auth.signUp(dump);
             setUpdate({
                 profile: { name, email, password },
@@ -193,6 +193,7 @@ export const useUser = () => {
         };
     };
     const requestVerify = async (email) => {
+        console.log({ msg: 'resending signup', email})
         errorHandler(async () => {
             await Auth.resendSignUp(email);
             setUpdate({ path: '/verifysignup' });

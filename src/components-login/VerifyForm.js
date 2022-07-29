@@ -67,8 +67,13 @@ const VerifyForm = (props) => {
     const onResend = async (fields) => {
         setIsLoading(true);
         const { email } = fields;
-        await userData.requestVerify(email);
-        enqueueSnackbar('Nieuwe registratiecode verzonden, check je mail');
+        const validEmail = fieldConfig.email.validations[0].validate(email)
+        if (!validEmail) {
+            enqueueSnackbar('Vul een geldig email-adres in');
+        } else {
+            await userData.requestVerify(email);
+            enqueueSnackbar('Nieuwe registratiecode verzonden, check je mail');
+        }
         setIsLoading(false);
     };
 

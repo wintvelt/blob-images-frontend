@@ -52,5 +52,4 @@ jobs:
       - run:
           name: Deploy application
           command: |
-            sudo npm i -g @serverless/cli
-            serverless
+            npx serverless@2.72.2

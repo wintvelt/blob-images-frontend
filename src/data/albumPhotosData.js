@@ -21,7 +21,7 @@ export const useReloadAlbumPhotoIds = () => {
         if (albumId && groupId) {
             console.log(`loading photos for album ${albumId}`);
             try {
-                const photoIds = await API.get('blob-images', `/groups/${groupId}/albums/${albumId}/photos`);
+                const photoIds = await API.get('blob-images', `/groups/${groupId}/albums/${albumId}/photoIds`);
                 setAlbumPhotoIds({ contents: photoIds.map(item => item.SK) });
             } catch (error) {
                 errorLog(error);

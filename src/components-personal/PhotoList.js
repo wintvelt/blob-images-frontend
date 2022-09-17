@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Photo from './PhotoCard';
+import PhotoWithData from './PhotoCardWithData';
 import PhotoMenu from './PhotoListMenu';
 
 const useStyles = makeStyles(theme => ({
@@ -80,14 +81,14 @@ const PhotoList = (props) => {
         {/* <pre style={fullWidth}>{JSON.stringify(selected, null, 2)}</pre>
         <pre style={fullWidth}>{JSON.stringify(photos, null, 2)}</pre> */}
         <ImageList rowHeight={cellHeight} cols={cols} className={classes.imageList}>
-            {photos.map(photo => {
+            {photos.map((photo, i) => {
                 const hasFullPhoto = !!photo.SK;
                 const photoId = (hasFullPhoto) ? photo.SK
-                    : (typeof photoId === 'string') ? photoId : '';
-                return <ImageListItem key={photoId} className={classes.tile}>
-                    <Photo
+                    : (typeof photo === 'string') ? photo : ``;
+                return <ImageListItem key={photoId || i} className={classes.tile}>
+                    {(hasFullPhoto) ? <PhotoWithData
                         photoId={photoId}
-                        photo={(hasFullPhoto)? photo : false}
+                        photo={(hasFullPhoto) ? photo : false}
                         isSmall={(!isLarge && !isMedium)}
                         {...props}
                         onClickMenu={!noMenu && handleMenuClick}
@@ -96,6 +97,16 @@ const PhotoList = (props) => {
                         menuIsOpen={!!anchor.el}
                         isNew={newPics.includes(photoId)}
                     />
+                        : <Photo
+                            photoId={photoId}
+                            isSmall={(!isLarge && !isMedium)}
+                            {...props}
+                            onClickMenu={!noMenu && handleMenuClick}
+                            onSelect={select && onSelect}
+                            isSelected={selected.includes(photoId)}
+                            menuIsOpen={!!anchor.el}
+                            isNew={newPics.includes(photoId)}
+                        />}
                 </ImageListItem>
             })}
         </ImageList>

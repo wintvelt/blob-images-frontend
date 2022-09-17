@@ -5,7 +5,6 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { ClubImage } from '../components-generic/imageProvider';
-import { usePhoto } from '../data/activeTree-Photo';
 import Rating from '../components-generic/Rating';
 import { useUserValue } from '../data/userData';
 
@@ -66,15 +65,13 @@ const MenuButton = ({ className, onClick, disabled }) => (
     </IconButton>
 )
 
-const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClickMenu, noOwner,
+const PhotoWithData = ({ photoId, photo, isSmall, isNew, onSelect, isSelected, onClick, onClickMenu, noOwner,
     userIsAdmin, menuIsOpen }) => {
     const classes = useStyles();
     const userData = useUserValue();
     const currentUser = userData.profile;
-    const photoData = usePhoto(photoId);
-    const photo = photoData.contents || {};
     const sortDate = photo.sortDate || photo.createdAt;
-    const { url, user, rating } = photo;
+    const { url, user, rating } = photo.photo || {};
     const { name, photoUrl } = user || {};
     const isLoading = (!url);
     const userIsOwner = (user && user.SK === currentUser?.id);
@@ -118,4 +115,4 @@ const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClick
     </div>
 }
 
-export default Photo;
+export default PhotoWithData;

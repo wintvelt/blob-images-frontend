@@ -46,7 +46,6 @@ const AlbumMain = () => {
             photoPath,
             photoPath.replace('[photoid]', photo.photoId).replace('[id]', groupId).replace('[albumid]', albumId));
     };
-
     return (
         <main>
             <AlbumHeader />

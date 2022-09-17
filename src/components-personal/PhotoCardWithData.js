@@ -72,7 +72,6 @@ const PhotoWithData = ({ photoId, photo, isSmall, isNew, onSelect, isSelected, o
     const currentUser = userData.profile;
     const sortDate = photo.sortDate || photo.createdAt;
     const { url, user, rating } = photo.photo || {};
-    console.log(photo);
     const { name, photoUrl } = user || {};
     const isLoading = (!url);
     const userIsOwner = (user && user.SK === currentUser?.id);

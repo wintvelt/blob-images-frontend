@@ -5,7 +5,7 @@ import PhotoList from '../../../../../src/components-personal/PhotoList';
 import PrivatePage from '../../../../../src/components-personal/PrivatePage';
 import Upload from '../../../../../src/components-generic/Upload';
 import { useActiveAlbum, useReloadActiveAlbum } from '../../../../../src/data/activeTree-Album';
-import { useAlbumPhotoIds, useDeleteAlbumPhoto, useReloadAlbumPhotoIds } from '../../../../../src/data/albumPhotosData';
+import { useAlbumPhotos, useDeleteAlbumPhoto, useReloadAlbumPhotos } from '../../../../../src/data/albumPhotosData';
 import { useSetLoadingPath } from '../../../../../src/data/loadingData';
 import { useActiveGroup } from '../../../../../src/data/activeTree-Group';
 
@@ -16,7 +16,7 @@ const AlbumMain = () => {
     const activeAlbumData = useActiveAlbum();
     const hasValue = !!activeAlbumData.contents;
     const activeAlbum = hasValue ? activeAlbumData.contents : {};
-    const albumPhotosData = useAlbumPhotoIds();
+    const albumPhotosData = useAlbumPhotos();
     const groupId = activeAlbum.groupId;
     const albumId = activeAlbum.albumId;
     const userIsAdmin = activeAlbum.userIsAdmin;
@@ -24,7 +24,7 @@ const AlbumMain = () => {
     const pond = useRef();
     const deletePhoto = useDeleteAlbumPhoto();
     const reloadAlbum = useReloadActiveAlbum();
-    const reloadPhotos = useReloadAlbumPhotoIds();
+    const reloadPhotos = useReloadAlbumPhotos();
     const [files, setFiles] = useState([]);
     const setLoadingPath = useSetLoadingPath();
 

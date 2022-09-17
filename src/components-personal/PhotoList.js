@@ -80,10 +80,14 @@ const PhotoList = (props) => {
         {/* <pre style={fullWidth}>{JSON.stringify(selected, null, 2)}</pre>
         <pre style={fullWidth}>{JSON.stringify(photos, null, 2)}</pre> */}
         <ImageList rowHeight={cellHeight} cols={cols} className={classes.imageList}>
-            {photos.map(photoId => {
+            {photos.map(photo => {
+                const hasFullPhoto = !!photo.SK;
+                const photoId = (hasFullPhoto) ? photo.SK
+                    : (typeof photoId === 'string') ? photoId : '';
                 return <ImageListItem key={photoId} className={classes.tile}>
                     <Photo
-                        photoId={(typeof photoId === 'string') ? photoId : ''}
+                        photoId={photoId}
+                        photo={(hasFullPhoto)? photo : false}
                         isSmall={(!isLarge && !isMedium)}
                         {...props}
                         onClickMenu={!noMenu && handleMenuClick}

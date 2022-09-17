@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from '@material-ui/core/Icon';
 
 import Link from '../components-generic/Link';
-import { useAlbumPhotoIds } from '../data/albumPhotosData';
+import { useAlbumPhotos } from '../data/albumPhotosData';
 import { useUserPhotoIds } from '../data/userPhotosData';
 import { useRouter } from 'next/router';
 import { useActiveAlbum } from '../data/activeTree-Album';
@@ -29,13 +29,13 @@ const BrowseButtons = ({ photoId }) => {
     const matches = useMediaQuery('(min-width:600px)');
     const albumData = useActiveAlbum();
     const album = albumData.contents;
-    const albumPhotoData = useAlbumPhotoIds();
+    const albumPhotoData = useAlbumPhotos();
     const albumPhotos = albumPhotoData.contents;
     const userPhotosData = useUserPhotoIds();
     const userPhotos = userPhotosData.contents;
     const router = useRouter();
     const isAlbumPhoto = !!router.query?.albumid;
-    const photoIds = (isAlbumPhoto) ? albumPhotos : userPhotos;
+    const photoIds = (isAlbumPhoto) ? albumPhotos.map(item => item.SK) : userPhotos;
 
     const idxInList = photoIds && photoIds.indexOf(photoId);
 

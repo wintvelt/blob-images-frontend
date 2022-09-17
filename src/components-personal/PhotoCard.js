@@ -66,14 +66,15 @@ const MenuButton = ({ className, onClick, disabled }) => (
     </IconButton>
 )
 
-const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClickMenu, noOwner,
+const Photo = ({ photoId, photo: photoRec, isSmall, isNew, onSelect, isSelected, onClick, onClickMenu, noOwner,
     userIsAdmin, menuIsOpen }) => {
     const classes = useStyles();
     const userData = useUserValue();
     const currentUser = userData.profile;
     const photoData = usePhoto(photoId);
-    const photo = photoData.contents || {};
-    const { url, user, rating, createdAt } = photo;
+    const photo = photoRec || photoData.contents || {};
+    const sortDate = photo.sortDate || photo.createdAt;
+    const { url, user, rating } = photo;
     const { name, photoUrl } = user || {};
     const isLoading = (!url);
     const userIsOwner = (user && user.SK === currentUser?.id);
@@ -105,7 +106,7 @@ const Photo = ({ photoId, isSmall, isNew, onSelect, isSelected, onClick, onClick
             style={fitContent}
             title={(name && !noOwner) ? `by ${name}` : ''}
             subtitle={<>
-                {createdAt}<br />
+                {sortDate} - {photo.createdAt}<br />
                 <Rating value={rating} />
             </>}
             actionIcon={(onSelect) && <SelectButton iconClass={classes.icon}

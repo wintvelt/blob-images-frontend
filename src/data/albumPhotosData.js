@@ -4,8 +4,8 @@ import { API } from 'aws-amplify';
 import { activeAlbumIdState, activeGroupIdState } from './activeTreeRoot';
 import { errorLog } from '../helpers/errorLog';
 
-export const albumPhotoIdsData = atom({
-    key: 'albumPhotoIdsData',
+export const albumPhotosData = atom({
+    key: 'albumPhotosData',
     default: { isLoading: true },
 });
 
@@ -15,45 +15,45 @@ const albumPhotoToForm = (albumPhoto) => ({
     photoId: albumPhoto.SK
 });
 
-export const useReloadAlbumPhotoIds = () => {
-    const setAlbumPhotoIds = useSetRecoilState(albumPhotoIdsData);
+export const useReloadAlbumPhotos = () => {
+    const setAlbumPhotos = useSetRecoilState(albumPhotosData);
     const loadData = async (groupId, albumId) => {
         if (albumId && groupId) {
             console.log(`loading photos for album ${albumId}`);
             try {
-                const photoIds = await API.get('blob-images', `/groups/${groupId}/albums/${albumId}/photoIds`);
-                setAlbumPhotoIds({ contents: photoIds.map(item => item.SK) });
+                const photos = await API.get('blob-images', `/groups/${groupId}/albums/${albumId}/photos`);
+                setAlbumPhotos({ contents: photos });
             } catch (error) {
                 errorLog(error);
-                setAlbumPhotoIds({ hasError: error });
+                setAlbumPhotos({ hasError: error });
             }
         }
     }
     return loadData;
 };
 
-export const useAlbumPhotoIds = () => {
+export const useAlbumPhotos = () => {
     const groupId = useRecoilValue(activeGroupIdState);
     const albumId = useRecoilValue(activeAlbumIdState);
-    const albumPhotoIds = useRecoilValue(albumPhotoIdsData);
-    const reloadPhotoIds = useReloadAlbumPhotoIds();
+    const albumPhotos = useRecoilValue(albumPhotosData);
+    const reloadPhotos = useReloadAlbumPhotos();
     useEffect(() => {
-        if (groupId && albumId) reloadPhotoIds(groupId, albumId);
+        if (groupId && albumId) reloadPhotos(groupId, albumId);
     }, [groupId, albumId]);
-    return albumPhotoIds;
+    return albumPhotos;
 };
 
-export const useAlbumPhotoIdsValue = () => {
-    const photoIdsData = useRecoilValue(albumPhotoIdsData);
-    return photoIdsData;
+export const useAlbumPhotosValue = () => {
+    const photosData = useRecoilValue(albumPhotosData);
+    return photosData;
 };
 
 export const useDeleteAlbumPhoto = () => {
-    const [photoIdsData, setPhotoIdsData] = useRecoilState(albumPhotoIdsData);
-    const deletePhotoId = (photoId) => {
-        const idList = photoIdsData.contents;
-        if (!idList) return;
-        setPhotoIdsData({ contents: idList.filter(id => (id !== photoId)) });
+    const [photosData, setPhotosData] = useRecoilState(albumPhotosData);
+    const deletePhoto = (photoId) => {
+        const photoList = photosData.contents;
+        if (!photoList) return;
+        setPhotosData({ contents: idList.filter(photo => (photo.SK !== photoId)) });
     };
-    return deletePhotoId;
+    return deletePhoto;
 };

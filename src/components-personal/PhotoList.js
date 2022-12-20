@@ -57,7 +57,7 @@ const PhotoList = (props) => {
     const [selected, setSelected] = useState([]);
 
     const handleMenuClick = (e, photo) => {
-        setAnchor({ el: e.currentTarget, photo });
+        setAnchor({ el: e.currentTarget, photo: (photo.photo)? photo.photo : photo });
     };
 
     const handleMenuClose = () => {

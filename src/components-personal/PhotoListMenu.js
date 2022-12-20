@@ -41,8 +41,6 @@ const PhotoMenu = ({ anchor, album, userIsAdmin, handleClose, deletePhoto, reloa
                     photoId: currentPhotoId,
                 }
             });
-            console.log(anchor.photo);
-            console.log(res);
             enqueueSnackbar('album foto ingesteld', { variant: 'success' });
             handleClose();
             reloadAlbum && reloadAlbum();

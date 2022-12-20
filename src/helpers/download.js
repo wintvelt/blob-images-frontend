@@ -1,3 +1,13 @@
+/*
+    Creates a from the url, puts this in hidden <a> element,
+    as a createObjectUrl
+    then clicks <a> and removes blob and <a>
+
+    Blobs allow large (>50Mb) file size, so should be fine
+    The old <a download> works on same origin,
+    so will not work for aws S3 signed urls
+*/
+
 export async function downloadFile(url, filename) {
     // get data
     let blob = await fetch(url, {

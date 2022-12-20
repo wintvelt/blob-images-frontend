@@ -36,11 +36,13 @@ const PhotoMenu = ({ anchor, album, userIsAdmin, handleClose, deletePhoto, reloa
     };
     const onSetAlbumCover = async () => {
         try {
-            await API.put('blob-images', albumPath, {
+            const res = await API.put('blob-images', albumPath, {
                 body: {
                     photoId: currentPhotoId,
                 }
             });
+            console.log(anchor.photo);
+            console.log(res);
             enqueueSnackbar('album foto ingesteld', { variant: 'success' });
             handleClose();
             reloadAlbum && reloadAlbum();

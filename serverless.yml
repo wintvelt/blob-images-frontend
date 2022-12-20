@@ -4,5 +4,5 @@ blob-images:
         bucketName: ${env.NEXT_PUBLIC_BUCKET}
         cloudfront:
             comment: ${env.NEXT_PUBLIC_BRANCH}
-            distributionId: ${env.CLOUDFRONT_ID_DEV}
+            distributionId: ${env.CLOUDFRONT_ID}
             # distributionId: ERQ3ZNEILVY87

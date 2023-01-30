@@ -41,13 +41,26 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         top: theme.spacing(1),
         left: theme.spacing(1),
+    },
+    title: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    name: {
+        flex: 1
+    },
+    textSmall: {
+        fontSize: '80%',
+        color: 'darkgrey'
     }
 }));
 
 const flexEndStyle = { display: 'flex', justifyContent: 'flex-end' };
 
 const AlbumCardContent = (props) => {
-    const { name, image, stats, newPicsCount, isLoading, isMedium, hideNew } = props;
+    const { name, createdAt, image, stats, newPicsCount, isLoading, isMedium, hideNew } = props;
+    const year = createdAt? createdAt.slice(0,4) : '';
     const classes = useStyles();
     return <>
         {(image?.url) ?
@@ -62,8 +75,9 @@ const AlbumCardContent = (props) => {
             {(newPicsCount > 0) && !hideNew &&
                 <Chip color='secondary' label={newPicsCount} className={classes.chip} />
             }
-            <Typography gutterBottom variant='h6' component='h5'>
-                <TextSkeleton className={classes.text} isLoading={isLoading}>{name}</TextSkeleton>
+            <Typography gutterBottom variant='h6' component='h5' className={classes.title}>
+                <TextSkeleton className={classes.name} isLoading={isLoading}>{name}</TextSkeleton>
+                <TextSkeleton className={classes.textSmall} isLoading={isLoading}>{year}</TextSkeleton>
             </Typography>
             <div style={flexEndStyle}>
                 {stats && <Typography variant="caption" color="textSecondary" component="p"

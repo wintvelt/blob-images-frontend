@@ -25,7 +25,8 @@ export const albumToForm = (album) => ({
     userIsAdmin: album.userIsAdmin,
     newPics: album.newPics,
     newPicsCount: album.newPicsCount,
-    createdAt: album.createdAt
+    createdAt: album.createdAt,
+    sortDate: album.sortDate
 });
 
 export const useReloadActiveAlbum = () => {

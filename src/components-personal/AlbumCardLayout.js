@@ -59,8 +59,8 @@ const useStyles = makeStyles(theme => ({
 const flexEndStyle = { display: 'flex', justifyContent: 'flex-end' };
 
 const AlbumCardContent = (props) => {
-    const { name, createdAt, image, stats, newPicsCount, isLoading, isMedium, hideNew } = props;
-    const year = createdAt? createdAt.slice(0,4) : '';
+    const { name, sortDate, image, stats, newPicsCount, isLoading, isMedium, hideNew } = props;
+    const year = sortDate? sortDate.slice(0,4) : '';
     const classes = useStyles();
     return <>
         {(image?.url) ?

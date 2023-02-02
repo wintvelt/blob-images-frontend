@@ -25,7 +25,8 @@ export const groupToForm = (group) => ({
     newPicsCount: group.newPicsCount,
     memberCount: group.memberCount,
     maxMembers: group.maxMembers,
-    mayInvite: group.mayInvite
+    mayInvite: group.mayInvite,
+    sortDate: group.sortDate
 });
 
 export const useReloadActiveGroup = () => {

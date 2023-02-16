@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { gateway } from '../aws-amplify/config-env';
 import { errorLog } from '../helpers/errorLog';
 
 export const activePrivacyData = atom({
@@ -11,9 +12,8 @@ export const useReloadPrivacy = () => {
     const setPrivacy = useSetRecoilState(activePrivacyData);
     const loadData = async (lang) => {
         try {
-            const response = await fetch(`https://api-dev.clubalmanac.com/privacy/${lang}`);
-            const text = await response.text();
-            const lines = text.split('\n');
+            const response = await fetch(`${gateway()}/info/privacy/${lang}`);
+            const lines = await response.json();
             setPrivacy({ contents: lines });
         } catch (error) {
             errorLog(error);

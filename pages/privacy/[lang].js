@@ -3,41 +3,58 @@ import Grid from '@material-ui/core/Grid';
 
 import Hero from '../../src/components-home/Hero';
 import HeroTitle from '../../src/components-home/Hero-Title';
-import AboutUs from '../../src/components-home/AboutUs';
 import PublicPage from '../../src/components-generic/PublicPage';
-import { useRouter } from 'next/router';
-import { useActivePrivacy, usePrivacyValue } from '../../src/data/privacyData';
+import { gateway } from '../../src/aws-amplify/config-env';
+import { Typography } from '@material-ui/core';
 
-const Privacy = () => {
-    const router = useRouter();
-    const lang = router.query?.lang;
-    const privacyData = useActivePrivacy(lang);
+const MDLine = ({ line }) => {
+    const [variant, text] = (line.slice(0, 2) === '# ') ? ['h2', line.slice(2)]
+        : (line.slice(0, 3) === '## ') ? ['h4', line.slice(3)]
+            : ['body1', line];
+    return <Typography variant={variant} gutterBottom>{text}</Typography>
+}
 
-    const privacyLines = privacyData.contents || [];
-    console.log(privacyData)
-
+const Privacy = ({ lines }) => {
     return (
         <main>
             <Hero
                 url='/img/cameras.jpg'
             >
-                <Grid item md={1} />
-                <Grid item md={4} id='Privacy'>
+                <Grid item md={6} id='Privacy'>
                     <HeroTitle
-                        title={privacyLines[0]}
+                        title={lines[0].slice(2)}
                     />
                 </Grid>
-                <Grid item md={1} />
             </Hero>
-            <AboutUs />
+            <Grid container direction="column"
+                justifyContent="flex-start"
+                alignItems="center">
+                <Grid item md={6} >
+                    {lines.slice(1).map((line, i) => <MDLine key={'line' + i} line={line} />)}
+                </Grid>
+            </Grid>
         </main>
     )
 }
 
-const PrivacyPage = () => (
-    <PublicPage>
-        <Privacy />
-    </PublicPage>
+const PrivacyPage = (props) => (
+        <Privacy {...props} />
 );
 
 export default PrivacyPage;
+
+const fallbackLines = ['# Language not available', '## Privacy statement only available in English and Dutch'];
+
+export async function getServerSideProps(context) {
+    const lang = context.query?.lang;
+    if (!lang || !['EN', 'NL'].includes(lang.toUpperCase())) return { props: { lines: fallbackLines } };
+    try {
+        const data = await fetch(`${gateway()}/info/privacy/${lang}`);
+        const lines = await data.json();
+        return { props: { lines } }
+
+    } catch (error) {
+        console.error(error);
+        return { props: { lines: ['# Error', '## Something went wrong, try again later'] } };
+    }
+}

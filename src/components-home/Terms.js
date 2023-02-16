@@ -54,7 +54,6 @@ const termsList = [
             ' (uiteraard alleen in de groepen waar je lid van bent)',
             `‣ Alle foto\'s die je deelt op clubalmanac blijven jouw eigendom`,
             `‣ Je belooft dat je geen inbreuk maakt op de privacy van andere leden`,
-            `‣ Je belooft dat je geen inbreuk maakt op de privacy van andere leden`,
             'Je bent zelf verantwoordelijk voor de inhoud van de foto\'s die je deelt, wat onder meer betekent',
             `‣ Dat jij de rechten op de foto\'s hebt, of ze in ieder geval van de eigenaar mag delen`,
             `‣ Dat andere mensen op de foto ook ok zijn met de inhoud. Zo niet, dan kunnen ze jou daarop aanspreken.`,

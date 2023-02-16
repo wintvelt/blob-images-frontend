@@ -14,7 +14,7 @@ function SmallPrint(props) {
         <Container maxWidth='sm'>
             <Divider variant='middle' style={dividerStyle} />
             <Typography variant="body2" align="center" className={props.className} gutterBottom>
-                <Link href='/about#privacy' className={props.className}>Privacy statement</Link>{' | '}
+                <Link href='/privacy/nl' className={props.className}>Privacy statement</Link>{' | '}
                 <Link href='/about#cookies' className={props.className}>Cookies</Link>{' | '}
                 <Link onClick={preventDefault} href='/termsandconditions' target='_blank' rel='noopener noreferrer' className={props.className}>
                     Algemene voorwaarden
